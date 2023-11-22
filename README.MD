@@ -1,8 +1,8 @@
 # ft_transcendence_newpdf
 
-<div style="text-align: center">
-    <img src="/img/logo.png" alt="Indian Dev" />
-</div>
+<p align="center">
+    <img src="/img/logo.png"/>
+</p>
 
 # Team 42 Indian Developers ->
 ### [eyagiz](https://github.com/fleizean)
