@@ -36,27 +36,17 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 function toggleShowContainer() {
-    var popupContainer = document.getElementById('RegisterLogin');
+    var loginContainer = document.getElementById('LoginArea');
     var headerContainer = document.getElementById('HeaderArea');
     headerContainer.style.display = 'none';
-    popupContainer.style.display = (popupContainer.style.display === 'none' || popupContainer.style.display === '') ? '' : 'block';
+    loginContainer.style.display = (loginContainer.style.display === 'none' || loginContainer.style.display === '') ? 'flex' : 'none';
 }
 
 function closeContainer() {
-    var popupContainer = document.getElementById('RegisterLogin');
+    var loginContainer = document.getElementById('LoginArea');
     var headerContainer = document.getElementById('HeaderArea');
-    popupContainer.style.display = 'none';
+    loginContainer.style.display = 'none';
     headerContainer.style.display = (headerContainer.style.display === 'none' || headerContainer.style.display === '') ? '' : 'block';
 }
 
-const signUpButton = document.getElementById('signUp');
-const signInButton = document.getElementById('signIn');
-const container = document.getElementById('containerPanel');
-
-signUpButton.addEventListener('click', () => {
-	container.classList.add("right-panel-active");
-});
-
-signInButton.addEventListener('click', () => {
-	container.classList.remove("right-panel-active");
-});
+/* -------- */
