@@ -36,6 +36,27 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 function toggleShowContainer() {
-    var popupContainer = document.getElementById('popupContainer');
-    popupContainer.style.display = (popupContainer.style.display === 'none' || popupContainer.style.display === '') ? 'block' : 'none';
+    var popupContainer = document.getElementById('RegisterLogin');
+    var headerContainer = document.getElementById('HeaderArea');
+    headerContainer.style.display = 'none';
+    popupContainer.style.display = (popupContainer.style.display === 'none' || popupContainer.style.display === '') ? '' : 'block';
 }
+
+function closeContainer() {
+    var popupContainer = document.getElementById('RegisterLogin');
+    var headerContainer = document.getElementById('HeaderArea');
+    popupContainer.style.display = 'none';
+    headerContainer.style.display = (headerContainer.style.display === 'none' || headerContainer.style.display === '') ? '' : 'block';
+}
+
+const signUpButton = document.getElementById('signUp');
+const signInButton = document.getElementById('signIn');
+const container = document.getElementById('containerPanel');
+
+signUpButton.addEventListener('click', () => {
+	container.classList.add("right-panel-active");
+});
+
+signInButton.addEventListener('click', () => {
+	container.classList.remove("right-panel-active");
+});
