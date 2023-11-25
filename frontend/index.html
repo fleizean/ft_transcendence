@@ -6,18 +6,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Indian-Pong</title>
     <link rel="stylesheet" href="css/style.css">
+    <script src="https://kit.fontawesome.com/f9275dded9.js" crossorigin="anonymous"></script>
 </head>
 
 <body>
-    <div class="backgroundimage">
-        <div id="mainbox">
-            <div id="container">
-                <div class="big-text">Indian-Pong</div>
-                <div class="small-text">Indian-Pong created for 42 school by Indian Dev!</div>
-                <button type="button" class="PixellButton">Get Started!</button>
-                <div class="popup" id="popup">
-                    <span class="close" onclick="togglePopup()">&times;</span>
-                    <p>Popup içeriği burada.</p>
+    <div class="cursor">
+        <div class="backgroundimage">
+            <div id="mainbox">
+                <div id="container">
+                    <div class="popup" id="popupContainer">
+                        <!-- Popup içeriği buraya eklenecek -->
+                        <p>This is a popup content</p>
+                        <span class="close" onclick="toggleShowContainer()">&times;</span>
+                    </div>
+                    <div class="big-text">Indian-Pong</div>
+                    <div class="small-text">Indian-Pong created for 42 school by Indian Dev!</div>
+                    <button type="button" class="PixellButton" onclick="toggleShowContainer()">Get
+                        Started!</button>
+                    
                 </div>
             </div>
         </div>
