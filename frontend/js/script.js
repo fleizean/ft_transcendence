@@ -42,11 +42,25 @@ function toggleShowContainer() {
     loginContainer.style.display = (loginContainer.style.display === 'none' || loginContainer.style.display === '') ? 'flex' : 'none';
 }
 
-function closeContainer() {
+function toggleShowRegister() {
     var loginContainer = document.getElementById('LoginArea');
-    var headerContainer = document.getElementById('HeaderArea');
+    var registerContainer = document.getElementById('RegisterArea');
     loginContainer.style.display = 'none';
-    headerContainer.style.display = (headerContainer.style.display === 'none' || headerContainer.style.display === '') ? '' : 'block';
+    registerContainer.style.display = (registerContainer.style.display === 'none' || registerContainer.style.display === '') ? 'flex' : 'none';
+}
+
+function backRoute(param) {
+    var headerContainer = document.getElementById('HeaderArea');
+    var loginContainer = document.getElementById('LoginArea');
+    var registerContainer = document.getElementById('RegisterArea');
+    if (param == 'register') {
+        registerContainer.style.display = 'none';
+        loginContainer.style.display = (loginContainer.style.display === 'none' || loginContainer.style.display === '') ? 'block' : 'none';
+    }
+    else if (param == 'login') {
+        loginContainer.style.display = 'none';
+        headerContainer.style.display = (headerContainer.style.display === 'none' || headerContainer.style.display === '') ? 'block' : 'none';
+    }
 }
 
 /* -------- */
