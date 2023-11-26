@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Hemen çalıştırılacak kod buraya eklenecek
 
     const cover = document.querySelector('.backgroundimage');
-
+    
     for (let i = 1; i < 100; i++) {
         const snowFlake = document.createElement('div');
         snowFlake.className = 'snow';

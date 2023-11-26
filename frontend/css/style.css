@@ -88,7 +88,35 @@ img {
   height: auto;
 }
 
+@keyframes backInDown {
+  0% {
+    transform: translateY(-1200px) scale(0.7);
+    opacity: 0.7;
+  }
+  80% {
+    transform: translateY(0) scale(1.1);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes slideInFromRight {
+  0% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+
 .big-text {
+  animation: backInDown 1s ease;
   font-size: 6em;
   color: aliceblue;
   font-family: 'Pixeboy-z8XGD', sans-serif;
@@ -96,6 +124,7 @@ img {
 }
 
 .small-text {
+  animation: backInDown 1s ease;
   font-family: 'alagard', sans-serif;
   font-size: 1em;
   color: aliceblue;
@@ -103,7 +132,7 @@ img {
 }
 
 .PixellButton {
-
+  animation: slideInFromRight 0.5s ease;
   font-family: 'Pixeboy-z8XGD';
   font-size: large;
   cursor: url('./crossedsword.png'), auto;
@@ -279,10 +308,11 @@ img {
   font-size: 17px;
   font-weight: 600;
   color: var(--font-color);
-  cursor: pointer;
+  cursor: url('./crossedsword.png'), auto;
 }
 
 .registerbtn {
+  cursor: url('./crossedsword.png'), auto;
   display: flex;
   width: 110px;
   height: 40px;
