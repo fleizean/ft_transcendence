@@ -70,6 +70,11 @@ body {
   text-align: center;
 }
 
+.HomeArea {
+  display: none;
+  
+}
+
 
 .backgroundimage {
   position: fixed;
@@ -209,7 +214,6 @@ img {
 }
 
 /* Login - Register Pop Up Area */
-
 
 .form {
   --input-focus: #f0302d;
@@ -372,6 +376,11 @@ img {
   transition-delay: 300ms;
 }
 
+/* ---------------------------- */
+
+
+
+
 /* back button */
 
 .backbtn {
@@ -405,3 +414,12 @@ img {
   box-shadow: 9px 9px 33px #d1d1d1, -9px -9px 33px #ffffff;
   transform: translateY(-2px);
  }
+
+/* ----------- */
+
+
+
+
+/* Main Menu css */
+
+/* ------------- */
