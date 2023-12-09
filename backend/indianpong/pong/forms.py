@@ -10,6 +10,7 @@ class UserProfileForm(UserCreationForm):
         fields = ['username', 'display_name', 'password1', 'password2', 'avatar']
 
 class UpdateProfileForm(forms.ModelForm):
+    #avatar = forms.ImageField()
     class Meta:
         model = UserProfile
         fields = ['display_name', 'avatar']

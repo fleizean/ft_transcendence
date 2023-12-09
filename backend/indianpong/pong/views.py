@@ -5,6 +5,10 @@ from django.contrib import messages
 from .forms import UserProfileForm, UpdateProfileForm, TwoFactorAuthSetupForm, JWTTokenForm, AuthenticationUserForm, TournamentForm, TournamentMatchForm, OAuthTokenForm
 from .models import UserProfile, TwoFactorAuth, JWTToken, Tournament, TournamentMatch, OAuthToken
 
+
+def home(request):
+    return render(request, 'home.html') 
+
 def signup(request):
     if request.method == 'POST':
         form = UserProfileForm(request.POST, request.FILES)
