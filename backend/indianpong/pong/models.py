@@ -9,11 +9,17 @@ class UserProfile(AbstractUser):
     wins = models.IntegerField(default=0)
     losses = models.IntegerField(default=0)
 
+    def __str__(self) -> str:
+        return f"{self.display_name}"
+
 class MatchHistory(models.Model):
     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='matches')
     opponent = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='opponent_matches')
     date = models.DateTimeField(auto_now_add=True)
     result = models.CharField(max_length=10)  # 'win' or 'lose'
+
+    def __str__(self) -> str:
+        return f"{self.user + '-' + self.opponent}"
 
 class Tournament(models.Model):
     name = models.CharField(max_length=100)
@@ -21,6 +27,9 @@ class Tournament(models.Model):
     end_date = models.DateTimeField()
     participants = models.ManyToManyField(UserProfile, related_name='tournaments')
 
+    def __str__(self) -> str:
+        return f"{self.name}"
+    
 class TournamentMatch(models.Model):
     tournament = models.ForeignKey(Tournament, on_delete=models.CASCADE, related_name='matches')
     player1 = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='tournament_matches_as_player1')

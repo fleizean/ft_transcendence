@@ -16,10 +16,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from .views import signup, login_view, update_profile, setup_two_factor_auth, generate_jwt_token, create_tournament, create_tournament_match
+from pong.views import home, signup, login_view, update_profile, setup_two_factor_auth, generate_jwt_token, create_tournament, create_tournament_match
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('home/', home, name='home'),
     path('signup/', signup, name='signup'),
     path('login/', login_view, name='login'),
     path('update_profile/', update_profile, name='update_profile'),
