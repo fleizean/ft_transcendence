@@ -1,8 +1,8 @@
 document.addEventListener('DOMContentLoaded', function () {
     // Hemen çalıştırılacak kod buraya eklenecek
 
-    const cover = document.querySelector('.backgroundimage');
-    
+    const cover = document.querySelector('.snow-class');
+
     for (let i = 1; i < 100; i++) {
         const snowFlake = document.createElement('div');
         snowFlake.className = 'snow';
@@ -14,7 +14,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const delay = Math.random();
         snowFlake.style.animation = `snowRain 5s linear ${delay}s infinite`;
-        console.log("delay" + delay);
 
         const left = Math.random() * 100;
         snowFlake.style.left = `${left}vw`;
@@ -31,14 +30,13 @@ document.addEventListener('DOMContentLoaded', function () {
             snowFlake.style.opacity = 1;
             snowFlake.style.animationPlayState = 'running';
         }, 1300);
-    }
 
+    
+    }
 });
 
-jQuery(document).ready(function() {
-    $(".burger-menu").click(function() {
+jQuery(document).ready(function () {
+    $(".burger-menu").click(function () {
         $(".nav-links").toggleClass('show');
     });
 });
-
-/* -------- */
