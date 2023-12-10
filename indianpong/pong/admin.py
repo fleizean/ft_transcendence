@@ -2,11 +2,12 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from .models import UserProfile, MatchHistory, Tournament, TournamentMatch, TwoFactorAuth, JWTToken, OAuthToken
 
-class UserProfileAdmin(UserAdmin):
+
+class UserProfileAdmin(admin.ModelAdmin):
     list_display = ('username', 'email', 'display_name', 'wins', 'losses')
     search_fields = ('username', 'email', 'display_name')
     fieldsets = UserAdmin.fieldsets + (
-        ('Custom Fields', {'fields': ('display_name', 'avatar', 'friends', 'wins', 'losses')}),
+        ('Custom Fields', {'fields': ('display_name', 'avatar', 'wins', 'losses')}),
     )
 
 class TournamentAdmin(admin.ModelAdmin):
