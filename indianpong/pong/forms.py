@@ -2,12 +2,37 @@
 
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from .models import UserProfile, TwoFactorAuth, JWTToken, Tournament, TournamentMatch, OAuthToken
+from .models import BlockedUser, ChatMessage, GameInvitation, UserProfile, TwoFactorAuth, JWTToken, Tournament, TournamentMatch, OAuthToken
 
 class UserProfileForm(UserCreationForm):
     class Meta:
         model = UserProfile
         fields = ['username', 'display_name', 'password1', 'password2', 'avatar']
+
+class ChatMessageForm(forms.ModelForm):
+    class Meta:
+        model = ChatMessage
+        fields = ['content']
+        widgets = {
+            'content': forms.Textarea(attrs={'rows': 3}),
+        }
+
+class BlockUserForm(forms.ModelForm):
+    blocked_user = forms.ModelChoiceField(queryset=UserProfile.objects.all(), widget=forms.Select(attrs={'class': 'form-control'}))
+
+    class Meta:
+        model = BlockedUser
+        fields = ['blocked_user']
+
+class InviteToGameForm(forms.ModelForm):
+    invited_user = forms.ModelChoiceField(queryset=UserProfile.objects.all(), widget=forms.Select(attrs={'class': 'form-control'}))
+
+    class Meta:
+        model = GameInvitation
+        fields = ['message']
+        widgets = {
+            'message': forms.Textarea(attrs={'rows': 3}),
+        }
 
 class UpdateProfileForm(forms.ModelForm):
     #avatar = forms.ImageField()

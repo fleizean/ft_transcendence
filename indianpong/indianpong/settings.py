@@ -39,7 +39,14 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'pong',
+    'channels'
 ]
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels.layers.InMemoryChannelLayer',
+    },
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -70,6 +77,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'indianpong.wsgi.application'
+ASGI_APPLICATION = 'indianpong.routing.application'
 
 
 # Database
