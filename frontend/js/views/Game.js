@@ -15,14 +15,14 @@ export default class extends AbstractView {
             IndianPong
           </div></a>
       </div>
-        <ul class="nav-links">
-          <li><a href="/dashboard" data-link><i class="bi bi-house-door-fill"></i>Dashboard</a></li>
-          <li><a href="/game" data-link><i class="bi bi-play-circle-fill"></i>Game</a></li>
-          <li><a href="/chat" data-link><i class="bi bi-chat-fill"></i>Chat</a></li>
-          <li><a href="/friends" data-link><i class="bi bi-heart-fill"></i>Friends</a></li>
-          <li><a href="/search" data-link><i class="bi bi-binoculars-fill"></i>Search</a></li>
-          <li><a href="/profile" data-link><i class="bi bi-person-fill"></i>Profile</a></li>
-        </ul>
+		<ul class="nav-links">
+			<li><a href="/dashboard" data-link><i class="bi bi-house-door-fill"></i>Dashboard</a></li>
+			<li><a href="/game" data-link><i class="bi bi-play-circle-fill"></i>Game</a></li>
+			<li><a href="/chat" data-link><i class="bi bi-chat-fill"></i>Chat</a></li>
+			<li><a href="/rankings" data-link><i class="bi bi-bar-chart-fill"></i>Rankings</a></li>
+			<li><a href="/search" data-link><i class="bi bi-binoculars-fill"></i>Search</a></li>
+			<li><a href="/profile" data-link><i class="bi bi-person-fill"></i>Profile</a></li>
+		</ul>
         <div class="burger-menu">&#9776;</div>
       </nav>
 
