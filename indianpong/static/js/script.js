@@ -1,8 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
-    // Hemen çalıştırılacak kod buraya eklenecek
+    const cover = document.querySelector('.snow-class');
 
-    const cover = document.querySelector('.backgroundimage');
-    
     for (let i = 1; i < 100; i++) {
         const snowFlake = document.createElement('div');
         snowFlake.className = 'snow';
@@ -14,7 +12,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const delay = Math.random();
         snowFlake.style.animation = `snowRain 5s linear ${delay}s infinite`;
-        console.log("delay" + delay);
 
         const left = Math.random() * 100;
         snowFlake.style.left = `${left}vw`;
@@ -32,35 +29,14 @@ document.addEventListener('DOMContentLoaded', function () {
             snowFlake.style.animationPlayState = 'running';
         }, 1300);
     }
-
 });
 
-function toggleShowContainer() {
-    var loginContainer = document.getElementById('LoginArea');
-    var headerContainer = document.getElementById('HeaderArea');
-    headerContainer.style.display = 'none';
-    loginContainer.style.display = (loginContainer.style.display === 'none' || loginContainer.style.display === '') ? 'flex' : 'none';
-}
+document.addEventListener('DOMContentLoaded', function () {
+    const burgerMenu = document.querySelector(".burger-menu");
+    const navLinks = document.querySelector(".nav-links");
 
-function toggleShowRegister() {
-    var loginContainer = document.getElementById('LoginArea');
-    var registerContainer = document.getElementById('RegisterArea');
-    loginContainer.style.display = 'none';
-    registerContainer.style.display = (registerContainer.style.display === 'none' || registerContainer.style.display === '') ? 'flex' : 'none';
-}
-
-function backRoute(param) {
-    var headerContainer = document.getElementById('HeaderArea');
-    var loginContainer = document.getElementById('LoginArea');
-    var registerContainer = document.getElementById('RegisterArea');
-    if (param == 'register') {
-        registerContainer.style.display = 'none';
-        loginContainer.style.display = (loginContainer.style.display === 'none' || loginContainer.style.display === '') ? 'block' : 'none';
-    }
-    else if (param == 'login') {
-        loginContainer.style.display = 'none';
-        headerContainer.style.display = (headerContainer.style.display === 'none' || headerContainer.style.display === '') ? 'block' : 'none';
-    }
-}
-
-/* -------- */
+    burgerMenu.addEventListener('click', function (event) {
+        event.preventDefault();
+        navLinks.classList.toggle('show');
+    });
+});

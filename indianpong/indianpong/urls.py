@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from pong.views import index, auth, profile, signup, login_view, logout_view, update_profile, setup_two_factor_auth, generate_jwt_token, create_tournament, create_tournament_match
+from pong.views import index, auth, chat_room, profile, signup, login_view, logout_view, update_profile, setup_two_factor_auth, generate_jwt_token, create_tournament, create_tournament_match
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -26,6 +26,7 @@ urlpatterns = [
     path('login', login_view, name='login'),
     path('logout', logout_view, name='logout'),
     path('auth', auth, name='auth'),
+    path('chat/', chat_room, name='chat_room'),
     path('update_profile', update_profile, name='update_profile'),
     path('setup_two_factor_auth', setup_two_factor_auth, name='setup_two_factor_auth'),
     path('generate_jwt_token', generate_jwt_token, name='generate_jwt_token'),
