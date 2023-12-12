@@ -10,3 +10,5 @@
 ### [mkucukku](https://github.com/mstfkucukkurt)
 ### [sciftci](https://github.com/temasictfic)
 ### [iyapar](https://github.com/ibrahimypr)
+
+<a href="https://www.flaticon.com/free-icons/indian" title="indian icons">Indian icons created by Eucalyp - Flaticon</a>
