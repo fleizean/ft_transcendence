@@ -1,14 +1,167 @@
 <!-- signup.html -->
 
-{% extends 'layout.html' %}
+{% extends "index.html" %}
 
-{% block content %}
-<div class="container mt-5">
-    <h2>Sign Up</h2>
-    <form method="post" enctype="multipart/form-data" class="mt-3">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="btn btn-primary">Sign Up</button>
-    </form>
-</div>
+{% block title %}SignUp{% endblock %}
+
+{% block app %}
+    <div class="cursor">
+        <div class="container">
+            <div class="RegisterArea" id="RegisterArea">
+                <form class="form" enctype="multipart/form-data" method="post">
+                    <a href="/login" data-link>
+                        <button class="backbtn" type="button">
+                            <svg height="16" width="16" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 1024 1024">
+                                <path d="M874.690416 495.52477c0 11.2973-9.168824 20.466124-20.466124 20.466124l-604.773963 0 188.083679 188.083679c7.992021 7.992021 7.992021 20.947078 0 28.939099-4.001127 3.990894-9.240455 5.996574-14.46955 5.996574-5.239328 0-10.478655-1.995447-14.479783-5.996574l-223.00912-223.00912c-3.837398-3.837398-5.996574-9.046027-5.996574-14.46955 0-5.433756 2.159176-10.632151 5.996574-14.46955l223.019353-223.029586c7.992021-7.992021 20.957311-7.992021 28.949332 0 7.992021 8.002254 7.992021 20.957311 0 28.949332l-188.073446 188.073446 604.753497 0C865.521592 475.058646 874.690416 484.217237 874.690416 495.52477z"></path>
+                            </svg>
+                        </button>
+                    </a>
+                    <div class="title">
+                        Welcome,
+                        <span class="titlebottom">sign up to continue</span>
+                    </div>
+                    <div class="login-with">
+                        <div class="button-log"><b>42</b></div>
+                    </div>
+
+                    {% csrf_token %}
+
+                    <p>
+                        <i>
+                        <label for="id_username">Username:</label>
+                        <input type="text" name="username" maxlength="150" autofocus required aria-describedby="id_username_helptext" id="id_username">
+
+                        <span class="helptext" id="id_username_helptext" data-bs-toggle="tooltip" data-bs-placement="top" title="Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.">
+                            <i class="bi bi-info-circle"></i>
+                        </span>
+                    </p>
+
+                    <p>
+                        <label for="id_display_name">Nickname:</label>
+                        <input type="text" name="display_name" maxlength="50" required id="id_display_name">
+                    </p>
+
+                    <p>
+                        <label for="id_password1">Password:</label>
+                        <input type="password" name="password1" autocomplete="new-password" required aria-describedby="id_password1_helptext" id="id_password1">
+
+                        <span class="helptext" id="id_password1_helptext" data-bs-toggle="tooltip" data-bs-placement="top" title="<ul><li>Your password can’t be too similar to your other personal information.</li><li>Your password must contain at least 8 characters.</li><li>Your password can’t be a commonly used password.</li><li>Your password can’t be entirely numeric.</li></ul>">
+                            <i class="bi bi-info-circle"></i>
+                        </span>
+                    </p>
+
+                    <p>
+                        <label for="id_password2">RePassword:</label>
+                        <input type="password" name="password2" autocomplete="new-password" required aria-describedby="id_password2_helptext" id="id_password2">
+
+                        <span class="helptext" id="id_password2_helptext" data-bs-toggle="tooltip" data-bs-placement="top" title="Enter the same password as before, for verification.">
+                            <i class="bi bi-info-circle"></i>
+                        </span>
+                    </p>
+
+                    <p>
+                        <label for="id_avatar">Avatar:</label>
+                        <input type="file" name="avatar" accept="image/*" id="id_avatar">
+                    </p>
+
+                    <button class="button-confirm">Let's shine!</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        // Initialize Bootstrap tooltips
+        var tooltips = new bootstrap.Tooltip(document.body, {
+            selector: '[data-bs-toggle="tooltip"]'
+        });
+    </script>
+    {% endblock %}
+
+
+
+
+
+
+{% comment %} {% extends "index.html" %}
+
+{% block title %}SignUp{% endblock %}
+
+{% block app %}
+    <div class="cursor">
+        <div class="container">
+            <div class="RegisterArea" id="RegisterArea">
+                <form class="form" enctype="multipart/form-data" method="post">
+                    <a href="/login" data-link>
+                        <button class="backbtn" type="button">
+                            <svg height="16" width="16" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 1024 1024">
+                                <path d="M874.690416 495.52477c0 11.2973-9.168824 20.466124-20.466124 20.466124l-604.773963 0 188.083679 188.083679c7.992021 7.992021 7.992021 20.947078 0 28.939099-4.001127 3.990894-9.240455 5.996574-14.46955 5.996574-5.239328 0-10.478655-1.995447-14.479783-5.996574l-223.00912-223.00912c-3.837398-3.837398-5.996574-9.046027-5.996574-14.46955 0-5.433756 2.159176-10.632151 5.996574-14.46955l223.019353-223.029586c7.992021-7.992021 20.957311-7.992021 28.949332 0 7.992021 8.002254 7.992021 20.957311 0 28.949332l-188.073446 188.073446 604.753497 0C865.521592 475.058646 874.690416 484.217237 874.690416 495.52477z"></path>
+                            </svg>
+                        </button>
+                    </a>
+                    <div class="title">
+                        Welcome,
+                        <span class="titlebottom">sign up to continue</span>
+                    </div>
+                    <div class="login-with">
+                        <div class="button-log"><b>42</b></div>
+                    </div>
+
+                    {% csrf_token %}
+                    
+                    <p>
+                        <label for="id_username">Username:</label>
+                        <input type="text" name="username" maxlength="150" autofocus required aria-describedby="id_username_helptext" id="id_username">
+                        
+                          <span class="helptext" id="id_username_helptext">Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.</span>
+                        
+                        
+                      </p>
+                    
+                      
+                      <p>
+                        <label for="id_display_name">Display name:</label>
+                        <input type="text" name="display_name" maxlength="50" required id="id_display_name">
+                        
+                        
+                      </p>
+                    
+                      
+                      <p>
+                        <label for="id_password1">Password:</label>
+                        <input type="password" name="password1" autocomplete="new-password" required aria-describedby="id_password1_helptext" id="id_password1">
+                        
+                          <span class="helptext" id="id_password1_helptext"><ul><li>Your password can’t be too similar to your other personal information.</li><li>Your password must contain at least 8 characters.</li><li>Your password can’t be a commonly used password.</li><li>Your password can’t be entirely numeric.</li></ul></span>
+                        
+                        
+                      </p>
+                    
+                      
+                      <p>
+                        <label for="id_password2">Password confirmation:</label>
+                        <input type="password" name="password2" autocomplete="new-password" required aria-describedby="id_password2_helptext" id="id_password2">
+                        
+                          <span class="helptext" id="id_password2_helptext">Enter the same password as before, for verification.</span>
+                        
+                        
+                      </p>
+                    
+                      
+                      <p>
+                        <label for="id_avatar">Avatar:</label>
+                        <input type="file" name="avatar" accept="image/*" id="id_avatar">
+                        
+                        
+                          
+                        
+                      </p>
+                    
+                    <button class="button-confirm">Let's shine!</button>
+
+                </form>
+            </div>
+        </div>
+    </div>
 {% endblock %}
+ {% endcomment %}
