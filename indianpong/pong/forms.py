@@ -7,7 +7,7 @@ from .models import BlockedUser, ChatMessage, GameInvitation, UserProfile, TwoFa
 class UserProfileForm(UserCreationForm):
     class Meta:
         model = UserProfile
-        fields = ['username', 'display_name', 'password1', 'password2', 'avatar']
+        fields = ['username', 'first_name', 'last_name', 'email', 'password1', 'password2', 'avatar']
 
 class ChatMessageForm(forms.ModelForm):
     class Meta:
@@ -38,7 +38,7 @@ class UpdateProfileForm(forms.ModelForm):
     #avatar = forms.ImageField()
     class Meta:
         model = UserProfile
-        fields = ['display_name', 'avatar']
+        fields = ['username', 'first_name', 'last_name', 'email', 'avatar']
 
 class TwoFactorAuthSetupForm(forms.ModelForm):
     class Meta:

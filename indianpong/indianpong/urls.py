@@ -15,18 +15,23 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
-from pong.views import index, auth, chat_room, profile, signup, login_view, logout_view, update_profile, setup_two_factor_auth, generate_jwt_token, create_tournament, create_tournament_match
+from django.urls import path
+from pong.views import chat, rankings, dashboard, game, index, auth, chat_room, profile_view, search, signup, login_view, logout_view, update_profile, setup_two_factor_auth, generate_jwt_token, create_tournament, create_tournament_match
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', index, name='index'),
-    #path('index/', profile, name='index'),
     path('signup', signup, name='signup'),
     path('login', login_view, name='login'),
-    path('logout', logout_view, name='logout'),
     path('auth', auth, name='auth'),
-    path('chat/', chat_room, name='chat_room'),
+    path('logout', logout_view, name='logout'),
+    path('chat', chat, name='chat'),
+    path('chat_room', chat_room, name='chat_room'),
+    path('dashboard', dashboard, name='dashboard'),
+    path('rankings', rankings, name='rankings'),
+    path('search', search, name='search'),
+    path('game', game, name='game'),
+    path('profile/<str:username>', profile_view, name='profile'),
     path('update_profile', update_profile, name='update_profile'),
     path('setup_two_factor_auth', setup_two_factor_auth, name='setup_two_factor_auth'),
     path('generate_jwt_token', generate_jwt_token, name='generate_jwt_token'),

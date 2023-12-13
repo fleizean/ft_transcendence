@@ -3,14 +3,13 @@ from django.contrib.auth.models import AbstractUser
 from django.core.validators import MinValueValidator, MaxValueValidator
 
 class UserProfile(AbstractUser):
-    display_name = models.CharField(max_length=50, unique=True)
     avatar = models.ImageField(upload_to='avatars/', null=True, blank=True)
     friends = models.ManyToManyField('self', symmetrical=False)
     wins = models.IntegerField(default=0)
     losses = models.IntegerField(default=0)
 
     def __str__(self) -> str:
-        return f"{self.display_name}"
+        return f"{self.username}"
     
 class ChatMessage(models.Model):
     sender = models.ForeignKey(UserProfile, related_name='sent_messages', on_delete=models.CASCADE)
