@@ -1820,3 +1820,7 @@ td {
       font-size: 45%;
     }
 }
+
+.error-message {
+  color: red;
+}

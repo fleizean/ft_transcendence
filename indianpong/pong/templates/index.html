@@ -8,8 +8,10 @@
     <title>{% block title %}Indian-Pong{% endblock  %}</title>
     <link rel="stylesheet" href="{% static "css/style.css" %}">
     <link rel="icon" type="image/png" href="{% static 'assets/favicon.ico' %}">
-    <link href="{% static "css/bootstrap.min.css" %}" rel="stylesheet">
-    <link href="{% static "css/bootstrap-icons.css" %}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
+    {% comment %} <link href="{% static "css/bootstrap.min.css" %}" rel="stylesheet"> {% endcomment %}
+    {% comment %} <link href="{% static "css/fonts/bootstrap-icons.css" %}" rel="stylesheet"> {% endcomment %}
 
 </head>
 
@@ -33,8 +35,9 @@
             </div>
         </div>
     </div>
-    <script src="{% static "js/bootstrap.min.js" %}"></script>
-    <script src="{% static "js/script.js" %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"></script>
+    {% comment %} <script src="{% static "js/bootstrap.min.js" %}"></script> {% endcomment %}
+    <script src="{% static "js/snowfall.js" %}"></script>
 
     
 </body>
