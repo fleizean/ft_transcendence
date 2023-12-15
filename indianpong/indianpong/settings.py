@@ -77,7 +77,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'indianpong.wsgi.application'
-ASGI_APPLICATION = 'indianpong.routing.application'
+ASGI_APPLICATION = 'indianpong.asgi.application'
 
 
 # Database
