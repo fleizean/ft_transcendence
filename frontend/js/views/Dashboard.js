@@ -15,16 +15,24 @@ export default class extends AbstractView {
             IndianPong
           </div></a>
       </div>
-        <ul class="nav-links">
-          <li><a href="/dashboard" data-link><i class="bi bi-house-door-fill"></i>Dashboard</a></li>
-          <li><a href="/game" data-link><i class="bi bi-play-circle-fill"></i>Game</a></li>
-          <li><a href="/chat" data-link><i class="bi bi-chat-fill"></i>Chat</a></li>
-          <li><a href="/rankings" data-link><i class="bi bi-bar-chart-fill"></i>Rankings</a></li>
-          <li><a href="/search" data-link><i class="bi bi-binoculars-fill"></i>Search</a></li>
-          <li><a href="/profile" data-link><i class="bi bi-person-fill"></i>Profile</a></li>
-        </ul>
-        <div class="burger-menu">&#9776;</div>
-      </nav>
+      <ul class="nav-links">
+      <li><a href="/dashboard" data-link><i class="bi bi-house-door-fill"></i>Dashboard</a></li>
+      <li><a href="/game" data-link><i class="bi bi-play-circle-fill"></i>Game</a></li>
+      <li><a href="/chat" data-link><i class="bi bi-chat-fill"></i>Chat</a></li>
+      <li><a href="/rankings" data-link><i class="bi bi-bar-chart-fill"></i>Rankings</a></li>
+      <li><a href="/search" data-link><i class="bi bi-binoculars-fill"></i>Search</a></li>
+      <li class="profile-menu">
+        <div class="profile-image">
+          <img src="../../assets/profile/profilephoto.jpeg" alt="Profile Image" width="48" height="48">
+        </div>
+        <div class="profile-submenu">
+          <a href="/profile" data-link><i class="bi bi-person-fill"></i>Profile</a>
+          <a href="/logout" data-link><i class="bi bi-box-arrow-right"></i>Logout</a>
+        </div>
+      </li>
+    </ul>
+    <div class="burger-menu">&#9776;</div>
+  </nav>
 
       <div class="container-top">
         <div class="card">
@@ -68,6 +76,49 @@ export default class extends AbstractView {
                       <h6 class="m-b-20">Lose Streak</h6>
                       <h2 class="text-right"><i class="bi bi-emoji-frown-fill"></i><span>486</span></h2>
                       <p class="m-b-0">Achievement Reach<span class="f-right">500</span></p>
+                  </div>
+              </div>
+          </div>
+
+          <div class="col-md-4 col-xl-3">
+              <div class="card-stat bg-c-gold order-card">
+                  <div class="card-block">
+                      <h6 class="m-b-20">Win Rate %</h6>
+                      <h2 class="text-right"><i class="bi bi-award-fill"></i><span>50</span></h2>
+                      <p class="m-b-0">Achievement Reach<span class="f-right">70</span></p>
+                  </div>
+              </div>
+          </div>
+
+          <div class="col-md-4 col-xl-3">
+              <div class="card-stat bg-c-navy order-card">
+                  <div class="card-block">
+                      <h6 class="m-b-20">Average Game Duration</h6>
+                      <h2 class="text-right">
+                        <i class="bi bi-clock-fill"></i>
+                        <span class="big">30</span> <span class="small">min</span>
+                        </h2>
+                    <p class="m-b-0">Achievement Reach<span class="f-right">15 and 30</span></p>
+                  </div>
+              </div>
+          </div>
+
+          <div class="col-md-4 col-xl-3">
+              <div class="card-stat bg-c-light-green order-card">
+                  <div class="card-block">
+                      <h6 class="m-b-20">Average Points Won</h6>
+                      <h2 class="text-right"><i class="bi bi-star-fill"></i><span>30</span></h2>
+                      <p class="m-b-0">Achievement Reach<span class="f-right">50</span></p>
+                  </div>
+              </div>
+          </div>
+
+          <div class="col-md-4 col-xl-3">
+              <div class="card-stat bg-c-purple order-card">
+                  <div class="card-block">
+                      <h6 class="m-b-20">Average Points Lost</h6>
+                      <h2 class="text-right"><i class="bi bi-bucket-fill"></i><span>20</span></h2>
+                      <p class="m-b-0">Achievement Reach<span class="f-right">50</span></p>
                   </div>
               </div>
           </div>

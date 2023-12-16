@@ -35,6 +35,12 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 });
 
+jQuery(document).ready(function ($) {
+    $(".navbar-toggler").on("click", function () {
+      $("#navbarNav").toggleClass("show");
+    });
+  });
+
 jQuery(document).ready(function () {
     $(".burger-menu").click(function () {
         $(".nav-links").toggleClass('show');
