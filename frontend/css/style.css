@@ -532,7 +532,7 @@ img {
 .profile-submenu a {
   color: white;
   text-decoration: none;
-  display: block;
+  display: flex;
   padding: 5px;
 }
 
@@ -1223,6 +1223,18 @@ td {
 
 /* Edit Profile Form styles */
 
+#changePassword {
+  display: none; /* Hide sections by default */
+}
+
+#addSocial {
+  display: none; /* Hide sections by default */
+}
+
+#closeAccount {
+  display: none; /* Hide sections by default */
+}
+
 .navbar-nav .nav-item .nav-link:hover {
   background-color: #5c5be5;
   box-shadow: 0px 15px 11px -6px #7a7a7d;
@@ -1234,7 +1246,8 @@ td {
   border-radius: 5px;
 }
 
-.pro {
+
+.pro-profile {
 	color: #fff;
 	background: url('../../assets/backgrounds/leader-bg.png');
 	border-radius: 3px;
@@ -1247,10 +1260,6 @@ td {
 
 #editProfileForm .form-group {
   margin-bottom: 15px;
-}
-
-#changePassword {
-  display: none; /* Hide sections by default */
 }
 
 .profile-pic-container {

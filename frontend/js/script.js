@@ -35,6 +35,25 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 });
 
+function getFutureDate() {
+    // Şu anki tarihi al
+    var currentDate = new Date();
+
+    // 10 gün ekleyerek gelecek tarihi al
+    var futureDate = new Date();
+    futureDate.setDate(currentDate.getDate() + 10);
+
+    // Tarih formatını ayarla (gün/ay/yıl)
+    var day = futureDate.getDate();
+    var month = futureDate.getMonth() + 1; // Ay 0'dan başlar, bu yüzden 1 ekleyin
+    var year = futureDate.getFullYear();
+
+    // Formatı oluştur
+    var formattedDate = day + '/' + month + '/' + year;
+
+    return formattedDate;
+}
+
 function displaySection(sectionId) {
     var sections = ["editProfile", "addSocial", "closeAccount", "changePassword"];
 

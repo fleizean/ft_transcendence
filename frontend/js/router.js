@@ -9,6 +9,7 @@ import Rankings from "./views/Rankings.js";
 import Profile from "./views/Profile.js";
 import MatchHistory from "./views/MatchHistory.js";
 import ProfileSettings from "./views/ProfileSettings.js";
+import ProfileStats from "./views/ProfileStats.js";
 
 const pathToRegex = path => new RegExp("^" + path.replace(/\//g, "\\/").replace(/:\w+/g, "(.+)") + "$");
 
@@ -38,7 +39,8 @@ const router = async () => {
         { path: '/rankings', view: Rankings},
         { path: '/profile', view: Profile},
         { path: '/profile-settings', view: ProfileSettings},
-        { path: '/match-history', view: MatchHistory}
+        { path: '/match-history', view: MatchHistory},
+        { path: '/profile-stats', view: ProfileStats}
     ];
 
     // Test each route for potential match

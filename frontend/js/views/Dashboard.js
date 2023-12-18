@@ -27,6 +27,7 @@ export default class extends AbstractView {
         </div>
         <div class="profile-submenu">
           <a href="/profile" data-link><i class="bi bi-person-fill"></i>Profile</a>
+          <a href="/profile-settings" data-link><i class="bi bi-gear-fill"></i>Settings</a> 
           <a href="/logout" data-link><i class="bi bi-box-arrow-right"></i>Logout</a>
         </div>
       </li>

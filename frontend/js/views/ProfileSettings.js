@@ -27,6 +27,7 @@ export default class extends AbstractView {
             </div>
             <div class="profile-submenu">
               <a href="/profile" data-link><i class="bi bi-person-fill"></i>Profile</a>
+              <a href="/profile-settings" data-link><i class="bi bi-gear-fill"></i>Settings</a> 
               <a href="/logout" data-link><i class="bi bi-box-arrow-right"></i>Logout</a>
             </div>
           </li>
@@ -35,33 +36,8 @@ export default class extends AbstractView {
       </nav>
 
     <div class="container-top">
-      <!-- "Edit Profile" ve "Match History" Navbar -->
-      <div class="row mt-4" style="margin-bottom:5px">
-          <div class="col">
-              <nav class="navbar navbar-expand-lg navbar-light bg-light rounded">
-                  <!-- Navbar Marka -->
-                  <!-- Navbar Toggle Butonu -->
-                  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-                      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                      <span class="navbar-toggler-icon"></span>
-                  </button>
-                  <!-- Navbar Menü -->
-                  <div class="collapse navbar-collapse" id="navbarNav">
-                      <ul class="navbar-nav ml-auto">
-                          <!-- "Edit Profile" Linki -->
-                          <li class="nav-item">
-                              <a class="nav-link" href="/profile"><i class="bi bi-person"></i> Profile</a>
-                          </li>
-                          <!-- "Match History" Linki -->
-                          <li class="nav-item">
-                              <a class="nav-link" href="/match-history"><i class="bi bi-easel-fill"></i> Match History</a>
-                          </li>
-                      </ul>
-                  </div>
-              </nav>
-          </div>
-      </div>
-  </div>
+
+ 
     <div class="card">
       <div class="row">
       <!-- Left Sidebar -->
@@ -80,10 +56,10 @@ export default class extends AbstractView {
                           <a class="nav-link" href="javascript:void(0);" onclick="displaySection('changePassword')"><i class="bi bi-lock-fill"></i> Change Password</a>
                       </li>
                       <li class="nav-item">
-                          <a class="nav-link" href="javascript:void(0);" onclick="showAddSocialSection()"><i class="bi bi-bookmark-fill"></i> Add Socials</a>
+                          <a class="nav-link" href="javascript:void(0);" onclick="displaySection('addSocial')"><i class="bi bi-bookmark-fill"></i> Add Socials</a>
                       </li>
                       <li class="nav-item">
-                          <a class="nav-link" href="javascript:void(0);" onclick="showCloseAccountSection()"><i class="bi bi-door-closed-fill"></i> Close Account</a>
+                          <a class="nav-link" href="javascript:void(0);" onclick="displaySection('closeAccount')"><i class="bi bi-door-closed-fill"></i> Close Account</a>
                       </li>
                   </ul>
               </div>
@@ -112,13 +88,13 @@ export default class extends AbstractView {
                 <!-- Username textbox -->
                 <div class="mb-3">
                     <label class="small mb-1" for="inputUsername">Username (how your name will appear to other users on the site)</label>
-                    <input class="form-control" id="inputUsername" type="text" value="eyagiz">
+                    <input class="form-control" id="inputUsername" type="text" value="eyagiz" placeholder="Enter your username">
                 </div>
 
                 <!-- Email textbox -->
                 <div class="mb-3">
                     <label class="small mb-1" for="inputEmail">Email</label>
-                    <input class="form-control" id="inputEmail" type="text" value="nsyagz@gmail.com" type="email">
+                    <input class="form-control" id="inputEmail" type="text" value="nsyagz@gmail.com" placeholder="Enter your Email address" type="email">
                 </div>
 
                 <!-- Firstname textbox -->
@@ -126,12 +102,12 @@ export default class extends AbstractView {
                     <!-- Form Group (first name)-->
                     <div class="col-md-6">
                         <label class="small mb-1" for="inputFirstName">First name</label>
-                        <input class="form-control" id="inputFirstName" type="text" value="Fatih">
+                        <input class="form-control" id="inputFirstName" type="text" placeholder="Enter your Name" value="Fatih">
                     </div>
                     <!-- Form Group (last name)-->
                     <div class="col-md-6">
                         <label class="small mb-1" for="inputLastName">Last name</label>
-                        <input class="form-control" id="inputLastName" type="text" value="Terim">
+                        <input class="form-control" id="inputLastName" type="text" placeholder="Enter your Last Name" value="Terim">
                     </div>
                 </div>
                 <!-- Email address textbox -->
@@ -139,12 +115,12 @@ export default class extends AbstractView {
                     <!-- Form Group (phone number)-->
                     <div class="col-md-6">
                         <label class="small mb-1" for="inputPhone">Phone number</label>
-                        <input class="form-control" id="inputPhone" type="tel" value="(545) 411 9245">
+                        <input class="form-control" id="inputPhone" type="tel" placeholder="Enter your Phone number" value="(545) 411 9245">
                     </div>
                     <!-- Form Group (birthday)-->
                     <div class="col-md-6">
                         <label class="small mb-1" for="inputBirthday">Birthday</label>
-                        <input class="form-control" id="inputBirthday" type="text" name="birthday" value="27/07/2002">
+                        <input class="form-control" id="inputBirthday" type="date" name="birthday" value="2002-07-27">
                     </div>
                 </div>
                 <!-- Submit button -->
@@ -192,18 +168,85 @@ export default class extends AbstractView {
         </section>
 
         <section id="addSocial">
-            <!-- Your code for add socials goes here -->
+            <form id="addSocialForm">
+                <div class="mb-3 position-relative">
+                    <label class="small mb-1" for="socialStackoverflow">
+                        <i class="bi bi-stack-overflow fs-4"></i> Stackoverflow
+                    </label>
+                    <div class="input-group">
+                        <input class="form-control" id="socialStackoverflow" type="text" placeholder="Enter your Stackoverflow username">
+                    </div>
+                </div>
+
+                <div class="mb-3 position-relative">
+                    <label class="small mb-1" for="socialTwitter">
+                        <i class="bi bi-twitter-x fs-4"></i> Twitter
+                    </label>
+                    <div class="input-group">
+                        <input class="form-control" id="socialTwitter" type="text" placeholder="Enter your Twitter username">
+                    </div>
+                </div>
+
+                <div class="mb-3 position-relative">
+                    <label class="small mb-1" for="socialInstagram">
+                        <i class="bi bi-instagram fs-4"></i> Instagram
+                    </label>
+                    <div class="input-group">
+                        <input class="form-control" id="socialInstagram" type="text" placeholder="Enter your Instagram username">
+                    </div>
+                </div>
+
+                <div class="mb-3 position-relative">
+                    <label class="small mb-1" for="socialGithub">
+                        <i class="bi bi-github fs-4"></i> Github
+                    </label>
+                    <div class="input-group">
+                        <input class="form-control" id="socialGithub" type="text" placeholder="Enter your Github username">
+                    </div>
+                </div>
+
+                <div class="mb-3 position-relative">
+                    <label class="small mb-1" for="socialLinkedin">
+                        <i class="bi bi-linkedin fs-4"></i> Linkedin
+                    </label>
+                    <div class="input-group">
+                        <input class="form-control" id="socialLinkedin" type="text" placeholder="Enter your Linkedin username">
+                    </div>
+                </div>
+
+
+                <!-- Diğer sosyal medya platformları için benzer şekilde devam edebilirsiniz -->
+
+                <button type="submit" class="btn btn-primary"><i class="bi bi-save-fill"></i> Save Changes</button>
+            </form>
         </section>
 
         <section id="closeAccount">
-            <!-- Your code for close account goes here -->
+            <form id="closeAccountForm">
+                <div class="mb-3 position-relative">
+                    <label class="small mb-1" for="passwordToDeleteAccount">
+                        Enter your password to delete your account:
+                    </label>
+                    <div class="input-group">
+                        <input class="form-control" id="passwordToDeleteAccount" type="password" required>
+                        <button class="btn btn-outline-danger" type="button" onclick="togglePasswordVisibility('passwordToDeleteAccount')">
+                            <i class="bi bi-eye"></i>
+                        </button>
+                    </div>
+                    </div>
+                <p>
+                Hello, we're sorry to see you leave the IndianPong community, but we respect your decision. After clicking 
+                the 'Delete Account' button, you will be separated from us, so please think carefully, as there will be no turning back. Anyway, see you around!
+                </p>
+                <button type="button" class="btn btn-danger" onclick="deleteAccount()">
+                    <i class="bi bi-trash-fill"></i> Delete Account
+                </button>
+            </form>
         </section>
                 </div>
             </div>
         </div>
-
-
-
+        </div>
         `;
     }
 }

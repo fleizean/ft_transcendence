@@ -27,6 +27,7 @@ export default class extends AbstractView {
             </div>
             <div class="profile-submenu">
               <a href="/profile" data-link><i class="bi bi-person-fill"></i>Profile</a>
+              <a href="/profile-settings" data-link><i class="bi bi-gear-fill"></i>Settings</a> 
               <a href="/logout" data-link><i class="bi bi-box-arrow-right"></i>Logout</a>
             </div>
           </li>
@@ -53,8 +54,8 @@ export default class extends AbstractView {
                               <a class="nav-link" href="/match-history"><i class="bi bi-easel-fill"></i> Match History</a>
                           </li>
                           <li class="nav-item">
-                              <a class="nav-link" href="/profile-settings"><i class="bi bi-gear-fill""></i> Profile Settings</a>
-                          </li>
+                            <a class="nav-link" href="/friends"><i class="bi bi-people-fill"></i> Friends</a>
+                        </li>
                       </ul>
                   </div>
               </nav>
@@ -69,7 +70,7 @@ export default class extends AbstractView {
                 <!-- Profil Kartı -->
                 <div class="card mb-4">
                     <!-- Profil Kartı İçeriği -->
-                    <span class="pro"><i class="bi bi-award-fill"></i> 1ST IN RANKINGS</span>
+                    <span class="pro-profile"><i class="bi bi-award-fill"></i> 1ST IN RANKINGS</span>
                     <div class="card-body text-center">
                         <!-- Avatar -->
                         <img src="../../assets/profile/profilephoto.jpeg"
@@ -85,8 +86,9 @@ export default class extends AbstractView {
                         <div class="d-flex justify-content-center mb-2">
                             <button type="button" class="btn btn-danger"><i class="bi bi-heart-fill"></i> Follow</button>
                             <button type="button" class="btn btn-dark" style="display:none"><i class="bi bi-x-circle-fill"></i> Unfollow</button>
-                            <button type="button" class="btn btn-outline-info ms-1"><i
-                                    class="bi bi-bar-chart-fill"></i> Stats </button>
+                            <a href="/profile-stats" class="btn btn-outline-info ms-1">
+                                <i class="bi bi-bar-chart-fill"></i> Stats
+                            </a>
                         </div>
                     </div>
                 </div>
