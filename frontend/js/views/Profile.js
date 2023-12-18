@@ -47,14 +47,13 @@ export default class extends AbstractView {
                   </button>
                   <!-- Navbar Menü -->
                   <div class="collapse navbar-collapse" id="navbarNav">
-                      <ul class="navbar-nav ml-auto">
-                          <!-- "Edit Profile" Linki -->
-                          <li class="nav-item">
-                              <a class="nav-link" href="/edit-profile"><i class="bi bi-pencil-square"></i> Edit Profile</a>
-                          </li>
+                      <ul class="navbar-nav ml-auto">                          
                           <!-- "Match History" Linki -->
                           <li class="nav-item">
                               <a class="nav-link" href="/match-history"><i class="bi bi-easel-fill"></i> Match History</a>
+                          </li>
+                          <li class="nav-item">
+                              <a class="nav-link" href="/profile-settings"><i class="bi bi-gear-fill""></i> Profile Settings</a>
                           </li>
                       </ul>
                   </div>
@@ -70,11 +69,13 @@ export default class extends AbstractView {
                 <!-- Profil Kartı -->
                 <div class="card mb-4">
                     <!-- Profil Kartı İçeriği -->
+                    <span class="pro"><i class="bi bi-award-fill"></i> 1ST IN RANKINGS</span>
                     <div class="card-body text-center">
                         <!-- Avatar -->
                         <img src="../../assets/profile/profilephoto.jpeg"
                             alt="avatar" class="rounded-circle img-fluid" style="width: 150px;">
                         <!-- İsim -->
+                        
                         <h5 class="my-3">Fatih Terim</h5>
                         <!-- Meslek -->
                         <p class="text-muted mb-1">Full Stack Developer</p>
@@ -83,6 +84,7 @@ export default class extends AbstractView {
                         <!-- Takip ve İstatistik Butonları -->
                         <div class="d-flex justify-content-center mb-2">
                             <button type="button" class="btn btn-danger"><i class="bi bi-heart-fill"></i> Follow</button>
+                            <button type="button" class="btn btn-dark" style="display:none"><i class="bi bi-x-circle-fill"></i> Unfollow</button>
                             <button type="button" class="btn btn-outline-info ms-1"><i
                                     class="bi bi-bar-chart-fill"></i> Stats </button>
                         </div>

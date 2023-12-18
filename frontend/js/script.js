@@ -35,6 +35,34 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 });
 
+function displaySection(sectionId) {
+    var sections = ["editProfile", "addSocial", "closeAccount", "changePassword"];
+
+    for (var i = 0; i < sections.length; i++) {
+        var section = document.getElementById(sections[i]);
+        if (sections[i] === sectionId) {
+            section.style.display = 'block';
+        } else {
+            section.style.display = 'none';
+        }
+    }
+}
+
+function togglePasswordVisibility(inputId) {
+    var passwordInput = document.getElementById(inputId);
+    var buttonIcon = document.querySelector('#' + inputId + '+ .input-group button i');
+
+    if (passwordInput.type === "password") {
+        passwordInput.type = "text";
+        buttonIcon.classList.remove("bi-eye");
+        buttonIcon.classList.add("bi-eye-slash");
+    } else {
+        passwordInput.type = "password";
+        buttonIcon.classList.remove("bi-eye-slash");
+        buttonIcon.classList.add("bi-eye");
+    }
+}
+
 jQuery(document).ready(function ($) {
     $(".navbar-toggler").on("click", function () {
       $("#navbarNav").toggleClass("show");

@@ -51,9 +51,9 @@ export default class extends AbstractView {
                           <li class="nav-item">
                               <a class="nav-link" href="/profile"><i class="bi bi-person"></i> Profile</a>
                           </li>
-                          <!-- "Edit Profile" Linki -->
+                          <!-- "Profile Settings" Linki -->
                           <li class="nav-item">
-                              <a class="nav-link" href="/edit-profile"><i class="bi bi-pencil-square"></i> Edit Profile</a>
+                              <a class="nav-link" href="/profile-settings"><i class="bi bi-gear-fill""></i> Profile Settings</a>
                           </li>
                       </ul>
                   </div>
