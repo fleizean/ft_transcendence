@@ -2,7 +2,6 @@ import Home from "./views/Home.js";
 import Login from "./views/Login.js";
 import Dashboard from "./views/Dashboard.js"
 import Register from "./views/Register.js"
-import Chat from "./views/Chat.js"
 import Game from "./views/Game.js"
 import Search from "./views/Search.js";
 import Rankings from "./views/Rankings.js";
@@ -10,6 +9,8 @@ import Profile from "./views/Profile.js";
 import MatchHistory from "./views/MatchHistory.js";
 import ProfileSettings from "./views/ProfileSettings.js";
 import ProfileStats from "./views/ProfileStats.js";
+import GameStats from "./views/GameStats.js";
+import Error404 from "./views/Error404.js";
 
 const pathToRegex = path => new RegExp("^" + path.replace(/\//g, "\\/").replace(/:\w+/g, "(.+)") + "$");
 
@@ -33,14 +34,16 @@ const router = async () => {
         { path: "/login", view: Login },
         { path: "/register", view: Register},
         { path: '/dashboard', view: Dashboard },
-        { path: '/chat', view: Chat},
+        { path: '/game-stats', view: GameStats},
         { path: '/game', view: Game},
         { path: '/search', view: Search},
         { path: '/rankings', view: Rankings},
         { path: '/profile', view: Profile},
         { path: '/profile-settings', view: ProfileSettings},
         { path: '/match-history', view: MatchHistory},
-        { path: '/profile-stats', view: ProfileStats}
+        { path: '/profile-stats', view: ProfileStats},
+        { path: '/404', view: Error404},
+        { path: '(.*)', view: Error404 },
     ];
 
     // Test each route for potential match
@@ -55,7 +58,7 @@ const router = async () => {
 
     if (!match) {
         match = {
-            route: routes[0],
+            route: routes.find(route => route.path === '/404'), // Eğer hiçbir yol eşleşmezse 404 sayfasına yönlendir
             result: [location.pathname]
         };
     }

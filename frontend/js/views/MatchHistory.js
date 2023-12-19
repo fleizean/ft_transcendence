@@ -18,7 +18,7 @@ export default class extends AbstractView {
         <ul class="nav-links">
           <li><a href="/dashboard" data-link><i class="bi bi-house-door-fill"></i>Dashboard</a></li>
           <li><a href="/game" data-link><i class="bi bi-play-circle-fill"></i>Game</a></li>
-          <li><a href="/chat" data-link><i class="bi bi-chat-fill"></i>Chat</a></li>
+          <li><a href="/game-stats" data-link><i class="bi bi-pie-chart-fill"></i>Game Stats</a></li>
           <li><a href="/rankings" data-link><i class="bi bi-bar-chart-fill"></i>Rankings</a></li>
           <li><a href="/search" data-link><i class="bi bi-binoculars-fill"></i>Search</a></li>
           <li class="profile-menu">
@@ -54,6 +54,9 @@ export default class extends AbstractView {
                           </li>
                           <li class="nav-item">
                               <a class="nav-link" href="/friends"><i class="bi bi-people-fill"></i> Friends</a>
+                          </li>
+                          <li class="nav-item">
+                            <a class="nav-link" href="/achievements"><i class="bi bi-magic"></i> Achievements</a>
                           </li>
                       </ul>
                   </div>

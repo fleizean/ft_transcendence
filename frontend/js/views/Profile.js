@@ -18,7 +18,7 @@ export default class extends AbstractView {
         <ul class="nav-links">
           <li><a href="/dashboard" data-link><i class="bi bi-house-door-fill"></i>Dashboard</a></li>
           <li><a href="/game" data-link><i class="bi bi-play-circle-fill"></i>Game</a></li>
-          <li><a href="/chat" data-link><i class="bi bi-chat-fill"></i>Chat</a></li>
+          <li><a href="/game-stats" data-link><i class="bi bi-pie-chart-fill"></i>Game Stats</a></li>
           <li><a href="/rankings" data-link><i class="bi bi-bar-chart-fill"></i>Rankings</a></li>
           <li><a href="/search" data-link><i class="bi bi-binoculars-fill"></i>Search</a></li>
           <li class="profile-menu">
@@ -55,7 +55,10 @@ export default class extends AbstractView {
                           </li>
                           <li class="nav-item">
                             <a class="nav-link" href="/friends"><i class="bi bi-people-fill"></i> Friends</a>
-                        </li>
+                          </li>
+                          <li class="nav-item">
+                            <a class="nav-link" href="/achievements"><i class="bi bi-magic"></i> Achievements</a>
+                          </li>
                       </ul>
                   </div>
               </nav>
@@ -85,7 +88,7 @@ export default class extends AbstractView {
                         <!-- Takip ve İstatistik Butonları -->
                         <div class="d-flex justify-content-center mb-2">
                             <button type="button" class="btn btn-danger"><i class="bi bi-heart-fill"></i> Follow</button>
-                            <button type="button" class="btn btn-dark" style="display:none"><i class="bi bi-x-circle-fill"></i> Unfollow</button>
+                            <button type="button" class="btn btn-dark" style="display:none"><i class="bi bi-heartbreak-fill"></i> Unfollow</button>
                             <a href="/profile-stats" class="btn btn-outline-info ms-1">
                                 <i class="bi bi-bar-chart-fill"></i> Stats
                             </a>
@@ -99,22 +102,22 @@ export default class extends AbstractView {
                             <!-- Website -->
                             <li class="list-group-item d-flex justify-content-between align-items-center p-3">
                                 <i class="bi bi-globe"></i>
-                                <p class="mb-0">https://mdbootstrap.com</p>
+                                <p class="mb-0">www.indianpong.com</p>
                             </li>
                             <!-- GitHub -->
                             <li class="list-group-item d-flex justify-content-between align-items-center p-3">
                                 <i class="bi bi-github" style="color: #333333;"></i>
-                                <p class="mb-0">mdbootstrap</p>
+                                <p class="mb-0">fleizean</p>
                             </li>
                             <!-- Twitter -->
                             <li class="list-group-item d-flex justify-content-between align-items-center p-3">
                                 <i class="bi bi-twitter" style="color: #55acee;"></i>
-                                <p class="mb-0">@mdbootstrap</p>
+                                <p class="mb-0">@test</p>
                             </li>
                             <!-- Instagram -->
                             <li class="list-group-item d-flex justify-content-between align-items-center p-3">
                                 <i class="bi bi-instagram" style="color: #ac2bac;"></i>
-                                <p class="mb-0">mdbootstrap</p>
+                                <p class="mb-0">fleizean</p>
                             </li>
                         </ul>
                     </div>
@@ -183,37 +186,10 @@ export default class extends AbstractView {
                         <div class="card mb-4 mb-md-0">
                             <div class="card-body">
                                 <!-- Proje Durumu Başlığı -->
-                                <p class="mb-4"><span class="text-primary font-italic me-1">last 5</span> Followers
-                                </p>
-                                <!-- Web Tasarım Projesi -->
-                                <p class="mb-1" style="font-size: .77rem;">Web Design</p>
-                                <div class="progress rounded" style="height: 5px;">
-                                    <div class="progress-bar" role="progressbar" style="width: 80%" aria-valuenow="80"
-                                        aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-                                <!-- Website Markup Projesi -->
-                                <p class="mt-4 mb-1" style="font-size: .77rem;">Website Markup</p>
-                                <div class="progress rounded" style="height: 5px;">
-                                    <div class="progress-bar" role="progressbar" style="width: 72%" aria-valuenow="72"
-                                        aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-                                <!-- One Page Projesi -->
-                                <p class="mt-4 mb-1" style="font-size: .77rem;">One Page</p>
-                                <div class="progress rounded" style="height: 5px;">
-                                    <div class="progress-bar" role="progressbar" style="width: 89%" aria-valuenow="89"
-                                        aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-                                <!-- Mobil Şablon Projesi -->
-                                <p class="mt-4 mb-1" style="font-size: .77rem;">Mobile Template</p>
-                                <div class="progress rounded" style="height: 5px;">
-                                    <div class="progress-bar" role="progressbar" style="width: 55%" aria-valuenow="55"
-                                        aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-                                <!-- Backend API Projesi -->
-                                <p class="mt-4 mb-1" style="font-size: .77rem;">Backend API</p>
-                                <div class="progress rounded mb-2" style="height: 5px;">
-                                    <div class="progress-bar" role="progressbar" style="width: 66%" aria-valuenow="66"
-                                        aria-valuemin="0" aria-valuemax="100"></div>
+                                <p class="mb-4"><span class="text-primary font-italic me-1">Fatih Terim </span> Rank</p>
+                                <div class="rank-img">
+                                    <img src="../../assets/ranks/challenger.png" alt="Challenger Rank">
+                                    <h4 class="rank-h4">Challenger</h4>
                                 </div>
                             </div>
                         </div>
@@ -223,38 +199,31 @@ export default class extends AbstractView {
                         <div class="card mb-4 mb-md-0">
                             <div class="card-body">
                                 <!-- Proje Durumu Başlığı -->
-                                <p class="mb-4"><span class="text-primary font-italic me-1">last 5</span> Achievements
-                                </p>
-                                <!-- Web Tasarım Projesi -->
-                                <p class="mb-1" style="font-size: .77rem;">Web Design</p>
-                                <div class="progress rounded" style="height: 5px;">
-                                    <div class="progress-bar" role="progressbar" style="width: 80%" aria-valuenow="80"
-                                        aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-                                <!-- Website Markup Projesi -->
-                                <p class="mt-4 mb-1" style="font-size: .77rem;">Website Markup</p>
-                                <div class="progress rounded" style="height: 5px;">
-                                    <div class="progress-bar" role="progressbar" style="width: 72%" aria-valuenow="72"
-                                        aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-                                <!-- One Page Projesi -->
-                                <p class="mt-4 mb-1" style="font-size: .77rem;">One Page</p>
-                                <div class="progress rounded" style="height: 5px;">
-                                    <div class="progress-bar" role="progressbar" style="width: 89%" aria-valuenow="89"
-                                        aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-                                <!-- Mobil Şablon Projesi -->
-                                <p class="mt-4 mb-1" style="font-size: .77rem;">Mobile Template</p>
-                                <div class="progress rounded" style="height: 5px;">
-                                    <div class="progress-bar" role="progressbar" style="width: 55%" aria-valuenow="55"
-                                        aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-                                <!-- Backend API Projesi -->
-                                <p class="mt-4 mb-1" style="font-size: .77rem;">Backend API</p>
-                                <div class="progress rounded mb-2" style="height: 5px;">
-                                    <div class="progress-bar" role="progressbar" style="width: 66%" aria-valuenow="66"
-                                        aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
+                                <p class="mb-4"><span class="text-primary font-italic me-1">last 5</span> Followers</p>
+                                    <div class="follower">
+                                        <a href=""><img src="../../assets/profile/c1.jpg"></a>
+                                        <span class="displayname">test</span>
+                                    </div>
+
+                                    <div class="follower">
+                                        <a href=""><img src="../../assets/profile/c2.jpg"></a>
+                                        <span class="displayname">test2</span>
+                                    </div>
+
+                                    <div class="follower">
+                                        <a href=""><img src="../../assets/profile/c3.jpg"></a>
+                                        <span class="displayname">test3</span>
+                                    </div>
+
+                                    <div class="follower">
+                                        <a href=""><img src="../../assets/profile/c4.jpg"></a>
+                                        <span class="displayname">test4</span>
+                                    </div>
+
+                                    <div class="follower">
+                                        <a href=""><img src="../../assets/profile/c1.jpg"></a>
+                                        <span class="displayname">test5</span>
+                                    </div>
                             </div>
                         </div>
                     </div>
