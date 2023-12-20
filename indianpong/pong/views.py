@@ -90,11 +90,10 @@ def auth_callback(request):
         expires_in = token_data.get('expires_in')
 
         # Fetch user information from 42 API
-        user_info_url = 'https://api.intra.42.fr/v2/me'
         headers = {'Authorization': f'Bearer {access_token}'}
         user_info_response = http.request(
             "GET",
-            user_info_url,
+            'https://api.intra.42.fr/v2/me',
             headers=headers
         )
 
