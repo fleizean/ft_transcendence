@@ -2,11 +2,14 @@ from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
+from django.http import HttpResponseBadRequest
 from .forms import BlockUserForm, ChatMessageForm, InviteToGameForm, UserProfileForm, UpdateProfileForm, TwoFactorAuthSetupForm, JWTTokenForm, AuthenticationUserForm, TournamentForm, TournamentMatchForm, OAuthTokenForm
 from .models import BlockedUser, ChatMessage, GameWarning, UserProfile, TwoFactorAuth, JWTToken, Tournament, TournamentMatch, OAuthToken
 from .utils import pass2fa
 from os import environ
-import requests
+from datetime import datetime, timedelta
+from urllib.parse import urlencode
+import urllib3, secrets, json
 
 
 def index(request):
@@ -40,38 +43,91 @@ def signup(request):
         form = UserProfileForm()
     return render(request, 'signup.html', {'form': form})
 
-#2020-07-10 15:00:00.000
-def auth(request):
-	if request.user.is_authenticated:
-		return redirect("dashboard")
-	if request.method == "GET":
-		code = request.GET.get("code")
-		if code:
-			data = {
-				"grant_type": "authorization_code",
-				"client_id": environ.get("FT_CLIENT_ID"),
-				"client_secret": environ.get("FT_CLIENT_SECRET"),
-				"code": code,
-				"redirect_uri": "http://127.0.0.1:8000/auth",
-			}
-			auth_response = requests.post("https://api.intra.42.fr/oauth/token", data=data)
-			access_token = auth_response.json()["access_token"]
-			user_response = requests.get("https://api.intra.42.fr/v2/me", headers={"Authorization": f"Bearer {access_token}"})
-			username = user_response.json()["login"]
-			#display_name = user_response.json()["displayname"]
+state_req = secrets.token_hex(25)
 
-			try:
-				user = UserProfile.objects.get(username=username)
-				return pass2fa(request, user)
-			except UserProfile.DoesNotExist:
-				user = UserProfile.objects.create_user(username=username) #, display_name=display_name)
-				login(request, user)
-		else:
-			messages.info(request, "Invalid authorization code")
-			return redirect("login")
-	else:
-		messages.info(request, "Invalid method")
-		return redirect("login")
+def auth(request):
+    auth_url = "https://api.intra.42.fr/oauth/authorize"
+    fields = {       
+        "client_id": environ.get("FT_CLIENT_ID"),
+        "redirect_uri": "http://127.0.0.1:8000/auth_callback", # This should be parameterized
+        "scope": "public",
+        "state": state_req,  # This will generate a 50-character long random string
+        "response_type": "code",
+    }
+    encoded_params = urlencode(fields)
+    url = f"{auth_url}?{encoded_params}"
+    print(url)
+    return redirect(url)
+
+
+def auth_callback(request):
+    if request.user.is_authenticated:
+        return redirect("dashboard", request.user)
+    # Handle the callback from 42 and exchange the code for an access token
+    if request.method == "GET":
+        state_res = request.GET.get("state")
+        if (state_res != state_req):
+            return HttpResponseBadRequest("Invalid state")
+        code = request.GET.get("code")
+        http = urllib3.PoolManager()
+        response = http.request(
+            "POST",
+            "https://api.intra.42.fr/oauth/token",
+            fields={
+                "grant_type": "authorization_code",
+                "client_id": environ.get("FT_CLIENT_ID"),
+                "client_secret": environ.get("FT_CLIENT_SECRET"),
+                "code": code,
+                "redirect_uri": "http://127.0.0.1:8000/auth_callback"
+            }
+        )
+
+    # Process the response, store the access token, and authenticate the user
+    if response.status_code == 200:
+        token_data = json.loads(response.data.decode("utf-8"))
+        access_token = token_data.get('access_token')
+        refresh_token = token_data.get('refresh_token')
+        expires_in = token_data.get('expires_in')
+
+        # Fetch user information from 42 API
+        user_info_url = 'https://api.intra.42.fr/v2/me'
+        headers = {'Authorization': f'Bearer {access_token}'}
+        user_info_response = http.request(
+            "GET",
+            user_info_url,
+            headers=headers
+        )
+
+        if user_info_response.status_code == 200:
+            user_data = json.loads(user_info_response.data.decode("utf-8"))
+
+            # Create or get the user based on the 42 user ID
+            user, created = UserProfile.objects.get_or_create(username=user_data['login'])
+            if created:
+                user.set_unusable_password()
+
+            # Update user profile
+            profile, _ = UserProfile.objects.get_or_create(user=user)
+            profile.displayname = user_data.get('displayname', '')
+            profile.email = user_data.get('email', '')
+            profile.avatar = user_data.get('image_url', '')
+            profile.save()
+
+            # Store the access token in the OAuthToken model
+            expires_at = datetime.now() + timedelta(seconds=expires_in)
+            oauth_token, _ = OAuthToken.objects.get_or_create(user=profile)
+            oauth_token.access_token = access_token
+            oauth_token.refresh_token = refresh_token
+            oauth_token.expires_at = expires_at
+            oauth_token.save()
+
+            # Log in the user
+            login(request, user)
+
+            return redirect('/dashboard', request.user)
+
+    return redirect('/login')  # Handle authentication failure
+
 
 def login_view(request):
     if request.method == 'POST':

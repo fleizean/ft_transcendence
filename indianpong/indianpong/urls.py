@@ -24,6 +24,7 @@ urlpatterns = [
     path('signup', signup, name='signup'),
     path('login', login_view, name='login'),
     path('auth', auth, name='auth'),
+    path('auth_callback', auth, name='auth_callback'),
     path('logout', logout_view, name='logout'),
     path('chat', chat, name='chat'),
     path('chat_room', chat_room, name='chat_room'),

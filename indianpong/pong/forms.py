@@ -7,7 +7,7 @@ from .models import BlockedUser, ChatMessage, GameInvitation, UserProfile, TwoFa
 class UserProfileForm(UserCreationForm):
     class Meta:
         model = UserProfile
-        fields = ['username', 'first_name', 'last_name', 'email', 'password1', 'password2', 'avatar']
+        fields = ['username', 'displayname', 'email', 'password1', 'password2', 'avatar']
 
 class ChatMessageForm(forms.ModelForm):
     class Meta:
@@ -69,5 +69,8 @@ class OAuthTokenForm(forms.ModelForm):
     class Meta:
         model = OAuthToken
         fields = ['access_token', 'refresh_token', 'expires_at']
+
+"""     def savem2m(self):
+        pass """
 
 

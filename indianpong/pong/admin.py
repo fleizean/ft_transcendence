@@ -4,10 +4,10 @@ from .models import UserProfile, MatchHistory, Tournament, TournamentMatch, TwoF
 
 
 class UserProfileAdmin(admin.ModelAdmin):
-    list_display = ('username', 'email', 'first_name', 'last_name','wins', 'losses')
-    search_fields = ('username', 'email', 'first_name', 'last_name')
+    list_display = ('username', 'email', 'displayname','wins', 'losses')
+    search_fields = ('username', 'email', 'displayname')
     fieldsets = UserAdmin.fieldsets + (
-        ('Custom Fields', {'fields': ('avatar', 'wins', 'losses')}),
+        ('Custom Fields', {'fields': ('displayname', 'avatar', 'wins', 'losses')}),
     )
 
 class TournamentAdmin(admin.ModelAdmin):
