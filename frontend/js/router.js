@@ -11,6 +11,7 @@ import ProfileSettings from "./views/ProfileSettings.js";
 import ProfileStats from "./views/ProfileStats.js";
 import GameStats from "./views/GameStats.js";
 import Error404 from "./views/Error404.js";
+import Achievements from "./views/Achievements.js";
 
 const pathToRegex = path => new RegExp("^" + path.replace(/\//g, "\\/").replace(/:\w+/g, "(.+)") + "$");
 
@@ -42,6 +43,7 @@ const router = async () => {
         { path: '/profile-settings', view: ProfileSettings},
         { path: '/match-history', view: MatchHistory},
         { path: '/profile-stats', view: ProfileStats},
+        { path: '/achievements', view: Achievements},
         { path: '/404', view: Error404},
         { path: '(.*)', view: Error404 },
     ];
