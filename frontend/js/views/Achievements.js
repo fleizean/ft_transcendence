@@ -204,13 +204,19 @@ export default class extends AbstractView {
                     <p class="achievement-date">Achieved on: April 5, 2023</p>
                 </div>
             </div>
+            
         </div>
-
+        <nav aria-label="...">
+          <ul class="pagination pagination-sm d-flex justify-content-center">
+            <li class="page-item disabled">
+              <a class="page-link" href="#" tabindex="-1">1</a>
+            </li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+          </ul>
+        </nav>
     </div>
-    <div class="page-buttons">
-        <button>Previous Page</button>
-        <button>Next Page</button>
-    </div>
+   
 
 
         `;
