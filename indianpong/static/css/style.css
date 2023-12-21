@@ -10,6 +10,13 @@
 @import url('https://fonts.googleapis.com/css?family=Montserrat');
 
 @font-face {
+  font-family: 'Lobster';
+  src: url('../assets/fonts/Lobster-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
   font-family: 'Pixeboy-z8XGD';
   src: url('fonts/Pixeboy-z8XGD.ttf');
 }
@@ -535,7 +542,16 @@ img {
   border-radius: 8px;
   max-width: 1300px;
   width: 100%;
+  max-height: auto;
+  height: auto;
   margin: 0 auto; /* Ortalamak için */
+}
+
+.profile-submenu a {
+  color: white;
+  text-decoration: none;
+  display: flex;
+  padding: 5px;
 }
 
 @media screen and (max-width: 768px) {
@@ -599,6 +615,53 @@ img {
   background: linear-gradient(45deg,#FF5370,#ff869a);
 }
 
+.card-body {
+  max-height: 320px;
+}
+
+.rank-img {
+  text-align: center;
+}
+
+.rank-h4 {
+  font-family: 'Spiegel', sans-serif;
+  color: transparent; /* Metin rengini şeffaf hale getirin */
+  background: url('../assets/backgrounds/leader-bg.png');
+  background-size: cover; /* Resmi kaplama özelliği */
+  -webkit-background-clip: text; /* Metni arka plana kırpma, webkit tarayıcıları için */
+  background-clip: text; /* Metni arka plana kırpma, diğer tarayıcılar için */
+  display: inline-block; /* Metni blok içinde gösterme */
+  text-transform: uppercase;
+}
+
+.rank-img img {
+  height: 224px; /* ya da istediğiniz başka bir değer */
+  /* İsteğe bağlı olarak width özelliğini de kullanabilirsiniz. */
+  /* width: auto; */
+}
+
+
+.follower {
+  margin-bottom: 5px;
+}
+
+.follower img {
+  text-align: left;
+  width: 48px;
+  height: 48px;
+  object-fit: cover; /* Fotoğrafın boyutunu koruyarak kırpmayı sağlar */
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.follower a:hover img {
+  opacity: 0.8;
+}
+
+.displayname {
+  font-family: 'Roboto', sans-serif;
+  font-size: 18px;
+}
 
 .card-stat {
   border-radius: 5px;
@@ -659,6 +722,8 @@ img {
     position: relative;
 }
 /* end: Chat */
+
+
 
 
 
@@ -1823,4 +1888,220 @@ td {
 
 .error-message {
   color: red;
+}
+
+/* Edit Profile */
+
+.navbar-nav {
+  padding-top: 20px; /* Add space at the top */
+}
+
+/* Edit Profile Form styles */
+
+#changePassword {
+  display: none; /* Hide sections by default */
+}
+
+#addSocial {
+  display: none; /* Hide sections by default */
+}
+
+#closeAccount {
+  display: none; /* Hide sections by default */
+}
+
+.navbar-nav .nav-item .nav-link:hover {
+  background-color: #5c5be5;
+  box-shadow: 0px 15px 11px -6px #7a7a7d;
+  color: #fff; /* İsterseniz metin rengini de ayarlayabilirsiniz */}
+
+#editProfileForm {
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.pro-profile {
+	color: #fff;
+	background: url('../../assets/backgrounds/leader-bg.png');
+	border-radius: 3px;
+	font-size: 16px;
+	font-weight: bold;
+	padding: 2px 5px;
+  text-align: center;
+}
+
+
+#editProfileForm .form-group {
+  margin-bottom: 15px;
+}
+
+
+.profile-pic-container {
+  position: relative;
+  text-align: center;
+  margin-bottom: 2em;
+}
+
+.profile-pic-label {
+  cursor: pointer;
+  position: relative;
+  display: inline-block;
+}
+
+.profile-pic {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.change-image-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.change-image-overlay span {
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.change-image-text {
+  vertical-align: middle;
+}
+
+.profile-pic-label:hover .change-image-overlay {
+  opacity: 1;
+}
+
+.file-input {
+  display: none;
+}
+
+/* Achievements */
+
+.achievements-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.achievement-card {
+  max-width: calc(20% - 5px); /* 6 kart yan yana sığacak şekilde hesaplanmış maksimum genişlik */
+  max-height: 300px;
+  margin-bottom: 10px;
+  text-align: left;
+}
+
+.achievement-card img {
+  width: 50%;
+  max-height: 150px; /* Kartın maksimum yüksekliği */
+  object-fit: cover; /* Resmi boyutunu koruyarak kırpma */
+  border-radius: 8px;
+}
+
+.achievement-img {
+  text-align: center;
+
+}
+.achievement-details {
+  padding: 10px;
+}
+
+.achievement-details h4 {
+  font-size: 20px;
+  margin-bottom: 8px;
+}
+
+.achievement-details p {
+  margin-bottom: 6px;
+}
+
+.achievement-details .achievement-date {
+  font-style: italic;
+  color: #555;
+}
+
+
+.achievement-img {
+  text-align: center;
+}
+
+/* Friends */
+
+
+.avatar.avatar-xl {
+
+  width: 5rem;
+
+  height: 5rem;
+
+}
+
+
+
+
+.avatar {
+
+  width: 2rem;
+
+  height: 2rem;
+
+  line-height: 2rem;
+
+  border-radius: 50%;
+
+  display: inline-block;
+
+  background: #ced4da no-repeat center/cover;
+
+  position: relative;
+
+  text-align: center;
+
+  color: #868e96;
+
+  font-weight: 600;
+
+  vertical-align: bottom;
+
+}
+
+
+
+
+.tile-link {
+
+  position: absolute;
+
+  cursor: pointer;
+
+  width: 100%;
+
+  height: 100%;
+
+  left: 0;
+
+  top: 0;
+
+  z-index: 30;
+
+}
+
+
+.card.friends {
+
+  margin-bottom: 1em;
+
 }

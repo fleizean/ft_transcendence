@@ -25,8 +25,7 @@
                     </div>
                     <div>
                         <div>
-                            <span class="error-message">{{form.first_name.errors}}</span>
-                            <span class="error-message">{{form.last_name.errors}}</span>
+                            <span class="error-message">{{form.displayname.errors}}</span>
                             <span class="error-message">{{form.email.errors}}</span>
                             <span class="error-message">{{form.password1.errors}}</span>
                             <span class="error-message">{{form.password2.errors}}</span>
@@ -45,20 +44,14 @@
 
                     <p>
                         
-                        <label for="{{form.first_name.id_for_label}}">First name:</label>
-                        {{form.first_name}}
-                    </p>
-
-                    <p>
-                        
-                        <label for="{{form.last_name.id_for_label}}">Last name:</label>
-                        {{form.last_name}}
+                        <label for="{{form.displayname.id_for_label}}">Displayname:</label>
+                        {{form.displayname}}
                     </p>
 
                     <p>
                         
                         <label for="{{form.email.id_for_label}}">Email:</label>
-                        {{form.last_name}}
+                        {{form.email}}
                     </p>
 
                     <p>
@@ -83,7 +76,7 @@
 
                         <label for="{{form.avatar.id_for_label}}">Avatar:</label>
                         {{form.avatar}}
-                        {{form.avatar.errors}}
+                        <span class="error-message">{{form.avatar.errors}}</span>
                       </p>                    
                     <button class="button-confirm" type="submit">Let's shine!</button></a> 
                 </form>

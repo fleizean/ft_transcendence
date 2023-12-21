@@ -1,5 +1,6 @@
 from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.cache import never_cache
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
 from django.http import HttpResponseBadRequest
@@ -12,7 +13,7 @@ from urllib.parse import urlencode
 import urllib3, secrets, json
 from django.core.files import File
 
-
+@never_cache
 def index(request):
     return render(request, 'index.html')
 
@@ -21,6 +22,7 @@ def profile(request):
     user = request.user
     return render(request, 'profile.html', {'user': user}) """
 
+@never_cache
 @login_required(login_url="login")
 def profile_view(request, username):
     try:
@@ -32,6 +34,7 @@ def profile_view(request, username):
     #profile = get_object_or_404(UserProfile, username=username)
     return render(request, 'profile.html', {'profile': profile})
 
+@never_cache
 def signup(request):
     if request.method == 'POST':
         form = UserProfileForm(request.POST, request.FILES)
@@ -45,10 +48,10 @@ def signup(request):
     return render(request, 'signup.html', {'form': form})
 
 #state_req = secrets.token_hex(25)
-
+@never_cache
 def auth(request):
-    if request.user.is_authenticated:
-        return redirect("dashboard", request.user)
+    #if request.user.is_authenticated:
+        #return redirect("dashboard", request.user)
     auth_url = "https://api.intra.42.fr/oauth/authorize"
     fields = {       
         "client_id": "u-s4t2ud-4b7a045a7cc7dd977eeafae807bd4947670f273cb30e1dd674f6bfa490ba6c45",#environ.get("FT_CLIENT_ID"),
@@ -61,7 +64,7 @@ def auth(request):
     url = f"{auth_url}?{encoded_params}"
     return redirect(url)
 
-
+@never_cache
 def auth_callback(request):
     # Handle the callback from 42 and exchange the code for an access token
     if request.method == "GET":
@@ -154,48 +157,54 @@ def auth_callback(request):
             # Log in the user
             login(request, user)
 
-            return redirect('/dashboard', request.user)
+            return redirect('/dashboard', user)
 
     return redirect('/login')  # Handle authentication failure
 
-
+@never_cache
 def login_view(request):
     if request.method == 'POST':
         form = AuthenticationUserForm(request, request.POST)
         if form.is_valid():
             user = form.get_user()
             login(request, user)
-            return redirect('dashboard')
+            return redirect('dashboard', user)
     else:
         form = AuthenticationUserForm()
     return render(request, 'login.html', {'form': form})
 
+@never_cache
 @login_required(login_url="login")
 def logout_view(request):
 	logout(request)
 	return redirect("login")
 
+@never_cache
 @login_required(login_url="login")
 def dashboard(request):
     return render(request, 'dashboard.html', {'username': request.user.username})
 
+@never_cache
 @login_required(login_url="login")
 def rankings(request):
-
     return render(request, 'rankings.html', {'username': request.user.username})
 
+@never_cache
 @login_required(login_url="login")
 def search(request):
     return render(request, 'search.html', {'username': request.user.username})
 
+@never_cache
 @login_required(login_url="login")
 def game(request):
     return render(request, 'game.html', {'username': request.user.username})
 
+@never_cache
 @login_required(login_url="login")
 def chat(request):
     return render(request, 'chat.html', {'username': request.user.username})
 
+@never_cache
 @login_required(login_url="login")
 def chat_room(request):
     messages_sent = ChatMessage.objects.filter(sender=request.user)
@@ -203,6 +212,7 @@ def chat_room(request):
     context = {'messages_sent': messages_sent, 'messages_received': messages_received}
     return render(request, 'chat_room.html', context)
 
+@never_cache
 @login_required(login_url="login")
 def send_message(request, receiver_id):
     receiver = UserProfile.objects.get(id=receiver_id)
@@ -220,6 +230,7 @@ def send_message(request, receiver_id):
     context = {'form': form, 'receiver': receiver}
     return render(request, 'send_message.html', context)
 
+@never_cache
 @login_required(login_url="login")
 def block_user(request):
     if request.method == 'POST':
@@ -239,6 +250,7 @@ def block_user(request):
         form = BlockUserForm()
     return render(request, 'block_user.html', {'form': form})
 
+@never_cache
 @login_required(login_url="login")
 def unblock_user(request, blocked_user_id):
     blocked_user = UserProfile.objects.get(id=blocked_user_id)
@@ -246,6 +258,7 @@ def unblock_user(request, blocked_user_id):
     messages.success(request, f'You have unblocked {blocked_user.username}.')
     return redirect('chat')
 
+@never_cache
 @login_required(login_url="login")
 def invite_to_game(request, invited_user_id):
     invited_user = UserProfile.objects.get(id=invited_user_id)
@@ -263,6 +276,7 @@ def invite_to_game(request, invited_user_id):
     context = {'form': form, 'invited_user': invited_user}
     return render(request, 'invite_to_game.html', context)
 
+@never_cache
 @login_required(login_url="login")
 def game_warning(request, opponent_id):
     opponent = UserProfile.objects.get(id=opponent_id)
@@ -270,6 +284,7 @@ def game_warning(request, opponent_id):
     messages.warning(request, f'Game warning sent to {opponent.username}.')
     return redirect('chat')
 
+@never_cache
 @login_required(login_url="login")
 def update_profile(request):
     if request.method == 'POST':
@@ -282,6 +297,7 @@ def update_profile(request):
         form = UpdateProfileForm(instance=request.user)
     return render(request, 'update_profile.html', {'form': form})
 
+@never_cache
 @login_required(login_url="login")
 def setup_two_factor_auth(request):
     if request.method == 'POST':
@@ -295,6 +311,7 @@ def setup_two_factor_auth(request):
         form = TwoFactorAuthSetupForm(instance=request.user.twofactorauth)
     return render(request, 'setup_two_factor_auth.html', {'form': form})
 
+@never_cache
 @login_required(login_url="login")
 def generate_jwt_token(request):
     if request.method == 'POST':
@@ -307,6 +324,7 @@ def generate_jwt_token(request):
         form = JWTTokenForm(instance=request.user.jwttoken)
     return render(request, 'generate_jwt_token.html', {'form': form})
 
+@never_cache
 @login_required(login_url="login")
 def create_tournament(request):
     if request.method == 'POST':
@@ -319,6 +337,7 @@ def create_tournament(request):
         form = TournamentForm()
     return render(request, 'create_tournament.html', {'form': form})
 
+@never_cache
 @login_required(login_url="login")
 def create_tournament_match(request):
     if request.method == 'POST':
