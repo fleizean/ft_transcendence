@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from pong.views import chat, rankings, dashboard, game, index, auth, chat_room, profile_view, search, signup, login_view, logout_view, update_profile, setup_two_factor_auth, generate_jwt_token, create_tournament, create_tournament_match
+from pong.views import auth_callback, chat, rankings, dashboard, game, index, auth, chat_room, profile_view, search, signup, login_view, logout_view, update_profile, setup_two_factor_auth, generate_jwt_token, create_tournament, create_tournament_match
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -24,7 +24,7 @@ urlpatterns = [
     path('signup', signup, name='signup'),
     path('login', login_view, name='login'),
     path('auth', auth, name='auth'),
-    path('auth_callback', auth, name='auth_callback'),
+    path('auth_callback', auth_callback, name='auth_callback'),
     path('logout', logout_view, name='logout'),
     path('chat', chat, name='chat'),
     path('chat_room', chat_room, name='chat_room'),

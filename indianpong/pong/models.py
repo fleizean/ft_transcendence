@@ -68,7 +68,7 @@ class OAuthToken(models.Model):
     user = models.OneToOneField(UserProfile, on_delete=models.CASCADE)
     access_token = models.CharField(max_length=255)
     refresh_token = models.CharField(max_length=255)
-    expires_at = models.DateTimeField()
+    expires_at = models.DateTimeField(default=None ,null=True, blank=True)
 
 class TwoFactorAuth(models.Model):
     user = models.OneToOneField(UserProfile, on_delete=models.CASCADE)
