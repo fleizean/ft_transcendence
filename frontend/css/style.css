@@ -345,38 +345,33 @@ img {
   cursor: url('../assets/scrool/crossedsword.png'), auto;
 }
 
+.button-confirm:hover {
+  transform: translate(-0.05em, -0.05em);
+  box-shadow: 0.15em 0.15em;
+}
+
+
 .registerbtn {
-  cursor: url('../assets/scrool/crossedsword.png'), auto;
-  display: flex;
-  width: 110px;
+  margin: 5px auto 0 auto;
+  width: 120px;
   height: 40px;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  padding: 0 10px;
-  color: white;
-  text-shadow: 2px 2px rgb(116, 116, 116);
-  text-transform: uppercase;
-  border: solid 2px black;
-  letter-spacing: 1px;
+  background: #FBCA1F;
+  font-family: inherit;
   font-weight: 600;
   font-size: 17px;
-  background-color: hsl(49deg 98% 60%);
-  border-radius: 50px;
-  position: relative;
-  overflow: hidden;
-  margin: auto;
-  transition: all .5s ease;
+  border: 3px solid black;
+  border-radius: 0.4em;
+  box-shadow: 0.1em 0.1em;
+}
+
+.registerbtn:hover {
+  transform: translate(-0.05em, -0.05em);
+  box-shadow: 0.15em 0.15em;
 }
 
 .registerbtn:active {
-  transform: scale(.9);
-  transition: all 100ms ease;
-}
-
-.registerbtn svg {
-  transition: all .5s ease;
-  z-index: 2;
+  transform: translate(0.05em, 0.05em);
+  box-shadow: 0.05em 0.05em;
 }
 
 .play {
