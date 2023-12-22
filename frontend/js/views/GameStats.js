@@ -39,7 +39,7 @@ export default class extends AbstractView {
 
       <div class="container-top">
             <div class="card">
-              
+            
             </div>
       </div>
         `;

@@ -13,7 +13,7 @@ import Error404 from "./views/Error404.js";
 import Achievements from "./views/Achievements.js";
 import Friends from "./views/Friends.js";
 import PongGame from "./views/PongGame.js";
-
+import RpsGame from "./views/RpsGame.js";
 
 const pathToRegex = path => new RegExp("^" + path.replace(/\//g, "\\/").replace(/:\w+/g, "(.+)") + "$");
 
@@ -39,6 +39,7 @@ const router = async () => {
         { path: '/dashboard', view: Dashboard },
         { path: '/game-stats', view: GameStats},
         { path: '/pong-game', view: PongGame},
+        { path: '/rps-game', view: RpsGame},
         { path: '/search', view: Search},
         { path: '/rankings', view: Rankings},
         { path: '/profile', view: Profile},
