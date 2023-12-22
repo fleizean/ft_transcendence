@@ -1,0 +1,247 @@
+/* NavBar */
+
+.navbar {
+    background-color: rgba(51, 51, 51, 0); /* R: 51, G: 51, B: 51, Alfa: 0.7 (70% saydamlık) */
+    padding: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: greenyellow;
+  }
+  
+  .nav-links li {
+    font-family: 'Pixeboy-z8XGD';
+  }
+  
+  .nav-links li a i {
+    margin-right: 5px; /* İkon ile metin arasındaki boşluğu ayarlar */
+    font-size: 0.8em;
+    color: white;
+  }
+  
+  .nav-links li a {
+    font-size: 1.2em;
+    color: greenyellow;
+    position: relative;
+  }
+  
+  .nav-links li a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 2px; /* Çizgi kalınlığını ayarlayabilirsiniz */
+    background-color: red; /* Çizgi rengini ayarlayabilirsiniz */
+    visibility: hidden;
+    transform: scaleX(0);
+    transition: transform 0.3s ease, visibility 0.3s ease;
+  }
+  
+  .nav-links li:not(.profile-menu) {
+    margin-top: 10px;
+  }
+  
+  .nav-links li a:hover::after {
+    visibility: visible;
+    transform: scaleX(1);
+  }
+  
+  /* Opsiyonel: Çizgi ile metin arasındaki boşluğu ayarlar */
+  .nav-links li a:hover {
+    padding-bottom: px;
+  }
+  
+  /* Opsiyonel: Çizgiyi blurlamak için */
+  .nav-links li a:hover::after {
+    backdrop-filter: blur(50px); /* Blurlama miktarını ayarlayabilirsiniz */
+  }
+  
+  .logo-container {
+    display: flex;
+    align-items: center;
+    margin-left: 10px;
+  }
+  
+  .logo-container a,
+  .logo-container a:link,
+  .logo-container a:visited {
+    color: greenyellow;
+    text-decoration: none;
+  }
+  
+  .logo-container a .logo {
+    color: greenyellow; /* Ya da istediğiniz rengi belirtin */
+  }
+  
+  .profile-menu {
+    position: relative;
+  }
+  
+  .profile-submenu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0; /* Alt menüyü tamamen sağa yerleştirme */
+    background-color: rgba(51, 51, 51, 0.8); /* Menü arka plan rengi */
+    border-radius: 8px;
+    padding: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .profile-menu:hover .profile-submenu {
+    display: block;
+    z-index: 900;
+  
+  }
+  
+  .profile-submenu a {
+    color: white;
+    text-decoration: none;
+    display: flex;
+    padding: 5px;
+  }
+  
+  .profile-submenu a:hover {
+    background-color: #333; /* Hover rengi */
+  }
+  
+  .profile-image {
+    overflow: hidden;
+    border-radius: 50%; /* Profil resmini yuvarlak yapar */
+  }
+  
+  .profile-image img {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%; /* Profil resmini yuvarlak yapar */
+    transition: transform 0.3s ease; /* Dönme animasyonu için */
+  }
+  
+  .profile-menu:hover .profile-image img {
+    transform: rotate(360deg); /* Hover durumunda döndürme animasyonu */
+  }
+  
+  .logo img {
+    width: 48px;
+    height: 48px;
+    margin-right: 10px;
+  }
+  
+  .logo {
+    font-family: 'alagard', sans-serif;
+    font-size: 1.5em;
+    display: flex;
+    align-items: center;
+  }
+  
+  .nav-links {
+    list-style: none;
+    display: flex;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .nav-links li {
+    margin-right: 20px;
+  }
+  
+  .nav-links a {
+    text-decoration: none;
+    color: white;
+  }
+  
+  .burger-menu {
+    font-size: 2.5em;
+    cursor: pointer;
+    display: none;
+    z-index: 1;
+  }
+  
+  .container-top {
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+    overflow-y: auto;
+    z-index: 2;
+  }
+  
+  .card {
+    background-color: #F1F1FB;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    max-width: 1300px;
+    width: 100%;
+    max-height: auto;
+    height: auto;
+    margin: 0 auto; /* Ortalamak için */
+  }
+  
+  @media screen and (max-width: 768px) {
+    .nav-links {
+      display: none;
+      flex-direction: column;
+      position: absolute;
+      top: 80px;
+      left: 0;
+      width: 100%;
+      background-color: rgba(51, 51, 51, 0.5); /* R: 51, G: 51, B: 51, Alfa: 0.5 (50% saydamlık) */
+      z-index: 1;
+      backdrop-filter: blur(10px); /* Bulanıklık miktarını ayarlayabilirsiniz */
+      transition: display 0.3s ease-in-out;
+    }
+    
+    .burger-menu {
+      display: block;
+      
+    }
+  
+    .profile-submenu {
+      display: none;
+      position: absolute;
+      flex-direction: column;
+      left: 0;
+      background-color: rgba(51, 51, 51, 0.8);
+      border-radius: 8px;
+      padding: 10px;
+      transition: display 0.3s ease-in-out;
+  
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+    .profile-submenu {
+      margin-top: 20px;
+    }
+  
+    .nav-links.show {
+      display: flex;
+    }
+  
+    .nav-links li {
+      margin: 0;
+      text-align: center;
+      margin-bottom: 10px; /* İtemler arasına boşluk ekle */
+    }
+  
+    .nav-links li:not(.profile-menu) {
+      margin-top: 0px;
+    }
+  
+    .container-top {
+      margin-top: 60px;
+    }
+  
+    .navbar {
+      padding: 10px; /* Navbar'ın padding'ini artır */
+    }
+  
+    .logo {
+      font-size: 1.2em; /* Logo font boyutunu küçült */
+    }
+  }
+  
+  .order-card {
+    color: #fff;
+  }
+  

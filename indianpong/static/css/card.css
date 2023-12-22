@@ -1,0 +1,84 @@
+card-body {
+    max-height: 320px;
+  }
+  
+  .rank-img {
+    text-align: center;
+  }
+  
+  .rank-h4 {
+    font-family: 'Spiegel', sans-serif;
+    color: transparent; /* Metin rengini şeffaf hale getirin */
+    background: url('../assets/backgrounds/leader-bg.png');
+    background-size: cover; /* Resmi kaplama özelliği */
+    -webkit-background-clip: text; /* Metni arka plana kırpma, webkit tarayıcıları için */
+    background-clip: text; /* Metni arka plana kırpma, diğer tarayıcılar için */
+    display: inline-block; /* Metni blok içinde gösterme */
+    text-transform: uppercase;
+  }
+  
+  .rank-img img {
+    height: 224px; /* ya da istediğiniz başka bir değer */
+    /* İsteğe bağlı olarak width özelliğini de kullanabilirsiniz. */
+    /* width: auto; */
+  }
+  
+  
+  .follower {
+    margin-bottom: 5px;
+  }
+  
+  .follower img {
+    text-align: left;
+    width: 48px;
+    height: 48px;
+    object-fit: cover; /* Fotoğrafın boyutunu koruyarak kırpmayı sağlar */
+    border-radius: 50%;
+    margin-right: 10px;
+  }
+  
+  .follower a:hover img {
+    opacity: 0.8;
+  }
+  
+  .displayname {
+    font-family: 'Roboto', sans-serif;
+    font-size: 18px;
+  }
+  
+  .card-stat {
+    border-radius: 5px;
+    -webkit-box-shadow: 0 1px 2.94px 0.06px rgba(4,26,55,0.16);
+    box-shadow: 0 1px 2.94px 0.06px rgba(4,26,55,0.16);
+    border: none;
+    margin-bottom: 30px;
+    -webkit-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .card-stat .card-block {
+    padding: 25px;
+  }
+  
+  .order-card i {
+    font-size: 32px;
+    text-align: center;
+    margin-right: 5px;
+  }
+  
+  .f-left {
+    float: left;
+  }
+  
+  .f-right {
+    float: right;
+  }
+  
+  .text-right span.big {
+    font-size: 2rem; /* İstediğiniz büyüklüğü ayarlayabilirsiniz */
+    margin-right: -5px;
+  }
+  
+  .text-right span.small {
+    font-size: 1.5rem; /* İstediğiniz küçüklüğü ayarlayabilirsiniz */
+  }
