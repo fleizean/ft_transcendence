@@ -17,6 +17,9 @@ from django.core.files import File
 def index(request):
     return render(request, 'base.html')
 
+def handler404(request, exception):
+    return render(request, '404.html', status=404)
+
 """ @login_required
 def profile(request):
     user = request.user
@@ -25,13 +28,13 @@ def profile(request):
 @never_cache
 @login_required(login_url="login")
 def profile_view(request, username):
-    try:
-        profile = UserProfile.objects.get(username=username)
-    except UserProfile.DoesNotExist:
+    #try:
+    #    profile = UserProfile.objects.get(username=username)
+    #except UserProfile.DoesNotExist:
         # Render custom 404 page
-        return render(request, '404.html', {'username': username}, status=404)
+    #    return render(request, '404.html', {'username': username}, status=404)
 
-    #profile = get_object_or_404(UserProfile, username=username)
+    profile = get_object_or_404(UserProfile, username=username)
     return render(request, 'profile.html', {'profile': profile})
 
 @never_cache

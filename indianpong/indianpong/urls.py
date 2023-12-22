@@ -39,3 +39,5 @@ urlpatterns = [
     path('create_tournament', create_tournament, name='create_tournament'),
     path('create_tournament_match', create_tournament_match, name='create_tournament_match'),
 ]
+
+handler404 = 'pong.views.handler404'
