@@ -43,28 +43,28 @@
 
 @font-face {
   font-family: 'Pixeboy-z8XGD';
-  src: url('fonts/Pixeboy-z8XGD.ttf');
+  src: url('../fonts/Pixeboy-z8XGD.ttf');
 }
 
 @font-face {
   font-family: 'Common Pixel';
-  src: url('fonts/CommonPixel.ttf');
+  src: url('../fonts/CommonPixel.ttf');
 }
 
 @font-face {
   font-family: 'Rainy Hearts';
-  src: url('fonts/rainyhearts.ttf');
+  src: url('../fonts/rainyhearts.ttf');
 }
 
 @font-face {
   font-family: 'Minecraftia';
-  src: url('fonts/Minecraftia-Regular.ttf');
+  src: url('../fonts/Minecraftia-Regular.ttf');
 }
 
 
 @font-face {
   font-family: 'alagard';
-  src: url('fonts/alagard.ttf');
+  src: url('../fonts/alagard.ttf');
 }
 
 body {

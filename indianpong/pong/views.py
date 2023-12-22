@@ -15,7 +15,7 @@ from django.core.files import File
 
 @never_cache
 def index(request):
-    return render(request, 'index.html')
+    return render(request, 'base.html')
 
 """ @login_required
 def profile(request):
