@@ -35,6 +35,40 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 });
 
+
+
+
+/* 2FA Alanı Başlangıç */
+function clear2FA() {
+    const inputFields = document.querySelectorAll('.input-fields input');
+    inputFields.forEach(input => {
+        input.value = '';
+    });
+}
+
+document.addEventListener('input', function(event) {
+    if (event.target.classList.contains('numbers-only')) {
+        var inputValue = event.target.value;
+
+        // Giriş sadece bir rakam olmalı
+        if (!/^[0-9]$/.test(inputValue)) {
+            event.target.value = ''; // Geçersiz girişi temizle
+            return;
+        }
+
+        // Pozitif bir sayı olmalı
+        var numberValue = parseInt(inputValue, 10);
+        if (isNaN(numberValue) || numberValue < 0) {
+            event.target.value = ''; // Geçersiz girişi temizle
+        }
+    }
+});
+
+/* 2FA Alanı Bitiş */
+
+
+
+
 function getFutureDate() {
     // Şu anki tarihi al
     var currentDate = new Date();
@@ -55,7 +89,7 @@ function getFutureDate() {
 }
 
 function displaySection(sectionId) {
-    var sections = ["editProfile", "addSocial", "closeAccount", "changePassword"];
+    var sections = ["editProfile", "addSocial", "closeAccount", "changePassword", "google2FA"];
 
     for (var i = 0; i < sections.length; i++) {
         var section = document.getElementById(sections[i]);

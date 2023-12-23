@@ -60,6 +60,9 @@ export default class extends AbstractView {
                           <a class="nav-link" href="javascript:void(0);" onclick="displaySection('addSocial')"><i class="bi bi-bookmark-fill"></i> Add Socials</a>
                       </li>
                       <li class="nav-item">
+                          <a class="nav-link" href="javascript:void(0);" onclick="displaySection('google2FA')"><i class="bi bi-google"></i> Google 2FA</a>
+                      </li>
+                      <li class="nav-item">
                           <a class="nav-link" href="javascript:void(0);" onclick="displaySection('closeAccount')"><i class="bi bi-door-closed-fill"></i> Close Account</a>
                       </li>
                   </ul>
@@ -127,6 +130,18 @@ export default class extends AbstractView {
                 <!-- Submit button -->
                 <button type="submit" class="btn btn-success">Save Changes</button>
             </form>
+        </section>
+
+        <section id="google2FA">
+            <form id="google2FAForm">    
+                <h3>Secure Your Account</h3>
+                <div id="qrCodeContainer" style="background=" class="mb-3"></div>
+                <p>Scan this QR code using a mobile app (for example, "Google Authenticator"). The application will show a six-digit number, which must be specified in the login.</p>
+            </form>
+
+            <button class="google2fa-active" onclick="active2FA()">Active 2FA</button>
+            <button class="google2fa-disable" onclick="disable2FA()">Disable 2FA</button>
+            <button class="google2fa-refresh" onclick="refreshQRCode()">Refresh QR Code</button>
         </section>
 
         <!-- Change Password Section -->

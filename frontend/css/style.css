@@ -99,6 +99,14 @@ body {
   text-align: center;
 }
 
+.Pass2FaArea {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
 .LoginArea {
   position: absolute;
   top: 50%;
@@ -1281,6 +1289,10 @@ td {
   display: none; /* Hide sections by default */
 }
 
+#google2FA {
+  display: none;
+}
+
 #addSocial {
   display: none; /* Hide sections by default */
 }
@@ -1369,7 +1381,72 @@ td {
   display: none;
 }
 
+.google2fa-refresh {
+  color: white;
+  background-color: #222;
+  font-weight: 500;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  line-height: 2rem;
+  padding-left: 2rem;
+  padding-right: 2rem;
+  padding-top: 0.7rem;
+  padding-bottom: 0.7rem;
+  text-align: center;
+  margin-right: 0.5rem;
+  display: inline-flex;
+  align-items: center;
+  border: none;
+}
 
+.google2fa-refresh:hover {
+  background-color: #333;
+}
+
+
+.google2fa-disable {
+  color: white;
+  background-color: #c20f0f;
+  font-weight: 500;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  line-height: 2rem;
+  padding-left: 2rem;
+  padding-right: 2rem;
+  padding-top: 0.7rem;
+  padding-bottom: 0.7rem;
+  text-align: center;
+  margin-right: 0.5rem;
+  display: inline-flex;
+  align-items: center;
+  border: none;
+}
+
+.google2fa-disable:hover {
+  background-color: #3d0303;
+}
+
+.google2fa-active {
+  color: white;
+  background-color: #13d13c;
+  font-weight: 500;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  line-height: 2rem;
+  padding-left: 2rem;
+  padding-right: 2rem;
+  padding-top: 0.7rem;
+  padding-bottom: 0.7rem;
+  text-align: center;
+  margin-right: 0.5rem;
+  display: inline-flex;
+  align-items: center;
+  border: none;
+}
+
+.google2fa-active:hover {
+  background-color: #043e10;
+}
 
 
 
@@ -1602,4 +1679,173 @@ td {
 .ponggamebtn-ai:hover:after {
   left: 400px;
   transition: .3s ease-in-out;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Pass2FA */
+
+.form-pass2fa {
+  --black: #000000;
+  --ch-black: #141414;
+  --eer-black: #1b1b1b;
+  --night-rider: #2e2e2e;
+  --white: #ffffff;
+  --af-white: #f3f3f3;
+  --ch-white: #e1e1e1;
+  --tomato: #fa5656;
+  font-family: Helvetica, sans-serif;
+  border: 2px solid var(--glow-color);
+  padding: 25px;
+  display: flex;
+  max-width: 500px;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+  color: var(--night-rider);
+  background-color: var(--white);
+  border-radius: 8px;
+  position: relative;
+  box-shadow: 10px 10px 10px rgba(0, 0, 0, .15);
+}
+
+/*----heading and description-----*/
+
+.info-pass2fa {
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.title-pass2fa {
+  font-size: 1.5rem;
+  font-weight: 900;
+}
+
+.description-pass2fa {
+  margin-top: 10px;
+  font-size: 1rem;
+}
+
+/*----input-fields------*/
+
+.form-pass2fa .input-fields {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.form-pass2fa .input-fields input {
+  height: 2.5em;
+  width: 2.5em;
+  outline: none;
+  text-align: center;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  font-size: 1.5rem;
+  color: var(--ch-black);
+  border-radius: 5px;
+  border: 2.5px solid var(--ch-white);
+  background-color: var(--ch-white);
+}
+
+.form-pass2fa .input-fields .seperator {
+    text-align: center;
+    margin-top: auto;
+    margin-bottom: auto;
+    font-size: 28px;
+}
+
+.form-pass2fa .input-fields input:focus {
+  border: 1px solid var(--night-rider);
+  box-shadow: inset 10px 10px 10px rgba(0, 0, 0, .15);
+  transform: scale(1.05);
+  transition: 0.5s;
+}
+
+/*-----verify and clear buttons-----*/
+
+.action-btns {
+  display: flex;
+  margin-top: 20px;
+  gap: 0.5rem;
+}
+
+.verify {
+  padding: 10px 20px;
+  text-decoration: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--white);
+  text-shadow: none;
+  cursor: url('../assets/scrool/crossedsword.png'), auto;
+  background: var(--ch-black);
+  box-shadow: transparent;
+  border: 1px solid var(--night-rider);
+  transition: 0.5s ease;
+  user-select: none;
+}
+
+.verify:hover,.verify:focus {
+  color: var(--white);
+  background: var(--night-rider);
+}
+
+.clear {
+  padding: 10px 20px;
+  text-decoration: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--night-rider);
+  text-shadow: none;
+  cursor: url('../assets/scrool/crossedsword.png'), auto;
+  background: transparent;
+  border: 1px solid var(--night-rider);
+  transition: 0.5s ease;
+  user-select: none;
+}
+
+.clear:hover,.clear:focus {
+  color: var(--tomato);
+  background-color: var(--white);
+  border: 1px solid var(--tomato);
+}
+
+/*-----close button------*/
+
+.close {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  background-color: var(--ch-white);
+  color: var(--af-white);
+  height: 30px;
+  width: 30px;
+  display: grid;
+  place-items: center;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: .5s ease;
+}
+
+.close:hover {
+  background-color: var(--tomato);
+  color: var(--white);
 }
