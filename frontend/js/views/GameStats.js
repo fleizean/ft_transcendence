@@ -34,14 +34,126 @@ export default class extends AbstractView {
         </ul>
         <div class="burger-menu">&#9776;</div>
       </nav>
-        <div class="burger-menu">&#9776;</div>
-      </nav>
 
-      <div class="container-top">
-            <div class="card">
-            
-            </div>
+            <div class="container-top">
+            <div class="row mt-4" style="margin-bottom:5px">
+          <div class="col">
+              <nav class="navbar navbar-expand-lg navbar-light bg-light rounded">
+                  <!-- Navbar Marka -->
+                  <!-- Navbar Toggle Butonu -->
+                  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                      <span class="navbar-toggler-icon"></span>
+                  </button>
+                  <!-- Navbar Menü -->
+                  <div class="collapse navbar-collapse" id="navbarNav">
+                      <ul class="navbar-nav ml-auto">                          
+                          <!-- "Match History" Linki -->
+                          <li class="nav-item">
+                              <a class="nav-link" href="/game-stats-match-history"><i class="bi bi-easel-fill"></i> Game Stats Match History</a>
+                          </li>
+                      </ul>
+                  </div>
+              </nav>
+          </div>
       </div>
+      </div>
+              <div class="game-stats-card">
+                      <!-- Stats Cards (Left Side) -->
+                  <div class="stats-card">
+                    <div class="card-game-stat bg-c-yellow order-card">
+                        <div class="card-block">
+                            <h6 class="m-b-20">Win Streak</h6>
+                            <h2 class="text-right"><i class="bi bi-emoji-wink-fill"></i><span>486</span></h2>
+                            <p class="m-b-0">Achievement Reach<span class="f-right">500</span></p>
+                        </div>
+                    </div>
+                  </div>
+                  <div class="stats-card">
+                    <div class="card-game-stat bg-c-yellow order-card">
+                        <div class="card-block">
+                            <h6 class="m-b-20">Win Streak</h6>
+                            <h2 class="text-right"><i class="bi bi-emoji-wink-fill"></i><span>486</span></h2>
+                            <p class="m-b-0">Achievement Reach<span class="f-right">500</span></p>
+                        </div>
+                    </div>
+                  </div>
+                  <div class="stats-card">
+                    <div class="card-game-stat bg-c-yellow order-card">
+                        <div class="card-block">
+                            <h6 class="m-b-20">Win Streak</h6>
+                            <h2 class="text-right"><i class="bi bi-emoji-wink-fill"></i><span>486</span></h2>
+                            <p class="m-b-0">Achievement Reach<span class="f-right">500</span></p>
+                        </div>
+                    </div>
+                  </div>
+                  <div class="stats-card">
+                    <div class="card-game-stat bg-c-yellow order-card">
+                        <div class="card-block">
+                            <h6 class="m-b-20">Win Streak</h6>
+                            <h2 class="text-right"><i class="bi bi-emoji-wink-fill"></i><span>486</span></h2>
+                            <p class="m-b-0">Achievement Reach<span class="f-right">500</span></p>
+                        </div>
+                    </div>
+                  </div>
+
+                <!-- Repeat this structure for Stats-card2, Stats-card3, and Stats-card4 -->
+
+                <!-- Large Card 1 -->
+                <div class="large-card">
+                    <div class="card chart">
+                        <canvas id="pieChart1"></canvas>
+                    </div>
+                </div>
+
+                <!-- Stats Cards Row 2 -->
+                <div class="stats-card">
+                    <div class="card-game-stat bg-c-yellow order-card">
+                        <div class="card-block">
+                            <h6 class="m-b-20">Win Streak</h6>
+                            <h2 class="text-right"><i class="bi bi-emoji-wink-fill"></i><span>486</span></h2>
+                            <p class="m-b-0">Achievement Reach<span class="f-right">500</span></p>
+                        </div>
+                    </div>
+                  </div>
+                  <div class="stats-card">
+                    <div class="card-game-stat bg-c-yellow order-card">
+                        <div class="card-block">
+                            <h6 class="m-b-20">Win Streak</h6>
+                            <h2 class="text-right"><i class="bi bi-emoji-wink-fill"></i><span>486</span></h2>
+                            <p class="m-b-0">Achievement Reach<span class="f-right">500</span></p>
+                        </div>
+                    </div>
+                  </div>
+                  <div class="stats-card">
+                    <div class="card-game-stat bg-c-yellow order-card">
+                        <div class="card-block">
+                            <h6 class="m-b-20">Win Streak</h6>
+                            <h2 class="text-right"><i class="bi bi-emoji-wink-fill"></i><span>486</span></h2>
+                            <p class="m-b-0">Achievement Reach<span class="f-right">500</span></p>
+                        </div>
+                    </div>
+                  </div>
+                  <div class="stats-card">
+                    <div class="card-game-stat bg-c-yellow order-card">
+                        <div class="card-block">
+                            <h6 class="m-b-20">Win Streak</h6>
+                            <h2 class="text-right"><i class="bi bi-emoji-wink-fill"></i><span>486</span></h2>
+                            <p class="m-b-0">Achievement Reach<span class="f-right">500</span></p>
+                        </div>
+                    </div>
+                  </div>
+
+                <!-- Repeat this structure for Stats-card6, Stats-card7, and Stats-card8 -->
+
+                <!-- Large Card 2 -->
+                <div class="large-card">
+                    <div class="card chart">
+                        <canvas id="pieChart2"></canvas>
+                    </div>
+                </div>
+              </div>
+         
         `;
     }
 }

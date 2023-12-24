@@ -15,6 +15,7 @@ import Friends from "./views/Friends.js";
 import PongGame from "./views/PongGame.js";
 import RpsGame from "./views/RpsGame.js";
 import Pass2FA from "./views/Pass2FA.js";
+import GameStatsMatchHistory from "./views/GameStatsMatchHistory.js";
 
 const pathToRegex = path => new RegExp("^" + path.replace(/\//g, "\\/").replace(/:\w+/g, "(.+)") + "$");
 
@@ -39,6 +40,7 @@ const router = async () => {
         { path: "/register", view: Register},
         { path: '/dashboard', view: Dashboard },
         { path: '/game-stats', view: GameStats},
+        { path: '/game-stats-match-history', view: GameStatsMatchHistory},
         { path: '/pong-game', view: PongGame},
         { path: '/rps-game', view: RpsGame},
         { path: '/search', view: Search},
