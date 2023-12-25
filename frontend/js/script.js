@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function () {
+/* document.addEventListener('DOMContentLoaded', function () {
     // Hemen çalıştırılacak kod buraya eklenecek
 
     const cover = document.querySelector('.snow-class');
@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', function () {
     
     }
 });
-
+ */
 
 
 
