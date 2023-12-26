@@ -90,6 +90,17 @@ DATABASES = {
     }
 }
 
+""" DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': environ.get("DB_NAME", default="transcendence"),
+        'USER': environ.get("DB_USER"),
+        'PASSWORD': environ.get("DB_PASSWORD"),
+        'HOST': environ.get("DB_HOST", default="localhost"),
+        'PORT': environ.get("DB_PORT", default="5432")
+    }
+} """
+
 AUTH_USER_MODEL = "pong.UserProfile"
 
 # Password validation

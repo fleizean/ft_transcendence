@@ -1,3 +1,4 @@
+from urllib.request import urlretrieve
 from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.cache import never_cache
@@ -9,9 +10,12 @@ from .models import BlockedUser, ChatMessage, GameWarning, UserProfile, TwoFacto
 from .utils import pass2fa
 from os import environ
 from datetime import datetime, timedelta
+import urllib.parse
+import urllib.request
 from urllib.parse import urlencode
-import urllib3, secrets, json
+import secrets, json
 from django.core.files import File
+import json
 
 @never_cache
 def index(request):
@@ -67,44 +71,37 @@ def auth(request):
     url = f"{auth_url}?{encoded_params}"
     return redirect(url)
 
+
 @never_cache
 def auth_callback(request):
     # Handle the callback from 42 and exchange the code for an access token
     if request.method == "GET":
-        #state_res = request.GET.get("state")
-        #if (state_res != state_req):
-            #return HttpResponseBadRequest("Invalid state")
         code = request.GET.get("code")
-        http = urllib3.PoolManager()
-        response = http.request(
-            "POST",
-            "https://api.intra.42.fr/oauth/token",
-            fields={
-                "grant_type": "authorization_code",
-                "client_id": "u-s4t2ud-4b7a045a7cc7dd977eeafae807bd4947670f273cb30e1dd674f6bfa490ba6c45",#environ.get("FT_CLIENT_ID"),
-                "client_secret": "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",#environ.get("FT_CLIENT_SECRET"),
-                "code": code,
-                "redirect_uri": "http://localhost:8000/auth_callback",
-            }
-        )
+        data = {
+            "grant_type": "authorization_code",
+            "client_id": "u-s4t2ud-4b7a045a7cc7dd977eeafae807bd4947670f273cb30e1dd674f6bfa490ba6c45",#environ.get("FT_CLIENT_ID"),
+            "client_secret": "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",#environ.get("FT_CLIENT_SECRET"),
+            "code": code,
+            "redirect_uri": "http://localhost:8000/auth_callback",
+        }
+        encoded_data = urllib.parse.urlencode(data).encode('utf-8')
+        req = urllib.request.Request("https://api.intra.42.fr/oauth/token", data=encoded_data)
+        response = urllib.request.urlopen(req)
 
     # Process the response, store the access token, and authenticate the user
     if response.status == 200:
-        token_data = json.loads(response.data.decode("utf-8"))
+        token_data = json.loads(response.read().decode('utf-8'))
         access_token = token_data.get('access_token')
         refresh_token = token_data.get('refresh_token')
         expires_in = token_data.get('expires_in')
 
         # Fetch user information from 42 API
         headers = {'Authorization': f'Bearer {access_token}'}
-        user_info_response = http.request(
-            "GET",
-            'https://api.intra.42.fr/v2/me',
-            headers=headers
-        )
+        req = urllib.request.Request('https://api.intra.42.fr/v2/me', headers=headers)
+        user_info_response = urllib.request.urlopen(req)
 
         if user_info_response.status == 200:
-            user_data = json.loads(user_info_response.data.decode("utf-8"))
+            user_data = json.loads(user_info_response.read().decode('utf-8'))
 
             # Create or get the user based on the 42 user ID
             user, created = UserProfile.objects.get_or_create(username=user_data['login'])
@@ -119,14 +116,11 @@ def auth_callback(request):
 
             # Fetch user information from 42 API
             headers = {'Authorization': f'Bearer {access_token}'}
-            user_info_response = http.request(
-                "GET",
-                'https://api.intra.42.fr/v2/me',
-                headers=headers
-            )
+            req = urllib.request.Request('https://api.intra.42.fr/v2/me', headers=headers)
+            user_info_response = urllib.request.urlopen(req)
 
             if user_info_response.status == 200:
-                user_data = json.loads(user_info_response.data.decode("utf-8"))
+                user_data = json.loads(user_info_response.read().decode('utf-8'))
 
                 # Create or get the user based on the 42 user ID
                 user, created = UserProfile.objects.get_or_create(username=user_data['login'])
@@ -138,16 +132,10 @@ def auth_callback(request):
                 profile.displayname = user_data.get('displayname', '')
                 profile.email = user_data.get('email', '')
 
-                # Load the image into the database
                 image_url = user_data.get('image_url', '')
                 if image_url:
-                    response = http.request('GET', image_url)
-                    if response.status == 200:
-                        image_name = image_url.split('/')[-1]
-                        with open(image_name, 'wb') as f:
-                            f.write(response.data)
-                        profile.avatar.save(image_name, File(open(image_name, 'rb')), save=True)
-                profile.save()
+                    image_name, _ = urllib.request.urlretrieve(image_url)
+                    profile.avatar.save(image_name.split('/')[-1], File(open(image_name, 'rb')), save=True)
 
             # Store the access token in the OAuthToken model
             expires_at = datetime.now() + timedelta(seconds=expires_in)
@@ -160,9 +148,9 @@ def auth_callback(request):
             # Log in the user
             login(request, user)
 
-            return redirect('/dashboard', user)
+            return redirect('dashboard')
 
-    return redirect('/login')  # Handle authentication failure
+    return redirect('login')  # Handle authentication failure
 
 @never_cache
 def login_view(request):
@@ -171,7 +159,7 @@ def login_view(request):
         if form.is_valid():
             user = form.get_user()
             login(request, user)
-            return redirect('dashboard', user)
+            return redirect('dashboard')
     else:
         form = AuthenticationUserForm()
     return render(request, 'login.html', {'form': form})
