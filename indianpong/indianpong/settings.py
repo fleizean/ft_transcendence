@@ -32,6 +32,7 @@ ALLOWED_HOSTS = []#environ.get("ALLOWED_HOSTS", default="").split(" ")
 # Application definition
 
 INSTALLED_APPS = [
+    'daphne',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -39,7 +40,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'pong',
-    'channels'
 ]
 
 CHANNEL_LAYERS = {

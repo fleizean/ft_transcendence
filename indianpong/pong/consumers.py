@@ -55,20 +55,20 @@ class PongConsumer(AsyncWebsocketConsumer):
 
     async def start_game(self, event):
         # Initialize the ball position and velocity
-        ball = {'x': 400, 'y': 200, 'speed': 5, 'direction': random.choice([1, -1]), 'angle': random.uniform(-45, 45)}
+        ball = {'x': 400, 'y': 300, 'speed': 5, 'dx': random.choice([1, -1]), 'dy': random.uniform(-1, 1)}
         await self.channel_layer.group_send("pong_game", {'type': 'ball_update', 'ball': ball})
 
     async def ball_update(self, event):
         ball = event['ball']
 
         # Update the ball position based on its velocity and direction
-        ball['x'] += ball['speed'] * ball['direction'] * math.cos(math.radians(ball['angle']))
-        ball['y'] += ball['speed'] * math.sin(math.radians(ball['angle']))
+        ball['x'] += ball['speed'] * ball['dx']
+        ball['y'] += ball['speed'] * ball['dy']
 
         # Check for collisions with paddles and walls (adjust the logic based on your game)
         # For simplicity, this example assumes a basic collision with top/bottom walls only
-        if ball['y'] <= 0 or ball['y'] >= 400:
-            ball['angle'] = -ball['angle']
+        if ball['y'] <= 0 or ball['y'] >= 600:
+            ball['dy'] = -ball['dy']
 
         # Broadcast the updated ball position to all connected clients
         await self.channel_layer.group_send("pong_game", {'type': 'ball_update', 'ball': ball})

@@ -15,7 +15,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import include, path
 from pong.views import auth_callback, chat, rankings, dashboard, game, index, auth, chat_room, profile_view, search, signup, login_view, logout_view, update_profile, setup_two_factor_auth, generate_jwt_token, create_tournament, create_tournament_match
 
 urlpatterns = [

@@ -185,7 +185,7 @@ def rankings(request):
 def search(request):
     return render(request, 'search.html', {'username': request.user.username})
 
-@never_cache
+
 @login_required(login_url="login")
 def game(request):
     return render(request, 'game.html', {'username': request.user.username})

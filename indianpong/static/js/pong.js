@@ -40,23 +40,67 @@ socket.addEventListener('message', (event) => {
 
         case 'paddle_update':
             console.log('Paddle updated for player', data.player_id, 'New position:', data.position);
-            //updatePaddlePosition(data.player_id, data.position);
-            if (data.player_id === 'player1') {
+            updatePaddlePosition(data.player_id, data.position);
+/*             if (data.player_id === 'player1') {
                 playerPaddleY = data.position;
             } else {
                 opponentPaddleY = data.position;
-            }
+            } */
             break;
 
         case 'ball_update':
             console.log('Ball updated:', data.ball);
-            //updateBallPosition(data.ball);
-            ballX = data.ball.x;
-            ballY = data.ball.y;  
+            updateBallPosition(data.ball);
+/*             ballX = data.ball.x;
+            ballY = data.ball.y;   */
             break;
 
         default:
             console.warn('Unknown message type:', data.type);
+    }
+});
+
+// Handle paddle movement
+document.addEventListener('keydown', (event) => {
+    if (event.key === 'ArrowUp') {
+        // Move paddle up
+        const newPosition = playerPaddleY - 10; // Adjust the value as needed
+        updatePaddlePosition('player1', newPosition);
+        socket.send(JSON.stringify({
+            type: 'paddle_update',
+            player_id: 'player1',
+            position: newPosition,
+        }));
+    } else if (event.key === 'ArrowDown') {
+        // Move paddle down
+        const newPosition = playerPaddleY + 10; // Adjust the value as needed
+        updatePaddlePosition('player1', newPosition);
+        socket.send(JSON.stringify({
+            type: 'paddle_update',
+            player_id: 'player1',
+            position: newPosition,
+        }));
+    }
+});
+document.addEventListener('keydown', (event) => {
+    if (event.key === 'w') {
+        // Move paddle up
+        const newPosition = playerPaddleY - 10; // Adjust the value as needed
+        updatePaddlePosition('player2', newPosition);
+        socket.send(JSON.stringify({
+            type: 'paddle_update',
+            player_id: 'player2',
+            position: newPosition,
+        }));
+    } else if (event.key === 's') {
+        // Move paddle down
+        const newPosition = playerPaddleY + 10; // Adjust the value as needed
+        updatePaddlePosition('player2', newPosition);
+        socket.send(JSON.stringify({
+            type: 'paddle_update',
+            player_id: 'player2',
+            position: newPosition,
+        }));
     }
 });
 
@@ -70,7 +114,7 @@ socket.addEventListener('error', (event) => {
     console.error('WebSocket error:', event);
 });
 
-/* function updatePaddlePosition(playerId, position) {
+function updatePaddlePosition(playerId, position) {
     const paddle = document.getElementById(`paddle-${playerId}`);
     
     if (playerId === 'player1') {
@@ -89,7 +133,7 @@ function updateBallPosition(ball) {
     const ballElement = document.getElementById('ball');
     ballElement.style.left = `${ball.x}px`;
     ballElement.style.top = `${ball.y}px`;
-} */
+}
 
 // Handle drawing the paddles and ball on the canvas
 function drawPaddles() {
