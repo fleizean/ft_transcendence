@@ -1,7 +1,7 @@
 /* The font i use in this css is only available for personal use. */
 /* link to this font https://www.fontspace.com/pixeboy-font-f43730 */
 
-@import url("https://fonts.googleapis.com/css?family=Roboto+Slab:400,700");
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
@@ -526,6 +526,10 @@ img {
   position: relative;
 }
 
+.notification-menu {
+  position: relative;
+}
+
 .profile-submenu {
   display: none;
   position: absolute;
@@ -537,7 +541,24 @@ img {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
+.notification-submenu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  right: -20px; /* Alt menüyü tamamen sağa yerleştirme */
+  background-color: rgba(51, 51, 51, 0.8); /* Menü arka plan rengi */
+  border-radius: 10px;
+  padding: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
 .profile-menu:hover .profile-submenu {
+  display: block;
+  z-index: 900;
+
+}
+
+.notification-menu:hover .notification-submenu {
   display: block;
   z-index: 900;
 
@@ -549,6 +570,14 @@ img {
   display: flex;
   padding: 5px;
 }
+
+.notification-submenu a {
+  color: white;
+  text-decoration: none;
+  display: flex;
+  padding: 10px;
+}
+
 
 .profile-submenu a:hover {
   background-color: #333; /* Hover rengi */
@@ -621,8 +650,8 @@ img {
   border-radius: 8px;
   max-width: 1300px;
   width: 100%;
-  max-height: auto;
   height: auto;
+  max-height: auto;
   margin: 0 auto; /* Ortalamak için */
 }
 
@@ -1853,3 +1882,97 @@ td {
 }
 
 
+
+
+
+
+
+
+
+
+
+
+
+/* Match History */
+
+.match-card {
+  position: relative;
+  margin-bottom: 0.5em;
+  width: 1000px;
+  height: 60px;
+  background: #ffffff;
+  border-radius: 10px;
+  align-items: center;
+  box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+}
+
+
+.match-score {
+  font-family: 'Roboto', sans-serif;
+  padding: 5px;
+  box-shadow: rgba(181, 12, 227, 0.4) 0px 5px, rgba(166, 46, 240, 0.3) 0px 10px;  border-radius: 5px;
+  position: absolute;
+  top: 50%;
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+  margin-left: 1em;
+  margin-right: 1em;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+
+.match-card.win .match-score {
+  color: #82aa30; /* Win durumu için yeşil renk */
+}
+
+.match-card.lose .match-score {
+  color: #FF0000; /* Lose durumu için kırmızı renk */
+}
+
+.player-text img {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%; /* Yuvarlak fotoğraf için */
+  margin-right: 10px; /* İstenirse sağa bir boşluk ekleyebilirsiniz */
+  margin-left: 10px;
+}
+
+.player-texts {
+  position: absolute;
+  display: flex;
+  top: 50%;
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+  align-items: center;
+  margin-left: 8em;
+}
+
+.text-versus {
+  margin-left: 4em;
+  margin-right: 2em;
+  color: #000000;
+  font-weight:500;
+}
+
+.player-home,
+.player-enemy {
+  color: #000000;
+  box-shadow: rgba(181, 12, 227, 0.4) 0px 5px, rgba(166, 46, 240, 0.3) 0px 10px;  border-radius: 5px;
+  font-weight: bold;
+  margin-left: 2em;
+}
+
+.match-date {
+  color: #000000; 
+  position: absolute;
+  display: flex;
+  font-weight: 300;
+  font-size: 14px;
+  top: 50%;
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+  align-items: center;
+  right: 0;
+  margin-right: 1em;
+}
