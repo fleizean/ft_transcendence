@@ -10,6 +10,13 @@ class UserProfileAdmin(admin.ModelAdmin):
         ('Custom Fields', {'fields': ('displayname', 'avatar', 'wins', 'losses')}),
     )
 
+    def thumbnail(self, obj):
+        return obj.thumbnail
+    
+    thumbnail.allow_tags = True
+    thumbnail.short_description = 'Avatar'
+    
+
 class TournamentAdmin(admin.ModelAdmin):
     list_display = ('name', 'start_date', 'end_date')
     search_fields = ('name',)

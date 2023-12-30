@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import MinValueValidator, MaxValueValidator
-
+from django.utils.html import mark_safe
 
 class UserProfile(AbstractUser):
     displayname = models.CharField(max_length=100, blank=True, null=True)
@@ -12,6 +12,13 @@ class UserProfile(AbstractUser):
 
     def __str__(self) -> str:
         return f"{self.username}"
+    
+    @property
+    def thumbnail(self):
+        if self.avatar:
+            return mark_safe('<img src="%s" width="50" height="50" />' % (self.avatar.url))
+        else:
+            return mark_safe('<img src="/static/images/default_avatar.png" width="50" height="50" />')
     
 class ChatMessage(models.Model):
     sender = models.ForeignKey(UserProfile, related_name='sent_messages', on_delete=models.CASCADE)
