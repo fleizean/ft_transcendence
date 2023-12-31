@@ -5,7 +5,7 @@ from django.views.decorators.cache import never_cache
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
 from django.http import HttpResponseBadRequest
-from .forms import BlockUserForm, ChatMessageForm, InviteToGameForm, UserProfileForm, UpdateProfileForm, TwoFactorAuthSetupForm, JWTTokenForm, AuthenticationUserForm, TournamentForm, TournamentMatchForm, OAuthTokenForm
+from .forms import BlockUserForm, ChatMessageForm, InviteToGameForm, PasswordChangeUserForm, PasswordResetUserForm, SetPasswordUserForm, UserProfileForm, UpdateUserProfileForm, TwoFactorAuthSetupForm, JWTTokenForm, AuthenticationUserForm, TournamentForm, TournamentMatchForm, OAuthTokenForm
 from .models import BlockedUser, ChatMessage, GameWarning, UserProfile, TwoFactorAuth, JWTToken, Tournament, TournamentMatch, OAuthToken
 from .utils import pass2fa
 from os import environ
@@ -17,6 +17,8 @@ import secrets, json
 from django.core.files import File
 import json
 
+### Homepage and Error Page ###
+
 @never_cache
 def index(request):
     return render(request, 'base.html')
@@ -24,22 +26,7 @@ def index(request):
 def handler404(request, exception):
     return render(request, '404.html', status=404)
 
-""" @login_required
-def profile(request):
-    user = request.user
-    return render(request, 'profile.html', {'user': user}) """
-
-@never_cache
-@login_required(login_url="login")
-def profile_view(request, username):
-    #try:
-    #    profile = UserProfile.objects.get(username=username)
-    #except UserProfile.DoesNotExist:
-        # Render custom 404 page
-    #    return render(request, '404.html', {'username': username}, status=404)
-
-    profile = get_object_or_404(UserProfile, username=username)
-    return render(request, 'profile.html', {'profile': profile})
+### User Authentication ###
 
 @never_cache
 def signup(request):
@@ -70,7 +57,6 @@ def auth(request):
     encoded_params = urlencode(fields)
     url = f"{auth_url}?{encoded_params}"
     return redirect(url)
-
 
 @never_cache
 def auth_callback(request):
@@ -136,6 +122,7 @@ def auth_callback(request):
                 if image_url:
                     image_name, _ = urllib.request.urlretrieve(image_url)
                     profile.avatar.save(image_name.split('/')[-1], File(open(image_name, 'rb')), save=True)
+                profile.save()
 
             # Store the access token in the OAuthToken model
             expires_at = datetime.now() + timedelta(seconds=expires_in)
@@ -151,6 +138,8 @@ def auth_callback(request):
             return redirect('dashboard')
 
     return redirect('login')  # Handle authentication failure
+
+### Login and Logout ###
 
 @never_cache
 def login_view(request):
@@ -169,6 +158,91 @@ def login_view(request):
 def logout_view(request):
 	logout(request)
 	return redirect("login")
+
+
+### Profile ###
+
+""" @login_required(login_url="login")
+def profile(request):
+    user = request.user
+    return render(request, 'profile.html', {'user': user}) """
+
+@never_cache
+@login_required(login_url="login")
+def profile_view(request, username):
+    #try:
+    #    profile = UserProfile.objects.get(username=username)
+    #except UserProfile.DoesNotExist:
+        # Render custom 404 page
+    #    return render(request, '404.html', {'username': username}, status=404)
+
+    profile = get_object_or_404(UserProfile, username=username)
+    return render(request, 'profile.html', {'profile': profile})
+
+### Profile Settings ###
+
+@never_cache
+@login_required(login_url="login")
+def update_profile(request):
+    if request.method == 'POST':
+        form = UpdateUserProfileForm(request.POST, request.FILES, instance=request.user)
+        if form.is_valid():
+            form.save()
+            # Perform additional actions if needed
+            messages.success(request, 'Profile updated successfully.')
+            return redirect('profile', request.user)
+    else:
+        form = UpdateUserProfileForm(instance=request.user)
+    return render(request, 'update_profile.html', {'form': form})
+
+@never_cache
+@login_required(login_url="login")
+def password_change(request):
+    if request.method == 'POST':
+        form = PasswordChangeUserForm(request.user, request.POST)
+        if form.is_valid():
+            form.save()
+            # Perform additional actions if needed
+            messages.success(request, 'Password changed successfully.')
+            return redirect('profile', request.user)
+    else:
+        form = PasswordChangeUserForm(request.user)
+    return render(request, 'password_change.html', {'form': form})
+
+@never_cache
+@login_required(login_url="login")
+def password_reset(request):
+    if request.method == 'POST':
+        form = PasswordResetUserForm(request.POST)
+        if form.is_valid():
+            form.save()
+            # Perform additional actions if needed
+            messages.success(request, 'Password reset email sent successfully.')
+            return redirect('password_reset_done')
+    else:
+        form = PasswordResetUserForm()
+    return render(request, 'password_reset.html', {'form': form})
+
+@never_cache
+@login_required(login_url="login")
+def password_reset_done(request):
+    return render(request, 'password_reset_done.html')
+
+@never_cache
+@login_required(login_url="login")
+def set_password(request, uidb64, token):
+    if request.method == 'POST':
+        form = SetPasswordUserForm(request.POST)
+        if form.is_valid():
+            form.save()
+            # Perform additional actions if needed
+            messages.success(request, 'Password set successfully.')
+            return redirect('profile', request.user)
+    else:
+        form = SetPasswordUserForm()
+    return render(request, 'set_password.html', {'form': form})
+
+### Navbar ###
 
 @never_cache
 @login_required(login_url="login")
@@ -194,6 +268,9 @@ def game(request):
 @login_required(login_url="login")
 def chat(request):
     return render(request, 'chat.html', {'username': request.user.username})
+
+
+### Chat ###
 
 @never_cache
 @login_required(login_url="login")
@@ -275,18 +352,35 @@ def game_warning(request, opponent_id):
     messages.warning(request, f'Game warning sent to {opponent.username}.')
     return redirect('chat')
 
+### Tournaments ###
+
 @never_cache
 @login_required(login_url="login")
-def update_profile(request):
+def create_tournament(request):
     if request.method == 'POST':
-        form = UpdateProfileForm(request.POST, request.FILES, instance=request.user)
+        form = TournamentForm(request.POST)
         if form.is_valid():
-            form.save()
-            # Perform additional actions if needed
-            return redirect('profile', request.user)
+            tournament = form.save()
+            messages.success(request, f'Tournament "{tournament.name}" created successfully.')
+            return redirect('tournament_list')
     else:
-        form = UpdateProfileForm(instance=request.user)
-    return render(request, 'update_profile.html', {'form': form})
+        form = TournamentForm()
+    return render(request, 'create_tournament.html', {'form': form})
+
+@never_cache
+@login_required(login_url="login")
+def create_tournament_match(request):
+    if request.method == 'POST':
+        form = TournamentMatchForm(request.POST)
+        if form.is_valid():
+            match = form.save()
+            messages.success(request, f'Match between {match.player1} and {match.player2} created successfully.')
+            return redirect('tournament_match_list')
+    else:
+        form = TournamentMatchForm()
+    return render(request, 'create_tournament_match.html', {'form': form})
+
+### Two-Factor Authentication ###
 
 @never_cache
 @login_required(login_url="login")
@@ -315,31 +409,9 @@ def generate_jwt_token(request):
         form = JWTTokenForm(instance=request.user.jwttoken)
     return render(request, 'generate_jwt_token.html', {'form': form})
 
-@never_cache
-@login_required(login_url="login")
-def create_tournament(request):
-    if request.method == 'POST':
-        form = TournamentForm(request.POST)
-        if form.is_valid():
-            tournament = form.save()
-            messages.success(request, f'Tournament "{tournament.name}" created successfully.')
-            return redirect('tournament_list')
-    else:
-        form = TournamentForm()
-    return render(request, 'create_tournament.html', {'form': form})
 
-@never_cache
-@login_required(login_url="login")
-def create_tournament_match(request):
-    if request.method == 'POST':
-        form = TournamentMatchForm(request.POST)
-        if form.is_valid():
-            match = form.save()
-            messages.success(request, f'Match between {match.player1} and {match.player2} created successfully.')
-            return redirect('tournament_match_list')
-    else:
-        form = TournamentMatchForm()
-    return render(request, 'create_tournament_match.html', {'form': form})
+
+
 
 
 

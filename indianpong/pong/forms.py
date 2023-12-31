@@ -1,7 +1,7 @@
 # forms.py
 
 from django import forms
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, UserChangeForm, PasswordChangeForm, PasswordResetForm, SetPasswordForm 
 from .models import BlockedUser, ChatMessage, GameInvitation, UserProfile, TwoFactorAuth, JWTToken, Tournament, TournamentMatch, OAuthToken
 
 class UserProfileForm(UserCreationForm):
@@ -14,7 +14,57 @@ class UserProfileForm(UserCreationForm):
     avatar = forms.ImageField(required=False ,label='Avatar', widget=forms.FileInput(attrs={'class': 'input'}))
     class Meta:
         model = UserProfile
-        fields = ['username', 'displayname', 'email', 'password1', 'password2']
+        fields = ['username', 'displayname', 'email', 'password1', 'password2', 'avatar']
+
+class AuthenticationUserForm(AuthenticationForm):
+    username = forms.CharField(label='Username', widget=forms.TextInput(attrs={'class': 'input'}))
+    password = forms.CharField(label='Password', widget=forms.PasswordInput(attrs={'class': 'input'}))
+    class Meta:
+        model = UserProfile
+        fields = ['username', 'password']
+
+class UpdateUserProfileForm(UserChangeForm):
+    username = forms.CharField(label='Username', widget=forms.TextInput(attrs={'class': 'input'}))
+    displayname = forms.CharField(label='Displayname', widget=forms.TextInput(attrs={'class': 'input'}))
+    email = forms.EmailField(label='Email', widget=forms.EmailInput(attrs={'class': 'input'}))
+    avatar = forms.ImageField(required=False ,label='Avatar', widget=forms.FileInput(attrs={'class': 'input'}))
+    class Meta:
+        model = UserProfile
+        fields = ['username', 'displayname', 'email', 'avatar']
+
+""" class UpdateProfileForm(forms.ModelForm):
+    username = forms.CharField(label='Username', widget=forms.TextInput(attrs={'class': 'input'}))
+    displayname = forms.CharField(label='Displayname', widget=forms.TextInput(attrs={'class': 'input'}))
+    email = forms.EmailField(label='Email', widget=forms.EmailInput(attrs={'class': 'input'}))
+    avatar = forms.ImageField(required=False ,label='Avatar', widget=forms.FileInput(attrs={'class': 'input'}))
+    class Meta:
+        model = UserProfile
+        fields = ['username', 'displayname', 'email', 'avatar'] """
+
+
+class PasswordChangeUserForm(PasswordChangeForm):
+    old_password = forms.CharField(label='Old Password', widget=forms.PasswordInput(attrs={'class': 'input'}))
+    new_password1 = forms.CharField(label='New Password', widget=forms.PasswordInput(attrs={'class': 'input'}))
+    new_password2 = forms.CharField(label='ReNew Password', widget=forms.PasswordInput(attrs={'class': 'input'}))
+    class Meta:
+        model = UserProfile
+        fields = ['old_password', 'new_password1', 'new_password2']
+
+class PasswordResetUserForm(PasswordResetForm):
+    email = forms.EmailField(label='Email', widget=forms.EmailInput(attrs={'class': 'input'}))
+    class Meta:
+        model = UserProfile
+        fields = ['email']
+
+#After reset password
+class SetPasswordUserForm(SetPasswordForm):
+    new_password1 = forms.CharField(label='New Password', widget=forms.PasswordInput(attrs={'class': 'input'}))
+    new_password2 = forms.CharField(label='ReNew Password', widget=forms.PasswordInput(attrs={'class': 'input'}))
+    uidb64 = forms.CharField(widget=forms.HiddenInput(attrs={'class': 'input'}))
+    token = forms.CharField(widget=forms.HiddenInput(attrs={'class': 'input'}))
+    class Meta:
+        model = UserProfile
+        fields = ['new_password1', 'new_password2']
 
 class ChatMessageForm(forms.ModelForm):
     class Meta:
@@ -41,11 +91,6 @@ class InviteToGameForm(forms.ModelForm):
             'message': forms.Textarea(attrs={'rows': 3}),
         }
 
-class UpdateProfileForm(forms.ModelForm):
-    #avatar = forms.ImageField()
-    class Meta:
-        model = UserProfile
-        fields = ['username', 'first_name', 'last_name', 'email', 'avatar']
 
 class TwoFactorAuthSetupForm(forms.ModelForm):
     class Meta:
@@ -57,12 +102,6 @@ class JWTTokenForm(forms.ModelForm):
         model = JWTToken
         fields = ['token']
 
-class AuthenticationUserForm(AuthenticationForm):
-    username = forms.CharField(label='Username', widget=forms.TextInput(attrs={'class': 'input'}))
-    password = forms.CharField(label='Password', widget=forms.PasswordInput(attrs={'class': 'input'}))
-    class Meta:
-        model = UserProfile
-        fields = ['username', 'password']
 
 class TournamentForm(forms.ModelForm):
     class Meta:
