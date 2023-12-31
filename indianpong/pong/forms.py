@@ -5,9 +5,16 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from .models import BlockedUser, ChatMessage, GameInvitation, UserProfile, TwoFactorAuth, JWTToken, Tournament, TournamentMatch, OAuthToken
 
 class UserProfileForm(UserCreationForm):
+
+    username = forms.CharField(label='Username', widget=forms.TextInput(attrs={'class': 'input'}))
+    displayname = forms.CharField(label='Displayname', widget=forms.TextInput(attrs={'class': 'input'}))
+    email = forms.EmailField(label='Email', widget=forms.EmailInput(attrs={'class': 'input'}))
+    password1 = forms.CharField(label='Password', widget=forms.PasswordInput(attrs={'class': 'input'}))
+    password2 = forms.CharField(label='RePassword', widget=forms.PasswordInput(attrs={'class': 'input'}))
+    avatar = forms.ImageField(required=False ,label='Avatar', widget=forms.FileInput(attrs={'class': 'input'}))
     class Meta:
         model = UserProfile
-        fields = ['username', 'displayname', 'email', 'password1', 'password2', 'avatar']
+        fields = ['username', 'displayname', 'email', 'password1', 'password2']
 
 class ChatMessageForm(forms.ModelForm):
     class Meta:
@@ -18,14 +25,14 @@ class ChatMessageForm(forms.ModelForm):
         }
 
 class BlockUserForm(forms.ModelForm):
-    blocked_user = forms.ModelChoiceField(queryset=UserProfile.objects.all(), widget=forms.Select(attrs={'class': 'form-control'}))
+    blocked_user = forms.ModelChoiceField(queryset=UserProfile.objects.all(), widget=forms.Select(attrs={'class': 'input'}))
 
     class Meta:
         model = BlockedUser
         fields = ['blocked_user']
 
 class InviteToGameForm(forms.ModelForm):
-    invited_user = forms.ModelChoiceField(queryset=UserProfile.objects.all(), widget=forms.Select(attrs={'class': 'form-control'}))
+    invited_user = forms.ModelChoiceField(queryset=UserProfile.objects.all(), widget=forms.Select(attrs={'class': 'input'}))
 
     class Meta:
         model = GameInvitation
@@ -51,6 +58,8 @@ class JWTTokenForm(forms.ModelForm):
         fields = ['token']
 
 class AuthenticationUserForm(AuthenticationForm):
+    username = forms.CharField(label='Username', widget=forms.TextInput(attrs={'class': 'input'}))
+    password = forms.CharField(label='Password', widget=forms.PasswordInput(attrs={'class': 'input'}))
     class Meta:
         model = UserProfile
         fields = ['username', 'password']

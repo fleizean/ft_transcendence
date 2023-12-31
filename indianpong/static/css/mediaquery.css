@@ -15,7 +15,7 @@
   }
   
   .snow {
-    position: absolute;
+    position: fixed;
     background-color: #fff;
     /* Kar tanelerinin rengi */
     border-radius: 50%;

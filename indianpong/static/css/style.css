@@ -72,6 +72,7 @@ body {
   padding: 0;
   background-color: #1a1a1a;
   cursor: url('../assets/scrool/pixelsword.png'), auto;
+  overflow: hidden;
 }
 
 .backgroundimage {
@@ -84,6 +85,7 @@ body {
   background-size: cover;
   z-index: 1;
   overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .container {
@@ -204,7 +206,7 @@ img {
 }
 
 .snow {
-  position: absolute;
+  position: fixed;
   background-color: #fff;
   /* Kar tanelerinin rengi */
   border-radius: 50%;
@@ -276,6 +278,17 @@ img {
   color: var(--font-color-sub);
   font-weight: 600;
   font-size: 17px;
+}
+
+label {
+  display: inline-block;
+  width: 90px; /* Adjust this value according to your needs */
+  text-align: start;
+  margin-right: 10px; /* Space between the label and the input field */
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--font-color-sub);
+  opacity: 0.8;
 }
 
 .input {
@@ -411,11 +424,12 @@ img {
   align-items: center;
   justify-content: center;
   background-color: rgba(0, 0, 0, 0.294);
+  box-shadow: 4px 4px var(--main-color);
   border-radius: 3px;
   letter-spacing: 1px;
   transition: all 0.2s linear;
   cursor: pointer;
-  border: none;
+  border: 2px solid var(--main-color);
   background: #F4F2ED;
  }
  
@@ -1606,4 +1620,49 @@ td {
 
 .error-message {
   color: red;
+  font-size: 14px;
+  text-align: left;
 }
+
+.no-underline {
+  text-decoration: none;
+}
+
+/* .helptext {
+  display: none;
+  position: relative;
+}
+
+.helptext::before {
+  content: attr(title);
+  position: absolute;
+  top: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 5px;
+  background-color: #000;
+  color: #fff;
+  border-radius: 5px;
+  font-size: 12px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.helptext:hover::before {
+  opacity: 1;
+  visibility: visible;
+}
+
+.helptext::after {
+  content: "ℹ";
+  position: absolute;
+  top: 0;
+  right: -20px;
+  font-size: 20px;
+}
+
+.helptext:hover + .helptext::before {
+  opacity: 1;
+  visibility: visible;
+} */

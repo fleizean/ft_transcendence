@@ -30,6 +30,17 @@
     font-size: 17px;
   }
   
+  label {
+    display: inline-block;
+    width: 90px; /* Adjust this value according to your needs */
+    text-align: start;
+    margin-right: 10px; /* Space between the label and the input field */
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--font-color-sub);
+    opacity: 0.8;
+  }
+
   .input {
     width: 250px;
     height: 40px;
@@ -163,11 +174,12 @@
     align-items: center;
     justify-content: center;
     background-color: rgba(0, 0, 0, 0.294);
+    box-shadow: 4px 4px var(--main-color);
     border-radius: 3px;
     letter-spacing: 1px;
     transition: all 0.2s linear;
     cursor: pointer;
-    border: none;
+    border: 2px solid var(--main-color);
     background: #F4F2ED;
    }
    
@@ -190,4 +202,49 @@
 
    .error-message {
     color: red;
+    font-size: 14px;
+    text-align: left;
   }
+  
+  .no-underline {
+    text-decoration: none;
+  }
+  
+  /* .helptext {
+    display: none;
+    position: relative;
+  }
+  
+  .helptext::before {
+    content: attr(title);
+    position: absolute;
+    top: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 5px;
+    background-color: #000;
+    color: #fff;
+    border-radius: 5px;
+    font-size: 12px;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+  }
+  
+  .helptext:hover::before {
+    opacity: 1;
+    visibility: visible;
+  }
+  
+  .helptext::after {
+    content: "ℹ";
+    position: absolute;
+    top: 0;
+    right: -20px;
+    font-size: 20px;
+  }
+  
+  .helptext:hover + .helptext::before {
+    opacity: 1;
+    visibility: visible;
+  } */
