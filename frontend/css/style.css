@@ -2069,3 +2069,103 @@ td {
   left: 0;
   top: 0;
 }
+
+
+
+
+
+
+
+
+
+
+/* Room List */
+
+.room-wrapper {
+  max-width: 720px;
+  margin: auto;
+  text-align: left;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.room.pong,
+.room.rps {
+  width: 120px;
+  height: 120px;
+  transition: opacity, .2s;
+  z-index: 1;
+}
+
+.room.pong {
+  position: relative; 
+  background: url('../assets/backgrounds/pong-room-bg.jpeg') center/cover;
+}
+
+.room.rps {
+  position: relative; 
+  background: url('../assets/backgrounds/rps-room-bg.jpeg') center/cover;
+}
+
+
+.room-list-container {
+  box-shadow: rgba(6, 24, 44, 0.4) 0px 0px 0px 2px, rgba(6, 24, 44, 0.65) 0px 4px 6px -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset;
+  margin: 0 15px;
+  vertical-align: top;
+  margin-right: 1em;
+  width: 120px;
+  position: relative;
+  height: 120px;
+  margin-bottom: 15px; /* Adjust as needed */
+}
+
+.room-info-wrapper {
+  margin-bottom: -10px;
+  display: none;
+  text-align: center;
+  transition: margin-bottom, .2s;
+}
+
+.room-hover-title {
+  color: #000000;
+  padding-bottom: 6px;
+  text-align: center;
+  font-weight: 700;
+  font-size: 15px;
+}
+
+.room-hover-subtitle {
+  position: absolute;
+  color: #000000;
+  bottom: 0;
+  left: 50%; /* Sayfanın ortasına yerleştirmek için sol kenarı merkeze alır */
+  transform: translateX(-50%); /* Orta noktadan sola kaydırır */
+  padding-bottom: 10px;
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.room-list-box {
+  position: relative;
+  overflow: hidden; /* Gerekli - içeriğin overlay dışına taşmasını önler */
+}
+
+.room.pong:hover .room-info-wrapper {
+  display:block;
+  z-index: 1;
+}
+
+.room.rps:hover .room-info-wrapper {
+  display:block;
+  z-index: 1;
+}
+
+.room-info-wrapper {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 10; /* room-info-overlay'dan üstte olacak */
+  /* Diğer stillendirmeler */
+}
