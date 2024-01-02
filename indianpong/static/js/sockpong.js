@@ -65,91 +65,152 @@ socket.onmessage = function (e) {
             break;
         // leave can be added also for match or user.offline would be enough
         case 'tournament.leave':
-            console.log(`Left Tournament Id: ${data.tournament_id}`);
+            console.log(`Left Tournament Id: ${data.tournament_id} as ${data.player}`);
             break;
+        }
     }
-}
-
+    
 socket.sendJSON = function (data) {
     socket.send(JSON.stringify(data));
 }
 
-// maybe put in action.js
-socket.sendJSON({
-    action: 'invite',
-    opponent: 'opponent_username', // When invite clicked take username somehow
-});
 
-socket.sendJSON({
-    action: 'accept',
-    game_id: 'game_id', // When accept clicked take game_id somehow
-});
+function invite() {
+    // Get necessary data and call socket.sendJSON
+    // maybe put in action.js
+    socket.sendJSON({
+        action: 'invite',
+        opponent: 'opponent_username', // When invite clicked take username somehow
+    });
+}
 
-socket.sendJSON({
-    action: 'move',
-    game_id: 'game_id',
-    x: 1, // if this for paddle only y required and for ball both
-    y: -1,
-    player: 'username', // player1 or player2
-});
+function accept() {
+    // Get necessary data and call socket.sendJSON
+    socket.sendJSON({
+        action: 'accept',
+        game_id: 'game_id', // When accept clicked take game_id somehow
+    });
+}
 
-socket.sendJSON({
-    action: 'end',
-    game_id: 'game_id',
-    winner: 'username', // player1 or player2
-});
+// send this in setInterval(update, 16) this ll be game state
+function move() {
+    // Get necessary data and call socket.sendJSON
+    socket.sendJSON({
+        action: 'move',
+        game_id: 'game_id',
+        x: 1, // if this for paddle only y required and for ball both
+        y: -1,
+        player: 'username', // player1 or player2
+    });
+}
 
-socket.sendJSON({
-    action: 'join',
-    tournament_id: 'tournament_id', // When join clicked take tournament_id somehow
-    username: 'username', // When join clicked take username somehow
-});
+function endGame() {
+    // Get necessary data and call socket.sendJSON
+    socket.sendJSON({
+        action: 'end',
+        game_id: 'game_id',
+        winner: 'username', // player1 or player2
+    });
+}
 
-socket.sendJSON({
-    action: 'start',
-    tournament_id: 'tournament_id', // When start clicked create and take tournament_id somehow
-    mathces: [
-        {
-            match_id: 'match_id', // When start clicked create and take match_id somehow
-            player1: 'player1_username',
-            player2: 'player2_username',
-        },
-        {
-            match_id: 'match_id',
-            player1: 'player3_username',
-            player2: 'player4_username',
-        },
-    ], // When start clicked create and take matches somehow
-});
+function create() {
+    // Get necessary data and call socket.sendJSON
+    socket.sendJSON({
+        action: 'create',
+        name: 'tournament_name' // When create clicked take tournament_name somehow
+    });
+}
 
-socket.sendJSON({
-    action: 'finish',
-    match_id: 'match_id',
-    winner: 'username', // player1 or player2
-});
+function join() {
+    // Get necessary data and call socket.sendJSON
+    socket.sendJSON({
+        action: 'join',
+        tournament_id: 'tournament_id', // When join clicked take tournament_id somehow
+        username: 'username', // When join clicked take username somehow
+    });
+}
 
-// next games
-socket.sendJSON({
-    action: 'next',
-    tournament_id: 'tournament_id',
-    matches: [
-        {
-            match_id: 'match_id',
-            player1: 'player1_username',
-            player2: 'player2_username',
-        },
-        {
-            match_id: 'match_id',
-            player1: 'player3_username',
-            player2: 'player4_username',
-        },
-    ],
-});
+function cancel() {
+    // Get necessary data and call socket.sendJSON
+    socket.sendJSON({
+        action: 'cancel',
+        tournament_id: 'tournament_id',
+    });
+}
+
+function leave() {
+    // Get necessary data and call socket.sendJSON
+    socket.sendJSON({
+        action: 'leave',
+        tournament_id: 'tournament_id',
+        player: 'username', // When leave clicked take username somehow
+    });
+}
+
+function start() {
+    // Get necessary data and call socket.sendJSON
+    socket.sendJSON({
+        action: 'start',
+        tournament_id: 'tournament_id', // When start clicked create and take tournament_id somehow
+        mathces: [
+            {
+                match_id: 'match_id', // When start clicked create and take match_id somehow
+                player1: 'player1_username',
+                player2: 'player2_username',
+            },
+            {
+                match_id: 'match_id',
+                player1: 'player3_username',
+                player2: 'player4_username',
+            },
+        ], // When start clicked create and take matches somehow
+    });
+}
+
+function finish() {
+    // Get necessary data and call socket.sendJSON
+    socket.sendJSON({
+        action: 'finish',
+        match_id: 'match_id',
+        winner: 'username', // player1 or player2
+    });
+}
+
+function next() {
+    // Get necessary data and call socket.sendJSON
+    // next games
+    socket.sendJSON({
+        action: 'next',
+        tournament_id: 'tournament_id',
+        matches: [
+            {
+                match_id: 'match_id',
+                player1: 'player1_username',
+                player2: 'player2_username',
+            },
+            {
+                match_id: 'match_id',
+                player1: 'player3_username',
+                player2: 'player4_username',
+            },
+        ],
+    });
+    
+    
+    // tournament ended no next
+    socket.sendJSON({
+        action: 'next',
+        tournament_id: 'tournament_id',
+        winner: 'username', // player1 or player2
+    });
+}
 
 
-// tournament ended no next
-socket.sendJSON({
-    action: 'next',
-    tournament_id: 'tournament_id',
-    winner: 'username', // player1 or player2
-});
+
+
+
+
+
+
+
+

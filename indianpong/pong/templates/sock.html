@@ -1,0 +1,32 @@
+{% load static %}
+
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Socket Actions</title>
+    <style>
+        canvas {
+            display: block;
+            margin: 20px auto;
+            border: 1px solid #000;
+        }
+    </style>
+</head>
+
+<body>
+    <button onclick="invite()">Invite</button>
+    <button onclick="accept()">Accept</button>
+    <button onclick="move()">Move</button>
+    <button onclick="endGame()">End Game</button>
+    <button onclick="join()">Join Tournament</button>
+    <button onclick="cancel()">Cancel Tournament</button>
+    <button onclick="leave()">Leave Tournament</button>
+    <button onclick="start()">Start Tournament</button>
+    <button onclick="finish()">Finish Match</button>
+    <button onclick="next()">Next Game</button>
+
+    <canvas id="pongCanvas" width="800" height="600"></canvas>
+    <script src="{% static "js/sockpong.js" %}"></script>
+</body>
+</html>

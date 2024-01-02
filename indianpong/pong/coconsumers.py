@@ -1,8 +1,10 @@
 import json
+from uuid import uuid4
 from channels.generic.websocket import AsyncWebsocketConsumer
 from channels.db import database_sync_to_async
 from django.contrib.auth.models import User
 from .models import Game, Tournament, Score, Match
+from datetime import datetime
 
 class PongConsumer(AsyncWebsocketConsumer):
     async def connect(self):
@@ -114,13 +116,32 @@ class PongConsumer(AsyncWebsocketConsumer):
                     "winner": winner,
                 }
             )
+    '''
+        elif action == "create":
+            # Create a new tournament
+            name = data["name"]
+            #start_date = data["start_date"]
+            #end_date = data["end_date"]
+            # Create a new tournament instance with the given details and save it to the database
+            tournament = await self.create_tournament(name)
+            # Send a message to the 'online' group with the tournament id and the tournament details
+            await self.channel_layer.group_send(
+                "online",
+                {
+                    "type": "tournament.create",
+                    "tournament_id": tournament.id,
+                    "name": tournament.name,
+                    "start_date": tournament.start_date,
+                    #"end_date": tournament.end_date,
+                }
+            )
         elif action == "join":
             # Join a tournament
             tournament_id = data["tournament_id"]
             # Get the tournament instance from the database
             tournament = await self.get_tournament(tournament_id)
             # Add the user to the tournament players and save it to the database
-            tournament.players.add(self.user)
+            tournament.participants.add(self.user)
             await self.save_tournament(tournament)
             # Send a message to the 'online' group with the tournament id and the user's username
             await self.channel_layer.group_send(
@@ -129,6 +150,38 @@ class PongConsumer(AsyncWebsocketConsumer):
                     "type": "tournament.join",
                     "tournament_id": tournament.id,
                     "username": self.user.username,
+                }
+            )
+        elif action == "leave":
+            # Leave a tournament
+            tournament_id = data["tournament_id"]
+            # Get the tournament instance from the database
+            tournament = await self.get_tournament(tournament_id)
+            # Remove the user from the tournament players and save it to the database
+            tournament.participants.remove(self.user)
+            await self.save_tournament(tournament)
+            # Send a message to the 'online' group with the tournament id and the user's username
+            await self.channel_layer.group_send(
+                "online",
+                {
+                    "type": "tournament.leave",
+                    "tournament_id": tournament.id,
+                    "username": self.user.username,
+                }
+            )
+        elif action == "cancel":
+            # Cancel a tournament
+            tournament_id = data["tournament_id"]
+            # Get the tournament instance from the database
+            tournament = await self.get_tournament(tournament_id)
+            # Delete the tournament instance from the database
+            await tournament.delete()
+            # Send a message to the 'online' group with the tournament id
+            await self.channel_layer.group_send(
+                "online",
+                {
+                    "type": "tournament.cancel",
+                    "tournament_id": tournament.id,
                 }
             )
         elif action == "start":
@@ -159,6 +212,7 @@ class PongConsumer(AsyncWebsocketConsumer):
             )
         elif action == "finish":
             # Finish a match in a tournament
+            tournament_id = data["tournament_id"]
             match_id = data["match_id"]
             winner = data["winner"]
             # Get the match instance from the database
@@ -167,7 +221,7 @@ class PongConsumer(AsyncWebsocketConsumer):
             match.status = "finished"
             await self.save_match(match)
             # Update the tournament standings with the match result and save it to the database
-            tournament = match.tournament
+            tournament = await self.get_tournament(tournament_id)
             tournament.standings[winner] += 1
             await self.save_tournament(tournament)
             # Send a message to the 'online' group with the match id and the winner's username
@@ -217,7 +271,7 @@ class PongConsumer(AsyncWebsocketConsumer):
                         ],
                     }
                 )
-
+    '''
     # Helper methods to interact with the database
     @database_sync_to_async
     def create_game(self, player1, player2):
@@ -241,7 +295,13 @@ class PongConsumer(AsyncWebsocketConsumer):
         # Create a new score instance with the given game and winner
         score = Score.objects.create(game=game, winner=winner)
         return score
-
+    '''
+    @database_sync_to_async
+    def create_tournament(self, name):
+        # Create a new tournament instance with the given name and an empty standings
+        tournament = Tournament.objects.create(id=uuid4(), name=name, status="open", start_date=datetime.now(), standings={})
+        return tournament
+    
     @database_sync_to_async
     def get_tournament(self, tournament_id):
         # Get the tournament instance with the given id
@@ -258,7 +318,7 @@ class PongConsumer(AsyncWebsocketConsumer):
         # Create the next round of matches for the tournament
         # This is a simplified logic that assumes the number of players is a power of two
         # and that the players are ordered by their standings
-        players = list(tournament.players.all())
+        players = list(tournament.participants.all())
         matches = []
         for i in range(0, len(players), 2):
             # Create a new match instance with the pair of players and the tournament
@@ -276,7 +336,7 @@ class PongConsumer(AsyncWebsocketConsumer):
     def save_match(self, match):
         # Save the match instance to the database
         match.save()
-
+'''
     # Handler methods for different types of messages
     async def user_online(self, event):
         # Handle a message that a user is online
@@ -347,7 +407,7 @@ class PongConsumer(AsyncWebsocketConsumer):
             "game_id": game_id,
             "winner": winner,
         }))
-
+'''
     async def tournament_join(self, event):
         # Handle a message that a user joined a tournament
         tournament_id = event["tournament_id"]
@@ -402,3 +462,4 @@ class PongConsumer(AsyncWebsocketConsumer):
             "tournament_id": tournament_id,
             "winner": winner,
         }))
+'''

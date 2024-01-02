@@ -57,9 +57,13 @@ class MatchHistory(models.Model):
         return f"{self.user + '-' + self.opponent}"
 
 class Tournament(models.Model):
+    CHOICES = ("open", "started","ended")
+
+    id = models.UUIDField(primary_key=True, editable=False)
     name = models.CharField(max_length=100)
+    status = models.CharField(max_length=10, choices=CHOICES)
     start_date = models.DateTimeField()
-    end_date = models.DateTimeField()
+    #end_date = models.DateTimeField()
     participants = models.ManyToManyField(UserProfile, related_name='tournaments')
 
     def __str__(self) -> str:

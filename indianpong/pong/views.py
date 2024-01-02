@@ -262,7 +262,7 @@ def search(request):
 
 @login_required(login_url="login")
 def game(request):
-    return render(request, 'game.html', {'username': request.user.username})
+    return render(request, 'sock.html', {'username': request.user.username})
 
 @never_cache
 @login_required(login_url="login")
