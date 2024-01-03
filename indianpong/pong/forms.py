@@ -106,7 +106,7 @@ class JWTTokenForm(forms.ModelForm):
 class TournamentForm(forms.ModelForm):
     class Meta:
         model = Tournament
-        fields = ['name', 'start_date', 'end_date']
+        fields = ['name']
 
 class TournamentMatchForm(forms.ModelForm):
     class Meta:

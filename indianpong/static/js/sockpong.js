@@ -22,9 +22,13 @@ socket.onmessage = function (e) {
     console.log(data);
     switch (data.type) {
         case 'user.online':
+            // Add username to onlineUsers table
+            document.getElementById('OnlineUsers').innerHTML += `<tr><th>${data.username}</th></tr>`;
             console.log('Player connected:', data.username);
             break;
         case 'user.offline':
+            // Remove username from onlineUsers table
+            document.getElementById('OnlineUsers').innerHTML = document.getElementById('OnlineUsers').innerHTML.replace(`<tr><td>${data.username}</td></tr>`, '');
             console.log('Player disconnected:', data.username);
             break;
         
@@ -77,10 +81,11 @@ socket.sendJSON = function (data) {
 
 function invite() {
     // Get necessary data and call socket.sendJSON
+    username = document.getElementById('inviteInput').value;
     // maybe put in action.js
     socket.sendJSON({
         action: 'invite',
-        opponent: 'opponent_username', // When invite clicked take username somehow
+        opponent: username, // When invite clicked take username somehow
     });
 }
 
@@ -109,7 +114,8 @@ function endGame() {
     socket.sendJSON({
         action: 'end',
         game_id: 'game_id',
-        winner: 'username', // player1 or player2
+        player1_score: 1, // send scores when game ended
+        player2_score: 2,
     });
 }
 

@@ -1,24 +1,34 @@
 from django.contrib import admin
-from django.contrib.auth.admin import UserAdmin
-from .models import UserProfile, MatchHistory, Tournament, TournamentMatch, TwoFactorAuth, JWTToken, OAuthToken
-
+from .models import UserProfile, Tournament, TournamentMatch, TwoFactorAuth, JWTToken, OAuthToken
+from django.utils.html import format_html
 
 class UserProfileAdmin(admin.ModelAdmin):
-    list_display = ('username', 'email', 'displayname','wins', 'losses')
+    """
+    Admin class for managing user profiles.
+
+    Attributes:
+        list_display (tuple): A tuple of fields to be displayed in the admin list view.
+        search_fields (tuple): A tuple of fields to be used for searching in the admin list view.
+        fieldsets (tuple): A tuple of fieldsets to be displayed in the admin edit view.
+    """
+
+    list_display = ('username', 'email', 'displayname', 'avatar_thumbnail', 'wins', 'losses')
     search_fields = ('username', 'email', 'displayname')
-    fieldsets = UserAdmin.fieldsets + (
-        ('Custom Fields', {'fields': ('displayname', 'avatar', 'wins', 'losses')}),
+    fieldsets = (
+    ('User Information', {'fields': ('username', 'password', 'displayname', 'email', 'avatar', 'friends' )}),
+    ('Dates', {'fields': ('date_joined', 'last_login')}),
+    ('Roles', {'fields': ('is_staff', 'is_active', 'is_superuser')}),
+    ('Permissions', {'fields': ('groups', 'user_permissions')}),
+    ('Stats', {'fields': ('wins', 'losses')}),
     )
 
-    def thumbnail(self, obj):
-        return obj.thumbnail
-    
-    thumbnail.allow_tags = True
-    thumbnail.short_description = 'Avatar'
+    def avatar_thumbnail(self, obj):
+        return format_html(obj.thumbnail)
+    avatar_thumbnail.short_description = 'Avatar'
     
 
 class TournamentAdmin(admin.ModelAdmin):
-    list_display = ('name', 'start_date', 'end_date')
+    list_display = ('name', 'start_date')
     search_fields = ('name',)
 
 class TournamentMatchAdmin(admin.ModelAdmin):
@@ -38,7 +48,7 @@ class OAuthTokenAdmin(admin.ModelAdmin):
     search_fields = ('user__username',)
 
 admin.site.register(UserProfile, UserProfileAdmin)
-admin.site.register(MatchHistory)
+#admin.site.register(MatchHistory)
 admin.site.register(Tournament, TournamentAdmin)
 admin.site.register(TournamentMatch, TournamentMatchAdmin)
 admin.site.register(TwoFactorAuth, TwoFactorAuthAdmin)

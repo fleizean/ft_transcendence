@@ -18,7 +18,7 @@ class UserProfile(AbstractUser):
         if self.avatar:
             return mark_safe('<img src="%s" width="50" height="50" />' % (self.avatar.url))
         else:
-            return mark_safe('<img src="/static/images/default_avatar.png" width="50" height="50" />')
+            return mark_safe('<img src="/static/assets/profile/default_avatar.png" width="50" height="50" />')
     
 class ChatMessage(models.Model):
     sender = models.ForeignKey(UserProfile, related_name='sent_messages', on_delete=models.CASCADE)
@@ -47,7 +47,25 @@ class GameWarning(models.Model):
     def __str__(self):
         return f"{self.user.username} sent a game warning to {self.opponent.username}"
 
-class MatchHistory(models.Model):
+class Game(models.Model):
+    STATUS_CHOICES = (
+        ("invited", "Invited"),
+        ("started", "Started"),
+        ("ended", "Ended")
+    )
+    group_name = models.CharField(max_length=100)
+    player1 = models.ForeignKey(UserProfile, related_name='games_as_player1', on_delete=models.CASCADE)
+    player2 = models.ForeignKey(UserProfile, related_name='games_as_player2', on_delete=models.CASCADE)
+    player1_score = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(20)], default=0)
+    player2_score = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(20)], default=0)
+    created_at = models.DateTimeField(auto_now_add=True)
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES)
+    winner = models.ForeignKey(UserProfile, related_name='games_won', on_delete=models.CASCADE, null=True, blank=True)
+
+    def __str__(self):
+        return f"{self.player1.username} vs {self.player2.username}"
+
+class MatchRecord(models.Model):
     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='matches')
     opponent = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='opponent_matches')
     date = models.DateTimeField(auto_now_add=True)
@@ -57,12 +75,15 @@ class MatchHistory(models.Model):
         return f"{self.user + '-' + self.opponent}"
 
 class Tournament(models.Model):
-    CHOICES = ("open", "started","ended")
+    STATUS_CHOICES = (
+        ("open", "Opened"),
+        ("started", "Started"),
+        ("ended", "Ended")
+    )
 
-    id = models.UUIDField(primary_key=True, editable=False)
     name = models.CharField(max_length=100)
-    status = models.CharField(max_length=10, choices=CHOICES)
-    start_date = models.DateTimeField()
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default="open")
+    start_date = models.DateTimeField(auto_now_add=True)
     #end_date = models.DateTimeField()
     participants = models.ManyToManyField(UserProfile, related_name='tournaments')
 
