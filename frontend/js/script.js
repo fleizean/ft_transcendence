@@ -88,6 +88,21 @@ function getFutureDate() {
     return formattedDate;
 }
 
+function activateCreateRoom() {
+    var value = document.getElementById("createRoom-popup");
+    if (value) {
+        value.style.display = 'flex';
+    }
+}
+
+function closeCreateRoom() {
+    var value = document.getElementById("createRoom-popup");
+    if (value) {
+        value.style.display = 'none';
+    }
+}
+
+
 function displaySection(sectionId) {
     var sections = ["editProfile", "addSocial", "closeAccount", "changePassword", "google2FA"];
 
