@@ -98,6 +98,22 @@ function activateCreateRoom() {
     }
 }
 
+/* Şu anlık çalışmıyor çünkü click izlemeleri divin router özelliği yüzünden sıkıntılı
+const checkboxes = document.querySelectorAll('input[name="gameCheckbox"]');
+
+  checkboxes.forEach(checkbox => {
+    checkbox.addEventListener('click', function () {
+      const checkedCheckbox = document.querySelector('input[name="gameCheckbox"]:checked');
+
+      checkboxes.forEach(cb => {
+        if (cb !== checkedCheckbox) {
+          cb.disabled = checkedCheckbox !== null;
+        }
+      });
+    });
+  }); */
+
+ 
 function closeCreateRoom() {
     var value = document.getElementById("createRoom-popup");
     var overlay = document.getElementById("overlay");

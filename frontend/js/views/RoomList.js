@@ -69,7 +69,7 @@ export default class extends AbstractView {
 										<div class="checkbox-container">
 											<div class="checkbox-wrapper-16">
 											  <label class="checkbox-wrapper">
-											    <input class="checkbox-input" type="checkbox" id="pongcheckbox">
+											    <input class="checkbox-input" type="checkbox" id="pongcheckbox" name="gameCheckbox">
 											    <span class="checkbox-tile">
 											      <span class="checkbox-icon">
 													<svg viewBox="0 0 256 256" fill="none" height="192" width="192" xmlns="http://www.w3.org/2000/svg">
@@ -93,7 +93,7 @@ export default class extends AbstractView {
 
 											<div class="checkbox-wrapper-16">
 											  <label class="checkbox-wrapper">
-											    <input class="checkbox-input" type="checkbox" id="rpscheckbox">
+											    <input class="checkbox-input" type="checkbox" id="rpscheckbox" name="gameCheckbox">
 											    <span class="checkbox-tile">
 											      <span class="checkbox-icon">
 												  <svg fill="#000000" width="256px" height="256px" viewBox="0 0 24 24" id="scissors-3" data-name="Flat Color" xmlns="http://www.w3.org/2000/svg" class="icon flat-color"><path id="primary" d="M20.6,16.51h0a4.19,4.19,0,0,0-2.35-2.31,3,3,0,0,0-2.42.11,3.09,3.09,0,0,0-1.14,1l-1.59-3.5,3.81-8.38a1,1,0,1,0-1.82-.82L12,9.38,8.91,2.59a1,1,0,0,0-1.82.82l3.81,8.38-1.59,3.5a3.09,3.09,0,0,0-1.14-1h0a3,3,0,0,0-2.42-.11A4.19,4.19,0,0,0,3.4,16.51a3.92,3.92,0,0,0,1.43,5.18A2.91,2.91,0,0,0,6.15,22a3.24,3.24,0,0,0,1.1-.2,4.17,4.17,0,0,0,2.34-2.31L12,14.21l2.41,5.28a4.17,4.17,0,0,0,2.34,2.31,3.24,3.24,0,0,0,1.1.2,2.91,2.91,0,0,0,1.32-.31A3.92,3.92,0,0,0,20.6,16.51ZM7.77,18.68h0a2.2,2.2,0,0,1-1.2,1.23,1,1,0,0,1-.83,0,2,2,0,0,1-.5-2.59,2.28,2.28,0,0,1,1.21-1.23A1.19,1.19,0,0,1,6.85,16a1,1,0,0,1,.42.1A2,2,0,0,1,7.77,18.68ZM18.28,19.9a1,1,0,0,1-.84,0,2.23,2.23,0,0,1-1.2-1.23h0a2,2,0,0,1,.49-2.59,1,1,0,0,1,.84,0,2.28,2.28,0,0,1,1.21,1.23A2,2,0,0,1,18.28,19.9Z" style="fill: rgb(0, 0, 0);"></path></svg>
