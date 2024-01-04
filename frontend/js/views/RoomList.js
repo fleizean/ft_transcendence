@@ -8,6 +8,7 @@ export default class extends AbstractView {
 
 		async getHtml() {
 				return `
+				<div class="overlay" id="overlay"></div>
 				<nav class="navbar">
 				<div class="logo-container"><a href="/dashboard" data-link>
 					<div class="logo">

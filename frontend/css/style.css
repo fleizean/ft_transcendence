@@ -2450,3 +2450,14 @@ td {
     opacity: 1;
   }
 }
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Buradaki "0.5" sayısı siyahlık derecesini ayarlar */
+  display: none;
+  z-index: 9998; /* Pop-up'tan bir az düşük z-index değeri */
+}

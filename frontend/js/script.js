@@ -90,15 +90,20 @@ function getFutureDate() {
 
 function activateCreateRoom() {
     var value = document.getElementById("createRoom-popup");
+    var overlay = document.getElementById("overlay");
     if (value) {
         value.style.display = 'flex';
+        overlay.style.display = 'block';
+
     }
 }
 
 function closeCreateRoom() {
     var value = document.getElementById("createRoom-popup");
+    var overlay = document.getElementById("overlay");
     if (value) {
         value.style.display = 'none';
+        overlay.style.display = 'none';
     }
 }
 
