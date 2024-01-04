@@ -4,6 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Add assets/favicon.ico to the page -->
+    <link rel="shortcut icon" href="{% static "assets/favicon.ico" %}" type="image/x-icon">
     <title>Socket Actions</title>
     <style>
         canvas {
@@ -17,12 +19,19 @@
 <body>
     <!-- Create username list table and get username from connected user and add to table -->
     <table id="OnlineUsers">
-        
-
-    <button onclick="invite()">Invite</button>
+    <div>
+        <p id="invitationMessage"></p>
+    </div>
+    <div id="gameInvitationModal" class="modal">
+        <div class="modal-content">
+            <button id="acceptButton">Accept</button>
+            <button id="declineButton">Decline</button>
+        </div>
+    </div>
+{% comment %}     <button onclick="invite()">Invite</button> {% endcomment %}
     <input type="text" id="inviteInput" placeholder="Enter username">
-    <button onclick="accept()">Accept</button>
-    <button onclick="move()">Move</button>
+    <button id="inviteButton">Invite Opponent</button>
+{% comment %}     <button onclick="move()">Move</button>
     <button onclick="endGame()">End Game</button>
     <button onclick="join()">Join Tournament</button>
     <button onclick="cancel()">Cancel Tournament</button>
@@ -30,7 +39,7 @@
     <button onclick="start()">Start Tournament</button>
     <button onclick="finish()">Finish Match</button>
     <button onclick="next()">Next Game</button>
-
+ {% endcomment %}
     <canvas id="pongCanvas" width="800" height="600"></canvas>
     <script src="{% static "js/sockpong.js" %}"></script>
 </body>

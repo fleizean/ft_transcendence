@@ -1,37 +1,53 @@
 import json
 from uuid import uuid4
+from asgiref.sync import sync_to_async
 from channels.generic.websocket import AsyncWebsocketConsumer, AsyncJsonWebsocketConsumer
 from channels.db import database_sync_to_async
-from django.contrib.auth.models import User
-from .models import Game, Tournament, MatchRecord #Match, Score
+from .models import Game, Tournament, MatchRecord, UserProfile #Match, Score
 from datetime import datetime
 
 class PongConsumer(AsyncWebsocketConsumer):
     async def connect(self):
-        # Accept the connection
-        await self.accept()
         # Get the user from the scope
         self.user = self.scope["user"]
+        # Check if the user is authenticated
+        if self.user.is_anonymous:
+            # Reject the connection
+            await self.close()
+        # Set the user's channel name
+        self.user.channel_name = self.channel_name
+        self.user.online = True
+        await self.user.asave()
+        # Accept the connection
+        await self.accept()
         # Add the user to the 'online' group
         await self.channel_layer.group_add("online", self.channel_name)
         # Send a message to the group with the user's username
+        online_users = await self.get_online_users_list()
         await self.channel_layer.group_send(
             "online",
             {
                 "type": "user.online",
                 "username": self.user.username,
+                "users": online_users,
             }
         )
 
     async def disconnect(self, close_code):
+        # Remove the user's channel name
+        self.user.channel_name = None
+        self.user.online = False
+        await self.user.asave()
         # Remove the user from the 'online' group
         await self.channel_layer.group_discard("online", self.channel_name)
         # Send a message to the group with the user's username
+        online_users = await self.get_online_users_list()
         await self.channel_layer.group_send(
             "online",
             {
                 "type": "user.offline",
                 "username": self.user.username,
+                "users": online_users,
             }
         )
 
@@ -43,17 +59,21 @@ class PongConsumer(AsyncWebsocketConsumer):
             # Invite another user to play a game
             opponent = data["opponent"]
             # Check if the opponent exists
-            if not User.objects.filter(username=opponent).exists():
+            if not await self.is_user_exist(opponent):
                 # Send a message to the client with the error
                 await self.send(text_data=json.dumps({
                     "error": "User does not exist",
                 }))
                 return
+            # Get the opponent instance from the database
+            #invited = await self.get_user(opponent)
+            invited = await UserProfile.objects.aget(username=opponent)
+
             # Create a new game instance and save it to the database
-            game = await self.create_game(self.user, opponent)
+            game = await self.create_game(self.user, invited)
             # Add both users to the game group
-            await self.channel_layer.group_add(game.group_name, self.channel_name)
-            await self.channel_layer.group_add(game.group_name, opponent.channel_name)
+            await self.channel_layer.group_add(game.group_name, self.user.channel_name)
+            await self.channel_layer.group_add(game.group_name, invited.channel_name)
             # Send a message to the game group with the game id and the players' usernames
             await self.channel_layer.group_send(
                 game.group_name,
@@ -61,12 +81,14 @@ class PongConsumer(AsyncWebsocketConsumer):
                     "type": "game.invite",
                     "game_id": game.id,
                     "player1": self.user.username,
-                    "player2": opponent.username,
+                    "player2": invited.username,
                 }
             )
         elif action == "accept":
             # Accept an invitation to play a game
             game_id = data["game_id"]
+            player1_username = data["player1"]
+            player2_username = data["player2"]
             # Get the game instance from the database
             game = await self.get_game(game_id)
             # Update the game status to 'started' and save it to the database
@@ -78,8 +100,8 @@ class PongConsumer(AsyncWebsocketConsumer):
                 {
                     "type": "game.start",
                     "game_id": game.id,
-                    "player1": game.player1.username,
-                    "player2": game.player2.username,
+                    "player1": player1_username,
+                    "player2": player2_username,
                 }
             )
         elif action == "decline":
@@ -100,6 +122,7 @@ class PongConsumer(AsyncWebsocketConsumer):
             )
             # Delete the game instance from the database
             await game.delete()
+            #await self.close() ?
 
         elif action == "ball":
             # Make a move in a game
@@ -318,8 +341,7 @@ class PongConsumer(AsyncWebsocketConsumer):
     @database_sync_to_async
     def create_game(self, player1, player2):
         # Create a new game instance with the given players and an empty state
-        group_name = player1.username + '_' + player2.username
-        game = Game.objects.create(group_name=group_name, player1=player1, player2=player2, status="invited")#, state=[[None]*10 for _ in range(10)])
+        game = Game.objects.create(group_name=str(uuid4()), player1=player1, player2=player2, status="invited")#, state=[[None]*10 for _ in range(10)])
         return game
 
     @database_sync_to_async
@@ -341,6 +363,18 @@ class PongConsumer(AsyncWebsocketConsumer):
         game.player2_score = player2_score
         game.winner = winner
         game.save()
+
+    @database_sync_to_async
+    def is_user_exist(self, opponent):
+        return UserProfile.objects.filter(username=opponent).exists()
+    
+    @database_sync_to_async
+    def get_online_users_list(self):
+        return [user.username for user in UserProfile.objects.filter(online=True)]
+    
+    """ @database_sync_to_async
+    def get_user(self, opponent):
+        return UserProfile.objects.get(username=opponent) """
     '''
     @database_sync_to_async
     def create_tournament(self, name):
@@ -388,19 +422,23 @@ class PongConsumer(AsyncWebsocketConsumer):
     async def user_online(self, event):
         # Handle a message that a user is online
         username = event["username"]
+        users = event["users"]
         # Send a message to the client with the username
         await self.send(text_data=json.dumps({
             "type": "user.online",
             "username": username,
+            "users": users,
         }))
 
     async def user_offline(self, event):
         # Handle a message that a user is offline
         username = event["username"]
+        users = event["users"]
         # Send a message to the client with the username
         await self.send(text_data=json.dumps({
             "type": "user.offline",
             "username": username,
+            "users": users,
         }))
 
     async def game_invite(self, event):
@@ -415,7 +453,7 @@ class PongConsumer(AsyncWebsocketConsumer):
             "player1": player1,
             "player2": player2,
         }))
-
+    
     async def game_start(self, event):
         # Handle a message that a game is started
         game_id = event["game_id"]

@@ -37,6 +37,8 @@ def signup(request):
             user = form.save()
             # Perform additional actions if needed
             login(request, user)  # Log in the user after successful registration
+            user.online = True
+            user.save()
             return redirect('profile', request.user)
     else:
         form = UserProfileForm()
@@ -45,8 +47,8 @@ def signup(request):
 #state_req = secrets.token_hex(25)
 @never_cache
 def auth(request):
-    #if request.user.is_authenticated:
-        #return redirect("dashboard", request.user)
+    if request.user.is_authenticated:
+        return redirect("dashboard")
     auth_url = "https://api.intra.42.fr/oauth/authorize"
     fields = {       
         "client_id": "u-s4t2ud-4b7a045a7cc7dd977eeafae807bd4947670f273cb30e1dd674f6bfa490ba6c45",#environ.get("FT_CLIENT_ID"),
@@ -135,6 +137,8 @@ def auth_callback(request):
 
             # Log in the user
             login(request, user)
+            user.online = True
+            user.save()
 
             return redirect('dashboard')
 
@@ -149,6 +153,8 @@ def login_view(request):
         if form.is_valid():
             user = form.get_user()
             login(request, user)
+            user.online = True
+            user.save()
             return redirect('dashboard')
     else:
         form = AuthenticationUserForm()
@@ -157,8 +163,11 @@ def login_view(request):
 @never_cache
 @login_required(login_url="login")
 def logout_view(request):
-	logout(request)
-	return redirect("login")
+    request.user.online = False
+    request.user.save()
+
+    logout(request)
+    return redirect("login")
 
 
 ### Profile ###

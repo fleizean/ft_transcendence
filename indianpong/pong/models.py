@@ -7,6 +7,8 @@ class UserProfile(AbstractUser):
     displayname = models.CharField(max_length=100, blank=True, null=True)
     avatar = models.ImageField(upload_to='avatars/', null=True, blank=True)
     friends = models.ManyToManyField('self', symmetrical=False)
+    channel_name = models.CharField(max_length=100, blank=True, null=True)
+    online = models.BooleanField(default=False)
     wins = models.IntegerField(default=0)
     losses = models.IntegerField(default=0)
 
