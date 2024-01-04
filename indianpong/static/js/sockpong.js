@@ -14,7 +14,11 @@ socket.onclose = function (e) {
 }
 
 socket.onerror = function (e) {
-    console.error('WebSocket error');
+    console.error('Error: ' + e.data);
+    if (!inviteInput.value) {
+        invitationMessage.textContent = e.data;
+        invitationModal.style.display = 'block';
+    }
 }
 
 socket.onmessage = function (e) {
@@ -28,6 +32,7 @@ socket.onmessage = function (e) {
                 console.log('', user);
                 onlineUsersTable.innerHTML += `<tr><th>${user}</th></tr>`;
             }
+            var myUsername = data.username;
             console.log('Player connected:', data.username);
             break;
         case 'user.offline':
@@ -42,7 +47,7 @@ socket.onmessage = function (e) {
         case 'game.invite':
             // Display the modal for accepting or declining the invitation
 
-            if (!inviteInput.value) {
+            if (data.player2 === myUsername) {
                 invitationMessage.textContent = `You received a game invitation from ${data.player1}. Do you want to accept?`;
                 invitationModal.style.display = 'block';
             }
@@ -57,17 +62,45 @@ socket.onmessage = function (e) {
             };
 
             declineButton.onclick = function () {
-                decline(data.game_id);
+                decline(data.game_id, data.player2);
                 invitationModal.style.display = 'none';
             };
 
             console.log(`Invited Game Id: ${data.game_id} => ${data.player1} vs ${data.player2}`);
             break;
+        case 'game.accept':
+            if (data.player1 === myUsername) {
+                invitationMessage.textContent = `You accepted the game invitation from ${data.player2}`;
+                invitationMessage.style.display = 'block';
+            }
+            else if (data.player2 === myUsername) {
+                invitationMessage.textContent = `You will play with ${data.player1}`;
+                invitationMessage.style.display = 'block';
+            }
+            // Show the game screen and start button
+
+            console.log(`Accepted Game Id: ${data.game_id} => ${data.player1} vs ${data.player2}`);
+            break;
+        case 'game.decline':
+            if (data.declined_by === myUsername) {
+                invitationMessage.textContent = `You declined the game invitation from ${data.player1}`;
+                invitationMessage.style.display = 'block';
+            }
+            else if (data.player2 === myUsername) {
+                invitationMessage.textContent = `You will not play with ${data.player1}`;
+                invitationMessage.style.display = 'block';
+            }
+            console.log(`Declined Game Id: ${data.game_id} => ${data.player1} vs ${data.player2}`);
+            break;
         case 'game.start':
+            
             console.log(`Started Game Id: ${data.game_id} => ${data.player1} vs ${data.player2}`);
             break;
-        case 'game.move':
-            console.log(`Moving Game Id: ${data.game_id} for ${data.player}: ${data.x} ${data.y}`);
+        case 'game.paddle.move':
+            console.log(`Moving Paddle Id: ${data.game_id} for ${data.player}: ${data.x} ${data.y}`);
+            break;
+        case 'game.ball.move':
+            console.log(`Moving Ball Id: ${data.game_id} for ball: ${data.x} ${data.y}`);
             break;
         // What about draw?
         case 'game.end':
@@ -106,6 +139,8 @@ socket.sendJSON = function (data) {
     socket.send(JSON.stringify(data));
 }
 
+const voteCount = document.getElementById('vote_count'); // default value 0
+const startButton = document.getElementById('startButton');
 const onlineUsersTable = document.getElementById('OnlineUsers');
 const invitationModal = document.getElementById('gameInvitationModal');
 const invitationMessage = document.getElementById('invitationMessage');
@@ -142,25 +177,50 @@ function accept(game_id, player1_username, player2_username) {
     });
 }
 
-function decline(game_id) {
+function decline(game_id, player2_username) {
     // Get necessary data and call socket.sendJSON
     socket.sendJSON({
         action: 'decline',
         game_id: game_id, // When decline clicked take game_id somehow
+        declined_by: player2_username,
+    });
+}
+
+function startGame() {
+    var vote_count = voteCount.value;
+    vote_count += 1;
+    socket.sendJSON({
+        action: 'game.start',
+        game_id: 'game_id',
+        player1: 'player1_username',
+        player2: 'player2_username',
+        vote_count: vote_count,
     });
 }
 
 // send this in setInterval(update, 16) this ll be game state
-function move() {
+function movePaddle() {
     // Get necessary data and call socket.sendJSON
     socket.sendJSON({
-        action: 'move',
+        action: 'paddle.move',
         game_id: 'game_id',
-        x: 1, // if this for paddle only y required and for ball both
-        y: -1,
+        y: 1, // if this for paddle only y required and for ball both
         player: 'username', // player1 or player2
     });
 }
+
+// send this in setInterval(update, 16) this ll be game state
+function moveBall() {
+    // Get necessary data and call socket.sendJSON
+    socket.sendJSON({
+        action: 'ball.move',
+        game_id: 'game_id',
+        x: 1, // if this for paddle only y required and for ball both
+        y: -1,
+    });
+}
+
+
 
 function endGame() {
     // Get necessary data and call socket.sendJSON
@@ -206,7 +266,7 @@ function leave() {
     });
 }
 
-function start() {
+function startTournament() {
     // Get necessary data and call socket.sendJSON
     socket.sendJSON({
         action: 'start',

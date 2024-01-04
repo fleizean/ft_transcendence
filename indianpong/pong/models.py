@@ -4,11 +4,13 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 from django.utils.html import mark_safe
 
 class UserProfile(AbstractUser):
+    STATUS_CHOICES = (("online", "Online"),("playing", "Playing")("offline", "Offline"))
+
     displayname = models.CharField(max_length=100, blank=True, null=True)
     avatar = models.ImageField(upload_to='avatars/', null=True, blank=True)
     friends = models.ManyToManyField('self', symmetrical=False)
     channel_name = models.CharField(max_length=100, blank=True, null=True)
-    online = models.BooleanField(default=False)
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default="offline")
     wins = models.IntegerField(default=0)
     losses = models.IntegerField(default=0)
 
@@ -51,7 +53,7 @@ class GameWarning(models.Model):
 
 class Game(models.Model):
     STATUS_CHOICES = (
-        ("invited", "Invited"),
+        ("accepted", "Accepted"),
         ("started", "Started"),
         ("ended", "Ended")
     )
@@ -61,7 +63,7 @@ class Game(models.Model):
     player1_score = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(20)], default=0)
     player2_score = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(20)], default=0)
     created_at = models.DateTimeField(auto_now_add=True)
-    status = models.CharField(max_length=10, choices=STATUS_CHOICES)
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default="accepted")
     winner = models.ForeignKey(UserProfile, related_name='games_won', on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):

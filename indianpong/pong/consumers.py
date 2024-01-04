@@ -16,7 +16,6 @@ class PongConsumer(AsyncWebsocketConsumer):
             await self.close()
         # Set the user's channel name
         self.user.channel_name = self.channel_name
-        self.user.online = True
         await self.user.asave()
         # Accept the connection
         await self.accept()
@@ -36,7 +35,7 @@ class PongConsumer(AsyncWebsocketConsumer):
     async def disconnect(self, close_code):
         # Remove the user's channel name
         self.user.channel_name = None
-        self.user.online = False
+        self.user.online = "offline"
         await self.user.asave()
         # Remove the user from the 'online' group
         await self.channel_layer.group_discard("online", self.channel_name)
@@ -65,35 +64,37 @@ class PongConsumer(AsyncWebsocketConsumer):
                     "error": "User does not exist",
                 }))
                 return
-            # Get the opponent instance from the database
-            #invited = await self.get_user(opponent)
-            invited = await UserProfile.objects.aget(username=opponent)
-
-            # Create a new game instance and save it to the database
-            game = await self.create_game(self.user, invited)
-            # Add both users to the game group
-            await self.channel_layer.group_add(game.group_name, self.user.channel_name)
-            await self.channel_layer.group_add(game.group_name, invited.channel_name)
-            # Send a message to the game group with the game id and the players' usernames
+            #Check if the opponent is online
+            if not await self.is_user_online(opponent):
+                # Send a message to the client with the error
+                await self.send(text_data=json.dumps({
+                    "error": "User is offline or already playing",
+                }))
+                return
+            # Set game group name
+            game['group_name'] = str(uuid4())
             await self.channel_layer.group_send(
                 game.group_name,
                 {
                     "type": "game.invite",
-                    "game_id": game.id,
+                    "group_name": game.group_name,
                     "player1": self.user.username,
-                    "player2": invited.username,
+                    "player2": opponent,
                 }
             )
         elif action == "accept":
             # Accept an invitation to play a game
-            game_id = data["game_id"]
+            group_name = data["group_name"]
             player1_username = data["player1"]
             player2_username = data["player2"]
-            # Get the game instance from the database
-            game = await self.get_game(game_id)
-            # Update the game status to 'started' and save it to the database
-            game.status = "started"
-            await self.save_game(game)
+            player1 = await UserProfile.objects.aget(username=player1_username)
+            player2 = await UserProfile.objects.aget(username=player2_username)
+
+            # Create a new game instance and save it to the database
+            game = await self.create_game(group_name, player1, player2)
+            # Add both users to the game group
+            await self.channel_layer.group_add(group_name, player1.channel_name)
+            await self.channel_layer.group_add(group_name, player2.channel_name)
             # Send a message to the game group with the game id and the players' usernames
             await self.channel_layer.group_send(
                 game.group_name,
@@ -107,23 +108,57 @@ class PongConsumer(AsyncWebsocketConsumer):
         elif action == "decline":
             # Decline an invitation to play a game
             game_id = data["game_id"]
-            opponent = data["opponent"]
+            opponent = data["declined_by"]
             # Get the game instance from the database
-            game = await self.get_game(game_id)
-            # Discard opponent from the game group
-            await self.channel_layer.group_discard(game.group_name, opponent.channel_name)
+            game = await Game.objects.aget(id=game_id)
+            # Get the opponent's user instance from the database
+            opponent = await UserProfile.objects.aget(username=opponent)
             # Send a message to the game group with the game id
             await self.channel_layer.group_send(
                 game.group_name,
                 {
                     "type": "game.decline",
                     "game_id": game.id,
+                    "declined_by": opponent.username,
                 }
             )
+            # Discard both from the game group
+            await self.channel_layer.group_discard(game.group_name, self.channel_name)
+            await self.channel_layer.group_discard(game.group_name, opponent.channel_name)
             # Delete the game instance from the database
-            await game.delete()
-            #await self.close() ?
-
+            await game.adelete()
+        elif action == "game.start":
+            # Start a game
+            game_id = data["game_id"]
+            player1 = data["player1"]
+            player2 = data["player2"]
+            vote_count = data["vote_count"]
+            # Get the game instance from the database
+            game = await Game.objects.aget(id=game_id)
+            # Get the players' user instances from the database
+            player1 = await UserProfile.objects.aget(username=player1)
+            player2 = await UserProfile.objects.aget(username=player2)
+            # Check both players voted to start the game
+            if vote_count == 2:
+                # Update the players' status to 'playing' and save them to the database
+                player1.status = "playing"
+                player2.status = "playing"
+                await player1.asave()
+                await player2.asave()
+                # Update the game status to 'started' and save it to the database
+                game.status = "started"
+                await game.asave()
+                # Send a message to the game group with the game id
+                await self.channel_layer.group_send(
+                    game.group_name,
+                    {
+                        "type": "game.start",
+                        "game_id": game.id,
+                        "player1": player1.username,
+                        "player2": player2.username,
+                        "vote_count": vote_count,
+                    }
+                )
         elif action == "ball":
             # Make a move in a game
             game_id = data["game_id"]
@@ -166,10 +201,15 @@ class PongConsumer(AsyncWebsocketConsumer):
             game_id = data["game_id"]
             player1_score = data["player1_score"]
             player2_score = data["player2_score"]
+            game = await Game.objects.aget(id=game_id)
             winner = player1_score > player2_score and game.player1.username or game.player2.username
-            # Record the game status to 'ended' and save it to the database
-            # Record the game winner, scores and save it to the database
-            await self.record_game(game_id, player1_score, player2_score, winner)
+            # Set the game status to 'ended' and save it to the database
+            # Set the game winner, scores and save it to the database
+            game.status = "ended"
+            game.player1_score = player1_score
+            game.player2_score = player2_score
+            game.winner = winner
+            await game.asave()
             # Send a message to the game group with the game id and the winner's username
             await self.channel_layer.group_send(
                 game.group_name,
@@ -339,9 +379,9 @@ class PongConsumer(AsyncWebsocketConsumer):
     '''
     # Helper methods to interact with the database
     @database_sync_to_async
-    def create_game(self, player1, player2):
-        # Create a new game instance with the given players and an empty state
-        game = Game.objects.create(group_name=str(uuid4()), player1=player1, player2=player2, status="invited")#, state=[[None]*10 for _ in range(10)])
+    def create_game(self, group_name, player1, player2):
+        # Create a new game instance with the given players and an group_name
+        game = Game.objects.create(group_name=group_name, player1=player1, player2=player2, status="invited")
         return game
 
     @database_sync_to_async
@@ -369,12 +409,16 @@ class PongConsumer(AsyncWebsocketConsumer):
         return UserProfile.objects.filter(username=opponent).exists()
     
     @database_sync_to_async
+    def is_user_online(self, opponent):
+        return UserProfile.objects.filter(username=opponent, status="online").exists()
+    
+    @database_sync_to_async
     def get_online_users_list(self):
         return [user.username for user in UserProfile.objects.filter(online=True)]
     
-    """ @database_sync_to_async
-    def get_user(self, opponent):
-        return UserProfile.objects.get(username=opponent) """
+    @database_sync_to_async
+    def get_user(self, username):
+        return UserProfile.objects.get(username=username)
     '''
     @database_sync_to_async
     def create_tournament(self, name):
@@ -443,13 +487,11 @@ class PongConsumer(AsyncWebsocketConsumer):
 
     async def game_invite(self, event):
         # Handle a message that a game is invited
-        game_id = event["game_id"]
         player1 = event["player1"]
         player2 = event["player2"]
         # Send a message to the client with the game id and the players' usernames
         await self.send(text_data=json.dumps({
             "type": "game.invite",
-            "game_id": game_id,
             "player1": player1,
             "player2": player2,
         }))
@@ -470,10 +512,12 @@ class PongConsumer(AsyncWebsocketConsumer):
     async def game_decline(self, event):
         # Handle a message that a game is declined
         game_id = event["game_id"]
+        opponent = event["declined_by"]
         # Send a message to the client with the game id
         await self.send(text_data=json.dumps({
             "type": "game.decline",
             "game_id": game_id,
+            "declined_by": opponent,
         }))
 
     async def game_ball(self, event):
