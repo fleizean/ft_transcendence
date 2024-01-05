@@ -5,6 +5,7 @@ from channels.generic.websocket import AsyncWebsocketConsumer, AsyncJsonWebsocke
 from channels.db import database_sync_to_async
 from .models import Game, Tournament, MatchRecord, UserProfile #Match, Score
 from datetime import datetime
+from django.db.models import Q
 
 class PongConsumer(AsyncWebsocketConsumer):
     async def connect(self):
@@ -39,7 +40,17 @@ class PongConsumer(AsyncWebsocketConsumer):
         await self.user.asave()
         # Remove the user from the 'online' group
         await self.channel_layer.group_discard("online", self.channel_name)
-        # Send a message to the group with the user's username
+        # TODO: Move this to game leave also implement same for tournament
+        # Check if user's username is in any game and that game is not ended
+        # If so, end the game and record it
+        game = await Game.objects.filter(Q(player1=self.user) | Q(player2=self.user), status="started").afirst()
+        if game:
+            if game.player1 == self.user:
+                await self.record_game(game.id, 0, 20, game.player2.username)
+            else:
+                await self.record_game(game.id, 20, 0, game.player1.username)
+            await self.channel_layer.group_discard(game.group_name, self.channel_name)
+        # Send a message to the group with the user's username and online users list
         online_users = await self.get_online_users_list()
         await self.channel_layer.group_send(
             "online",
@@ -159,6 +170,8 @@ class PongConsumer(AsyncWebsocketConsumer):
                         "vote_count": vote_count,
                     }
                 )
+        elif action == "game.leave":
+            pass
         elif action == "ball":
             # Make a move in a game
             game_id = data["game_id"]
@@ -205,11 +218,7 @@ class PongConsumer(AsyncWebsocketConsumer):
             winner = player1_score > player2_score and game.player1.username or game.player2.username
             # Set the game status to 'ended' and save it to the database
             # Set the game winner, scores and save it to the database
-            game.status = "ended"
-            game.player1_score = player1_score
-            game.player2_score = player2_score
-            game.winner = winner
-            await game.asave()
+            await self.record_game(game_id, player1_score, player2_score, winner)
             # Send a message to the game group with the game id and the winner's username
             await self.channel_layer.group_send(
                 game.group_name,

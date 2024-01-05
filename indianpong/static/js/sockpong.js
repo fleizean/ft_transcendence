@@ -5,11 +5,29 @@ const socket = new WebSocket('ws://' + window.location.host + '/ws/pong/');  // 
 const canvas = document.getElementById('pongCanvas');
 const context = canvas.getContext('2d');
 
+var my = {
+    username: '', game_id: '', tournament_id: ''
+}
+
 socket.onopen = function (e) {
     console.log('WebSocket connection established');
 }
 
 socket.onclose = function (e) {
+    if (my.game_id) {
+        socket.sendJSON({
+            action: 'leave.match',
+            game_id: my.game_id,
+            player: my.username,
+        });
+    }
+    else if (my.tournament_id) {
+        socket.sendJSON({
+            action: 'leave.tournament',
+            tournament_id: my.tournament_id,
+            player: my.username,
+        });
+    }
     console.error('WebSocket connection closed');
 }
 
@@ -32,7 +50,7 @@ socket.onmessage = function (e) {
                 console.log('', user);
                 onlineUsersTable.innerHTML += `<tr><th>${user}</th></tr>`;
             }
-            var myUsername = data.username;
+            my.username = data.username;
             console.log('Player connected:', data.username);
             break;
         case 'user.offline':
@@ -47,7 +65,7 @@ socket.onmessage = function (e) {
         case 'game.invite':
             // Display the modal for accepting or declining the invitation
 
-            if (data.player2 === myUsername) {
+            if (data.player2 === my.username) {
                 invitationMessage.textContent = `You received a game invitation from ${data.player1}. Do you want to accept?`;
                 invitationModal.style.display = 'block';
             }
@@ -69,11 +87,11 @@ socket.onmessage = function (e) {
             console.log(`Invited Game Id: ${data.game_id} => ${data.player1} vs ${data.player2}`);
             break;
         case 'game.accept':
-            if (data.player1 === myUsername) {
+            if (data.player1 === my.username) {
                 invitationMessage.textContent = `You accepted the game invitation from ${data.player2}`;
                 invitationMessage.style.display = 'block';
             }
-            else if (data.player2 === myUsername) {
+            else if (data.player2 === my.username) {
                 invitationMessage.textContent = `You will play with ${data.player1}`;
                 invitationMessage.style.display = 'block';
             }
@@ -82,11 +100,11 @@ socket.onmessage = function (e) {
             console.log(`Accepted Game Id: ${data.game_id} => ${data.player1} vs ${data.player2}`);
             break;
         case 'game.decline':
-            if (data.declined_by === myUsername) {
+            if (data.declined_by === my.username) {
                 invitationMessage.textContent = `You declined the game invitation from ${data.player1}`;
                 invitationMessage.style.display = 'block';
             }
-            else if (data.player2 === myUsername) {
+            else if (data.player2 === my.username) {
                 invitationMessage.textContent = `You will not play with ${data.player1}`;
                 invitationMessage.style.display = 'block';
             }
@@ -95,6 +113,9 @@ socket.onmessage = function (e) {
         case 'game.start':
             
             console.log(`Started Game Id: ${data.game_id} => ${data.player1} vs ${data.player2}`);
+            break;
+        case 'game.leave':
+            console.log(`Left Game Id: ${data.game_id} as ${data.player}`);
             break;
         case 'game.paddle.move':
             console.log(`Moving Paddle Id: ${data.game_id} for ${data.player}: ${data.x} ${data.y}`);
