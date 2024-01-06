@@ -6,7 +6,7 @@ const canvas = document.getElementById('pongCanvas');
 const context = canvas.getContext('2d');
 
 var my = {
-    username: '', game_id: '', tournament_id: ''
+    username: '', game_id: '', tournament_id: '', group_name: '',
 }
 
 socket.onopen = function (e) {
@@ -55,60 +55,64 @@ socket.onmessage = function (e) {
             break;
         case 'user.offline':
             // Remove username from onlineUsers table
-            onlineUsersTable.innerHTML = '';
-            for (let user of data.users) {
+            //onlineUsersTable.innerHTML = '';
+            // Get onlineUser table remove the line which username in it
+            onlineUsersTable.innerHTML = onlineUsersTable.innerHTML.replace(`<tr><th>${data.username}</th></tr>`, '');
+
+/*             for (let user of data.users) {
                 onlineUsersTable.innerHTML += `<tr><th>${user}</th></tr>`;
-            }
+            } */
             console.log('Player disconnected:', data.username);
             break;
         
         case 'game.invite':
             // Display the modal for accepting or declining the invitation
-
-            if (data.player2 === my.username) {
-                invitationMessage.textContent = `You received a game invitation from ${data.player1}. Do you want to accept?`;
+            my.group_name = data.group_name;
+            if (data.invited === my.username) {
+                invitationMessage.textContent = `You received a game invitation from ${data.inviter}. Do you want to accept?`;
                 invitationModal.style.display = 'block';
             }
             else
             {
-                invitationMessage.textContent = `You send a game invitation to ${data.player2}`;
+                invitationMessage.textContent = `You send a game invitation to ${data.invited}`;
             }
 
             acceptButton.onclick = function () {
-                accept(data.game_id, data.player1, data.player2);
+                accept(data.group_name, data.inviter, data.invited);
                 invitationModal.style.display = 'none';
             };
 
             declineButton.onclick = function () {
-                decline(data.game_id, data.player2);
+                decline(data.group_name, data.inviter, data.invited);
                 invitationModal.style.display = 'none';
             };
 
-            console.log(`Invited Game Id: ${data.game_id} => ${data.player1} vs ${data.player2}`);
+            console.log(`Invited Group Name: ${data.group_name} => ${data.inviter} vs ${data.invited}`);
             break;
         case 'game.accept':
-            if (data.player1 === my.username) {
-                invitationMessage.textContent = `You accepted the game invitation from ${data.player2}`;
+            if (data.accepter === my.username) {
+                invitationMessage.textContent = `You accepted the game invitation from ${data.accepted}`;
                 invitationMessage.style.display = 'block';
             }
-            else if (data.player2 === my.username) {
-                invitationMessage.textContent = `You will play with ${data.player1}`;
+            else if (data.accepted === my.username) {
+                invitationMessage.textContent = `Your invitation is accepted by ${data.accepter}`;
                 invitationMessage.style.display = 'block';
             }
+            my.game_id = data.game_id;
             // Show the game screen and start button
 
-            console.log(`Accepted Game Id: ${data.game_id} => ${data.player1} vs ${data.player2}`);
+            console.log(`Accepted Game Id: ${data.game_id} => ${data.accepted} vs ${data.accepter}`);
             break;
         case 'game.decline':
-            if (data.declined_by === my.username) {
-                invitationMessage.textContent = `You declined the game invitation from ${data.player1}`;
+            if (data.decliner === my.username) {
+                invitationMessage.textContent = `You declined the game invitation from ${data.declined}`;
                 invitationMessage.style.display = 'block';
             }
-            else if (data.player2 === my.username) {
-                invitationMessage.textContent = `You will not play with ${data.player1}`;
+            else if (data.declined === my.username) {
+                invitationMessage.textContent = `Your invitation is declined by ${data.decliner}`;
                 invitationMessage.style.display = 'block';
             }
-            console.log(`Declined Game Id: ${data.game_id} => ${data.player1} vs ${data.player2}`);
+            console.log(`Declined Game => ${data.declined} vs ${data.decliner}`);
             break;
         case 'game.start':
             
@@ -160,7 +164,8 @@ socket.sendJSON = function (data) {
     socket.send(JSON.stringify(data));
 }
 
-const voteCount = document.getElementById('vote_count'); // default value 0
+const voteCount = document.getElementById('vote_count');
+voteCount.value = 0; // default value 0
 const startButton = document.getElementById('startButton');
 const onlineUsersTable = document.getElementById('OnlineUsers');
 const invitationModal = document.getElementById('gameInvitationModal');
@@ -184,26 +189,27 @@ function invite() {
     // maybe put in action.js
     socket.sendJSON({
         action: 'invite',
-        opponent: username, // When invite clicked take username somehow
+        invited: username,
     });
 }
 
-function accept(game_id, player1_username, player2_username) {
+function accept(group_name, inviter, invited) {
     // Get necessary data and call socket.sendJSON
     socket.sendJSON({
         action: 'accept',
-        game_id: game_id, // When accept clicked take game_id somehow
-        player1: player1_username,
-        player2: player2_username,
+        group_name: group_name,
+        accepted: inviter,
+        accepter: invited,
     });
 }
 
-function decline(game_id, player2_username) {
+function decline(group_name, inviter, invited) {
     // Get necessary data and call socket.sendJSON
     socket.sendJSON({
         action: 'decline',
-        game_id: game_id, // When decline clicked take game_id somehow
-        declined_by: player2_username,
+        group_name: group_name,
+        declined: inviter,
+        decliner : invited,
     });
 }
 
@@ -213,6 +219,7 @@ function startGame() {
     socket.sendJSON({
         action: 'game.start',
         game_id: 'game_id',
+        group_name: my.g,
         player1: 'player1_username',
         player2: 'player2_username',
         vote_count: vote_count,
