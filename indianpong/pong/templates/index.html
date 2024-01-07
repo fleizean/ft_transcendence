@@ -1,0 +1,45 @@
+{% load static %}
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Indian-Pong{% endblock  %}</title>
+    <link rel="stylesheet" href="{% static "css/style.css" %}">
+    <link rel="icon" type="image/png" href="{% static 'assets/favicon.ico' %}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
+    {% comment %} <link href="{% static "css/bootstrap.min.css" %}" rel="stylesheet"> {% endcomment %}
+    {% comment %} <link href="{% static "css/fonts/bootstrap-icons.css" %}" rel="stylesheet"> {% endcomment %}
+
+</head>
+
+<body>
+
+    <div class="snow-class">
+        <div class="backgroundimage">
+
+            <div class="app" id="app">
+                {% block app %}
+                <div class="cursor">
+                    <div class="container">
+                <div class="HeaderArea" id="HeaderArea">
+                <div class="big-text">Indian-Pong</div>
+                <div class="small-text">Indian-Pong created for 42 school by Indian Dev!</div>
+                <a href="/login" data-link><button type="button" class="PixellButton">Get Started!</button></a>
+            </div>
+            </div>
+            </div>
+            {% endblock %}
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"></script>
+    {% comment %} <script src="{% static "js/bootstrap.min.js" %}"></script> {% endcomment %}
+    <script src="{% static "js/snowfall.js" %}"></script>
+
+    
+</body>
+
+</html>
