@@ -6,27 +6,20 @@ const canvas = document.getElementById('pongCanvas');
 const context = canvas.getContext('2d');
 
 var my = {
-    username: '', game_id: '', tournament_id: '', group_name: '',
+    username: '', opponent_username: '', game_id: '', tournament_id: '', group_name: '',
 }
 
 socket.onopen = function (e) {
+    // Show some greeting message
     console.log('WebSocket connection established');
 }
 
 socket.onclose = function (e) {
     if (my.game_id) {
-        socket.sendJSON({
-            action: 'leave.match',
-            game_id: my.game_id,
-            player: my.username,
-        });
+        // Show some connection lost message with scores etc.
     }
-    else if (my.tournament_id) {
-        socket.sendJSON({
-            action: 'leave.tournament',
-            tournament_id: my.tournament_id,
-            player: my.username,
-        });
+    else if (my.tournament_id && my.game_id) {
+        // Show some connection lost message with scores and tournament rank etc.
     }
     console.error('WebSocket connection closed');
 }
@@ -93,13 +86,19 @@ socket.onmessage = function (e) {
             if (data.accepter === my.username) {
                 invitationMessage.textContent = `You accepted the game invitation from ${data.accepted}`;
                 invitationMessage.style.display = 'block';
+                my.opponent_username = data.accepted;
             }
             else if (data.accepted === my.username) {
                 invitationMessage.textContent = `Your invitation is accepted by ${data.accepter}`;
                 invitationMessage.style.display = 'block';
+                my.opponent_username = data.accepter;
             }
             my.game_id = data.game_id;
             // Show the game screen and start button
+            startButton.style.display = 'block';
+            startButton.onclick = function () {
+                startRequest();
+            };
 
             console.log(`Accepted Game Id: ${data.game_id} => ${data.accepted} vs ${data.accepter}`);
             break;
@@ -115,22 +114,43 @@ socket.onmessage = function (e) {
             console.log(`Declined Game => ${data.declined} vs ${data.decliner}`);
             break;
         case 'game.start':
+            // Start the game
             
             console.log(`Started Game Id: ${data.game_id} => ${data.player1} vs ${data.player2}`);
             break;
         case 'game.leave':
-            console.log(`Left Game Id: ${data.game_id} as ${data.player}`);
-            break;
-        case 'game.paddle.move':
-            console.log(`Moving Paddle Id: ${data.game_id} for ${data.player}: ${data.x} ${data.y}`);
-            break;
-        case 'game.ball.move':
-            console.log(`Moving Ball Id: ${data.game_id} for ball: ${data.x} ${data.y}`);
+            my.score = data.score;
+            my.opponent_score = data.opponent_score;
+            winner = data.winner;
+            // Show some left game message with scores etc.
+        
+            console.log(`Left Game Id: ${data.game_id} => ${my.opponent_username} left`);
             break;
         // What about draw?
         case 'game.end':
+            my.score = data.score;
+            my.opponent_score = data.opponent_score;
+            winner = data.winner;
             console.log(`Ended Game Id: ${data.game_id} => ${data.winner} won`);
             break;
+        case 'game.ball.move':
+            //get ball position and update it
+            ballX = data.x;
+            ballY = data.y;
+
+            console.log(`Moving Ball Id: ${data.game_id} for ball: ${data.x} ${data.y}`);
+            break;
+        case 'game.paddle.move':
+            //get paddle position and update it
+            paddleY = data.y;
+            player = data.player;
+            console.log(`Moving Paddle Id: ${data.game_id} for ${data.player}: ${data.y}`);
+            break;
+
+
+
+
+
         case 'tournament.start':
             for (const match in data.matches) {
                 console.log(`Started Tournament Id: ${data.tournament_id} => Match Id: ${match.match_id} => ${match.player1} vs ${match.player2}`);
@@ -165,7 +185,7 @@ socket.sendJSON = function (data) {
 }
 
 const voteCount = document.getElementById('vote_count');
-voteCount.value = 0; // default value 0
+voteCount.value = -1;
 const startButton = document.getElementById('startButton');
 const onlineUsersTable = document.getElementById('OnlineUsers');
 const invitationModal = document.getElementById('gameInvitationModal');
@@ -212,17 +232,32 @@ function decline(group_name, inviter, invited) {
         decliner : invited,
     });
 }
-
-function startGame() {
-    var vote_count = voteCount.value;
-    vote_count += 1;
+// Vote count ll be 1 at start if 
+function startRequest(player1, player2) {
+    voteCount.value ^= 1;
     socket.sendJSON({
-        action: 'game.start',
+        action: 'start.request',
+        game_id: my.game_id,
+        vote: voteCount.value,
+    });
+}
+
+// We need to store game scores in server side
+function leaveGame() {
+    socket.sendJSON({
+        action: 'leave.game',
+        game_id: my.game_id,
+        left: my.username,
+        opponent: my.opponent_username,
+    });
+}
+
+// When game ended send this only once 
+function gameEnded() {
+    // Get necessary data and call socket.sendJSON
+    socket.sendJSON({
+        action: 'end',
         game_id: 'game_id',
-        group_name: my.g,
-        player1: 'player1_username',
-        player2: 'player2_username',
-        vote_count: vote_count,
     });
 }
 
@@ -250,15 +285,6 @@ function moveBall() {
 
 
 
-function endGame() {
-    // Get necessary data and call socket.sendJSON
-    socket.sendJSON({
-        action: 'end',
-        game_id: 'game_id',
-        player1_score: 1, // send scores when game ended
-        player2_score: 2,
-    });
-}
 
 function create() {
     // Get necessary data and call socket.sendJSON
@@ -282,6 +308,18 @@ function cancel() {
     socket.sendJSON({
         action: 'cancel',
         tournament_id: 'tournament_id',
+    });
+}
+
+function tournamentMatchLeft() {
+    socket.sendJSON({
+        action: 'leave.tournament',
+        tournament_id: my.tournament_id,
+        game_id: my.game_id,
+        left: my.username,
+        opponent: my.opponent_username,
+        left_score: 0, // send scores when game ended
+        opponent_score: 0,
     });
 }
 

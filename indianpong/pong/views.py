@@ -262,8 +262,6 @@ def search(request):
 
 @login_required(login_url="login")
 def game(request):
-    request.user.status = "online"
-    request.user.save()
     return render(request, 'sock.html', {'username': request.user.username})
 
 @never_cache
