@@ -18,10 +18,11 @@ from django.db.models import Q
 # online_users = [k for k, v in user_status.items() if v == 'online']
 
 
-USER_STATUS = ThreadSafeDict() # key: username, value: online/playing
+#USER_STATUS = ThreadSafeDict() # key: username, value: online/playing
 USER_CHANNEL_NAME = ThreadSafeDict() # key: username, value: channel_name
+USER_INGAME = ThreadSafeDict() # key: username, value: game_id or online
 GAME_STATUS = ThreadSafeDict()  # key: game_id, value: -2/-1/0/1  => accepted/waiting/started/ended
-GAME_SCORES = ThreadSafeDict()  # key: game_id, value: [player1_score, player2_score]
+GAME_SCORES = ThreadSafeDict()  # key: game_id, value: {player1_username: 0, player2_username: 0}]
 
 
 class PongConsumer(AsyncWebsocketConsumer):
@@ -41,9 +42,9 @@ class PongConsumer(AsyncWebsocketConsumer):
         # Add the user to the 'online' group
         await self.channel_layer.group_add("online", self.channel_name)
         # Set the user's status to 'online'
-        USER_STATUS.set(self.user.username, 'online')
+        USER_INGAME.set(self.user.username, 'online')
         # Send a message to the group with the user's username
-        online_users = await USER_STATUS.get_keys_with_value('online')
+        online_users = await USER_INGAME.get_keys_with_value('online')
         await self.channel_layer.group_send(
             "online",
             {
@@ -54,24 +55,32 @@ class PongConsumer(AsyncWebsocketConsumer):
         )
 
     async def disconnect(self, close_code):
+
+        #self.user.channel_name = None
+        game_id = USER_INGAME.get(self.user.username)
+        if game_id != 'online':
+            # Check if user's username is in any game and that game is not ended
+            game = await Game.objects.aget(id=game_id)
+            if GAME_STATUS.get(game.id) == 0: # 0 means game is started
+                [player1_score, player2_score] = GAME_SCORES.get(game.id).values()
+                if game.player1 == self.user:
+                    await self.record_game(game.id, player1_score, 20, game.player2)
+                    USER_INGAME.set(game.player2.username, 'online')
+                else:
+                    await self.record_game(game.id, 20, player2_score, game.player1)
+                    USER_INGAME.set(game.player1.username, 'online')
+            # Delete game caches
+            GAME_STATUS.delete(game.id)
+            GAME_SCORES.delete(game.id)
+            # Remove both users from the game group
+            await self.channel_layer.group_discard(game.group_name, USER_CHANNEL_NAME.get(game.player1.username))
+            await self.channel_layer.group_discard(game.group_name, USER_CHANNEL_NAME.get(game.player2.username))
         # Remove the user's channel name
         USER_CHANNEL_NAME.delete(self.user.username)
-        #self.user.channel_name = None
-        USER_STATUS.delete(self.user.username)
-        #self.user.online = "offline"
-        #await self.user.asave()
+        # make it offline
+        USER_INGAME.delete(self.user.username) 
         # Remove the user from the 'online' group
         await self.channel_layer.group_discard("online", self.channel_name)
-        # TODO: Move this to game leave also implement same for tournament
-        # Check if user's username is in any game and that game is not ended
-        # If so, end the game and record it
-        game = await Game.objects.filter(Q(player1=self.user) | Q(player2=self.user), status="started").afirst()
-        if game:
-            if game.player1 == self.user:
-                await self.record_game(game.id, 0, 20, game.player2.username)
-            else:
-                await self.record_game(game.id, 20, 0, game.player1.username)
-            await self.channel_layer.group_discard(game.group_name, self.channel_name)
         # Send a message to the group with the user's username and online users list
         #online_users = await USER_STATUS.get_keys_with_value('online')
         #online_users = await self.get_online_users_list()
@@ -175,8 +184,8 @@ class PongConsumer(AsyncWebsocketConsumer):
             # Check both players voted to start the game
             if current == 0: # 0 means both players voted to start the game
                 # Update the players' status to 'playing' and save them to the database
-                USER_STATUS.set(game.player1.username, 'playing')
-                USER_STATUS.set(game.player2.username, 'playing')
+                USER_INGAME.set(game.player1.username, game.id)
+                USER_INGAME.set(game.player2.username, game.id)
                 # Set game scores to 0
                 GAME_SCORES.set(game_id, {game.player1.username: 0, game.player2.username: 0})
                 # Send a message to the game group with the game id
@@ -204,8 +213,8 @@ class PongConsumer(AsyncWebsocketConsumer):
             # Update the game status to 'ended'
             GAME_STATUS.set(game_id, 1)
             # Update the both status to 'online'
-            USER_STATUS.set(left, 'online')
-            USER_STATUS.set(opponent, 'online')
+            USER_INGAME.set(left, 'online')
+            USER_INGAME.set(opponent, 'online')
             # Send a message to the game group with the game id and the opponent's username
             await self.record_game(game.id, left_score, opponent_score, winner)
             await self.channel_layer.group_send(
@@ -233,8 +242,8 @@ class PongConsumer(AsyncWebsocketConsumer):
             # Set the game status to 'ended' 
             GAME_STATUS.set(game_id, 1)
             # Update the both status to 'online'
-            USER_STATUS.set(left, 'online')
-            USER_STATUS.set(opponent, 'online')
+            USER_INGAME.set(left, 'online')
+            USER_INGAME.set(opponent, 'online')
             # Set the game winner, scores and save it to the database
             await self.record_game(game_id, player1_score, player2_score, winner)
             # Send a message to the game group with the game id and the winner's username
