@@ -7,7 +7,7 @@ class UserProfile(AbstractUser):
     displayname = models.CharField(max_length=100, blank=True, null=True)
     avatar = models.ImageField(upload_to='avatars/', null=True, blank=True)
     friends = models.ManyToManyField('self', symmetrical=False)
-    channel_name = models.CharField(max_length=100, blank=True, null=True)
+    #channel_name = models.CharField(max_length=100, blank=True, null=True)
     wins = models.IntegerField(default=0)
     losses = models.IntegerField(default=0)
 
@@ -19,7 +19,7 @@ class UserProfile(AbstractUser):
         if self.avatar:
             return mark_safe('<img src="%s" width="50" height="50" />' % (self.avatar.url))
         else:
-            return mark_safe('<img src="/static/assets/profile/default_avatar.png" width="50" height="50" />')
+            return mark_safe('<img src="/static/assets/profile/default_avatar.jpeg" width="50" height="50" />')
     
 class ChatMessage(models.Model):
     sender = models.ForeignKey(UserProfile, related_name='sent_messages', on_delete=models.CASCADE)

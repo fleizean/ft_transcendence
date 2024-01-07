@@ -5,6 +5,21 @@ const socket = new WebSocket('ws://' + window.location.host + '/ws/pong/');  // 
 const canvas = document.getElementById('pongCanvas');
 const context = canvas.getContext('2d');
 
+const startModal = document.getElementById('startModal');
+startModal.style.display = 'none';
+const voteCount = document.getElementById('voteCount');
+voteCount.value = -1;
+const startButton = document.getElementById('startButton');
+const onlineUsersTable = document.getElementById('OnlineUsers');
+const invitationModal = document.getElementById('gameInvitationModal');
+const invitationMessage = document.getElementById('invitationMessage');
+const acceptButton = document.getElementById('acceptButton');
+const declineButton = document.getElementById('declineButton');
+const inviteButton = document.getElementById('inviteButton');
+const inviteInput = document.getElementById('inviteInput');
+invitationModal.style.display = 'none';
+invitationMessage.style.display = 'none';
+
 var my = {
     username: '', opponent_username: '', game_id: '', tournament_id: '', group_name: '',
 }
@@ -43,8 +58,10 @@ socket.onmessage = function (e) {
                 console.log('', user);
                 onlineUsersTable.innerHTML += `<tr><th>${user}</th></tr>`;
             }
-            my.username = data.username;
+            if (my.username === '')
+                my.username = data.username;
             console.log('Player connected:', data.username);
+            console.log(my.username);
             break;
         case 'user.offline':
             // Remove username from onlineUsers table
@@ -60,9 +77,11 @@ socket.onmessage = function (e) {
         
         case 'game.invite':
             // Display the modal for accepting or declining the invitation
-            my.group_name = data.group_name;
+            if (my.group_name === '')
+                my.group_name = data.group_name;
+            console.log(my.username);
             if (data.invited === my.username) {
-                invitationMessage.textContent = `You received a game invitation from ${data.inviter}. Do you want to accept?`;
+                invitationMessage.textContent = `You received a game invitation from ${data.inviter}.`; //Do you want to accept?`
                 invitationModal.style.display = 'block';
             }
             else
@@ -86,18 +105,19 @@ socket.onmessage = function (e) {
             if (data.accepter === my.username) {
                 invitationMessage.textContent = `You accepted the game invitation from ${data.accepted}`;
                 invitationMessage.style.display = 'block';
-                my.opponent_username = data.accepted;
+                my.opponent_username = data.accepted; // if gerekir mi?
             }
             else if (data.accepted === my.username) {
                 invitationMessage.textContent = `Your invitation is accepted by ${data.accepter}`;
                 invitationMessage.style.display = 'block';
-                my.opponent_username = data.accepter;
+                my.opponent_username = data.accepter; // if gerekir mi?
             }
-            my.game_id = data.game_id;
+            if (my.game_id === '')
+                my.game_id = data.game_id;
             // Show the game screen and start button
-            startButton.style.display = 'block';
+            startModal.style.display = 'block';
             startButton.onclick = function () {
-                startRequest();
+                startRequest(my.username, my.opponent_username);
             };
 
             console.log(`Accepted Game Id: ${data.game_id} => ${data.accepted} vs ${data.accepter}`);
@@ -184,20 +204,8 @@ socket.sendJSON = function (data) {
     socket.send(JSON.stringify(data));
 }
 
-const voteCount = document.getElementById('vote_count');
-voteCount.value = -1;
-const startButton = document.getElementById('startButton');
-const onlineUsersTable = document.getElementById('OnlineUsers');
-const invitationModal = document.getElementById('gameInvitationModal');
-const invitationMessage = document.getElementById('invitationMessage');
-const acceptButton = document.getElementById('acceptButton');
-const declineButton = document.getElementById('declineButton');
-invitationModal.style.display = 'none';
-invitationMessage.style.display = 'none';
 
 // Add an event listener for the "Invite" button
-const inviteButton = document.getElementById('inviteButton');
-const inviteInput = document.getElementById('inviteInput');
 inviteButton.onclick = function () {
     invitationMessage.style.display = 'block';
     invite();
@@ -234,10 +242,12 @@ function decline(group_name, inviter, invited) {
 }
 // Vote count ll be 1 at start if 
 function startRequest(player1, player2) {
-    voteCount.value ^= 1;
+    voteCount.value *= -1;
     socket.sendJSON({
         action: 'start.request',
         game_id: my.game_id,
+        player1: my.username,
+        player2: my.opponent_username,
         vote: voteCount.value,
     });
 }
