@@ -1,15 +1,13 @@
 from django.contrib import admin
-from .models import Room, ChatUser, Message
+from .models import Room, Message
 
 # Register your models here.
-admin.site.register(Room)
-
-@admin.register(ChatUser)
-class ChatUserAdmin(admin.ModelAdmin):
-    list_display = ["user", "room"]
+@admin.register(Room)
+class RoomAdmin(admin.ModelAdmin):
+    list_display = ["first_user", "second_user"]
     
     class Meta:
-        model = ChatUser
+        model = Room
 
 @admin.register(Message)
 class MessageAdmin(admin.ModelAdmin):
