@@ -2,7 +2,7 @@ import json
 from uuid import uuid4
 from channels.generic.websocket import AsyncWebsocketConsumer, AsyncJsonWebsocketConsumer
 from channels.db import database_sync_to_async
-from indianpong.pong.utils import ThreadSafeDict
+from pong.utils import ThreadSafeDict
 from .models import Game, Tournament, MatchRecord, UserProfile #Match, Score
 from datetime import datetime
 from django.db.models import Q
