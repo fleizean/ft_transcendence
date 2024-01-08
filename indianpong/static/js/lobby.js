@@ -2,10 +2,10 @@
 const socket = new WebSocket('ws://' + window.location.host + '/ws/pong/');  // Replace with your WebSocket endpoint
 
 
-/* const canvas = document.getElementById('pongCanvas');
-const context = canvas.getContext('2d'); */
+const canvas = document.getElementById('pongCanvas');
+const context = canvas.getContext('2d');
 
-const startModal = document.getElementById('startModal');
+/* const startModal = document.getElementById('startModal');
 startModal.style.display = 'none';
 const voteCount = document.getElementById('voteCount');
 voteCount.value = -1;
@@ -18,7 +18,7 @@ const declineButton = document.getElementById('declineButton');
 const inviteButton = document.getElementById('inviteButton');
 const inviteInput = document.getElementById('inviteInput');
 invitationModal.style.display = 'none';
-invitationMessage.style.display = 'none';
+invitationMessage.style.display = 'none'; */
 
 var my = {
     username: '', opponent_username: '', game_id: '', tournament_id: '', group_name: '',
@@ -52,15 +52,15 @@ socket.onmessage = function (e) {
     console.log(data);
     switch (data.type) {
         case 'user.online':
-            // Add username to onlineUsers table
-            onlineUsersTable.innerHTML = '';
-            //showOnlineUsers(data.users);
-            for (let user of data.users) {
-                console.log('', user);
-                onlineUsersTable.innerHTML += `<tr><th>${user}</th></tr>`;
-            }
             if (my.username === '')
                 my.username = data.username;
+            // Add username to onlineUsers table
+            //onlineUsersTable.innerHTML = '';
+            showOnlineUsers(data.users);
+/*             for (let user of data.users) {
+                console.log('', user);
+                onlineUsersTable.innerHTML += `<tr><th>${user}</th></tr>`;
+            } */
             console.log('Player connected:', data.username);
             console.log(my.username);
             break;
@@ -68,7 +68,12 @@ socket.onmessage = function (e) {
             // Remove username from onlineUsers table
             //onlineUsersTable.innerHTML = '';
             // Get onlineUser table remove the line which username in it
-            onlineUsersTable.innerHTML = onlineUsersTable.innerHTML.replace(`<tr><th>${data.username}</th></tr>`, '');
+            document.querySelectorAll('#userTableBody td').forEach(cell => {
+                if (cell.textContent === data.username)
+                    cell.closest('tr').remove();
+            }
+            );
+            //onlineUsersTable.innerHTML = onlineUsersTable.innerHTML.replace(`<tr><th>${data.username}</th></tr>`, '');
 
 /*             for (let user of data.users) {
                 onlineUsersTable.innerHTML += `<tr><th>${user}</th></tr>`;
@@ -82,15 +87,45 @@ socket.onmessage = function (e) {
                 my.group_name = data.group_name;
             console.log(my.username);
             if (data.invited === my.username) {
-                invitationMessage.textContent = `You received a game invitation from ${data.inviter}.`; //Do you want to accept?`
-                invitationModal.style.display = 'block';
+                document.getElementById('message').innerText = `You received a game invitation from ${data.inviter}.`;
+                const acceptBtn = document.createElement('button');
+                acceptBtn.classList.add('btn', 'btn-success', 'accept-btn');
+                acceptBtn.innerText = 'Accept';
+        
+                // Create Decline button
+                const declineBtn = document.createElement('button');
+                declineBtn.classList.add('btn', 'btn-danger', 'decline-btn');
+                declineBtn.innerText = 'Decline';
+    
+                const inviteButton = document.querySelector('.invite-btn[data-username="' + data.inviter + '"]');
+                inviteButton.style.display = 'none';
+                // Insert Accept and Decline buttons after the hidden Invite button
+                inviteButton.parentNode.insertBefore(acceptBtn, inviteButton.nextSibling);
+                inviteButton.parentNode.insertBefore(declineBtn, inviteButton.nextSibling);
+        
+/*              invitationMessage.textContent = `You received a game invitation from ${data.inviter}.`; //Do you want to accept?`
+                invitationModal.style.display = 'block'; */
             }
-            else
+/*             else
             {
-                invitationMessage.textContent = `You send a game invitation to ${data.invited}`;
-            }
+                document.getElementById('message').innerText = `You sent a game invitation to ${data.invited}`;
+                //invitationMessage.textContent = `You send a game invitation to ${data.invited}`;
+            } */
+            document.addEventListener('click', function (event) {
+                if (event.target.classList.contains('accept-btn') || event.target.classList.contains('decline-btn')) {
+                    // Simulate backend logic for accepting or declining the invitation
+                    if (event.target.classList.contains('accept-btn')) {
+                        accept(data.group_name, data.inviter, data.invited);
+                    }
+                    else if (event.target.classList.contains('decline-btn')) {
+                        decline(data.group_name, data.inviter, data.invited);
+                    }
+                    // Hide accept and decline buttons show start button
 
-            acceptButton.onclick = function () {
+                }
+            });
+
+/*             acceptButton.onclick = function () {
                 accept(data.group_name, data.inviter, data.invited);
                 invitationModal.style.display = 'none';
             };
@@ -98,39 +133,58 @@ socket.onmessage = function (e) {
             declineButton.onclick = function () {
                 decline(data.group_name, data.inviter, data.invited);
                 invitationModal.style.display = 'none';
-            };
+            }; */
 
             console.log(`Invited Group Name: ${data.group_name} => ${data.inviter} vs ${data.invited}`);
             break;
-        case 'game.accept':
+            case 'game.accept':
+            // Create Start button and replace with Accept button and Decline button
+            const startBtn = document.createElement('button');
+            startBtn.classList.add('btn', 'btn-success', 'start-btn');
+            startBtn.innerText = 'Start';
             if (data.accepter === my.username) {
-                invitationMessage.textContent = `You accepted the game invitation from ${data.accepted}`;
-                invitationMessage.style.display = 'block';
+                /*                 invitationMessage.textContent = `You accepted the game invitation from ${data.accepted}`;
+                invitationMessage.style.display = 'block'; */
+                document.getElementById('message').innerText = `You accepted the game invitation from ${data.accepted}`;
                 my.opponent_username = data.accepted; // if gerekir mi?
+                const acceptButton = document.querySelector('.accept-btn');
+                acceptButton.style.display = 'none';
+                const declineButton = document.querySelector('.decline-btn');
+                declineButton.style.display = 'none';
+                // Insert Start button after the hidden Decline button
+                declineButton.parentNode.insertBefore(startBtn, declineButton.nextSibling);
             }
             else if (data.accepted === my.username) {
-                invitationMessage.textContent = `Your invitation is accepted by ${data.accepter}`;
-                invitationMessage.style.display = 'block';
+/*                 invitationMessage.textContent = `Your invitation is accepted by ${data.accepter}`;
+                invitationMessage.style.display = 'block'; */
+                document.getElementById('message').innerText = `Your invitation is accepted by ${data.accepter}`;
                 my.opponent_username = data.accepter; // if gerekir mi?
+                const inviteButton = querySelector('.invite-btn[data-username="' + data.accepter + '"]')
+                //insert Start button after the hidden Invite button
+                inviteButton.parentNode.insertBefore(startBtn, inviteButton.nextSibling);
             }
             if (my.game_id === '')
                 my.game_id = data.game_id;
+
+
             // Show the game screen and start button
-            startModal.style.display = 'block';
+/*             startModal.style.display = 'block';
             startButton.onclick = function () {
                 startRequest(my.username, my.opponent_username);
-            };
+            }; */
 
             console.log(`Accepted Game Id: ${data.game_id} => ${data.accepted} vs ${data.accepter}`);
             break;
         case 'game.decline':
             if (data.decliner === my.username) {
-                invitationMessage.textContent = `You declined the game invitation from ${data.declined}`;
-                invitationMessage.style.display = 'block';
+/*                 invitationMessage.textContent = `You declined the game invitation from ${data.declined}`;
+                invitationMessage.style.display = 'block'; */
+                document.getElementById('message').innerText = `You declined the game invitation from ${data.declined}`;
             }
             else if (data.declined === my.username) {
-                invitationMessage.textContent = `Your invitation is declined by ${data.decliner}`;
-                invitationMessage.style.display = 'block';
+/*                 invitationMessage.textContent = `Your invitation is declined by ${data.decliner}`;
+                invitationMessage.style.display = 'block'; */
+                document.getElementById('message').innerText = `Your invitation is declined by ${data.decliner}`;
             }
             console.log(`Declined Game => ${data.declined} vs ${data.decliner}`);
             break;
@@ -199,6 +253,102 @@ socket.sendJSON = function (data) {
     socket.send(JSON.stringify(data));
 }
 
+function showOnlineUsers(users) {
+    const tbody = document.getElementById('userTableBody');
+    tbody.innerHTML = '';
+    users.forEach(user => {
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td>${user}</td>
+        <td>
+          <span class="status-icon bg-success" title="Online"></span>
+          Online
+        </td>`;
+      if (user !== my.username){
+          row.innerHTML += `
+            <td>
+              <button class="btn btn-primary invite-btn" data-username="${user}">Invite</button>
+            </td>
+          `;
+      }
+      tbody.appendChild(row);
+    });
+
+}
+// Add your JavaScript logic here
+
+document.getElementById('userTableBody').addEventListener('click', function (event) {
+    const clickedButton = event.target;
+
+    if (clickedButton.classList.contains('invite-btn')) {
+        const username = clickedButton.getAttribute('data-username');
+
+        // Call your invite function with the username
+        invite(username);
+
+        // Hide invite button
+        clickedButton.style.display = 'none';
+
+        // Show appropriate message
+        document.getElementById('message').innerText = `You sent a game invitation to ${username}`;
+    }
+});
+
+
+/*   button.addEventListener('click', function (event) {
+    const username = this.getAttribute('data-username');
+    // Call your invite function with the username
+    invite(username);
+
+    // Show appropriate message
+    document.getElementById('message').innerText = `You sent a game invitation to ${username}`;
+    // Hide invite button
+    this.style.display = 'none';
+    // Show accept and decline buttons
+    const actionCol = event.currentTarget.closest('tr').querySelector('.action-col');
+    actionCol.innerHTML = `
+        <button class="btn btn-success start-btn">Accept</button>
+        <button class="btn btn-danger decline-btn">Decline</button>
+    `;
+  }); */
+
+
+// Handle accept and decline buttons (simulated)
+/* document.addEventListener('click', function (event) {
+  if (event.target.classList.contains('btn-accept') || event.target.classList.contains('btn-decline')) {
+    // Simulate backend logic for accepting or declining the invitation
+
+    // Update message
+      document.getElementById('message').innerText = event.target.classList.contains('btn-accept') ?
+      'Your invitation has been accepted' :
+      'Your invitation has been declined';
+
+    // Hide accept and decline buttons show start button
+    event.target.closest('tr').querySelector('.action-col').innerHTML = '<button class="btn btn-success start-btn">Start</button>';
+  }
+});
+ */
+// Handle start button click and toggle checkmark
+document.addEventListener('click', function (event) {
+  if (event.target.classList.contains('start-btn')) {
+    const checkMark = '<span class="text-success">&#10003;</span>';
+    const buttonText = event.target.innerHTML;
+
+    if (buttonText.includes(checkMark)) {
+      // Call startRequest function
+      startRequest(my.username, my.opponent_username);
+      // Update message
+      document.getElementById('message').innerText = 'Start request sent';
+
+      // Remove checkmark
+      event.target.innerHTML = 'Start';
+    } else {
+      // Add checkmark
+      event.target.innerHTML = `${checkMark} Start`;
+    }
+  }
+});
+
 /* function showOnlineUsers(users) {
     for (let user of users) {
         let listItem = document.createElement('div');
@@ -238,18 +388,18 @@ var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
  */
 
 // Add an event listener for the "Invite" button
-inviteButton.onclick = function () {
+/* inviteButton.onclick = function () {
     invitationMessage.style.display = 'block';
     invite();
-}
+} */
 
-function invite() {
+function invite(username) {
     // Get necessary data and call socket.sendJSON
     //username = inviteInput.value;
     // maybe put in action.js
     socket.sendJSON({
         action: 'invite',
-        invited: inviteInput.value,
+        invited: username,
     });
 }
 
@@ -272,15 +422,16 @@ function decline(group_name, inviter, invited) {
         decliner : invited,
     });
 }
+var voteCount = -1;
 // Vote count ll be 1 at start if 
 function startRequest(player1, player2) {
-    voteCount.value *= -1;
+    voteCount *= -1;
     socket.sendJSON({
         action: 'start.request',
         game_id: my.game_id,
         player1: player1,
         player2: player2,
-        vote: voteCount.value,
+        vote: voteCount,
     });
 }
 

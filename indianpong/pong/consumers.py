@@ -3,7 +3,8 @@ from uuid import uuid4
 from channels.generic.websocket import AsyncWebsocketConsumer, AsyncJsonWebsocketConsumer
 from channels.db import database_sync_to_async
 from pong.utils import ThreadSafeDict
-from pong.game import calculate_ball_coor
+#from asgiref.sync import sync_to_async
+#from pong.game import calculate_ball_coor
 from .models import Game, Tournament, MatchRecord, UserProfile #Match, Score
 from datetime import datetime
 from django.db.models import Q
@@ -58,28 +59,21 @@ class PongConsumer(AsyncWebsocketConsumer):
         )
 
     async def disconnect(self, close_code):
-
         #self.user.channel_name = None
         game_id = await USER_INGAME.get(self.user.username)
         if game_id != 'online':
             # Check if user's username is in any game and that game is not ended
-            game = await Game.objects.aget(id=game_id)
-            if await GAME_STATUS.get(game.id) == 2: # 0 means game is started
-                scores = await GAME_SCORES.get(game.id)
-                player1_score = scores.get(game.player1.username)
-                player2_score = scores.get(game.player2.username)
-                if game.player1 == self.user:
-                    await self.record_game(game.id, player1_score, 20, game.player2)
-                    await USER_INGAME.set(game.player2.username, 'online')
-                else:
-                    await self.record_game(game.id, 20, player2_score, game.player1)
-                    await USER_INGAME.set(game.player1.username, 'online')
+            group_name, player1, player2 = await self.get_game_info(game_id)
+            if await GAME_STATUS.get(game_id) == 2: # 2 means game is started
+                await self.set_game_scores(game_id, player1, player2)
             # Delete game caches
-            await GAME_STATUS.delete(game.id)
-            await GAME_SCORES.delete(game.id)
+            await GAME_STATUS.delete(game_id)
+            await GAME_SCORES.delete(game_id)
             # Remove both users from the game group
-            await self.channel_layer.group_discard(game.group_name, USER_CHANNEL_NAME.get(game.player1.username))
-            await self.channel_layer.group_discard(game.group_name, USER_CHANNEL_NAME.get(game.player2.username))
+            player1_channel_name = await USER_CHANNEL_NAME.get(player1.username)
+            player2_channel_name = await USER_CHANNEL_NAME.get(player2.username)
+            await self.channel_layer.group_discard(group_name, player1_channel_name)
+            await self.channel_layer.group_discard(group_name, player2_channel_name)
         # Remove the user's channel name
         await USER_CHANNEL_NAME.delete(self.user.username)
         # make it offline
@@ -219,9 +213,6 @@ class PongConsumer(AsyncWebsocketConsumer):
             game = await Game.objects.aget(id=game_id)
             # Update the game status to 'ended' or delete it
             await GAME_STATUS.delete(game_id)
-            # Update the both status to 'online'
-            await USER_INGAME.set(left, 'online')
-            await USER_INGAME.set(opponent, 'online')
             # Send a message to the game group with the game id and the opponent's username
             await self.record_game(game.id, left_score, opponent_score, winner)
             await self.channel_layer.group_send(
@@ -248,9 +239,6 @@ class PongConsumer(AsyncWebsocketConsumer):
             winner = player1_score > player2_score and game.player1 or game.player2
             # Set the game status to 'ended' or delete it
             await GAME_STATUS.delete(game_id)
-            # Update the both status to 'online'
-            await USER_INGAME.set(left, 'online')
-            await USER_INGAME.set(opponent, 'online')
             # Set the game winner, scores and save it to the database
             await self.record_game(game_id, player1_score, player2_score, winner)
             # Send a message to the game group with the game id and the winner's username
@@ -268,7 +256,7 @@ class PongConsumer(AsyncWebsocketConsumer):
             # Make a move in a game
             game_id = data["game_id"]
             # Calculate ball coordinates
-            ball_coor = await calculate_ball_coor(game_id)
+            #ball_coor = await calculate_ball_coor(game_id)
             # Get ball coordinates
             x = ball_coor.get('x')
             y = ball_coor.get('y')
@@ -485,6 +473,8 @@ class PongConsumer(AsyncWebsocketConsumer):
     @database_sync_to_async
     def record_game(self, game_id, player1_score, player2_score, winner):
         game = Game.objects.get(id=game_id)
+        USER_INGAME.set(game.player1.username, 'online')
+        USER_INGAME.set(game.player2.username, 'online')
         game.player1_score = player1_score
         game.player2_score = player2_score
         game.winner = winner
@@ -501,6 +491,19 @@ class PongConsumer(AsyncWebsocketConsumer):
     @database_sync_to_async
     def get_online_users_list(self):
         return [user.username for user in UserProfile.objects.filter(online=True)]
+    
+    async def set_game_scores(self, game_id, player1, player2):
+        scores = await GAME_SCORES.get(game_id)
+        player1_score, player2_score = scores.values()
+        if player1.username == self.user.username:
+            await self.record_game(game_id, player1_score, 20, player2)
+        else:
+            await self.record_game(game_id, 20, player2_score, player1)
+        
+    @database_sync_to_async
+    def get_game_info(self, game_id):
+        game = Game.objects.get(id=game_id)
+        return game.group_name, game.player1, game.player2
     
     @database_sync_to_async
     def get_user(self, username):
