@@ -3,6 +3,7 @@ from uuid import uuid4
 from channels.generic.websocket import AsyncWebsocketConsumer, AsyncJsonWebsocketConsumer
 from channels.db import database_sync_to_async
 from pong.utils import ThreadSafeDict
+from pong.game import calculate_ball_coor
 from .models import Game, Tournament, MatchRecord, UserProfile #Match, Score
 from datetime import datetime
 from django.db.models import Q
@@ -24,6 +25,8 @@ USER_INGAME = ThreadSafeDict() # key: username, value: game_id or online
 GAME_STATUS = ThreadSafeDict()  # key: game_id, value: 0/1/2/3  => accepted/waiting/started/ended
 GAME_SCORES = ThreadSafeDict()  # key: game_id, value: {player1_username: 0, player2_username: 0}]
 
+BALL_COOR = ThreadSafeDict() # key: game_id, value: {x: 0, y: 0}
+PADDLE_COOR = ThreadSafeDict() # key: game_id, value: {player1: 0, player2: 0}
 
 class PongConsumer(AsyncWebsocketConsumer):
     async def connect(self):
@@ -264,8 +267,12 @@ class PongConsumer(AsyncWebsocketConsumer):
         elif action == "ball":
             # Make a move in a game
             game_id = data["game_id"]
-            x = data["ballX"]
-            y = data["ballY"]
+            # Calculate ball coordinates
+            ball_coor = await calculate_ball_coor(game_id)
+            # Get ball coordinates
+            x = ball_coor.get('x')
+            y = ball_coor.get('y')
+
             # Get the game instance from the database
             #game = await self.get_game(game_id)
             #await self.save_game(game)
@@ -282,7 +289,10 @@ class PongConsumer(AsyncWebsocketConsumer):
         elif action == "paddle":
             # Make a move in a game
             game_id = data["game_id"]
-            y = data["y"]
+            diffy = data["diffy"]
+            # Get paddle coordinates
+            paddle_coor = await PADDLE_COOR.get(game_id)
+            y = paddle_coor.get(self.user.username) + diffy
             # Get the game instance from the database
             #game = await self.get_game(game_id)
             # Update the game state with the move and save it to the database
