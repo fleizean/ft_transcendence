@@ -62,7 +62,9 @@ class PongConsumer(AsyncWebsocketConsumer):
             # Check if user's username is in any game and that game is not ended
             game = await Game.objects.aget(id=game_id)
             if await GAME_STATUS.get(game.id) == 2: # 0 means game is started
-                [player1_score, player2_score] = await GAME_SCORES.get(game.id).values()
+                scores = await GAME_SCORES.get(game.id)
+                player1_score = scores.get(game.player1.username)
+                player2_score = scores.get(game.player2.username)
                 if game.player1 == self.user:
                     await self.record_game(game.id, player1_score, 20, game.player2)
                     await USER_INGAME.set(game.player2.username, 'online')

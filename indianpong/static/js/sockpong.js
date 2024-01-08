@@ -54,6 +54,7 @@ socket.onmessage = function (e) {
         case 'user.online':
             // Add username to onlineUsers table
             onlineUsersTable.innerHTML = '';
+            //showOnlineUsers(data.users);
             for (let user of data.users) {
                 console.log('', user);
                 onlineUsersTable.innerHTML += `<tr><th>${user}</th></tr>`;
@@ -135,7 +136,7 @@ socket.onmessage = function (e) {
             break;
         case 'game.start':
             // Start the game
-            
+            invitationMessage.textContent = `Game started between ${data.player1} and ${data.player2}`;
             console.log(`Started Game Id: ${data.game_id} => ${data.player1} vs ${data.player2}`);
             break;
         case 'game.leave':
@@ -155,22 +156,16 @@ socket.onmessage = function (e) {
             break;
         case 'game.ball.move':
             //get ball position and update it
-            ballX = data.x;
-            ballY = data.y;
+            ballDraw(data.x, data.y)
+            
 
             console.log(`Moving Ball Id: ${data.game_id} for ball: ${data.x} ${data.y}`);
             break;
         case 'game.paddle.move':
             //get paddle position and update it
-            paddleY = data.y;
-            player = data.player;
+            paddleDraw(data.player, data.y)
             console.log(`Moving Paddle Id: ${data.game_id} for ${data.player}: ${data.y}`);
             break;
-
-
-
-
-
         case 'tournament.start':
             for (const match in data.matches) {
                 console.log(`Started Tournament Id: ${data.tournament_id} => Match Id: ${match.match_id} => ${match.player1} vs ${match.player2}`);
@@ -204,6 +199,43 @@ socket.sendJSON = function (data) {
     socket.send(JSON.stringify(data));
 }
 
+/* function showOnlineUsers(users) {
+    for (let user of users) {
+        let listItem = document.createElement('div');
+        listItem.className = 'list-group-item';
+
+        // Create the status icon
+        let statusIcon = document.createElement('span');
+        statusIcon.className = 'badge ' + 'bg-success';//(user.status == 'online' ? 'bg-success' : (user.status == 'waiting' ? 'bg-warning' : 'bg-danger'));
+        statusIcon.dataset.bsToggle = 'tooltip';
+        statusIcon.dataset.bsPlacement = 'top';
+        statusIcon.title = 'online';
+        statusIcon.textContent = '•';
+        listItem.appendChild(statusIcon);
+
+        // Add the username
+        let usernameText = document.createTextNode(' ' + user);
+        listItem.appendChild(usernameText);
+
+        // Create the invite button
+        if (user !== my.username){
+            let inviteButton = document.createElement('button');
+            inviteButton.className = 'btn btn-primary btn-sm float-end';
+            inviteButton.onclick = function() { invite(user); };
+            inviteButton.textContent = 'Invite';
+            listItem.appendChild(inviteButton);
+        }
+        // Add the list item to the online users list
+        onlineUsersTable.appendChild(listItem);
+    }
+};
+
+// Initialize tooltips
+var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+  return new bootstrap.Tooltip(tooltipTriggerEl)
+})
+ */
 
 // Add an event listener for the "Invite" button
 inviteButton.onclick = function () {
@@ -213,11 +245,11 @@ inviteButton.onclick = function () {
 
 function invite() {
     // Get necessary data and call socket.sendJSON
-    username = inviteInput.value;
+    //username = inviteInput.value;
     // maybe put in action.js
     socket.sendJSON({
         action: 'invite',
-        invited: username,
+        invited: inviteInput.value,
     });
 }
 
@@ -246,8 +278,8 @@ function startRequest(player1, player2) {
     socket.sendJSON({
         action: 'start.request',
         game_id: my.game_id,
-        player1: my.username,
-        player2: my.opponent_username,
+        player1: player1,
+        player2: player2,
         vote: voteCount.value,
     });
 }
