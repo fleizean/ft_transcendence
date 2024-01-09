@@ -71,16 +71,18 @@ class Game:
         return self.ball.x, self.ball.y
     
 
-    def movePaddle(self, paddle, direction):
+    def movePaddle(self, player, direction):
+        # Move the paddles
+        mover = player == self.player1.username and self.player1 or self.player2
         if direction == "up":
-            paddle.y -= paddle.dy
+            mover.paddle.y -= mover.paddle.dy
+            if mover.paddle.y < 0:
+                mover.paddle.y = 0
         elif direction == "down":
-            paddle.y += paddle.dy
-        if paddle.y < 0:
-            paddle.y = 0
-        elif paddle.y + paddle.height > HEIGHT:
-            paddle.y = HEIGHT - paddle.height
-        return paddle.y
+            mover.paddle.y += mover.paddle.dy
+            if mover.paddle.y > HEIGHT - mover.paddle.height:
+                mover.paddle.y = HEIGHT - mover.paddle.height
+        return mover.paddle.y
 
     def resetBall(self):
         self.ball.x = WIDTH / 2
