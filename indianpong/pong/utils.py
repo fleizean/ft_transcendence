@@ -38,3 +38,8 @@ class ThreadSafeDict:
     def get_keys_with_value(self, value):
         with self.lock:
             return [k for k, v in self.dict.items() if v == value]
+        
+    @sync_to_async
+    def set_field_value(self, key, value, field_name):
+        with self.lock:
+            setattr(self.dict[key], field_name, value)

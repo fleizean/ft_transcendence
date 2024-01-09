@@ -1,90 +1,113 @@
-#pong.py
+from enum import Enum
+import random
 
-# Define some constants for the pong game
 WIDTH = 800
 HEIGHT = 600
-BALL_RADIUS = 20
+
 PAD_WIDTH = 8
 PAD_HEIGHT = 80
-PAD_SPEED = 10
+PAD_SPEED = 50
+PADDLE_Y = (HEIGHT - PAD_HEIGHT) / 2 
+
+BALL_RADIUS = 20
 BALL_SPEED = 5
 
-# Define some variables for the game state
-ballX = WIDTH / 2 - BALL_RADIUS # initial ball x position
-ballY = HEIGHT / 2 - BALL_RADIUS # initial ball y position
-ballVX = BALL_SPEED # initial ball x velocity
-ballVY = BALL_SPEED # initial ball y velocity
-paddle1Y = HEIGHT / 2 - PAD_HEIGHT / 2 # initial paddle 1 y position
-paddle2Y = HEIGHT / 2 - PAD_HEIGHT / 2 # initial paddle 2 y position
-paddle1VY = 0 # initial paddle 1 y velocity
-paddle2VY = 0 # initial paddle 2 y velocity
-player1ScoreValue = 0 # initial player 1 score
-player2ScoreValue = 0 # initial player 2 score
-gameState = "serve" # initial game state
+MAX_SCORE = 20
+
+class Status(Enum):
+    ACCEPTED = 0
+    WAITING = 1
+    STARTED = 2
+    ENDED = 3
 
 
-# Define a function to update the game state
-def update():
-  # Move the ball according to its velocity
-  ballX += ballVX
-  ballY += ballVY
-  sendballMoveEvent(ballX, ballY)
+class Ball:
+    def __init__(self):
+        self.x = WIDTH / 2
+        self.y = HEIGHT / 2
+        self.radius = BALL_RADIUS
+        self.speed = BALL_SPEED
+        self.dx = random.choice([-1, 1])
+        self.dy = random.choice([-1, 1])
 
-  # Check for collision with the top and bottom edges of the board
-  if ballY < 0 or ballY > HEIGHT - BALL_RADIUS * 2:
-    # Reverse the ball y velocity
-    ballVY *= -1
-    sendWallHitEvent()
+class Paddle:
+    def __init__(self, x, y, width, height, dy):
+        self.x = x
+        self.y = y
+        self.width = width
+        self.height = height
+        self.dy = dy
 
-  # Check for collision with the left and right edges of the board
-  if (ballX < 0 or ballX > WIDTH - BALL_RADIUS * 2):
-    # Increase the score of the opposite player
-    if (ballX < 0):
-      player2ScoreValue+= 1
-    else:
-      player1ScoreValue+= 1
-    # Update the score display
-    #player1Score.textContent = player1ScoreValue;
-    #player2Score.textContent = player2ScoreValue;
-    # Reset the ball position and velocity
-    ballX = WIDTH / 2 - BALL_RADIUS
-    ballY = HEIGHT / 2 - BALL_RADIUS
-    ballVX = BALL_SPEED
-    ballVY = BALL_SPEED
-    # Change the game state to serve
-    gameState = "serve"
-    # Show a message to press enter to play
-    ##message.textContent = "Press Enter to Play Pong";
-    sendScoredEvent(player1ScoreValue, player2ScoreValue)
-  
+# Player class have username and score and Paddle object
+class Player:
+    def __init__(self, username):
+        self.username = username
+        self.score = 0
+        self.paddle = Paddle()
 
-  # Check for collision with the paddles
-  if (
-    (ballX < PAD_WIDTH and ballY + BALL_RADIUS * 2 > paddle1Y and ballY < paddle1Y + PAD_HEIGHT) or
-    (ballX > WIDTH - PAD_WIDTH - BALL_RADIUS * 2 and ballY + BALL_RADIUS * 2 > paddle2Y and ballY < paddle2Y + PAD_HEIGHT)
-  ):
-    # Reverse the ball x velocity
-    ballVX *= -1;
-    sendPaddleHitEvent()
-  
+# Game class have one Ball and two Players objects
+class Game:
+    def __init__(self, player1, player2):
+        self.status = Status.ACCEPTED
+        self.group_name = player1 + "-" + player2
+        self.ball = Ball()
+        self.player1 = Player(player1)
+        self.player2 = Player(player2)
+        self.player1.paddle =Paddle(0, PADDLE_Y, PAD_WIDTH, PAD_HEIGHT, PAD_SPEED)
+        self.player2.paddle = Paddle(WIDTH - PAD_WIDTH, PADDLE_Y, PAD_WIDTH, PAD_HEIGHT, PAD_SPEED)
+
+    def moveBall(self):
+        self.ball.x += self.ball.speed * self.ball.dx
+        self.ball.y += self.ball.speed * self.ball.dy
+
+        # Check for collisions with paddles
+        if self.ball.y + self.ball.radius > self.player1.paddle.y and self.ball.y - self.ball.radius < self.player1.paddle.y + self.player1.paddle.height and self.ball.dx < 0:
+            if self.ball.x - self.ball.radius < self.player1.paddle.x + self.player1.paddle.width:
+                self.ball.dx *= -1
+        elif self.ball.y + self.ball.radius > self.player2.paddle.y and self.ball.y - self.ball.radius < self.player2.paddle.y + self.player2.paddle.height and self.ball.dx > 0:
+            if self.ball.x + self.ball.radius > self.player2.paddle.x:
+                self.ball.dx *= -1
+        # Check for collisions with top/bottom walls
+        if self.ball.y + self.ball.radius > HEIGHT or self.ball.y - self.ball.radius < 0:
+            self.ball.dy *= -1
+        # Check for collisions with left/right walls (scoring)
+        if self.ball.x + self.ball.radius > WIDTH:
+            self.player1.score += 1
+            self.resetBall()
+        elif self.ball.x - self.ball.radius < 0:
+            self.player2.score += 1
+            self.resetBall()
+        return self.ball.x, self.ball.y
+    
+
+    def movePaddle(self, player, direction):
+        # Move the paddles
+        mover = player == self.player1.username and self.player1 or self.player2
+        if direction == "up":
+            mover.paddle.y -= mover.paddle.dy
+            if mover.paddle.y < 0:
+                mover.paddle.y = 0
+        elif direction == "down":
+            mover.paddle.y += mover.paddle.dy
+            if mover.paddle.y > HEIGHT - mover.paddle.height:
+                mover.paddle.y = HEIGHT - mover.paddle.height
+        return mover.paddle.y
+
+    def resetBall(self):
+        self.ball.x = WIDTH / 2
+        self.ball.y = HEIGHT / 2
+        self.ball.dx = random.choice([-1, 1])
+        self.ball.dy = random.choice([-1, 1])
+        if self.player1.score >= MAX_SCORE or self.player2.score >= MAX_SCORE:
+            self.status = Status.ENDED
+
+    def getScore(self, username):
+        if username == self.player1.username:
+            return self.player1.score
+        elif username == self.player2.username:
+            return self.player2.score
+        else:
+            return None
+    
 
 
-  # Check for collision with the top and bottom edges of the board
-  if (paddle1Y < 0 or paddle1Y > HEIGHT - PAD_HEIGHT):
-    # Reverse the paddle 1 y velocity
-    paddle1VY *= -1
-  
-  if (paddle2Y < 0 or paddle2Y > HEIGHT - PAD_HEIGHT):
-    # Reverse the paddle 2 y velocity
-    paddle2VY *= -1
-  
-  # Move the paddles according to their velocity
-  paddle1Y += paddle1VY
-  paddle2Y += paddle2VY
-  sendPaddleMoveEvent(paddle1Y, paddle2Y)
-
-  # Update the ball and paddles positions in the HTML
-  # ball.style.left = ballX + "px"
-  # ball.style.top = ballY + "px"
-  # paddle1.style.top = paddle1Y + "px"
-  # paddle2.style.top = paddle2Y + "px"
