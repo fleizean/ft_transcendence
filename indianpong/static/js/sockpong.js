@@ -10,6 +10,7 @@ startModal.style.display = 'none';
 const voteCount = document.getElementById('voteCount');
 voteCount.value = -1;
 const startButton = document.getElementById('startButton');
+const leaveButton = document.getElementById('leaveButton');
 const onlineUsersTable = document.getElementById('OnlineUsers');
 const invitationModal = document.getElementById('gameInvitationModal');
 const invitationMessage = document.getElementById('invitationMessage');
@@ -19,6 +20,7 @@ const inviteButton = document.getElementById('inviteButton');
 const inviteInput = document.getElementById('inviteInput');
 invitationModal.style.display = 'none';
 invitationMessage.style.display = 'none';
+leaveButton.style.display = 'none';
 
 var my = {
     username: '', opponent_username: '', game_id: '', tournament_id: '', group_name: '',
@@ -136,6 +138,7 @@ socket.onmessage = function (e) {
             break;
         case 'game.start':
             // Start the game
+            leaveButton.style.display = 'block';
             invitationMessage.textContent = `Game started between ${data.player1} and ${data.player2}`;
             console.log(`Started Game Id: ${data.game_id} => ${data.player1} vs ${data.player2}`);
             break;
@@ -152,6 +155,8 @@ socket.onmessage = function (e) {
             my.score = data.score;
             my.opponent_score = data.opponent_score;
             winner = data.winner;
+            // Show some game ended message with scores etc.
+
             console.log(`Ended Game Id: ${data.game_id} => ${data.winner} won`);
             break;
         case 'game.ball.move':
