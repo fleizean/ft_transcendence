@@ -7,8 +7,12 @@ const context = canvas.getContext('2d'); */
 
 const startModal = document.getElementById('startModal');
 startModal.style.display = 'none';
-const voteCount = document.getElementById('voteCount');
-voteCount.value = -1;
+const myCheckMark = document.getElementById('myCheckMark');
+myCheckMark.style.display = 'none';
+const opCheckMark = document.getElementById('opCheckMark');
+opCheckMark.style.display = 'none';
+/* const voteCount = document.getElementById('voteCount');
+voteCount.value = -1; */
 const startButton = document.getElementById('startButton');
 const leaveButton = document.getElementById('leaveButton');
 const onlineUsersTable = document.getElementById('OnlineUsers');
@@ -23,7 +27,7 @@ invitationMessage.style.display = 'none';
 leaveButton.style.display = 'none';
 
 var my = {
-    username: '', opponent_username: '', game_id: '', tournament_id: '', group_name: '',
+    username: '', opponent_username: '', game_id: '', tournament_id: '', group_name: '', vote: -1
 }
 
 socket.onopen = function (e) {
@@ -120,7 +124,12 @@ socket.onmessage = function (e) {
             // Show the game screen and start button
             startModal.style.display = 'block';
             startButton.onclick = function () {
+                // maybe put timeout here for protection agaimst bashing button
                 startRequest(my.username, my.opponent_username);
+                myCheckMark.style.display = 'block';
+                if (my.vote == -1){
+                    myCheckMark.style.display = 'none';
+                }
             };
 
             console.log(`Accepted Game Id: ${data.game_id} => ${data.accepted} vs ${data.accepter}`);
@@ -138,9 +147,19 @@ socket.onmessage = function (e) {
             break;
         case 'game.start':
             // Start the game
-            leaveButton.style.display = 'block';
-            invitationMessage.textContent = `Game started between ${data.player1} and ${data.player2}`;
-            console.log(`Started Game Id: ${data.game_id} => ${data.player1} vs ${data.player2}`);
+            if (data.vote == 2) {
+                invitationMessage.textContent = `Game starting in 3 sec between ${data.player1} and ${data.player2}`;
+                setTimeout(function(){ invitationMessage.style.display = 'none'; }, 3000);
+                startModal.style.display = 'none';
+                leaveButton.style.display = 'block';
+                // make invitationMessage disappear after 3 seconds
+                startGame();
+                console.log(`Started Game Id: ${data.game_id} => ${data.player1} vs ${data.player2}`);
+            }
+            else if (data.vote == 1) {
+                opCheckMark.style.display = 'block';
+                console.log(`Waiting for Game Id: ${data.game_id} => ${data.player1} vs ${data.player2}`);
+            }
             break;
         case 'game.leave':
             my.score = data.score;
@@ -159,18 +178,21 @@ socket.onmessage = function (e) {
 
             console.log(`Ended Game Id: ${data.game_id} => ${data.winner} won`);
             break;
-        case 'game.ball.move':
+        case 'game.ball':
             //get ball position and update it
-            ballDraw(data.x, data.y)
-            
-
+            ballMove(data.x, data.y)
+            scoreUpdate(data.player1_score, data.player2_score)
             console.log(`Moving Ball Id: ${data.game_id} for ball: ${data.x} ${data.y}`);
             break;
-        case 'game.paddle.move':
+        case 'game.paddle':
             //get paddle position and update it
-            paddleDraw(data.player, data.y)
+            paddleMove(data.player, data.y)
             console.log(`Moving Paddle Id: ${data.game_id} for ${data.player}: ${data.y}`);
             break;
+
+        
+        
+            // Tournament cases
         case 'tournament.start':
             for (const match in data.matches) {
                 console.log(`Started Tournament Id: ${data.tournament_id} => Match Id: ${match.match_id} => ${match.player1} vs ${match.player2}`);
@@ -202,6 +224,33 @@ socket.onmessage = function (e) {
     
 socket.sendJSON = function (data) {
     socket.send(JSON.stringify(data));
+}
+
+// Control paddle1 with w, s keys
+document.addEventListener("keydown", function(event) {
+    if (event.key === "w" || event.key === "ArrowUp") {
+        PaddleRequest("up");
+    } else if (event.key === "s" || event.key === "ArrowDown") {
+        PaddleRequest("down");
+    }
+});
+
+function paddleMove(player, y) {
+    if (player === my.username) {
+        paddle1.y = y;
+    } else if (player === my.opponent_username) {
+        paddle2.y = y;
+    }
+}
+
+function ballMove(x, y) {
+    ball.x = x;
+    ball.y = y;
+}
+
+function scoreUpdate(player1_score, player2_score) {
+    score1 = player1_score;
+    score2 = player2_score;
 }
 
 /* function showOnlineUsers(users) {
@@ -279,13 +328,12 @@ function decline(group_name, inviter, invited) {
 }
 // Vote count ll be 1 at start if 
 function startRequest(player1, player2) {
-    voteCount.value *= -1;
     socket.sendJSON({
         action: 'start.request',
         game_id: my.game_id,
         player1: player1,
         player2: player2,
-        vote: voteCount.value,
+        vote: my.vote * -1,
     });
 }
 
@@ -304,34 +352,31 @@ function gameEnded() {
     // Get necessary data and call socket.sendJSON
     socket.sendJSON({
         action: 'end',
-        game_id: 'game_id',
+        game_id: my.game_id,
     });
 }
 
 // send this in setInterval(update, 16) this ll be game state
-function movePaddle() {
+function PaddleRequest(direction) {
     // Get necessary data and call socket.sendJSON
     socket.sendJSON({
-        action: 'paddle.move',
-        game_id: 'game_id',
-        y: 1, // if this for paddle only y required and for ball both
-        player: 'username', // player1 or player2
+        action: 'paddle',
+        game_id: my.game_id,
+        direction: direction
     });
 }
 
 // send this in setInterval(update, 16) this ll be game state
-function moveBall() {
+function BallRequest() {
     // Get necessary data and call socket.sendJSON
     socket.sendJSON({
-        action: 'ball.move',
+        action: 'ball',
         game_id: 'game_id',
-        x: 1, // if this for paddle only y required and for ball both
-        y: -1,
     });
 }
 
 
-
+// Tournament functions---------------------------------------------
 
 function create() {
     // Get necessary data and call socket.sendJSON

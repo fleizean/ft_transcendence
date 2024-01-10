@@ -43,7 +43,7 @@ class Player:
     def __init__(self, username):
         self.username = username
         self.score = 0
-        self.paddle = Paddle()
+        self.paddle = None
 
 # Game class have one Ball and two Players objects
 class Game:
@@ -77,7 +77,7 @@ class Game:
         elif self.ball.x - self.ball.radius < 0:
             self.player2.score += 1
             self.resetBall()
-        return self.ball.x, self.ball.y
+        return self.ball.x, self.ball.y, self.player1.score, self.player2.score
     
 
     def movePaddle(self, player, direction):
