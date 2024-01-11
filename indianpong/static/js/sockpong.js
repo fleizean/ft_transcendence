@@ -153,7 +153,17 @@ socket.onmessage = function (e) {
                 startModal.style.display = 'none';
                 leaveButton.style.display = 'block';
                 // make invitationMessage disappear after 3 seconds
-                startGame();
+                // maybe put in this in startGame function
+                // Control paddle1 with w, s keys
+                document.addEventListener("keydown", function(event) {
+                    if (event.key === "w" || event.key === "ArrowUp") {
+                        PaddleRequest("up");
+                    } else if (event.key === "s" || event.key === "ArrowDown") {
+                        PaddleRequest("down");
+                    }
+                });
+                //startGame();
+
                 console.log(`Started Game Id: ${data.game_id} => ${data.player1} vs ${data.player2}`);
             }
             else if (data.vote == 1) {
@@ -226,14 +236,7 @@ socket.sendJSON = function (data) {
     socket.send(JSON.stringify(data));
 }
 
-// Control paddle1 with w, s keys
-document.addEventListener("keydown", function(event) {
-    if (event.key === "w" || event.key === "ArrowUp") {
-        PaddleRequest("up");
-    } else if (event.key === "s" || event.key === "ArrowDown") {
-        PaddleRequest("down");
-    }
-});
+
 
 function paddleMove(player, y) {
     if (player === my.username) {
