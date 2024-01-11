@@ -16,4 +16,5 @@ class Message(models.Model):
     content = models.TextField(verbose_name = "Mesaj içeriği")
     created_date = models.DateTimeField(auto_now_add = True)
 
-
+    def get_short_date(self):
+        return str(self.created_date.strftime("%H:%M"))

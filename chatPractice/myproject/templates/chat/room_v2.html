@@ -283,18 +283,31 @@
           </div>
 
           <div class="row message" id="conversation">
+            {% for message in messages %}
+              {% if request.user == message.user %}
+                  <div class="row message-body">
+                    <div class="col-sm-12 message-main-sender">
+                      <div class="sender">
+                        <div class="message-text"> {{ message.content }} </div>
+                        <span class="message-time pull-right"> {{ message.get_short_date }} </span>
+                      </div>
+                    </div>
+                  </div>
+                {% else %}
+                    <div class="row message-body">
+                      <div class="col-sm-12 message-main-receiver">
+                        <div class="receiver">
+                          <div class="message-text"> {{ message.content }} </div>
+                          <span class="message-time pull-right"> {{ message.get_short_date }} </span>
+                        </div>
+                      </div>
+                    </div>
+              {% endif %}
+            {% endfor %}
 
 
-{% comment %}             <div class="row message-body">
-              <div class="col-sm-12 message-main-receiver">
-                <div class="receiver">
-                  <div class="message-text">Hi, what are you doing?!</div>
-                  <span class="message-time pull-right">Sun</span>
-                </div>
-              </div>
-            </div>
 
-  {% endcomment %}
+ 
           </div>
 
           <div class="row reply">

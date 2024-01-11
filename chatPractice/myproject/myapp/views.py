@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.contrib.auth import login as login_
 from django.contrib.auth.models import User
-from .models import Room
+from .models import Room, Message
 
 # Create your views here.
 @login_required(login_url = "login")
@@ -17,7 +17,13 @@ def index(request):
 def room(request, room_name):
     users = User.objects.all().exclude(username = request.user)
     room = Room.objects.get(id = room_name)
-    return render(request, "chat/room_v2.html", {"room_name": room_name, "room": room, "users": users})
+    messages = Message.objects.filter(room=room)
+    return render(request, "chat/room_v2.html", {
+        "room_name": room_name, 
+        "room": room, 
+        "users": users,
+        "messages": messages,
+    })
 
 @login_required(login_url = "login")
 def start_chat(request, username):

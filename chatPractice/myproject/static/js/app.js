@@ -9,18 +9,35 @@ const chatSocket = new WebSocket("ws://" + window.location.host + "/ws/chat/" + 
 
 chatSocket.onmessage = function (e) {
     const data = JSON.parse(e.data)
-    var message = ` <div class="row message-body">
+
+    if(user === data.user){
+         var message = ` <div class="row message-body">
             <div class="col-sm-12 message-main-sender">
                 <div class="sender">
                     <div class="message-text">
                         ${data.message}
                     </div>
                     <span class="message-time pull-right">
-                        Bugün
+                        ${data.created_date}
                     </span>
+                    </div>
+                </div>
+            </div>`
+    }else{
+        var message = ` <div class="row message-body">
+        <div class="col-sm-12 message-main-receiver">
+            <div class="receiver">
+                <div class="message-text">
+                    ${data.message}
+                </div>
+                <span class="message-time pull-right">
+                    ${data.created_date}
+                </span>
                 </div>
             </div>
         </div>`
+    }
+   
     conversation.innerHTML += message
 };
 
@@ -37,9 +54,9 @@ inputField.onkeyup = function (e) {
 
 sendButton.onclick = function (e) {
     const message = inputField.value
-
     chatSocket.send(JSON.stringify({
-        "message": message
+        "user": user, 
+        "message": message,
     }))
     inputField.value = ''
 }
