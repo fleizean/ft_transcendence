@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block title %}Chat{% endblock title %}
 
@@ -198,7 +199,7 @@
                     })
                   })
                 </script>
-                <script src="../../static/js/sockchat.js"></script>
+                <script src="{% static "sockchat.js" %}}"></script>
             </section>
         </div>
     </div>
