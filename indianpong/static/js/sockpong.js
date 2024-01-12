@@ -5,6 +5,28 @@ const socket = new WebSocket('ws://' + window.location.host + '/ws/pong/');  // 
 const canvas = document.getElementById('pongCanvas');
 const context = canvas.getContext('2d');
 
+var paddleWidth = 10;
+var paddleHeight = 75;
+
+// Draw everything
+function render() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    ctx.fillStyle = "#0095DD";
+    ctx.fillRect(paddle1.x, paddle1.y, paddle1.width, paddle1.height);
+    ctx.fillRect(paddle2.x, paddle2.y, paddle2.width, paddle2.height);
+
+    ctx.beginPath();
+    ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI*2, false);
+    ctx.fill();
+    ctx.closePath();
+
+    ctx.font = "16px Arial";
+    ctx.fillText("Player 1: " + score1, 10, 20);
+    ctx.fillText("Player 2: " + score2, canvas.width - 85, 20);
+}
+
+
 const startModal = document.getElementById('startModal');
 startModal.style.display = 'none';
 const myCheckMark = document.getElementById('myCheckMark');
