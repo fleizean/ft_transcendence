@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import UserProfile, Tournament, TournamentMatch, TwoFactorAuth, JWTToken, OAuthToken
+from .models import UserProfile, Tournament, TournamentMatch, TwoFactorAuth, JWTToken, OAuthToken, Room, Message
 from django.utils.html import format_html
 
 class UserProfileAdmin(admin.ModelAdmin):
@@ -54,3 +54,17 @@ admin.site.register(TournamentMatch, TournamentMatchAdmin)
 admin.site.register(TwoFactorAuth, TwoFactorAuthAdmin)
 admin.site.register(JWTToken, JWTTokenAdmin)
 admin.site.register(OAuthToken, OAuthTokenAdmin)
+
+@admin.register(Room)
+class RoomAdmin(admin.ModelAdmin):
+    list_display = ["first_user", "second_user"]
+    
+    class Meta:
+        model = Room
+
+@admin.register(Message)
+class MessageAdmin(admin.ModelAdmin):
+    list_display = ["user", "room", "created_date"]
+    
+    class Meta:
+        model = Message
