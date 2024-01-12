@@ -1,6 +1,6 @@
 {% load static %}
 
-<html>
+<html lang='en'>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,10 +17,16 @@
 </head>
 
 <body>
-    <!-- Create username list table and get username from connected user and add to table -->
-    <table id="OnlineUsers">
     <div>
         <p id="invitationMessage"></p>
+    </div>
+    <div>
+        <button id="leaveButton">Leave</button>
+    </div>
+{% comment %}     <button onclick="invite()">Invite</button> {% endcomment %}
+    <div>
+        <input type="text" id="inviteInput" placeholder="Enter username">
+        <button id="inviteButton">Invite Opponent</button>
     </div>
     <div id="gameInvitationModal" class="modal">
         <div class="modal-content">
@@ -28,20 +34,19 @@
             <button id="declineButton">Decline</button>
         </div>
     </div>
+    <!-- Check Mark Emoji-->
+    <p id="myCheckMark">✅</p>
+    <p id="opCheckMark">✅</p>
     <div id="startModal" class="modal">
         <div class="modal-content">
-            <!-- Check Mark Emoji-->
-            <p id="myCheckMark">✅</p>
-            <p id="opCheckMark">✅</p>
             <button id="startButton">Vote</button>
         </div>
     </div>
     <div>
-        <button id="leaveButton">Leave</button>
+        <!-- Create username list table and get username from connected user and add to table -->
+        <table id="OnlineUsers">
+        </table>
     </div>
-{% comment %}     <button onclick="invite()">Invite</button> {% endcomment %}
-    <input type="text" id="inviteInput" placeholder="Enter username">
-    <button id="inviteButton">Invite Opponent</button>
 {% comment %}     <button onclick="move()">Move</button>
     <button onclick="endGame()">End Game</button>
     <button onclick="join()">Join Tournament</button>
@@ -51,7 +56,7 @@
     <button onclick="finish()">Finish Match</button>
     <button onclick="next()">Next Game</button>
  {% endcomment %}
-    {% comment %} <canvas id="pongCanvas" width="800" height="600"></canvas> {% endcomment %}
+    <canvas id="pongCanvas" width="800" height="600"></canvas>
     <script src="{% static "js/sockpong.js" %}"></script>
 </body>
 </html>

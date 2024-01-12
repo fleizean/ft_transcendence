@@ -2,6 +2,7 @@ from django.contrib import admin
 from .models import UserProfile, Tournament, TournamentMatch, TwoFactorAuth, JWTToken, OAuthToken, Room, Message
 from django.utils.html import format_html
 
+@admin.register(UserProfile)
 class UserProfileAdmin(admin.ModelAdmin):
     """
     Admin class for managing user profiles.
@@ -26,45 +27,37 @@ class UserProfileAdmin(admin.ModelAdmin):
         return format_html(obj.thumbnail)
     avatar_thumbnail.short_description = 'Avatar'
     
-
+@admin.register(Tournament)
 class TournamentAdmin(admin.ModelAdmin):
     list_display = ('name', 'start_date')
     search_fields = ('name',)
 
+@admin.register(TournamentMatch)
 class TournamentMatchAdmin(admin.ModelAdmin):
     list_display = ('tournament', 'player1', 'player2', 'winner')
     search_fields = ('tournament__name', 'player1__username', 'player2__username', 'winner__username')
 
+@admin.register(TwoFactorAuth)
 class TwoFactorAuthAdmin(admin.ModelAdmin):
     list_display = ('user', 'is_enabled')
     search_fields = ('user__username',)
 
+@admin.register(JWTToken)
 class JWTTokenAdmin(admin.ModelAdmin):
     list_display = ('user', 'token', 'expires_at')
     search_fields = ('user__username',)
 
+@admin.register(OAuthToken)
 class OAuthTokenAdmin(admin.ModelAdmin):
     list_display = ('user', 'access_token', 'refresh_token', 'expires_at')
     search_fields = ('user__username',)
 
-admin.site.register(UserProfile, UserProfileAdmin)
-#admin.site.register(MatchHistory)
-admin.site.register(Tournament, TournamentAdmin)
-admin.site.register(TournamentMatch, TournamentMatchAdmin)
-admin.site.register(TwoFactorAuth, TwoFactorAuthAdmin)
-admin.site.register(JWTToken, JWTTokenAdmin)
-admin.site.register(OAuthToken, OAuthTokenAdmin)
 
 @admin.register(Room)
 class RoomAdmin(admin.ModelAdmin):
     list_display = ["first_user", "second_user"]
     
-    class Meta:
-        model = Room
-
 @admin.register(Message)
 class MessageAdmin(admin.ModelAdmin):
     list_display = ["user", "room", "created_date"]
-    
-    class Meta:
-        model = Message
+

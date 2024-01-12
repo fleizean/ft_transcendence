@@ -1,28 +1,15 @@
-
-import asyncio
 import json
-from uuid import uuid4
-from channels.generic.websocket import AsyncWebsocketConsumer, AsyncJsonWebsocketConsumer, WebsocketConsumer
+from channels.generic.websocket import AsyncWebsocketConsumer
 from channels.db import database_sync_to_async
 from pong.utils import AsyncLockedDict
-from asgiref.sync import async_to_sync
-#from pong.game import calculate_ball_coor
 from .models import Game, Tournament, MatchRecord, UserProfile, Room, Message #Match, Score, chat
-from datetime import datetime
-from django.db.models import Q
 from pong.game import *
 
 USER_CHANNEL_NAME = AsyncLockedDict() # key: username, value: channel_name
 USER_STATUS = AsyncLockedDict() # key: username, value: game_id or online
-GAMES = AsyncLockedDict() # key: game_id, value: PongGame object """
+GAMES = AsyncLockedDict() # key: game_id, value: PongGame object
 
 class PongConsumer(AsyncWebsocketConsumer):
-    """     def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.USER_CHANNEL_NAME = AsyncLockedDict() # key: username, value: channel_name
-        self.USER_STATUS = AsyncLockedDict() # key: username, value: game_id or online
-        self.GAMES = AsyncLockedDict() # key: game_id, value: Game object """
-
     async def connect(self):
         # Get the user from the scope
         self.user = self.scope["user"]
@@ -57,7 +44,7 @@ class PongConsumer(AsyncWebsocketConsumer):
         if game_id != 'online':
             # Check if user's username is in any game and that game is not ended
             game = await GAMES.get(game_id)
-            if await GAMES.get(game_id).status == Status.STARTED: # 2 means game is started
+            if game.status == Status.STARTED: # 2 means game is started
                 await self.record_for_disconnected(game_id, game)
             # Delete game cache
             await GAMES.delete(game_id)
@@ -88,7 +75,12 @@ class PongConsumer(AsyncWebsocketConsumer):
         if action == "invite": #* Validated
             # Invite another user to play a game
             invited = data["invited"]
-            # Check if the opponent exists
+            # Check if the opponent exists #TODO remove these when you implement button invite
+            if invited == self.user.username:
+                await self.send(text_data=json.dumps({
+                    "error": "You can't invite yourself",
+                }))
+                return
             if not await self.check_is_user_exist(invited):
                 return
             #Check if the opponent is online
@@ -192,7 +184,7 @@ class PongConsumer(AsyncWebsocketConsumer):
                 game.group_name,
                 {
                     "type": "game.leave",
-                    "game_id": game.id,
+                    "game_id": game_id,
                     "left_score": left_score,
                     "opponent_score": opponent_score,
                     "winner": opponent,
@@ -698,49 +690,45 @@ class PongConsumer(AsyncWebsocketConsumer):
 '''
 
 
-class ChatConsumer(WebsocketConsumer):
-    def connect(self):
+class ChatConsumer(AsyncWebsocketConsumer):
+    async def connect(self):
         self.room_name = self.scope["url_route"]["kwargs"]["room_name"]
         self.room_group_name = "chat_%s" % self.room_name
         
         # Join room group
-        async_to_sync(self.channel_layer.group_add)(
-            self.room_group_name, self.channel_name
-        )
+        await self.channel_layer.group_add(self.room_group_name, self.channel_name)
 
-        self.accept()
+        await self.accept()
 
-    def disconnect(self, close_code):
+    async def disconnect(self, close_code):
         # Leave room group
-        async_to_sync(self.channel_layer.group_discard)(
-            self.room_group_name, self.channel_name
-        )
+        await self.channel_layer.group_discard(self.room_group_name, self.channel_name)
 
     # Receive message from WebSocket
-    def receive(self, text_data):
+    async def receive(self, text_data):
         text_data_json = json.loads(text_data)
         message = text_data_json["message"]
 
-        user = UserProfile.objects.get(username = text_data_json["user"])
-        m = Message.objects.create(content=message, user=user, room_id=self.room_name)
+        user = await UserProfile.objects.aget(username = text_data_json["user"])
+        m = await Message.objects.acreate(content=message, user=user, room_id=self.room_name) #? Room object isn't created yet
         # Send message to room group
-        async_to_sync(self.channel_layer.group_send)(
+        await self.channel_layer.group_send(
             self.room_group_name, 
             {
                 "type": "chat_message", 
                 "message": message,
                 "user": user.username,
-                "created_date": m.get_short_date(),
+                "created_date": m.get_short_date(), #? blocking?
             }
         )
 
     # Receive message from room group
-    def chat_message(self, event):
+    async def chat_message(self, event):
         message = event["message"]
         user = event["user"]
         created_date = event["created_date"]
         # Send message to WebSocket
-        self.send(text_data=json.dumps({
+        await self.send(text_data=json.dumps({
             "message": message,
             "user": user,
             "created_date": created_date,

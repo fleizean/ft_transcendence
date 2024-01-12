@@ -2,8 +2,8 @@
 const socket = new WebSocket('ws://' + window.location.host + '/ws/pong/');  // Replace with your WebSocket endpoint
 
 
-/* const canvas = document.getElementById('pongCanvas');
-const context = canvas.getContext('2d'); */
+const canvas = document.getElementById('pongCanvas');
+const context = canvas.getContext('2d');
 
 const startModal = document.getElementById('startModal');
 startModal.style.display = 'none';
@@ -23,7 +23,7 @@ const declineButton = document.getElementById('declineButton');
 const inviteButton = document.getElementById('inviteButton');
 const inviteInput = document.getElementById('inviteInput');
 invitationModal.style.display = 'none';
-invitationMessage.style.display = 'none';
+invitationMessage.style.display = 'block';
 leaveButton.style.display = 'none';
 
 var my = {
@@ -88,10 +88,10 @@ socket.onmessage = function (e) {
                 my.group_name = data.group_name;
             console.log(my.username);
             if (data.invited === my.username) {
-                invitationMessage.textContent = `You received a game invitation from ${data.inviter}.`; //Do you want to accept?`
+                invitationMessage.textContent = `You received a game invitation from ${data.inviter}`;
                 invitationModal.style.display = 'block';
             }
-            else
+            if (data.inviter === my.username)
             {
                 invitationMessage.textContent = `You send a game invitation to ${data.invited}`;
             }
@@ -126,10 +126,6 @@ socket.onmessage = function (e) {
             startButton.onclick = function () {
                 // maybe put timeout here for protection agaimst bashing button
                 startRequest(my.username, my.opponent_username);
-                myCheckMark.style.display = 'block';
-                if (my.vote == -1){
-                    myCheckMark.style.display = 'none';
-                }
             };
 
             console.log(`Accepted Game Id: ${data.game_id} => ${data.accepted} vs ${data.accepter}`);
@@ -148,12 +144,25 @@ socket.onmessage = function (e) {
         case 'game.start':
             // Start the game
             if (data.vote == 2) {
+                myCheckMark.style.display = 'block';
+                opCheckMark.style.display = 'block';
                 invitationMessage.textContent = `Game starting in 3 sec between ${data.player1} and ${data.player2}`;
-                setTimeout(function(){ invitationMessage.style.display = 'none'; }, 3000);
+                setTimeout(function () {
+                  invitationMessage.style.display = "none";
+                  myCheckMark.style.display = "none";
+                  opCheckMark.style.display = "none";
+                }, 3000);
                 startModal.style.display = 'none';
+
                 leaveButton.style.display = 'block';
                 // make invitationMessage disappear after 3 seconds
                 // maybe put in this in startGame function
+
+                leaveButton.onclick = function () {
+                    leaveGame();
+                    leaveButton.style.display = 'none';
+                }
+
                 // Control paddle1 with w, s keys
                 document.addEventListener("keydown", function(event) {
                     if (event.key === "w" || event.key === "ArrowUp") {
@@ -167,8 +176,15 @@ socket.onmessage = function (e) {
                 console.log(`Started Game Id: ${data.game_id} => ${data.player1} vs ${data.player2}`);
             }
             else if (data.vote == 1) {
-                opCheckMark.style.display = 'block';
+                if (myCheckMark.style.display == 'none')
+                    opCheckMark.style.display = 'block';
+                else if (opCheckMark.style.display == 'none')
+                    myCheckMark.style.display = 'block';
                 console.log(`Waiting for Game Id: ${data.game_id} => ${data.player1} vs ${data.player2}`);
+            }
+            else if (data.vote == 0) {
+                opCheckMark.style.display = 'none';
+                myCheckMark.style.display = 'none';
             }
             break;
         case 'game.leave':
@@ -176,6 +192,7 @@ socket.onmessage = function (e) {
             my.opponent_score = data.opponent_score;
             winner = data.winner;
             // Show some left game message with scores etc.
+            // maybe put restart event with invite again
         
             console.log(`Left Game Id: ${data.game_id} => ${my.opponent_username} left`);
             break;
@@ -331,12 +348,17 @@ function decline(group_name, inviter, invited) {
 }
 // Vote count ll be 1 at start if 
 function startRequest(player1, player2) {
+    my.vote *= -1
+    myCheckMark.style.display = 'block';
+    if (my.vote == -1){
+        myCheckMark.style.display = 'none';
+    }
     socket.sendJSON({
         action: 'start.request',
         game_id: my.game_id,
         player1: player1,
         player2: player2,
-        vote: my.vote * -1,
+        vote: my.vote,
     });
 }
 

@@ -16,7 +16,7 @@ from . import routing
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'indianpong.settings')
 
-application = get_asgi_application()
+#application = get_asgi_application()
 
 application = ProtocolTypeRouter({
     'http': get_asgi_application(),

@@ -8,22 +8,3 @@ websocket_urlpatterns = [
     re_path(r'^ws/chat/(?P<room_name>[\w-]+)/$', consumers.ChatConsumer.as_asgi()),
 ]
 
-
-
-
-""" from channels.routing import ProtocolTypeRouter, URLRouter
-from channels.auth import AuthMiddlewareStack
-from django.urls import path
-from pong.consumers import ChatConsumer
-
-application = ProtocolTypeRouter(
-    {
-        "websocket": AuthMiddlewareStack(
-            URLRouter(
-                [
-                    path("ws/chat/", ChatConsumer.as_asgi()),
-                ]
-            )
-        ),
-    }
-) """

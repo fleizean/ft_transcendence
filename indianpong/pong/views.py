@@ -268,10 +268,35 @@ def game(request):
 @login_required(login_url="login")
 def chat(request):
     users = UserProfile.objects.all().exclude(username = request.user)
-    return render(request, 'chat.html', {'users': users})
+    return render(request, 'chat.html', {'username': request.user.username,'users': users})
+
+### New Chat ###
+@login_required(login_url = "login")
+def room(request, room_name):
+    users = UserProfile.objects.all().exclude(username = request.user)
+    room = Room.objects.get(id = room_name)
+    messages = Message.objects.filter(room=room)
+    return render(request, "room.html", {
+        "room_name": room_name, 
+        "room": room, 
+        "users": users,
+        "messages": messages,
+    })
+
+@login_required(login_url = "login")
+def start_chat(request, username):
+    second_user = UserProfile.objects.get(username=username)
+    try:
+        room = Room.objects.get(first_user = request.user, second_user = second_user)
+    except Room.DoesNotExist:
+        try:
+            room = Room.objects.get(second_user = request.user, first_user = second_user)
+        except Room.DoesNotExist:
+            room = Room.objects.create(first_user = request.user, second_user = second_user)
+    return redirect("room", room.id)
 
 
-### Chat ###
+### OldChat ###
 
 @never_cache
 @login_required(login_url="login")
@@ -415,27 +440,4 @@ def generate_jwt_token(request):
 
 
 
-#------------------------------------------------------------------#
-@login_required(login_url = "login")
-def room(request, room_name):
-    users = UserProfile.objects.all().exclude(username = request.user)
-    room = Room.objects.get(id = room_name)
-    messages = Message.objects.filter(room=room)
-    return render(request, "room.html", {
-        "room_name": room_name, 
-        "room": room, 
-        "users": users,
-        "messages": messages,
-    })
 
-@login_required(login_url = "login")
-def start_chat(request, username):
-    second_user = UserProfile.objects.get(username=username)
-    try:
-        room = Room.objects.get(first_user = request.user, second_user = second_user)
-    except Room.DoesNotExist:
-        try:
-            room = Room.objects.get(second_user = request.user, first_user = second_user)
-        except Room.DoesNotExist:
-            room = Room.objects.create(first_user = request.user, second_user = second_user)
-    return redirect("room", room.id)
