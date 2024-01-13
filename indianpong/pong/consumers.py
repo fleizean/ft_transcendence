@@ -229,7 +229,7 @@ class PongConsumer(AsyncWebsocketConsumer):
                         {
                             "type": "game.end",
                             "game_id": game_id,
-                            "player1_score": player1_score,
+                            "player1_score": player1_score, #? maybe redundant
                             "player2_score": player2_score,
                             "winner": winner,
                         }

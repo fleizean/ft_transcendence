@@ -19,6 +19,10 @@ var ball = {x: canvas.width / 2, y: canvas.height / 2, radius: 10};
 var player1 = {username: '', score: 0};
 var player2 = {username: '', score: 0};
 
+var my = {
+    username: '', opponent_username: '', game_id: '', vote: -1, tournament_id: '', 
+}
+
 // Draw everything
 function render() {
     context.clearRect(0, 0, canvas.width, canvas.height);
@@ -48,6 +52,7 @@ opCheckMark.style.display = 'none';
 voteCount.value = -1; */
 const startButton = document.getElementById('startButton');
 const leaveButton = document.getElementById('leaveButton');
+const restartButton = document.getElementById('restartButton');
 const onlineUsersTable = document.getElementById('OnlineUsers');
 const invitationModal = document.getElementById('gameInvitationModal');
 const invitationMessage = document.getElementById('invitationMessage');
@@ -58,10 +63,9 @@ const inviteInput = document.getElementById('inviteInput');
 invitationModal.style.display = 'none';
 invitationMessage.style.display = 'block';
 leaveButton.style.display = 'none';
+restartButton.style.display = 'none';
 
-var my = {
-    username: '', opponent_username: '', game_id: '', tournament_id: '', group_name: '', vote: -1
-}
+
 
 socket.onopen = function (e) {
     // Show some greeting message
@@ -69,15 +73,15 @@ socket.onopen = function (e) {
 }
 
 socket.onclose = function (e) {
+    clearInterval(BallRequest);
+    stopGame();
+    console.error('WebSocket connection closed');
     if (my.game_id) {
         // Show some connection lost message with scores etc.
     }
     else if (my.tournament_id && my.game_id) {
         // Show some connection lost message with scores and tournament rank etc.
     }
-    clearInterval(BallRequest);
-    stopGame();
-    console.error('WebSocket connection closed');
 }
 
 socket.onerror = function (e) {
@@ -121,8 +125,6 @@ socket.onmessage = function (e) {
         
         case 'game.invite':
             // Display the modal for accepting or declining the invitation
-            if (my.group_name === '')
-                my.group_name = data.group_name;
             console.log(my.username);
             if (data.invited === my.username) {
                 invitationMessage.textContent = `You received a game invitation from ${data.inviter}`;
@@ -165,7 +167,7 @@ socket.onmessage = function (e) {
             // Show the game screen and start button
             startModal.style.display = 'block';
             startButton.onclick = function () {
-                // maybe put timeout here for protection agaimst bashing button
+                // maybe put timeout here for protection against bashing button
                 startRequest(my.username, my.opponent_username);
             };
             render();
@@ -232,24 +234,35 @@ socket.onmessage = function (e) {
         case 'game.leave':
             clearInterval(BallRequest);
             stopGame();
-            my.score = data.score;
-            my.opponent_score = data.opponent_score;
+            left_score = data.left_score;
+            opponent_score = data.opponent_score;
             winner = data.winner;
             // Show some left game message with scores etc.
-            // maybe put restart event with invite again
-        
-            console.log(`Left Game Id: ${data.game_id} => ${my.opponent_username} left`);
+            invitationMessage.textContent = `${data.left} left the game. Winner is ${data.winner}`;
+            invitationMessage.style.display = 'block';
+            // maybe put restart
+            restartButton.style.display = 'block';
+            restartButton.onclick = function () {
+                startRequest(my.username, my.opponent_username);
+            };
+
+            console.log(`Left Game Id: ${data.game_id}`);
             break;
         // What about draw?
         case 'game.end':
             clearInterval(BallRequest);
             stopGame();
-            my.score = data.score;
-            my.opponent_score = data.opponent_score;
+            player1_score = data.player1_score;
+            player2_score = data.player2_score;
             winner = data.winner;
             // Show some game ended message with scores etc.
-            // maybe put restart event with invite again
-
+            invitationMessage.textContent = `Game is ended. Winner is ${data.winner}`;
+            invitationMessage.style.display = 'block';
+            // maybe put restart
+            restartButton.style.display = 'block';
+            restartButton.onclick = function () {
+                startRequest(my.username, my.opponent_username);
+            };
             console.log(`Ended Game Id: ${data.game_id} => ${data.winner} won`);
             break;
         case 'game.ball':
