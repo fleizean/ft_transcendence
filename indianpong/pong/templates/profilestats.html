@@ -1,0 +1,42 @@
+% extends "base.html" %}
+
+{% load static %}
+
+{% block title %}Rankings{% endblock title %}
+
+{% block app %}
+  {% include "_nav.html" %}
+  <div class="container-top">
+    <!-- "Edit Profile" ve "Match History" Navbar -->
+    <div class="row mt-4" style="margin-bottom:5px">
+        <div class="col">
+            <nav class="navbar navbar-expand-lg navbar-light bg-light rounded">
+                <!-- Navbar Marka -->
+                <!-- Navbar Toggle Butonu -->
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <!-- Navbar Menü -->
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ml-auto">                          
+                        <!-- "Match History" Linki -->
+                        <li class="nav-item">
+                            <a class="nav-link" href="/profile"><i class="bi bi-person"></i> Profile</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/match-history"><i class="bi bi-easel-fill"></i> Match History</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/friends"><i class="bi bi-people-fill"></i> Friends</a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    </div>
+    </div>
+    <div class="card">
+    
+    </div>
+{% endblock app %}

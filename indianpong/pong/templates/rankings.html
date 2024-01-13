@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block title %}Rankings{% endblock title %}
+
+{% block app %}
+  {% include "_nav.html" %}
+
+    <div class="container-top">
+        <div class="rankings-card">
+            <div class="main-center">
+            <main>
+              <div id="header">
+                <h1>Ranking</h1>
+                <button class="share">
+                  <i class="bi bi-share-fill"></i>
+                </button>
+              </div>
+              <div id="leaderboard">
+                <div class="ribbon"></div>
+                <table>
+                  <tr>
+                    <td class="number">1</td>
+                    <td class="name">Lee Taeyong</td>
+                    <td class="points">
+                      258.244 <img class="gold-medal" src="{% static "assets/achievements/award.png" %}" alt="gold medal"/>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="number">2</td>
+                    <td class="name">Mark Lee</td>
+                    <td class="points">258.242</td>
+                  </tr>
+                  <tr>
+                    <td class="number">3</td>
+                    <td class="name">Xiao Dejun</td>
+                    <td class="points">258.223</td>
+                  </tr>
+                  <tr>
+                    <td class="number">4</td>
+                    <td class="name">Qian Kun</td>
+                    <td class="points">258.212</td>
+                  </tr>
+                  <tr>
+                    <td class="number">5</td>
+                    <td class="name">Johnny Suh</td>
+                    <td class="points">258.208</td>
+                  </tr>
+                </table>
+                
+              </div>
+            </main>
+        </div>
+
+
+        </div>
+    </div>
+{% endblock app %}

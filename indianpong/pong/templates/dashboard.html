@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard{% endblock title %}
+
+{% block app %}
+  {% include "_nav.html" %}
+
+    <div class="container-top">
+        <div class="card">
+        <div class="page-rotation">
+            <h1>Welcome to IndianPong {{username}}</h1>
+            <p>Indian Pong is a collaborative project developed for the 42 school community, offering a nostalgic gaming experience through the classic Atari game, Ping-Pong. This platform allows users to engage in Ping-Pong matches with each other, fostering a sense of friendly competition. In addition to the gaming aspect, Indian Pong provides a social dimension, featuring chat rooms where users can communicate and connect with one another. The platform also enables users to expand their network by adding friends within the 42 school community. Overall, Indian Pong combines the joy of retro gaming with modern social interaction, creating a vibrant and interactive experience for the 42 school community.</p>
+            <div class="row">
+        <div class="col-md-4 col-xl-3">
+            <div class="card-stat bg-c-blue order-card">
+                <div class="card-block">
+                    <h6 class="m-b-20">Games Played</h6>
+                    <h2 class="text-right"><i class="bi bi-dice-1-fill"></i><span>50</span></h2>
+                    <p class="m-b-0">Achievement Reach<span class="f-right">500</span></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 col-xl-3">
+            <div class="card-stat bg-c-green order-card">
+                <div class="card-block">
+                    <h6 class="m-b-20">Win Count</h6>
+                    <h2 class="text-right"><i class="bi bi-trophy-fill"></i><span>486</span></h2>
+                    <p class="m-b-0">Achievement Reach<span class="f-right">500</span></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 col-xl-3">
+            <div class="card-stat bg-c-yellow order-card">
+                <div class="card-block">
+                    <h6 class="m-b-20">Win Streak</h6>
+                    <h2 class="text-right"><i class="bi bi-emoji-wink-fill"></i><span>486</span></h2>
+                    <p class="m-b-0">Achievement Reach<span class="f-right">500</span></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 col-xl-3">
+            <div class="card-stat bg-c-pink order-card">
+                <div class="card-block">
+                    <h6 class="m-b-20">Lose Streak</h6>
+                    <h2 class="text-right"><i class="bi bi-emoji-frown-fill"></i><span>486</span></h2>
+                    <p class="m-b-0">Achievement Reach<span class="f-right">500</span></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 col-xl-3">
+            <div class="card-stat bg-c-gold order-card">
+                <div class="card-block">
+                    <h6 class="m-b-20">Win Rate %</h6>
+                    <h2 class="text-right"><i class="bi bi-award-fill"></i><span>50</span></h2>
+                    <p class="m-b-0">Achievement Reach<span class="f-right">70</span></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 col-xl-3">
+            <div class="card-stat bg-c-navy order-card">
+                <div class="card-block">
+                    <h6 class="m-b-20">Average Game Duration</h6>
+                    <h2 class="text-right">
+                        <i class="bi bi-clock-fill"></i>
+                        <span class="big">30</span> <span class="small">min</span>
+                        </h2>
+                    <p class="m-b-0">Achievement Reach<span class="f-right">15 and 30</span></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 col-xl-3">
+            <div class="card-stat bg-c-light-green order-card">
+                <div class="card-block">
+                    <h6 class="m-b-20">Average Points Won</h6>
+                    <h2 class="text-right"><i class="bi bi-star-fill"></i><span>30</span></h2>
+                    <p class="m-b-0">Achievement Reach<span class="f-right">50</span></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 col-xl-3">
+            <div class="card-stat bg-c-purple order-card">
+                <div class="card-block">
+                    <h6 class="m-b-20">Average Points Lost</h6>
+                    <h2 class="text-right"><i class="bi bi-bucket-fill"></i><span>20</span></h2>
+                    <p class="m-b-0">Achievement Reach<span class="f-right">50</span></p>
+                </div>
+            </div>
+        </div>
+    </div>
+        
+        </div>
+    </div>
+    </div>
+{% endblock app %}

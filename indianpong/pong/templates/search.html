@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block title %}Search{% endblock title %}
+
+{% block app %}
+  {% include "_nav.html" %}
+
+  <div class="container-top">
+    <div class="card">
+        <!-- Arama kutusu ve butonu -->
+        <div class="search-container">
+            <input type="text" placeholder="Email or Nickname Search..." class="search-input">
+            <button class="search-button"><i class="bi bi-search"></i></button>
+        </div>
+        <div class="card-container-wrapper">
+          <div class="card-container">
+              <span class="pro">1ST</span>
+            <a href="#" class="go-profile"><img class="round" src="https://randomuser.me/api/portraits/women/79.jpg" alt="user" /></a>              	
+            <h3>Ricky Park</h3>
+              <h6>New York</h6>
+              <p>User interface designer and <br/> front-end developer</p>
+              <div class="buttons">
+                  <button class="primary">Message</button>
+                  <button class="primary ghost">Add Friends</button>
+              </div>
+              <div class="skills">
+                  <h6>Skills</h6>
+                  <ul>
+                      <li>UI / UX</li>
+                      <li>Front End Development</li>
+                      <li>HTML</li>
+                      <li>CSS</li>
+                      <li>JavaScript</li>
+                      <li>React</li>
+                      <li>Node</li>
+                  </ul>
+              </div>
+          </div>
+          <div class="card-container">
+              <span class="pro">2ST</span>
+              <a href="#" class="go-profile"><img class="round" src="https://randomuser.me/api/portraits/women/79.jpg" alt="user" /></a>
+              <h3>Ricky Park</h3>
+              <h6>New York</h6>
+              <p>User interface designer and <br/> front-end developer</p>
+              <div class="buttons">
+
+                  <button class="primary">Message</button>
+                  <button class="primary ghost">Add Friends</button>
+              </div>
+              <div class="skills">
+                  <h6>Skills</h6>
+                  <ul>
+                      <li>UI / UX</li>
+                      <li>Front End Development</li>
+                      <li>HTML</li>
+                      <li>CSS</li>
+                      <li>JavaScript</li>
+                      <li>React</li>
+                      <li>Node</li>
+                  </ul>
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endblock app %}

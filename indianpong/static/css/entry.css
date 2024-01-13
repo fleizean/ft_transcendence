@@ -1,0 +1,190 @@
+/* The font i use in this css is only available for personal use. */
+/* link to this font https://www.fontspace.com/pixeboy-font-f43730 */
+
+@import url("https://fonts.googleapis.com/css?family=Roboto+Slab:400,700");
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+@import url('https://fonts.googleapis.com/css?family=Raleway:400,700,900');
+
+@import url('https://fonts.googleapis.com/css?family=Montserrat');
+
+@import url('https://fonts.googleapis.com/css?family=Rajdhani:600');
+
+
+@font-face {
+  font-family: 'Lobster';
+  src: url('../assets/fonts/Lobster-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+
+@font-face {
+  font-family: "Beaufort for LOL";
+  font-style: normal;
+  font-weight: 400;
+  src: url("https://lolstatic-a.akamaihd.net/awesomefonts/1.0.0/Fonts/BeaufortforLOL-Regular.eot?#iefix") format("eot"),
+       url("https://lolstatic-a.akamaihd.net/awesomefonts/1.0.0/Fonts/BeaufortforLOL-Regular.woff") format("woff"),
+       url("https://lolstatic-a.akamaihd.net/awesomefonts/1.0.0/Fonts/BeaufortforLOL-Regular.ttf") format("truetype"),
+       url("https://lolstatic-a.akamaihd.net/awesomefonts/1.0.0/Fonts/BeaufortforLOL-Regular.svg#") format("svg");
+}
+
+@font-face {
+  font-family: "Spiegel";
+  font-style: normal;
+  font-weight: 700;
+  src: url("https://lolstatic-a.akamaihd.net/awesomefonts/1.0.0/Fonts/Spiegel-Bold.eot?#iefix") format("eot"),
+      url("https://lolstatic-a.akamaihd.net/awesomefonts/1.0.0/Fonts/Spiegel-Bold.woff") format("woff"),
+      url("https://lolstatic-a.akamaihd.net/awesomefonts/1.0.0/Fonts/Spiegel-Bold.ttf") format("truetype"),
+      url("https://lolstatic-a.akamaihd.net/awesomefonts/1.0.0/Fonts/Spiegel-Bold.svg#") format("svg");
+}
+
+
+@font-face {
+  font-family: 'Pixeboy-z8XGD';
+  src: url('fonts/Pixeboy-z8XGD.ttf');
+}
+
+@font-face {
+  font-family: 'Common Pixel';
+  src: url('fonts/CommonPixel.ttf');
+}
+
+@font-face {
+  font-family: 'Rainy Hearts';
+  src: url('fonts/rainyhearts.ttf');
+}
+
+@font-face {
+  font-family: 'Minecraftia';
+  src: url('fonts/Minecraftia-Regular.ttf');
+}
+
+
+@font-face {
+  font-family: 'alagard';
+  src: url('fonts/alagard.ttf');
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #1a1a1a;
+  cursor: url('../assets/pixelsword.png'), auto;
+  overflow: hidden;
+}
+
+.backgroundimage {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: calc(100% + 10px); /* Viewport yüksekliği kadar olan alanı kaplar ve 10px ek boşluk ekler */
+  background-image: linear-gradient(rgba(58, 1, 75, 0.5), rgba(0, 0, 0, 0.5)), url('../assets/backgrounds/home-bg.jpg');
+  background-size: cover;
+  z-index: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+}
+
+.HeaderArea {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.LoginArea {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.RegisterArea {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+@keyframes backInDown {
+  0% {
+    transform: translateY(-1200px) scale(0.7);
+    opacity: 0.7;
+  }
+  80% {
+    transform: translateY(0) scale(1.1);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes slideInFromRight {
+  0% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.big-text {
+  animation: backInDown 1s ease;
+  font-size: 6em;
+  color: aliceblue;
+  font-family: 'Pixeboy-z8XGD', sans-serif;
+  margin-bottom: 5px;
+}
+
+.small-text {
+  animation: backInDown 1s ease;
+  font-family: 'alagard', sans-serif;
+  font-size: 1em;
+  color: aliceblue;
+  margin-bottom: 20px;
+}
+
+.PixellButton {
+  animation: slideInFromRight 0.5s ease;
+  font-family: 'Pixeboy-z8XGD';
+  font-size: large;
+  cursor: url('../assets/scrool/crossedsword.png'), auto;
+  width: 175px;
+  height: 50px;
+  background-color: rgb(90, 208, 90);
+  border-top: 1px rgb(90, 208, 90);
+  border-left: 1px rgb(90, 208, 90);
+  border-color: rgb(56, 180, 7);
+  border-right: 4px solid darkgreen;
+  border-bottom: 6px solid darkgreen;
+  box-shadow: -3px 0 0 0 black, 3px 0 0 0 black, 0 -3px 0 0 black, 0 3px 0 0 black;
+}
+
+.PixellButton:hover {
+  background-color: rgb(75, 195, 75);
+  border-top: 1px rgb(90, 208, 90);
+  border-left: 1px rgb(90, 208, 90);
+  border-color: rgb(56, 180, 7);
+  border-right: 6px solid darkgreen;
+  border-bottom: 8px solid darkgreen;
+}

@@ -1,0 +1,191 @@
+% extends "base.html" %}
+
+{% load static %}
+
+{% block title %}Rankings{% endblock title %}
+
+{% block app %}
+  {% include "_nav.html" %}
+  <div class="container-top">
+    <!-- "Edit Profile" ve "Match History" Navbar -->
+    <div class="row mt-4" style="margin-bottom:5px">
+        <div class="col">
+            <nav class="navbar navbar-expand-lg navbar-light bg-light rounded">
+                <!-- Navbar Marka -->
+                <!-- Navbar Toggle Butonu -->
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <!-- Navbar Menü -->
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ml-auto">                          
+                        <!-- "Match History" Linki -->
+                        <li class="nav-item">
+                            <a class="nav-link" href="/match-history"><i class="bi bi-easel-fill"></i> Match History</a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link" href="/friends"><i class="bi bi-people-fill"></i> Friends</a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link" href="/achievements"><i class="bi bi-magic"></i> Achievements</a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    </div>
+</div>
+  <div class="card">
+          <div class="achievements-container">
+          <!-- 1. Achievements Card -->
+          <div class="card achievement-card">
+              <div class="achievement-img">
+                  <img src="{ % static "assets/achievements/award.png" % }" alt="Achievement 3">
+              </div>
+              <div class="achievement-details">
+                  <h4>Achievement 1</h4>
+                  <p>Here is the description of Achievement 1.</p>
+                  <p class="achievement-date">Achieved on: January 1, 2023</p>
+              </div>
+          </div>
+
+          <!-- 2. Achievements Card -->
+          <div class="card achievement-card">
+                  <div class="achievement-img">
+                      <img src="{ % static "assets/achievements/award.png" % }" alt="Achievement 3">
+                  </div>
+                  <div class="achievement-details">
+                      <h4>Achievement 2</h4>
+                      <p>Here is the description of Achievement 2.</p>
+                      <p class="achievement-date">Achieved on: February 15, 2023</p>
+                  </div>
+          </div>
+
+          <!-- 3. Achievements Card -->
+          <div class="card achievement-card">
+              <div class="achievement-img">
+                  <img src="{ % static "assets/achievements/award.png" % }" alt="Achievement 3">
+              </div>
+                  <div class="achievement-details">
+                      <h4>Achievement 3</h4>
+                      <p>Here is the description of Achievement 3.</p>
+                      <p class="achievement-date">Achieved on: March 22, 2023</p>
+                  </div>
+          </div>
+
+          <!-- 4. Achievements Card -->
+          <div class="card achievement-card">
+              <div class="achievement-img">
+                  <img src="{ % static "assets/achievements/award.png" % }" alt="Achievement 3">
+              </div>
+              <div class="achievement-details">
+                  <h4>Achievement 4</h4>
+                  <p>Here is the description of Achievement 4.</p>
+                  <p class="achievement-date">Achieved on: April 5, 2023</p>
+              </div>
+          </div>
+
+          <!-- 4. Achievements Card -->
+          <div class="card achievement-card">
+              <div class="achievement-img">
+                  <img src="{ % static "assets/achievements/award.png" % }" alt="Achievement 3">
+              </div>
+              <div class="achievement-details">
+                  <h4>Achievement 4</h4>
+                  <p>Here is the description of Achievement 4.</p>
+                  <p class="achievement-date">Achieved on: April 5, 2023</p>
+              </div>
+          </div>
+
+          <!-- 4. Achievements Card -->
+          <div class="card achievement-card">
+              <div class="achievement-img">
+                  <img src="{ % static "assets/achievements/award.png" % }" alt="Achievement 3">
+              </div>
+              <div class="achievement-details">
+                  <h4>Achievement 4</h4>
+                  <p>Here is the description of Achievement 4.</p>
+                  <p class="achievement-date">Achieved on: April 5, 2023</p>
+              </div>
+          </div>
+
+          <div class="card achievement-card">
+              <div class="achievement-img">
+                  <img src="{ % static "assets/achievements/award.png" % }" alt="Achievement 3">
+              </div>
+              <div class="achievement-details">
+                  <h4>Achievement 4</h4>
+                  <p>Here is the description of Achievement 4.</p>
+                  <p class="achievement-date">Achieved on: April 5, 2023</p>
+              </div>
+          </div>
+
+          <div class="card achievement-card">
+              <div class="achievement-img">
+                  <img src="{ % static "assets/achievements/award.png" % }" alt="Achievement 3">
+              </div>
+              <div class="achievement-details">
+                  <h4>Achievement 4</h4>
+                  <p>Here is the description of Achievement 4.</p>
+                  <p class="achievement-date">Achieved on: April 5, 2023</p>
+              </div>
+          </div>
+
+          <div class="card achievement-card">
+              <div class="achievement-img">
+                  <img src="{ % static "assets/achievements/award.png" % }" alt="Achievement 3">
+              </div>
+              <div class="achievement-details">
+                  <h4>Achievement 4</h4>
+                  <p>Here is the description of Achievement 4.</p>
+                  <p class="achievement-date">Achieved on: April 5, 2023</p>
+              </div>
+          </div>
+
+          <div class="card achievement-card">
+              <div class="achievement-img">
+                  <img src="{ % static "assets/achievements/award.png" % }" alt="Achievement 3">
+              </div>
+              <div class="achievement-details">
+                  <h4>Achievement 4</h4>
+                  <p>Here is the description of Achievement 4.</p>
+                  <p class="achievement-date">Achieved on: April 5, 2023</p>
+              </div>
+          </div>
+
+          <div class="card achievement-card">
+              <div class="achievement-img">
+                  <img src="{ % static "assets/achievements/award.png" % }" alt="Achievement 3">
+              </div>
+              <div class="achievement-details">
+                  <h4>Achievement 4</h4>
+                  <p>Here is the description of Achievement 4.</p>
+                  <p class="achievement-date">Achieved on: April 5, 2023</p>
+              </div>
+          </div>
+
+          <div class="card achievement-card">
+              <div class="achievement-img">
+                  <img src="{ % static "assets/achievements/award.png" % }" alt="Achievement 3">
+              </div>
+              <div class="achievement-details">
+                  <h4>Achievement 4</h4>
+                  <p>Here is the description of Achievement 4.</p>
+                  <p class="achievement-date">Achieved on: April 5, 2023</p>
+              </div>
+          </div>
+          
+      </div>
+      <nav aria-label="...">
+        <ul class="pagination pagination-sm d-flex justify-content-center">
+          <li class="page-item disabled">
+            <a class="page-link" href="#" tabindex="-1">1</a>
+          </li>
+          <li class="page-item"><a class="page-link" href="#">2</a></li>
+          <li class="page-item"><a class="page-link" href="#">3</a></li>
+        </ul>
+      </nav>
+  </div>
+
+{% endblock app %}
