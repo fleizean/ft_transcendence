@@ -41,7 +41,7 @@ class PongConsumer(AsyncWebsocketConsumer):
     async def disconnect(self, close_code):
         #self.user.channel_name = None
         game_id = await USER_STATUS.get(self.user.username)
-        if game_id != 'online':
+        if game_id != 'online' and game_id != None:
             # Check if user's username is in any game and that game is not ended
             game = await GAMES.get(game_id)
             if game.status == Status.STARTED: # 2 means game is started
@@ -119,7 +119,7 @@ class PongConsumer(AsyncWebsocketConsumer):
                     "type": "game.accept",
                     "game_id": game.id,
                     "accepter": accepter,
-                    "accepted": accepted,
+                    "accepted": accepted
                 }
             )
         elif action == "decline": #? Needs validation
@@ -177,8 +177,6 @@ class PongConsumer(AsyncWebsocketConsumer):
             opponent_score = MAX_SCORE # set max score automaticaly
             # Record the game
             await self.record_game(game_id, left_score, opponent_score, opponent)
-            # Update the game status to 'ended' or delete it
-            await GAMES.delete(game_id)
             # Send a message to the game group with the game id and the opponent's username
             await self.channel_layer.group_send(
                 game.group_name,
@@ -194,67 +192,68 @@ class PongConsumer(AsyncWebsocketConsumer):
             standing_channel_name = await USER_CHANNEL_NAME.get(opponent)
             await self.channel_layer.group_discard(game.group_name, self.channel_name)
             await self.channel_layer.group_discard(game.group_name, standing_channel_name)
-
-        elif action == "end": #? Needs validation
-            # End a game # TODO this should be in server side not client side?
-            game_id = data["game_id"]
-            # Get scores
-            game = await GAMES.get(game_id)
-            player1_score = game.player1.score
-            player2_score = game.player2.score
-            winner = player1_score > player2_score and game.player1.username or game.player2.username
-            # Set the game status to 'ended' or delete it
+            # Update the game status to 'ended' or delete it
             await GAMES.delete(game_id)
-            # Set the game winner, scores and save it to the database
-            await self.record_game(game_id, player1_score, player2_score, winner)
-            # Send a message to the game group with the game id and the winner's username
-            await self.channel_layer.group_send(
-                group_name,
-                {
-                    "type": "game.end",
-                    "game_id": game_id,
-                    "player1_score": player1_score,
-                    "player2_score": player2_score,
-                    "winner": winner,
-                }
-            )
         elif action == "ball": #? Needs validation
             # Make a move in a game # TODO this should be in server side not client side?
             # Interval should be 16 ms so every 16 ms
             # we should send a message to the clients with the ball coordinates
             game_id = data["game_id"]
             # Move and Get ball coordinates
-            game = await GAMES.get(game_id)
-            x, y, player1_score, player2_score = game.moveBall()
-            # Send a message to the game group with the game id, the move coordinates
-            await self.channel_layer.group_send(
-                game.group_name,
-                {
-                    "type": "game.ball",
-                    "game_id": game_id,
-                    "ballX": x,
-                    "ballY": y,
-                    "player1_score": player1_score,
-                    "player2_score": player2_score,
-                }
-            )
+            game = await GAMES.get(game_id) #? When games status is ended, game_id is deleted from GAMES cache
+            if (game != None): #? So game becomes None. Is this check enough? or moving delete to end solve without this
+                if (game.status == Status.STARTED):
+                    x, y, player1_score, player2_score = game.moveBall()
+                    # Send a message to the game group with the game id, the move coordinates
+                    await self.channel_layer.group_send(
+                        game.group_name,
+                        {
+                            "type": "game.ball",
+                            "game_id": game_id,
+                            "x": x,
+                            "y": y,
+                            "player1_score": player1_score,
+                            "player2_score": player2_score,
+                        }
+                    )
+                elif (game.status == Status.ENDED):
+                    # Get scores
+                    player1_score = game.player1.score
+                    player2_score = game.player2.score
+                    winner = player1_score > player2_score and game.player1.username or game.player2.username
+                    # Set the game winner, scores and save it to the database
+                    await self.record_game(game_id, player1_score, player2_score, winner)
+                    # Send a message to the game group with the game id and the winner's username
+                    await self.channel_layer.group_send(
+                        game.group_name,
+                        {
+                            "type": "game.end",
+                            "game_id": game_id,
+                            "player1_score": player1_score,
+                            "player2_score": player2_score,
+                            "winner": winner,
+                        }
+                    )
+                    # Set the game status to 'ended' or delete it
+                    await GAMES.delete(game_id)
         elif action == "paddle": #? Needs validation
             # Make a move in a game
             game_id = data["game_id"]
             dir = data["direction"]
             # Move and Get paddle coordinate
-            game = await GAMES.get(game_id)
-            y = game.movePaddle(self.user.username, dir)
-            # Send a message to the game group with the game id, the paddle coordinate, and the player's username
-            await self.channel_layer.group_send(
-                game.group_name,
-                {
-                    "type": "game.paddle",
-                    "game_id": game_id,
-                    "y": y,
-                    "player": self.user.username,
-                }
-            )
+            game = await GAMES.get(game_id) #? When games status is ended, game_id is deleted from GAMES cache
+            if (game != None):  #? So game becomes None. Is this check enough? or moving delete to end solve without this
+                y = game.movePaddle(self.user.username, dir)
+                # Send a message to the game group with the game id, the paddle coordinate, and the player's username
+                await self.channel_layer.group_send(
+                    game.group_name,
+                    {
+                        "type": "game.paddle",
+                        "game_id": game_id,
+                        "y": y,
+                        "player": self.user.username,
+                    }
+                )
     '''
         elif action == "create":
             # Create a new tournament
@@ -609,14 +608,18 @@ class PongConsumer(AsyncWebsocketConsumer):
     async def game_ball(self, event):
         # Handle a message that a ball move is made in a game
         game_id = event["game_id"]
-        x = event["ballX"]
-        y = event["ballY"]
+        x = event["x"]
+        y = event["y"]
+        player1_score = event["player1_score"]
+        player2_score = event["player2_score"]
         # Send a message to the client with the game id, the move coordinates, and the player's username
         await self.send(text_data=json.dumps({
             "type": "game.ball",
             "game_id": game_id,
-            "ballX": x,
-            "ballY": y,
+            "x": x,
+            "y": y,
+            "player1_score": player1_score,
+            "player2_score": player2_score,
         }))
 
     async def game_paddle(self, event):

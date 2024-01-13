@@ -4,7 +4,7 @@ const canvas = document.getElementById('pongCanvas');
 var ctx = canvas.getContext("2d");
 canvas.width = 800;
 canvas.height = 600;
-document.body.appendChild(canvas);
+//document.body.appendChild(canvas);
 
 // Paddle objects
 var paddleWidth = 10;

@@ -5,25 +5,36 @@ const socket = new WebSocket('ws://' + window.location.host + '/ws/pong/');  // 
 const canvas = document.getElementById('pongCanvas');
 const context = canvas.getContext('2d');
 
+// Paddle objects
 var paddleWidth = 10;
 var paddleHeight = 75;
+var paddleY = (canvas.height - paddleHeight) / 2;
+var paddle1 = {x: 0, y: paddleY, width: paddleWidth, height: paddleHeight};
+var paddle2 = {x: canvas.width - paddleWidth, y: paddleY, width: paddleWidth, height: paddleHeight};
+
+// Ball object
+var ball = {x: canvas.width / 2, y: canvas.height / 2, radius: 10};
+
+// maybe merge with my object
+var player1 = {username: '', score: 0};
+var player2 = {username: '', score: 0};
 
 // Draw everything
 function render() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    context.clearRect(0, 0, canvas.width, canvas.height);
 
-    ctx.fillStyle = "#0095DD";
-    ctx.fillRect(paddle1.x, paddle1.y, paddle1.width, paddle1.height);
-    ctx.fillRect(paddle2.x, paddle2.y, paddle2.width, paddle2.height);
+    context.fillStyle = "#0095DD";
+    context.fillRect(paddle1.x, paddle1.y, paddle1.width, paddle1.height);
+    context.fillRect(paddle2.x, paddle2.y, paddle2.width, paddle2.height);
 
-    ctx.beginPath();
-    ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI*2, false);
-    ctx.fill();
-    ctx.closePath();
+    context.beginPath();
+    context.arc(ball.x, ball.y, ball.radius, 0, Math.PI*2, false);
+    context.fill();
+    context.closePath();
 
-    ctx.font = "16px Arial";
-    ctx.fillText("Player 1: " + score1, 10, 20);
-    ctx.fillText("Player 2: " + score2, canvas.width - 85, 20);
+    context.font = "16px Arial";
+    context.fillText(player1.username + ": " + player1.score, 10, 20);
+    context.fillText(player2.username + ": " + player2.score, canvas.width - 85, 20);
 }
 
 
@@ -64,11 +75,15 @@ socket.onclose = function (e) {
     else if (my.tournament_id && my.game_id) {
         // Show some connection lost message with scores and tournament rank etc.
     }
+    clearInterval(BallRequest);
+    stopGame();
     console.error('WebSocket connection closed');
 }
 
 socket.onerror = function (e) {
     console.error('Error: ' + e.data);
+    clearInterval(BallRequest);
+    stopGame();
     if (!inviteInput.value) {
         invitationMessage.textContent = e.data;
         invitationModal.style.display = 'block';
@@ -131,10 +146,14 @@ socket.onmessage = function (e) {
             console.log(`Invited Group Name: ${data.group_name} => ${data.inviter} vs ${data.invited}`);
             break;
         case 'game.accept':
+            player1.username = data.accepted;
+            player2.username = data.accepter;
             if (data.accepter === my.username) {
                 invitationMessage.textContent = `You accepted the game invitation from ${data.accepted}`;
                 invitationMessage.style.display = 'block';
                 my.opponent_username = data.accepted; // if gerekir mi?
+                
+
             }
             else if (data.accepted === my.username) {
                 invitationMessage.textContent = `Your invitation is accepted by ${data.accepter}`;
@@ -149,7 +168,7 @@ socket.onmessage = function (e) {
                 // maybe put timeout here for protection agaimst bashing button
                 startRequest(my.username, my.opponent_username);
             };
-
+            render();
             console.log(`Accepted Game Id: ${data.game_id} => ${data.accepted} vs ${data.accepter}`);
             break;
         case 'game.decline':
@@ -178,7 +197,6 @@ socket.onmessage = function (e) {
 
                 leaveButton.style.display = 'block';
                 // make invitationMessage disappear after 3 seconds
-                // maybe put in this in startGame function
 
                 leaveButton.onclick = function () {
                     leaveGame();
@@ -193,7 +211,9 @@ socket.onmessage = function (e) {
                         PaddleRequest("down");
                     }
                 });
-                //startGame();
+                // Ask ball coordinates every 16 milliseconds
+                startGame();
+                setInterval(BallRequest, 16);
 
                 console.log(`Started Game Id: ${data.game_id} => ${data.player1} vs ${data.player2}`);
             }
@@ -210,6 +230,8 @@ socket.onmessage = function (e) {
             }
             break;
         case 'game.leave':
+            clearInterval(BallRequest);
+            stopGame();
             my.score = data.score;
             my.opponent_score = data.opponent_score;
             winner = data.winner;
@@ -220,10 +242,13 @@ socket.onmessage = function (e) {
             break;
         // What about draw?
         case 'game.end':
+            clearInterval(BallRequest);
+            stopGame();
             my.score = data.score;
             my.opponent_score = data.opponent_score;
             winner = data.winner;
             // Show some game ended message with scores etc.
+            // maybe put restart event with invite again
 
             console.log(`Ended Game Id: ${data.game_id} => ${data.winner} won`);
             break;
@@ -275,12 +300,32 @@ socket.sendJSON = function (data) {
     socket.send(JSON.stringify(data));
 }
 
+var requestId;
 
+// The main game loop
+var startGame = function () {
+    render();
+    // Request to do this again ASAP
+    requestId = requestAnimationFrame(startGame);
+};
+
+// When you want to stop the game loop
+var stopGame = function() {
+    cancelAnimationFrame(requestId);
+};
+
+// Cross-browser support for requestAnimationFrame
+var w = window;
+requestAnimationFrame =
+  w.requestAnimationFrame ||
+  w.webkitRequestAnimationFrame ||
+  w.msRequestAnimationFrame ||
+  w.mozRequestAnimationFrame;
 
 function paddleMove(player, y) {
-    if (player === my.username) {
+    if (player === player1.username) {
         paddle1.y = y;
-    } else if (player === my.opponent_username) {
+    } else if (player === player2.username) {
         paddle2.y = y;
     }
 }
@@ -291,8 +336,8 @@ function ballMove(x, y) {
 }
 
 function scoreUpdate(player1_score, player2_score) {
-    score1 = player1_score;
-    score2 = player2_score;
+    player1.score = player1_score;
+    player2.score = player2_score;
 }
 
 /* function showOnlineUsers(users) {
@@ -395,15 +440,15 @@ function leaveGame() {
 }
 
 // When game ended send this only once 
-function gameEnded() {
+/* function gameEnded() {
     // Get necessary data and call socket.sendJSON
     socket.sendJSON({
         action: 'end',
         game_id: my.game_id,
     });
-}
+} */
 
-// send this in setInterval(update, 16) this ll be game state
+// send this in keydown event
 function PaddleRequest(direction) {
     // Get necessary data and call socket.sendJSON
     socket.sendJSON({
@@ -418,7 +463,7 @@ function BallRequest() {
     // Get necessary data and call socket.sendJSON
     socket.sendJSON({
         action: 'ball',
-        game_id: 'game_id',
+        game_id: my.game_id,
     });
 }
 

@@ -10,7 +10,7 @@ PAD_SPEED = 50
 PADDLE_Y = (HEIGHT - PAD_HEIGHT) / 2 
 
 BALL_RADIUS = 10
-BALL_SPEED = 5
+BALL_SPEED = 1
 
 MAX_SCORE = 20
 
@@ -108,6 +108,5 @@ class PongGame:
             return self.player2.score
         else:
             return None
-    
 
 
