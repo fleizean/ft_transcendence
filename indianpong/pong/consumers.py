@@ -415,23 +415,21 @@ class PongConsumer(AsyncWebsocketConsumer):
     def get_online_users_list(self):
         return [user.username for user in UserProfile.objects.filter(online=True)]
     
-    @database_sync_to_async
-    def create_game(self, group_name, player1, player2):
+    async def create_game(self, group_name, player1, player2):
         # Create a new game instance with the given players and an group_name
-        accepted = UserProfile.objects.get(username=player1)
-        accepter = UserProfile.objects.get(username=player2)
-        game = Game.objects.create(group_name=group_name, player1=accepted, player2=accepter)
+        accepted = await UserProfile.objects.aget(username=player1)
+        accepter = await UserProfile.objects.aget(username=player2)
+        game = await Game.objects.acreate(group_name=group_name, player1=accepted, player2=accepter)
         return game
 
-    @database_sync_to_async
-    def record_game(self, game_id, player1_score, player2_score, winner):
-        game = Game.objects.get(id=game_id)
-        USER_STATUS.set(game.player1.username, 'online') #?
-        USER_STATUS.set(game.player2.username, 'online') #?
+    async def record_game(self, game_id, player1_score, player2_score, winner):
+        game = await Game.objects.aget(id=game_id)
+        await USER_STATUS.set(game.player1.username, 'online') #?
+        await USER_STATUS.set(game.player2.username, 'online') #?
         game.player1_score = player1_score
         game.player2_score = player2_score
-        game.winner = UserProfile.objects.get(username=winner)
-        game.save()
+        game.winner = await UserProfile.objects.aget(username=winner)
+        await game.asave()
 
     async def record_for_disconnected(self, game_id, game):
         if game.player1.username == self.user.username:
