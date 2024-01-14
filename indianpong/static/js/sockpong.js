@@ -314,7 +314,6 @@ socket.sendJSON = function (data) {
 }
 
 var requestId;
-
 // The main game loop
 var startGame = function () {
     render();

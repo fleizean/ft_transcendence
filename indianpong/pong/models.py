@@ -2,6 +2,9 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.utils.html import mark_safe
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
+from django.utils import timezone
 import uuid
 
 class UserProfile(AbstractUser):
@@ -21,7 +24,23 @@ class UserProfile(AbstractUser):
             return mark_safe('<img src="%s" width="50" height="50" />' % (self.avatar.url))
         else:
             return mark_safe('<img src="/static/assets/profile/default_avatar.jpeg" width="50" height="50" />')
-    
+
+class VerifyToken(models.Model):
+    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+    token = models.CharField(max_length=255)
+    is_verified = models.BooleanField(default=False)
+    created_at = models.DateTimeField(default=timezone.now)
+
+    def send_verification_email(self, request, user):
+        token = VerifyToken.objects.get(user=user)
+        mail_subject = 'Activate your account.'
+        message = render_to_string('activate_account.html', {
+            'user': user,
+            'domain': request.META['HTTP_HOST'],
+            'token': token.token,
+        })
+        send_mail(mail_subject, message, 'noreply@indianpong.com', [user.email])
+
 class ChatMessage(models.Model):
     sender = models.ForeignKey(UserProfile, related_name='sent_messages', on_delete=models.CASCADE)
     receiver = models.ForeignKey(UserProfile, related_name='received_messages', on_delete=models.CASCADE)

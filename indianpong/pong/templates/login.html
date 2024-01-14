@@ -49,8 +49,11 @@
             {{form.password.label_tag}}
             {{form.password}}
             <div>
-            <span class="error-message">{{form.password.errors}}</span>
+                <span class="error-message">{{form.password.errors}}</span>
             </div>
+            <p>
+                <a href="{% url 'password_reset' %}" data-link><button type="button" class="registerbtn">Forgot Password</button></a>
+            </p>
         </p>
         </div>
         <a href="/dashboard" data-link><button class="button-confirm" type="submit">Let's go →</button></a>

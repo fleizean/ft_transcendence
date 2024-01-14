@@ -1,8 +1,14 @@
 # forms.py
-
+from datetime import timedelta
 from django import forms
+from django.utils import timezone
+from django.contrib.auth.tokens import default_token_generator
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
+from django.utils.http import urlsafe_base64_encode
+from django.utils.encoding import force_bytes
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, UserChangeForm, PasswordChangeForm, PasswordResetForm, SetPasswordForm 
-from .models import BlockedUser, ChatMessage, GameInvitation, UserProfile, TwoFactorAuth, JWTToken, Tournament, TournamentMatch, OAuthToken
+from .models import VerifyToken, BlockedUser, ChatMessage, GameInvitation, UserProfile, TwoFactorAuth, JWTToken, Tournament, TournamentMatch, OAuthToken
 
 class UserProfileForm(UserCreationForm):
 
@@ -51,20 +57,59 @@ class PasswordChangeUserForm(PasswordChangeForm):
         fields = ['old_password', 'new_password1', 'new_password2']
 
 class PasswordResetUserForm(PasswordResetForm):
-    email = forms.EmailField(label='Email', widget=forms.EmailInput(attrs={'class': 'input'}))
-    class Meta:
+    #email = forms.EmailField(label='Email', widget=forms.EmailInput(attrs={'class': 'input'}))
+    
+    """    class Meta:
         model = UserProfile
-        fields = ['email']
+        fields = ['email'] """
+
+    def save(self, domain_override=None, subject_template_name=None,
+            email_template_name=None, use_https=False, token_generator=default_token_generator,
+            from_email=None, request=None, html_email_template_name=None, extra_email_context=None):
+        super().save(request=request, token_generator=token_generator, use_https=use_https)
+        token = token_generator.make_token(request.user)
+        VerifyToken.objects.create(user=request.user, token=token)
+        mail_subject = 'Reset your password'
+        message = render_to_string('password_reset_email.html', {
+            'user': request.user,
+            'domain': domain_override or request.META['HTTP_HOST'],
+            'uid': urlsafe_base64_encode(force_bytes(request.user.pk)),
+            'token': token,
+        })
+        send_mail(mail_subject, message, 'noreply@indianpong.com', [request.user.email])
+        #return uid, token
+
+""" class TokenValidationForm(forms.Form):
+    token = forms.CharField(label='Token', widget=forms.TextInput(attrs={'class': 'input'}) )
+
+    class Meta:
+        model = Token
+        fields = ['token']
+
+    def clean_token(self):
+        token = self.cleaned_data.get('token')
+        token_obj = Token.objects.filter(token=token).first()
+        if not token_obj or timezone.now() - token_obj.created_at > timedelta(minutes=2):
+            raise forms.ValidationError('Invalid or expired token.')
+        return token """
 
 #After reset password
 class SetPasswordUserForm(SetPasswordForm):
     new_password1 = forms.CharField(label='New Password', widget=forms.PasswordInput(attrs={'class': 'input'}))
     new_password2 = forms.CharField(label='ReNew Password', widget=forms.PasswordInput(attrs={'class': 'input'}))
-    uidb64 = forms.CharField(widget=forms.HiddenInput(attrs={'class': 'input'}))
-    token = forms.CharField(widget=forms.HiddenInput(attrs={'class': 'input'}))
+    
     class Meta:
         model = UserProfile
         fields = ['new_password1', 'new_password2']
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        if commit:
+            user.save()
+            VerifyToken.objects.filter(user=user).delete()
+        return user
+
+    
 
 class ChatMessageForm(forms.ModelForm):
     class Meta:

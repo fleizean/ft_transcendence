@@ -18,12 +18,13 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
-from pong.views import auth_callback, chat, rankings, dashboard, game, index, auth, chat_room, profile_view, search, signup, login_view, logout_view, update_profile, setup_two_factor_auth, generate_jwt_token, create_tournament, create_tournament_match, start_chat, room
+from pong.views import activate_account, auth_callback, chat, password_change, password_reset, password_reset_done, rankings, dashboard, game, index, auth, chat_room, profile_view, search, set_password, signup, login_view, logout_view, update_profile, setup_two_factor_auth, generate_jwt_token, create_tournament, create_tournament_match, start_chat, room
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', index, name='index'),
     path('signup', signup, name='signup'),
+    path('activate/<str:token>/', activate_account, name='activate'),
     path('login', login_view, name='login'),
     path('auth', auth, name='auth'),
     path('auth_callback', auth_callback, name='auth_callback'),
@@ -40,6 +41,11 @@ urlpatterns = [
     path('game', game, name='game'),
     path('profile/<str:username>', profile_view, name='profile'),
     path('update_profile', update_profile, name='update_profile'),
+    path('password_change', password_change, name='password_change'),
+    path('password_reset', password_reset, name='password_reset'),
+    path('password_reset_confirm/<str:uidb64>/<str:token>/', password_reset, name='password_reset_confirm'),
+    path('password_reset_done', password_reset_done, name='password_reset_done'),
+    path('set_password/<str:uidb64>/<str:token>/', set_password, name='set_password'),
     path('setup_two_factor_auth', setup_two_factor_auth, name='setup_two_factor_auth'),
     path('generate_jwt_token', generate_jwt_token, name='generate_jwt_token'),
     path('create_tournament', create_tournament, name='create_tournament'),

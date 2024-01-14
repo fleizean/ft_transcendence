@@ -1,0 +1,13 @@
+<!-- FILEPATH: /home/gusto/ft_transcendence_newpdf/indianpong/pong/templates/activate_account.html -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Activate Account</title>
+</head>
+<body>
+    <h1>Activate Account</h1>
+    <p>Please click the link below to activate your account:</p>
+    <a href="{{domain}}{% url 'activate' token=token %}">Activate Now</a>
+</body>
+</html>

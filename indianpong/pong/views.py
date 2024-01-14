@@ -1,20 +1,24 @@
-from urllib.request import urlretrieve
 from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.cache import never_cache
-from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth import login, logout
 from django.contrib import messages
 from django.http import HttpResponseBadRequest
 from .forms import BlockUserForm, ChatMessageForm, InviteToGameForm, PasswordChangeUserForm, PasswordResetUserForm, SetPasswordUserForm, UserProfileForm, UpdateUserProfileForm, TwoFactorAuthSetupForm, JWTTokenForm, AuthenticationUserForm, TournamentForm, TournamentMatchForm, OAuthTokenForm
-from .models import BlockedUser, ChatMessage, GameWarning, UserProfile, TwoFactorAuth, JWTToken, Tournament, TournamentMatch, OAuthToken, Room, Message
+from .models import BlockedUser, ChatMessage, GameWarning, VerifyToken, UserProfile, TwoFactorAuth, JWTToken, Tournament, TournamentMatch, OAuthToken, Room, Message
 from .utils import pass2fa
 from os import environ
 from datetime import datetime, timedelta
+from django.utils.http import urlsafe_base64_decode
 import urllib.parse
 import urllib.request
 from urllib.parse import urlencode
 import secrets, json
 from django.core.files import File
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
+from django.contrib.auth.tokens import default_token_generator
+from django.contrib.auth import get_user_model
 import json
 
 
@@ -35,12 +39,25 @@ def signup(request):
         form = UserProfileForm(request.POST, request.FILES)
         if form.is_valid():
             user = form.save()
-            # Perform additional actions if needed
-            login(request, user)  # Log in the user after successful registration
-            return redirect('profile', request.user)
+            obj = VerifyToken.objects.create(user=user, token=default_token_generator.make_token(user))
+            obj.send_verification_email(request, user)
+            messages.success(request, 'Please check your email to verify your account.')
+            return redirect('login')
     else:
         form = UserProfileForm()
     return render(request, 'signup.html', {'form': form})
+
+@never_cache
+def activate_account(request, token):
+    try:
+        token = VerifyToken.objects.get(token=token)
+    except VerifyToken.DoesNotExist:
+        return render(request, 'activation_fail.html')
+    token.is_verified = True
+    token.save()
+    messages.success(request, 'Your account has been verified.')
+    login(request, token.user)
+    return redirect('profile', request.user)
 
 #state_req = secrets.token_hex(25)
 @never_cache
@@ -210,29 +227,67 @@ def password_change(request):
     return render(request, 'password_change.html', {'form': form})
 
 @never_cache
-@login_required(login_url="login")
 def password_reset(request):
     if request.method == 'POST':
-        form = PasswordResetUserForm(request.POST)
+        form = PasswordResetUserForm(request.POST or None)
         if form.is_valid():
-            form.save()
+            #uid, token = form.save()
+            form.save(request=request)
             # Perform additional actions if needed
             messages.success(request, 'Password reset email sent successfully.')
             return redirect('password_reset_done')
+            #return redirect('set_password', uidb64=uid, token=token)
     else:
         form = PasswordResetUserForm()
     return render(request, 'password_reset.html', {'form': form})
 
 @never_cache
-@login_required(login_url="login")
 def password_reset_done(request):
-    return render(request, 'password_reset_done.html')
+    return render (request, 'password_reset_done.html')
+
+
+@never_cache
+def set_password(request, uidb64, token):
+    try:
+        uid = urlsafe_base64_decode(uidb64).decode()
+        user = get_user_model().objects.get(pk=uid)
+    except (TypeError, ValueError, OverflowError, UserProfile.DoesNotExist):
+        user = None
+
+    if user is not None and default_token_generator.check_token(user, token):
+        # token is valid, you can show the user a form to enter a new password
+        if request.method == 'POST':
+            form = SetPasswordUserForm(user, request.POST)
+            if form.is_valid():
+                form.save()
+                messages.success(request, 'Your password has been reset.')
+                return redirect('login')
+        else:
+            form = SetPasswordUserForm(user)
+        return render(request, 'set_password.html', {'form': form})
+    else:
+        # invalid token
+        messages.error(request, 'The reset password link is invalid.')
+        return redirect('password_reset')
+
+""" @never_cache
+@login_required(login_url="login")
+def password_reset_done(request, uidb64, token):
+    if request.method == 'POST':
+        form = TokenValidationForm(request.POST)
+        if form.is_valid():
+            user_id = force_text(urlsafe_base64_decode(uidb64))
+            #user = UserProfile.objects.get(pk=user_id)
+            return redirect('set_password', uidb64, token)
+    else:
+        form = TokenValidationForm()
+    return render(request, 'password_reset_done.html', {'form': form})
 
 @never_cache
 @login_required(login_url="login")
 def set_password(request, uidb64, token):
     if request.method == 'POST':
-        form = SetPasswordUserForm(request.POST)
+        form = SetPasswordUserForm(request.user, request.POST)
         if form.is_valid():
             form.save()
             # Perform additional actions if needed
@@ -240,7 +295,7 @@ def set_password(request, uidb64, token):
             return redirect('profile', request.user)
     else:
         form = SetPasswordUserForm()
-    return render(request, 'set_password.html', {'form': form})
+    return render(request, 'set_password.html', {'form': form}) """
 
 ### Navbar ###
 
