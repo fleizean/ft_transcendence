@@ -53,14 +53,14 @@ inputField.onkeyup = function (e) {
 }
 
 function showOptions() {
-    console.log("showw")
-    var optionsDiv = document.getElementById("options");
-    if (optionsDiv.style.display === "none") {
-        optionsDiv.style.display = "block";
+    var optionsDiv = document.getElementById('options');
+    if (optionsDiv.style.display === 'none' || optionsDiv.style.display === '') {
+        optionsDiv.style.display = 'block';
     } else {
-        optionsDiv.style.display = "none";
+        optionsDiv.style.display = 'none';
     }
 }
+
 
 sendButton.onclick = function (e) {
     const message = inputField.value

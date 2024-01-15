@@ -9,6 +9,41 @@ span {
   box-sizing: border-box;
 }
 
+#options {
+  display: none;
+  position: absolute;
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  z-index: 1;
+  right: 50; /* sağa yasla */
+}
+
+#options ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+#options ul li {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+#options ul li:last-child {
+  border-bottom: none;
+}
+
+#options a {
+  text-decoration: none;
+  color: #333;
+  display: block;
+}
+
+#options a:hover {
+  background-color: #f2f2f2;
+}
+
+
 body {
   background: url('https://www.bootdey.com/img/bgy.png') no-repeat fixed center;
   background-size: cover;
@@ -119,17 +154,18 @@ body {
   cursor: pointer;
 }
 
-.heading-dot {
-  padding: 0;
-  margin-left: 10px;
+
+.row.heading {
+  display: flex;
+  justify-content: space-between;
 }
 
 .heading-dot i {
-  text-align: right;
   padding: 5px;
   color: #93918f;
   cursor: pointer;
 }
+
 
 .searchBox {
   padding: 0 !important;
@@ -161,7 +197,7 @@ body {
   background-color: #fff;
   overflow-y: auto;
   border: 1px solid #f7f7f7;
-  height: calc(100% - 120px);
+  height: calc(55% - 120px);
 }
 
 
@@ -490,7 +526,7 @@ body {
     height: calc(100% - 130px);
   }
   .sideBar-body {
-    height: 80px;
+    height: 10px;
   }
   .sideBar-avatar {
     text-align: left;

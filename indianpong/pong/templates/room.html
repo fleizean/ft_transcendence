@@ -20,16 +20,6 @@
                               <img src="https://bootdey.com/img/Content/avatar/avatar1.png" />
                             </div>
                           </div>
-                          <div class="col-sm-1 col-xs-1 heading-dot pull-right">
-                            <i class="fa fa-ellipsis-v fa-2x pull-right" aria-hidden="true" onclick="showOptions()"></i>
-                            <div id="options" style="display:none;">
-                              <ul>
-                                  <li><a href="#">Seçenek 1</a></li>
-                                  <li><a href="#">Seçenek 2</a></li>
-                                  <li><a href="#">Seçenek 3</a></li>
-                              </ul>
-                          </div>
-                          </div>
                           <div class="col-sm-2 col-xs-2 heading-compose pull-right">
                             <i class="fa fa-comments fa-2x pull-right" aria-hidden="true"></i>
                           </div>
@@ -46,7 +36,7 @@
                     
                         <div class="row sideBar">
                           {% for user in users %}
-                          <div class="row sideBar-body">
+                            <div class="row sideBar-body">
                               <div class="col-sm-3 col-xs-3 sideBar-avatar">
                                 <div class="avatar-icon">
                                   <img src="https://bootdey.com/img/Content/avatar/avatar1.png" />
@@ -65,7 +55,8 @@
                                 </div>
                               </div>
                             </div>
-                      {% endfor %}
+                            
+                          {% endfor %}
                         
                         </div>
                       </div>
@@ -134,7 +125,13 @@
                           <span class="heading-online">Online</span>
                         </div>
                         <div class="col-sm-1 col-xs-1 heading-dot pull-right">
-                          <i class="fa fa-ellipsis-v fa-2x pull-right" aria-hidden="true"></i>
+                          <i class="fa fa-ellipsis-v fa-2x pull-right" aria-hidden="true" onclick="showOptions()"></i>
+                          <div id="options" style="display:none;">
+                            <ul>
+                                <li><a href="#">Engelle</a></li>
+                                <li><a href="#">Oyuna davet et</a></li>
+                            </ul>
+                          </div>
                         </div>
                       </div>
                   
@@ -198,7 +195,7 @@
                     })
                   })
                 </script>
-                <script src="../../static/js/app.js"></script>
+                <script src="../../static/js/chat.js"></script>
             </section>
         </div>
     </div>
