@@ -7,7 +7,6 @@
 # Team 42 Indian Developers ->
 ### [eyagiz](https://github.com/fleizean)
 ### [fyurtsev](https://github.com/fyurtsev)
-### [mkucukku](https://github.com/mstfkucukkurt)
 ### [sciftci](https://github.com/temasictfic)
 ### [yaktas](https://github.com/yeaktas)
 
