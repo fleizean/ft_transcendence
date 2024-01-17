@@ -441,10 +441,11 @@
 .conversation-item-box {
   max-width: 720px;
   position: relative;
-  margin-left: auto;
+ margin-left: unset;
 }
 .conversation-item.me .conversation-item-box {
-  margin-left: unset;
+
+  margin-left: auto;
 }
 .conversation-item-text {
   padding: 12px 16px 8px;

@@ -13,32 +13,6 @@ chatSocket.onmessage = function (e) {
     if(user === data.user){
 
         
-             var message = `
-        <li class="conversation-item">
-            <div class="conversation-item-content">
-              <div class="conversation-item-wrapper">
-                <div class="conversation-item-box">
-                  <div class="conversation-item-text">
-                    <p>${data.message}</p>
-                    <div class="conversation-item-time">${data.created_date}</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-        </li>`
-/*          var message = ` <div class="row message-body">
-            <div class="col-sm-12 message-main-sender">
-                <div class="sender">
-                    <div class="message-text">
-                        ${data.message}
-                    </div>
-                    <span class="message-time pull-right">
-                        ${data.created_date}
-                    </span>
-                    </div>
-                </div>
-            </div>` */
-    }else{
        var message = `                  
             <li class="conversation-item me">
               <div class="conversation-item-content">
@@ -56,6 +30,32 @@ chatSocket.onmessage = function (e) {
                 </div>
               </div>
             </li>`
+             
+/*          var message = ` <div class="row message-body">
+            <div class="col-sm-12 message-main-sender">
+                <div class="sender">
+                    <div class="message-text">
+                        ${data.message}
+                    </div>
+                    <span class="message-time pull-right">
+                        ${data.created_date}
+                    </span>
+                    </div>
+                </div>
+            </div>` */
+    }else{var message = `
+        <li class="conversation-item">
+            <div class="conversation-item-content">
+              <div class="conversation-item-wrapper">
+                <div class="conversation-item-box">
+                  <div class="conversation-item-text">
+                    <p>${data.message}</p>
+                    <div class="conversation-item-time">${data.created_date}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </li>`
         /* var message = ` <div class="row message-body">
         <div class="col-sm-12 message-main-receiver">
             <div class="receiver">
@@ -71,6 +71,7 @@ chatSocket.onmessage = function (e) {
     }
    
     conversation.innerHTML += message
+    conversation.scrollTop = conversation.scrollHeight
 };
 
 chatSocket.onclose = function (e) {
