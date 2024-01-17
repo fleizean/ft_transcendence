@@ -137,6 +137,32 @@ function displaySection(sectionId) {
     }
 }
 
+function displaySectionGame(sectionId) {
+    var sections = ["game-bracket-section", "game-room-section"];
+    var buttons = ["checkbracket", "gameroombracket"];
+
+    var button = document.getElementById(buttons[1]);
+    var button2 = document.getElementById(buttons[0]);
+    for (var i = 0; i < sections.length; i++) {
+        var section = document.getElementById(sections[i]);
+        if (sections[i] === sectionId) {
+            section.style.display = 'block';
+            if (sectionId === "game-bracket-section") {
+                button.style.display = 'inline';
+                button2.style.display = 'none';
+            }
+            else {
+                button.style.display = 'none';
+                button2.style.display = 'inline';
+            }
+        } else {
+            section.style.display = 'none';
+        }
+    }
+}
+
+
+
 function togglePasswordVisibility(inputId) {
     var passwordInput = document.getElementById(inputId);
     var buttonIcon = document.querySelector('#' + inputId + '+ .input-group button i');
@@ -163,3 +189,19 @@ jQuery(document).ready(function () {
         $(".nav-links").toggleClass('show');
     });
 });
+
+
+document.getElementById("optionsButton").addEventListener("click", function () {
+    var dropdown = document.getElementById("optionsDropdown");
+    dropdown.style.display = (dropdown.style.display === "block") ? "none" : "block";
+  });
+  
+  // Pencerenin dışındaki bir yere tıklanırsa pencereyi kapat
+  window.onclick = function (event) {
+    if (!event.target.matches('#optionsButton')) {
+      var dropdown = document.getElementById("optionsDropdown");
+      if (dropdown.style.display === 'block') {
+        dropdown.style.display = 'none';
+      }
+    }
+  };

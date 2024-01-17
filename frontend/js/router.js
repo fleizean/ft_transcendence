@@ -16,6 +16,9 @@ import RpsGame from "./views/RpsGame.js";
 import Pass2FA from "./views/Pass2FA.js";
 import GameRoom from "./views/GameRoom.js";
 import RoomList from "./views/RoomList.js";
+import GameChart from "./views/GameChart.js";
+import Chat from "./views/Chat.js";
+import InChat from "./views/InChat.js";
 
 const pathToRegex = path => new RegExp("^" + path.replace(/\//g, "\\/").replace(/:\w+/g, "(.+)") + "$");
 
@@ -46,6 +49,9 @@ const router = async () => {
         { path: '/profile', view: Profile},
         { path: '/game-room', view: GameRoom},
         { path: '/room-list', view: RoomList},
+        { path: '/game-chart', view: GameChart},
+        { path: '/chat', view: Chat},
+        { path: '/in-chat', view: InChat},
         { path: '/pass2fa', view: Pass2FA},
         { path: '/profile-settings', view: ProfileSettings},
         { path: '/match-history', view: MatchHistory},

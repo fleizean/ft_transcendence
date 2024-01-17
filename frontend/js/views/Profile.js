@@ -17,6 +17,7 @@ export default class extends AbstractView {
       </div>
         <ul class="nav-links">
           <li><a href="/dashboard" data-link><i class="bi bi-house-door-fill"></i>Dashboard</a></li>
+          <li><a href="/chat" data-link><i class="bi bi-chat-fill"></i>Chat</a></li>
           <li><a href="/pong-game" data-link><i class="bi bi-play-circle-fill"></i>Pong Game</a></li>
           <li><a href="/rps-game" data-link><i class="bi bi-scissors"></i>RPS Game</a></li>
           <li><a href="/rankings" data-link><i class="bi bi-bar-chart-fill"></i>Rankings</a></li>

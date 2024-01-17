@@ -3,7 +3,7 @@ import AbstractView from "./AbstractView.js";
 export default class extends AbstractView {
     constructor(params) {
         super(params);
-        this.setTitle("Game Room");
+        this.setTitle("Game Chart");
     }
 
     async getHtml() {
@@ -28,9 +28,11 @@ export default class extends AbstractView {
           
       </div>
       <div class="notification-submenu">
-      <a href="/test" data-link><i class="bi bi-person-fill"></i>Arda followed you!</a>
+        <a href="/test" data-link>Arda followed you!</a>
+        <a href="/test" data-link>Arda followed you!</a>
+        <a href="/test" data-link>Arda followed you!</a>
       </div>
-   </li>
+      </li>
       <li class="profile-menu">
         <div class="profile-image">
           <img src="../../assets/profile/profilephoto.jpeg" alt="Profile Image" width="48" height="48">
@@ -47,70 +49,13 @@ export default class extends AbstractView {
 
           <div class="container-top">
             <div class="card">
+                
               
-                <div class="indian-logo">
-                    <img class="logo-indian" src="../../assets/logo-dark.png">
+                <div class="game-chart-middle">
+                    <h1>XXX Room Tournament Bracket</h1>
+                    <h2>Ping Pong Game Olympics</h2> 
                 </div>
-                <h3 class="pong-game-text">Room #1 - Ping Pong Tournament Room</h3>
-                <div class="game-room-buttons">
-                    <button class="leave-button" type="button"><i class="bi bi-x-circle-fill"></i> LEAVE GAME</button>
-                    <button class="leave-button" type="button"><i class="bi bi-flag-fill"></i> START GAME</button>
-                    <button class="leave-button" id="checkbracket" onclick="displaySectionGame('game-bracket-section')" type="button"><i class="bi bi-calendar-check-fill"></i> CHECK BRACKET</button>
-                    <button class="leave-button" id="gameroombracket" onclick="displaySectionGame('game-room-section')" type="button"><i class="bi bi-4-square-fill"></i> GAME ROOM</button>
-
-                </div>
-                <section id="game-room-section">
-                <div class="player-wrapper">
-                  <div class="place">
-                    <div class="place-container">
-                      <div class="avatar-container">
-                        <img src="https://static.codingame.com/servlet/fileservlet?id=107054628046315&amp;format=profile_avatar" alt="Avatar" class="game-room-avatar">
-                      </div>
-                      <div class="clash-info player-info">
-                        <p class="truncate-pseudo" title="Flei">Flei</p>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="place">
-                    <div class="place-container">
-                      <div class="avatar-container-free">
-                        <img src="https://static.codingame.com/assets/img_waiting_for_player.8346764a.png" alt="Avatar" class="game-room-avatar-none">
-                      </div>
-                      <div class="clash-info free-info">
-                        <div class="waitLabel">
-                          <p>Waiting <br> for player... </p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="place">
-                    <div class="place-container">
-                      <div class="avatar-container-free">
-                        <img src="https://static.codingame.com/assets/img_waiting_for_player.8346764a.png" alt="Avatar" class="game-room-avatar-none">
-                      </div>
-                      <div class="clash-info free-info">
-                        <div class="waitLabel">
-                          <p>Waiting <br> for player... </p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="place">
-                    <div class="place-container">
-                      <div class="avatar-container-free">
-                        <img src="https://static.codingame.com/assets/img_waiting_for_player.8346764a.png" alt="Avatar" class="game-room-avatar-none">
-                      </div>
-                      <div class="clash-info free-info">
-                        <div class="waitLabel">
-                          <p>Waiting <br> for player... </p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </section>
-              <section id="game-bracket-section">
-                <div class="game-bracket-area">
+                <div class="game-bracket-section">
                   <div class="bracket-area">
                     <div class="bracket disable-image">
                       <div class="column one">
@@ -183,7 +128,6 @@ export default class extends AbstractView {
                     </div>
                   </div>
                 </div>
-              </section>
             </div>
           </div>
         `
