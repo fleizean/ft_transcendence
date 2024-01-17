@@ -1,7 +1,7 @@
-document.addEventListener('DOMContentLoaded', function () {
+/*  document.addEventListener('DOMContentLoaded', function () {
     const cover = document.querySelector('.snow-class');
 
-    for (let i = 1; i < 100; i++) {
+   for (let i = 1; i < 100; i++) {
         const snowFlake = document.createElement('div');
         snowFlake.className = 'snow';
         cover.appendChild(snowFlake);
@@ -28,8 +28,8 @@ document.addEventListener('DOMContentLoaded', function () {
             snowFlake.style.opacity = 1;
             snowFlake.style.animationPlayState = 'running';
         }, 1300);
-    }
-});
+    } 
+});*/
 
 
 function getFutureDate() {

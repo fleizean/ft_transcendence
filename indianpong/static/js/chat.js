@@ -11,7 +11,22 @@ chatSocket.onmessage = function (e) {
     const data = JSON.parse(e.data)
 
     if(user === data.user){
-         var message = ` <div class="row message-body">
+
+        
+             var message = `
+        <li class="conversation-item">
+            <div class="conversation-item-content">
+              <div class="conversation-item-wrapper">
+                <div class="conversation-item-box">
+                  <div class="conversation-item-text">
+                    <p>${data.message}</p>
+                    <div class="conversation-item-time">${data.created_date}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </li>`
+/*          var message = ` <div class="row message-body">
             <div class="col-sm-12 message-main-sender">
                 <div class="sender">
                     <div class="message-text">
@@ -22,9 +37,26 @@ chatSocket.onmessage = function (e) {
                     </span>
                     </div>
                 </div>
-            </div>`
+            </div>` */
     }else{
-        var message = ` <div class="row message-body">
+       var message = `                  
+            <li class="conversation-item me">
+              <div class="conversation-item-content">
+                <div class="conversation-item-wrapper">
+                  <div class="conversation-item-box">
+                  </div>
+                </div>
+                <div class="conversation-item-wrapper">
+                  <div class="conversation-item-box">
+                    <div class="conversation-item-text">
+                    ${data.message}
+                      <div class="conversation-item-time">${data.created_date}</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </li>`
+        /* var message = ` <div class="row message-body">
         <div class="col-sm-12 message-main-receiver">
             <div class="receiver">
                 <div class="message-text">
@@ -35,7 +67,7 @@ chatSocket.onmessage = function (e) {
                 </span>
                 </div>
             </div>
-        </div>`
+        </div>` */
     }
    
     conversation.innerHTML += message

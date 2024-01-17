@@ -1,202 +1,200 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 
-{% block title %}Chat{% endblock title %}
+{% block title %}
+  Chat
+{% endblock %}
 
 {% block app %}
-    {% include "_nav.html" %}
+  <link rel="stylesheet" href="../../static/css/chat.css" />
+  <nav class="navbar">
+    <div class="logo-container">
+      <a href="/dashboard" data-link>
+        <div class="logo">
+          <img src="../../static/assets/logo.png" alt="IndianPong Logo" width="48" height="48" />
+          IndianPong
+        </div>
+      </a>
+    </div>
+    <ul class="nav-links">
+      <li>
+        <a href="/dashboard" data-link><i class="bi bi-house-door-fill"></i>Dashboard</a>
+      </li>
+      <li>
+        <a href="/chat" data-link><i class="bi bi-chat-fill"></i>Chat</a>
+      </li>
+      <li>
+        <a href="/pong-game" data-link><i class="bi bi-play-circle-fill"></i>Pong Game</a>
+      </li>
+      <li>
+        <a href="/rps-game" data-link><i class="bi bi-scissors"></i>RPS Game</a>
+      </li>
+      <li>
+        <a href="/rankings" data-link><i class="bi bi-bar-chart-fill"></i>Rankings</a>
+      </li>
+      <li>
+        <a href="/search" data-link><i class="bi bi-binoculars-fill"></i>Search</a>
+      </li>
+      <li class="notification-menu">
+        <div class="notification-icon">
+          <i class="bi bi-bell-fill"></i>
+        </div>
+        <div class="notification-submenu">
+          <a href="/test" data-link><i class="bi bi-person-fill"></i>Arda followed you!</a>
+        </div>
+      </li>
+      <li class="profile-menu">
+        <div class="profile-image">
+          <img src="../../static/assets/profile/profilephoto.jpeg" alt="Profile Image" width="48" height="48" />
+        </div>
+        <div class="profile-submenu">
+          <a href="/profile" data-link><i class="bi bi-person-fill"></i>Profile</a>
+          <a href="/profile-settings" data-link><i class="bi bi-gear-fill"></i>Settings</a>
+          <a href="/logout" data-link><i class="bi bi-box-arrow-right"></i>Logout</a>
+        </div>
+      </li>
+    </ul>
+    <div class="burger-menu">&#9776;</div>
+  </nav>
 
-    <div class="container-top">
-        <div class="card">
-            <section class="chat-section">
-                <link rel="stylesheet" href="../../static/css/chat.css">
-                <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
-                <div class="container app">
-                  <div class="row app-one">
-                    <div class="col-sm-4 side">
-                      <div class="side-one">
-                        <div class="row heading">
-                          <div class="col-sm-3 col-xs-3 heading-avatar">
-                            <div class="heading-avatar-icon">
-                              <img src="https://bootdey.com/img/Content/avatar/avatar1.png" />
-                            </div>
-                          </div>
-                          <div class="col-sm-2 col-xs-2 heading-compose pull-right">
-                            <i class="fa fa-comments fa-2x pull-right" aria-hidden="true"></i>
-                          </div>
-                        </div>
-                    
-                        <div class="row searchBox">
-                          <div class="col-sm-12 searchBox-inner">
-                            <div class="form-group has-feedback">
-                              <input id="searchText" type="text" class="form-control" name="searchText" placeholder="Search" />
-                              <span class="glyphicon glyphicon-search form-control-feedback"></span>
-                            </div>
-                          </div>
-                        </div>
-                    
-                        <div class="row sideBar">
-                          {% for user in users %}
-                            <div class="row sideBar-body">
-                              <div class="col-sm-3 col-xs-3 sideBar-avatar">
-                                <div class="avatar-icon">
-                                  <img src="https://bootdey.com/img/Content/avatar/avatar1.png" />
-                                </div>
-                              </div>
-                              <div class="col-sm-9 col-xs-9 sideBar-main">
-                                <div class="row">
-                                  <a href="{% url "start_chat" user %}">
-                                      <div class="col-sm-8 col-xs-8 sideBar-name">
-                                          <span class="name-meta">{{ user }}</span>
-                                      </div>
-                                  </a>
-                                  <div class="col-sm-4 col-xs-4 pull-right sideBar-time">
-                                    <span class="time-meta pull-right">18:18</span>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                            
-                          {% endfor %}
-                        
-                        </div>
-                      </div>
-                  
-                      <div class="side-two">
-                        <div class="row newMessage-heading">
-                          <div class="row newMessage-main">
-                            <div class="col-sm-2 col-xs-2 newMessage-back">
-                              <i class="fa fa-arrow-left" aria-hidden="true"></i>
-                            </div>
-                            <div class="col-sm-10 col-xs-10 newMessage-title">New Chat</div>
-                          </div>
-                        </div>
-                    
-                        <div class="row composeBox">
-                          <div class="col-sm-12 composeBox-inner">
-                            <div class="form-group has-feedback">
-                              <input id="composeText" type="text" class="form-control" name="searchText" placeholder="Search People" />
-                              <span class="glyphicon glyphicon-search form-control-feedback"></span>
-                            </div>
-                          </div>
-                        </div>
-                    
-                        <div class="row compose-sideBar">
-                          {% for user in users %}
-                          <div class="row sideBar-body">
-                              <div class="col-sm-3 col-xs-3 sideBar-avatar">
-                                <div class="avatar-icon">
-                                  <img src="https://bootdey.com/img/Content/avatar/avatar1.png" />
-                                </div>
-                              </div>
-                              <div class="col-sm-9 col-xs-9 sideBar-main">
-                                <div class="row">
-                                  <a href="{% url "start_chat" user %}">
-                                      <div class="col-sm-8 col-xs-8 sideBar-name">
-                                          <span class="name-meta">{{ user }}</span>
-                                      </div>
-                                  </a>
-                                  <div class="col-sm-4 col-xs-4 pull-right sideBar-time">
-                                    <span class="time-meta pull-right">18:18</span>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                      {% endfor %}
-                        
-                        </div>
-                      </div>
+  <div class="container-top">
+    <div class="card">
+      <section class="chat-section">
+        <div class="chat-container">
+          <!-- start: Sidebar -->
+          <aside class="chat-sidebar">
+            <a href="#" class="chat-sidebar-logo"><i class="bi bi-discord"></i></a>
+            <ul class="chat-sidebar-menu">
+              <li class="active">
+                <a href="#" data-title="DM"><i class="bi bi-chat-square-fill"></i></a>
+              </li>
+              <li>
+                <a href="#" data-title="Room"><i class="bi bi-chat-square-quote-fill"></i></a>
+              </li>
+              <li>
+                <a href="#" data-title="Settings"><i class="bi bi-gear-fill"></i></a>
+              </li>
+              <li class="chat-sidebar-profile">
+                <button type="button" class="chat-sidebar-profile-toggle"><i class="bi bi-person-circle" style="font-size: 24px; color: #059669;"></i></button>
+                <ul class="chat-sidebar-profile-dropdown">
+                  <li>
+                    <a href="#"><i class="bi bi-person-fill"></i> Profile</a>
+                  </li>
+                  <li>
+                    <a href="#"><i class="bi bi-box-arrow-left"></i> Logout</a>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </aside>
+          <!-- end: Sidebar -->
+          <!-- start: Content -->
+          <div class="chat-content">
+            <!-- start: Content side -->
+            <div class="content-sidebar">
+              <div class="content-sidebar-title">Chats</div>
+              <form action="" class="content-sidebar-form">
+                <input type="search" class="content-sidebar-input" placeholder="Search..." />
+                <button type="submit" class="content-sidebar-submit"><i class="bi bi-search"></i></button>
+              </form>
+              <div class="content-messages">
+                <ul class="content-messages-list">
+                  <li class="content-message-title">
+                    <span>Recently</span>
+                  </li>
+                  {% for user in  users %}
+                      <li>
+                        <a href="{% url 'start_chat' user %}" data-link>
+                          <img class="content-message-image" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8cGVvcGxlfGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60" alt="" />
+                          <span class="content-message-info">
+                            <span class="content-message-name">{{ user }}</span>
+                          </span>
+{% comment %}                           <span class="content-message-more">
+                            <span class="content-message-unread">5</span>
+                            <span class="content-message-time">12:30</span>
+                          </span> {% endcomment %}
+                        </a>
+                      </li>
+                  {% endfor %}
+              </div>
+            </div>
+            <div class="conversation active" id="conversation-1">
+              <div class="conversation-top">
+                <button type="button" class="conversation-back"><i class="bi bi-arrow-left-circle-fill"></i></button>
+                <div class="conversation-user">
+                  <img class="conversation-user-image" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8cGVvcGxlfGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60" alt="" />
+                  <div>
+                    <div class="conversation-user-name">
+                      {% if room.first_user == request.user %}
+                          {{ room.second_user }}
+                          {% else %}
+                              {{ room.first_user}}
+                      {% endif %}
                     </div>
-                
-                    <div class="col-sm-8 conversation">
-                      <div class="row heading">
-                        <div class="col-sm-2 col-md-1 col-xs-3 heading-avatar">
-                          <div class="heading-avatar-icon">
-                            <img src="https://bootdey.com/img/Content/avatar/avatar6.png" />
-                          </div>
-                        </div>
-                        <div class="col-sm-8 col-xs-7 heading-name">
-                          <a class="heading-name-meta">
-                            {% if room.first_user == request.user %}
-                              {{ room.second_user }}
-                              {% else %}
-                                {{ room.first_user }}
-                            {% endif %}
-                          </a>
-                          <span class="heading-online">Online</span>
-                        </div>
-                        <div class="col-sm-1 col-xs-1 heading-dot pull-right">
-                          <i class="fa fa-ellipsis-v fa-2x pull-right" aria-hidden="true" onclick="showOptions()"></i>
-                          <div id="options" style="display:none;">
-                            <ul>
-                                <li><a href="#">Engelle</a></li>
-                                <li><a href="#">Oyuna davet et</a></li>
-                            </ul>
-                          </div>
-                        </div>
-                      </div>
-                  
-                      <div class="row message" id="conversation">
-                        {% for message in messages %}
-                          {% if request.user == message.user %}
-                              <div class="row message-body">
-                                <div class="col-sm-12 message-main-sender">
-                                  <div class="sender">
-                                    <div class="message-text"> {{ message.content }} </div>
-                                    <span class="message-time pull-right"> {{ message.get_short_date }} </span>
-                                  </div>
-                                </div>
-                              </div>
-                            {% else %}
-                                <div class="row message-body">
-                                  <div class="col-sm-12 message-main-receiver">
-                                    <div class="receiver">
-                                      <div class="message-text"> {{ message.content }} </div>
-                                      <span class="message-time pull-right"> {{ message.get_short_date }} </span>
-                                    </div>
-                                  </div>
-                                </div>
-                          {% endif %}
-                        {% endfor %}
-                            
-                            
-                            
-                            
-                      </div>
-                  
-                      <div class="row reply">
-                        <div class="col-sm-11 col-xs-11 reply-main">
-                            <textarea class="form-control" rows="1" id="comment"></textarea>
-                        </div>
-                        <div class="col-sm-1 col-xs-1 reply-send" id="send">
-                          <i class="fa fa-send fa-2x" aria-hidden="true"></i>
-                        </div>
-                      </div>
-                    </div>
+                    <div class="conversation-user-status online">online</div>
                   </div>
                 </div>
-            
-                {{ room_name|json_script:"room-name" }}
-                {{ request.user.username|json_script:"user" }}
-            
-                <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
-                <script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-                <script type="text/javascript">
-                  $(function () {
-                    $('.heading-compose').click(function () {
-                      $('.side-two').css({
-                        left: '0'
-                      })
-                    })
-                
-                    $('.newMessage-back').click(function () {
-                      $('.side-two').css({
-                        left: '-100%'
-                      })
-                    })
-                  })
-                </script>
-                <script src="../../static/js/chat.js"></script>
-            </section>
+                <div class="conversation-buttons">
+                  <button type="button"><i class="bi bi-person-add"></i></button>
+                  <button type="button"><i class="bi bi-controller"></i></button>
+                  <button type="button"><i class="bi bi-ban"></i></button>
+                </div>
+              </div>
+              <div class="conversation-main">
+                <ul class="conversation-wrapper" id="conversation">
+                  <div class="coversation-divider">
+                    <span>Today</span>
+                  </div>
+                  {% for message in messages %}
+                    {% if request.user == message.user %} 
+                    <li class="conversation-item me">
+                    <div class="conversation-item-content">
+                      <div class="conversation-item-wrapper">
+                        <div class="conversation-item-box">
+                        </div>
+                      </div>
+                      <div class="conversation-item-wrapper">
+                        <div class="conversation-item-box">
+                          <div class="conversation-item-text">
+                            {{ message.content }}
+                            <div class="conversation-item-time">{{ message.get_short_date }}</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    </li>
+                      {% else %}
+                        <li class="conversation-item">
+                          <div class="conversation-item-content">
+                            <div class="conversation-item-wrapper">
+                              <div class="conversation-item-box">
+                                <div class="conversation-item-text">
+                                  {{ message.content }}
+                                  <div class="conversation-item-time">{{ message.get_short_date }}</div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </li>
+                    {% endif %}
+                  {% endfor %}
+                </ul>
+              </div>
+              <div class="conversation-form">
+                <button type="button" class="conversation-form-button"><i class="bi bi-emoji-laughing-fill"></i></button>
+                <div class="conversation-form-group">
+                  <textarea class="conversation-form-input" rows="1" id="comment" placeholder="Type here..."></textarea>
+                  <button type="button" class="conversation-form-record" id="send"><i class="bi bi-send-fill"></i></button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- end: Content -->
         </div>
+        {{ room_name|json_script:"room-name" }}
+        {{ request.user.username|json_script:"user" }}
+
+        <script src="../../static/js/chat.js"></script>
+      </section>
     </div>
-{% endblock app %}
+  </div>
+{% endblock %}
