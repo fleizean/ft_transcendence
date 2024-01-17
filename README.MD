@@ -8,4 +8,4 @@
 ### [eyagiz](https://github.com/fleizean)
 ### [fyurtsev](https://github.com/fyurtsev)
 ### [sciftci](https://github.com/temasictfic)
-### [yaktas](https://github.com/yeaktas) <3
+### [yaktas](https://github.com/yeaktas) 
