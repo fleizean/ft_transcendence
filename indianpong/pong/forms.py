@@ -2,7 +2,7 @@
 
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, UserChangeForm, PasswordChangeForm, PasswordResetForm, SetPasswordForm 
-from .models import BlockedUser, ChatMessage, GameInvitation, UserProfile, TwoFactorAuth, JWTToken, Tournament, TournamentMatch, OAuthToken
+from .models import BlockedUser, OAuthToken, UserProfile, Tournament, TournamentMatch
 
 class UserProfileForm(UserCreationForm):
 
@@ -66,13 +66,6 @@ class SetPasswordUserForm(SetPasswordForm):
         model = UserProfile
         fields = ['new_password1', 'new_password2']
 
-class ChatMessageForm(forms.ModelForm):
-    class Meta:
-        model = ChatMessage
-        fields = ['content']
-        widgets = {
-            'content': forms.Textarea(attrs={'rows': 3}),
-        }
 
 class BlockUserForm(forms.ModelForm):
     blocked_user = forms.ModelChoiceField(queryset=UserProfile.objects.all(), widget=forms.Select(attrs={'class': 'input'}))
@@ -80,28 +73,6 @@ class BlockUserForm(forms.ModelForm):
     class Meta:
         model = BlockedUser
         fields = ['blocked_user']
-
-class InviteToGameForm(forms.ModelForm):
-    invited_user = forms.ModelChoiceField(queryset=UserProfile.objects.all(), widget=forms.Select(attrs={'class': 'input'}))
-
-    class Meta:
-        model = GameInvitation
-        fields = ['message']
-        widgets = {
-            'message': forms.Textarea(attrs={'rows': 3}),
-        }
-
-
-class TwoFactorAuthSetupForm(forms.ModelForm):
-    class Meta:
-        model = TwoFactorAuth
-        fields = ['is_enabled']
-
-class JWTTokenForm(forms.ModelForm):
-    class Meta:
-        model = JWTToken
-        fields = ['token']
-
 
 class TournamentForm(forms.ModelForm):
     class Meta:
@@ -118,7 +89,36 @@ class OAuthTokenForm(forms.ModelForm):
         model = OAuthToken
         fields = ['access_token', 'refresh_token', 'expires_at']
 
-"""     def savem2m(self):
-        pass """
+    def savem2m(self):
+        pass
+
+""" class InviteToGameForm(forms.ModelForm):
+    invited_user = forms.ModelChoiceField(queryset=UserProfile.objects.all(), widget=forms.Select(attrs={'class': 'input'}))
+
+    class Meta:
+        model = GameInvitation
+        fields = ['message']
+        widgets = {
+            'message': forms.Textarea(attrs={'rows': 3}),
+        }
+"""
+
+""" class ChatMessageForm(forms.ModelForm):
+    class Meta:
+        model = ChatMessage
+        fields = ['content']
+        widgets = {
+            'content': forms.Textarea(attrs={'rows': 3}),
+        } """
+
+""" class TwoFactorAuthSetupForm(forms.ModelForm):
+    class Meta:
+        model = TwoFactorAuth
+        fields = ['is_enabled']
+
+class JWTTokenForm(forms.ModelForm):
+    class Meta:
+        model = JWTToken
+        fields = ['token'] """
 
 

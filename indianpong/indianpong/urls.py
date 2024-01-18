@@ -18,7 +18,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
-from pong.views import auth_callback, chat, rankings, dashboard, game, index, auth, chat_room, profile_view, search, signup, login_view, logout_view, update_profile, setup_two_factor_auth, generate_jwt_token, create_tournament, create_tournament_match, start_chat, room
+from pong.views import auth_callback, chat, rankings, dashboard, game, index, auth, profile_view, search, signup, login_view, logout_view, update_profile, create_tournament, create_tournament_match, start_chat, room
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -29,7 +29,7 @@ urlpatterns = [
     path('auth_callback', auth_callback, name='auth_callback'),
     path('logout', logout_view, name='logout'),
     
-    #path('chat', chat, name='chat'),
+    path('chat', chat, name='chat'),
     path("start_chat/<str:username>", start_chat, name="start_chat"),
     path("chat/<str:room_name>/", room, name="room"),
     #path('chat_room', chat_room, name='chat_room'),
@@ -40,10 +40,10 @@ urlpatterns = [
     path('game', game, name='game'),
     path('profile/<str:username>', profile_view, name='profile'),
     path('update_profile', update_profile, name='update_profile'),
-    path('setup_two_factor_auth', setup_two_factor_auth, name='setup_two_factor_auth'),
-    path('generate_jwt_token', generate_jwt_token, name='generate_jwt_token'),
     path('create_tournament', create_tournament, name='create_tournament'),
     path('create_tournament_match', create_tournament_match, name='create_tournament_match'),
+    #path('setup_two_factor_auth', setup_two_factor_auth, name='setup_two_factor_auth'),
+    #path('generate_jwt_token', generate_jwt_token, name='generate_jwt_token'),
 ]
 
 handler404 = 'pong.views.handler404'
