@@ -5,8 +5,8 @@ from django.views.decorators.cache import never_cache
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
 from django.http import HttpResponseBadRequest
-from .forms import BlockUserForm, ChatMessageForm, InviteToGameForm, PasswordChangeUserForm, PasswordResetUserForm, SetPasswordUserForm, UserProfileForm, UpdateUserProfileForm, TwoFactorAuthSetupForm, JWTTokenForm, AuthenticationUserForm, TournamentForm, TournamentMatchForm, OAuthTokenForm
-from .models import BlockedUser, ChatMessage, GameWarning, UserProfile, TwoFactorAuth, JWTToken, Tournament, TournamentMatch, OAuthToken, Room, Message
+from .forms import BlockUserForm, PasswordChangeUserForm, PasswordResetUserForm, SetPasswordUserForm, UserProfileForm, UpdateUserProfileForm, AuthenticationUserForm, TournamentForm, TournamentMatchForm
+from .models import BlockedUser, OAuthToken, UserProfile, Tournament, TournamentMatch, Room, Message
 from .utils import pass2fa
 from os import environ
 from datetime import datetime, timedelta
@@ -298,15 +298,15 @@ def start_chat(request, username):
 
 ### OldChat ###
 
-@never_cache
+""" @never_cache
 @login_required(login_url="login")
 def chat_room(request):
     messages_sent = ChatMessage.objects.filter(sender=request.user)
     messages_received = ChatMessage.objects.filter(receiver=request.user)
     context = {'messages_sent': messages_sent, 'messages_received': messages_received}
-    return render(request, 'chat_room.html', context)
+    return render(request, 'chat_room.html', context) """
 
-@never_cache
+""" @never_cache
 @login_required(login_url="login")
 def send_message(request, receiver_id):
     receiver = UserProfile.objects.get(id=receiver_id)
@@ -322,7 +322,7 @@ def send_message(request, receiver_id):
     else:
         form = ChatMessageForm()
     context = {'form': form, 'receiver': receiver}
-    return render(request, 'send_message.html', context)
+    return render(request, 'send_message.html', context) """
 
 @never_cache
 @login_required(login_url="login")
@@ -352,7 +352,7 @@ def unblock_user(request, blocked_user_id):
     messages.success(request, f'You have unblocked {blocked_user.username}.')
     return redirect('chat')
 
-@never_cache
+""" @never_cache
 @login_required(login_url="login")
 def invite_to_game(request, invited_user_id):
     invited_user = UserProfile.objects.get(id=invited_user_id)
@@ -368,15 +368,15 @@ def invite_to_game(request, invited_user_id):
     else:
         form = InviteToGameForm()
     context = {'form': form, 'invited_user': invited_user}
-    return render(request, 'invite_to_game.html', context)
+    return render(request, 'invite_to_game.html', context) """
 
-@never_cache
+""" @never_cache
 @login_required(login_url="login")
 def game_warning(request, opponent_id):
     opponent = UserProfile.objects.get(id=opponent_id)
     GameWarning.objects.create(user=request.user, opponent=opponent)
     messages.warning(request, f'Game warning sent to {opponent.username}.')
-    return redirect('chat')
+    return redirect('chat') """
 
 ### Tournaments ###
 
@@ -408,7 +408,7 @@ def create_tournament_match(request):
 
 ### Two-Factor Authentication ###
 
-@never_cache
+""" @never_cache
 @login_required(login_url="login")
 def setup_two_factor_auth(request):
     if request.method == 'POST':
@@ -433,7 +433,7 @@ def generate_jwt_token(request):
             return redirect('profile', request.user)
     else:
         form = JWTTokenForm(instance=request.user.jwttoken)
-    return render(request, 'generate_jwt_token.html', {'form': form})
+    return render(request, 'generate_jwt_token.html', {'form': form}) """
 
 
 
