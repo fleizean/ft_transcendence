@@ -3,6 +3,7 @@ const user = JSON.parse(document.getElementById("user").textContent)
 const conversation = document.getElementById("conversation")
 const sendButton = document.getElementById("send")
 const inputField = document.getElementById("comment")
+const inviteButton = document.getElementById("inviteButton")
 
 
 const chatSocket = new WebSocket("ws://" + window.location.host + "/ws/chat/" + roomName + "/")
@@ -79,4 +80,38 @@ sendButton.onclick = function (e) {
         "message": message,
     }))
     inputField.value = ''
+}
+
+inviteButton.onclick = function (e) {
+    const message = `<li class="conversation-item">
+    <div class="conversation-item-content">
+      <div class="conversation-item-wrapper">
+        <div class="conversation-item-box">
+          <div class="conversation-item-text">
+            <p><button id="acceptButton" onclick="window.location.href='/game'">Accept</button>
+            <button id="declineButton" onclick=decline()>Decline</button></p>
+            <div class="conversation-item-time">111111</div>
+          </div>
+        </div>
+      </div>
+    </div>
+</li>`
+    chatSocket.send(JSON.stringify({
+        "user": user, 
+        "message": message,
+    }))
+    inputField.value = ''
+    // Delay 2 seconds
+    //setTimeout(redirect, 2000);
+    // Redirect to /game
+    window.location.href = '/game';
+}
+
+function decline() {
+  const message = `İstemiyorum mk`
+  chatSocket.send(JSON.stringify({
+    "user": user, 
+    "message": message,
+}))
+inputField.value = ''
 }
