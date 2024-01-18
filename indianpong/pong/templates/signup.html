@@ -1,6 +1,6 @@
 <!-- signup.html -->
 
-{% extends "index.html" %}
+{% extends "base.html" %}
 
 {% block title %}SignUp{% endblock %}
 
@@ -21,82 +21,65 @@
                         <span class="titlebottom">sign up to continue</span>
                     </div>
                     <div class="login-with">
-                        <div class="button-log"><b>42</b></div>
+                        <a href="/auth" data-link class="no-underline"><div class="button-log"><b>42</b></div></a>
                     </div>
                     <div>
+
+                        {% csrf_token %}
+                        <p>
+                        {{form.username.label_tag}}
+                        {{form.username}}
                         <div>
-                            <span class="error-message">{{form.first_name.errors}}</span>
-                            <span class="error-message">{{form.last_name.errors}}</span>
-                            <span class="error-message">{{form.email.errors}}</span>
-                            <span class="error-message">{{form.password1.errors}}</span>
+                        <span class="error-message">{{form.username.errors}}</span>
+                        </div>
+                        </p>
+                        <p>
+                        {{form.displayname.label_tag}}
+                        {{form.displayname}}
+                        <div>
+                        <span class="error-message">{{form.displayname.errors}}</span>
+                        </div>
+                        </p>
+                        <p>
+                        {{form.email.label_tag}}
+                        {{form.email}}
+                        <div>
+                        <span class="error-message">{{form.email.errors}}</span>
+                        </div>
+                        </p>
+                        <p>
+                        {{form.password1.label_tag}}
+                        {{form.password1}}
+                        <div>
+                        <span class="error-message">{{form.password1.errors}}</span>
+                        </div>
+                        </p>
+                        <p>
+                        {{form.password2.label_tag}}
+                        {{form.password2}}
+                        <div>
                             <span class="error-message">{{form.password2.errors}}</span>
                         </div>
-                    </div>
-
-                    {% csrf_token %}
-
-                    <p>
-                        <label for="{{form.username.id_for_label}}">Username:</label>
-                        {{form.username}}
-                        <span class="helptext" id="id_username_helptext" data-bs-toggle="tooltip" data-bs-placement="top" title="Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.">
-                            <i class="bi bi-info-circle"></i>
-                          </span>
-                    </p>
-
-                    <p>
-                        
-                        <label for="{{form.first_name.id_for_label}}">First name:</label>
-                        {{form.first_name}}
-                    </p>
-
-                    <p>
-                        
-                        <label for="{{form.last_name.id_for_label}}">Last name:</label>
-                        {{form.last_name}}
-                    </p>
-
-                    <p>
-                        
-                        <label for="{{form.email.id_for_label}}">Email:</label>
-                        {{form.last_name}}
-                    </p>
-
-                    <p>
-                        
-                        <label for="{{form.password1.id_for_label}}">Password:</label>
-                        {{form.password1}}
-                          <span class="helptext" id="id_password1_helptext" data-bs-toggle="tooltip" data-bs-placement="top" title="Your password can’t be too similar to your other personal information.Your password must contain at least 8 characters.Your password can’t be a commonly used password.Your password can’t be entirely numeric.">
-                            <i class="bi bi-info-circle"></i>
-                          </span>
-                      </p>
-
-                      <p>
-                        
-                        <label for="{{form.password2.id_for_label}}">RePassword:</label>
-                        {{form.password2}}
-                        <span class="helptext" id="id_password2_helptext" data-bs-toggle="tooltip" data-bs-placement="top" title="Enter the same password as before, for verification.">
-                            <i class="bi bi-info-circle"></i>
-                        </span>
-                      </p>
-
-                      <p>
-
-                        <label for="{{form.avatar.id_for_label}}">Avatar:</label>
+                        </p>
+                        <p>
+                        {{form.avatar.label_tag}}
                         {{form.avatar}}
-                        {{form.avatar.errors}}
-                      </p>                    
+                        <div>
+                            <span class="error-message">{{form.avatar.errors}}</span>
+                        </div>
+                        </p>
+                    </div>
                     <button class="button-confirm" type="submit">Let's shine!</button></a> 
                 </form>
             </div>
         </div>
     </div>
 
-
-    <script>
+{% comment %}     <script>
         // Initialize Bootstrap tooltips
         var tooltips = new bootstrap.Tooltip(document.body, {
             selector: '[data-bs-toggle="tooltip"]'
         });
-    </script>
+    </script> {% endcomment %}
     {% endblock %}
 

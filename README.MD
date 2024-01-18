@@ -1,7 +1,7 @@
 # ft_transcendence_newpdf
 
 <p align="center">
-    <img src="./logo.png"/>
+    <img src="./indianpong/static/assets/logo.png"/>
 </p>
 
 # Team 42 Indian Developers ->

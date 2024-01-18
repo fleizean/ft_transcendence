@@ -1,6 +1,6 @@
 <!-- login.html -->
 
-{% extends 'index.html' %}
+{% extends 'base.html' %}
 
 
 {% block title %}Login{% endblock %}
@@ -34,12 +34,25 @@
             <span class="titlebottom">sign in to continue</span>
         </div>
         <div class="login-with">
-            <a href="/auth" data-link><button type="button" class="button-log">42</button></a>
-            {% comment %} <div class="button-log"><b>42</b></div> {% endcomment %}
+            <a href="/auth" data-link class="no-underline"><div class="button-log"><b>42</b></div></a>
         </div>
         {% csrf_token %}
-        {{ form.as_p }}
-        
+        <div>
+        <p>
+            {{form.username.label_tag}}
+            {{form.username}}
+            <div>
+            <span class="error-message">{{form.username.errors}}</span>
+            </div>
+        </p>
+        <p>
+            {{form.password.label_tag}}
+            {{form.password}}
+            <div>
+            <span class="error-message">{{form.password.errors}}</span>
+            </div>
+        </p>
+        </div>
         <a href="/dashboard" data-link><button class="button-confirm" type="submit">Let's go →</button></a>
         <a href="/signup" data-link><button type="button" class="registerbtn">
             <svg height="36px" width="36px" viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg">

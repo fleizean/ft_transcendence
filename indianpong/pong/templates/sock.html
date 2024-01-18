@@ -1,0 +1,65 @@
+{% load static %}
+
+<html lang='en'>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Add assets/favicon.ico to the page -->
+    <link rel="shortcut icon" href="{% static "assets/favicon.ico" %}" type="image/x-icon">
+    <title>Socket Actions</title>
+    <style>
+        canvas {
+            display: block;
+            margin: 20px auto;
+            border: 1px solid #000;
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+        <p id="invitationMessage"></p>
+    </div>
+    <div>
+        <button id="leaveButton">Leave</button>
+    </div>
+    <div>
+        <button id="restartButton">Restart</button>
+    </div>
+{% comment %}     <button onclick="invite()">Invite</button> {% endcomment %}
+    <div>
+        <input type="text" id="inviteInput" placeholder="Enter username">
+        <button id="inviteButton">Invite Opponent</button>
+    </div>
+    <div id="gameInvitationModal" class="modal">
+        <div class="modal-content">
+            <button id="acceptButton">Accept</button>
+            <button id="declineButton">Decline</button>
+        </div>
+    </div>
+    <!-- Check Mark Emoji-->
+    <p id="myCheckMark">✅</p>
+    <p id="opCheckMark">✅</p>
+    <div id="startModal" class="modal">
+        <div class="modal-content">
+            <button id="startButton">Vote</button>
+        </div>
+    </div>
+    <div>
+        <!-- Create username list table and get username from connected user and add to table -->
+        <table id="OnlineUsers">
+        </table>
+    </div>
+{% comment %}     <button onclick="move()">Move</button>
+    <button onclick="endGame()">End Game</button>
+    <button onclick="join()">Join Tournament</button>
+    <button onclick="cancel()">Cancel Tournament</button>
+    <button onclick="leave()">Leave Tournament</button>
+    <button onclick="start()">Start Tournament</button>
+    <button onclick="finish()">Finish Match</button>
+    <button onclick="next()">Next Game</button>
+ {% endcomment %}
+    <canvas id="pongCanvas" width="800" height="600"></canvas>
+    <script src="{% static "js/sockpong.js" %}"></script>
+</body>
+</html>

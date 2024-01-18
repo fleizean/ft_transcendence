@@ -1,0 +1,114 @@
+/* Profile Page */
+
+.nav-item {
+    margin-left: 5px;
+    margin-right: 5px;
+  }
+  
+  .navbar-nav.ml-auto .nav-item:hover,
+  .navbar-nav.ml-auto .nav-item:hover > .nav-link {
+      background-color: #5c5be5;
+      box-shadow: 0px 15px 11px -6px #7a7a7d;
+      color: #fff; /* İsterseniz metin rengini de ayarlayabilirsiniz */
+  }
+
+/* Edit Profile */
+
+.navbar-nav {
+    padding-top: 20px; /* Add space at the top */
+  }
+  
+  /* Edit Profile Form styles */
+  
+  #changePassword {
+    display: none; /* Hide sections by default */
+  }
+  
+  #addSocial {
+    display: none; /* Hide sections by default */
+  }
+  
+  #closeAccount {
+    display: none; /* Hide sections by default */
+  }
+  
+  .navbar-nav .nav-item .nav-link:hover {
+    background-color: #5c5be5;
+    box-shadow: 0px 15px 11px -6px #7a7a7d;
+    color: #fff; /* İsterseniz metin rengini de ayarlayabilirsiniz */}
+  
+  #editProfileForm {
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  
+  .pro-profile {
+      color: #fff;
+      background: url('../assets/backgrounds/leader-bg.png');
+      border-radius: 3px;
+      font-size: 16px;
+      font-weight: bold;
+      padding: 2px 5px;
+    text-align: center;
+  }
+  
+  
+  #editProfileForm .form-group {
+    margin-bottom: 15px;
+  }
+  
+  .profile-pic-container {
+    position: relative;
+    text-align: center;
+    margin-bottom: 2em;
+  }
+  
+  .profile-pic-label {
+    cursor: pointer;
+    position: relative;
+    display: inline-block;
+  }
+  
+  .profile-pic {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  
+  .change-image-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  
+  .change-image-overlay span {
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+  }
+  
+  .change-image-text {
+    vertical-align: middle;
+  }
+  
+  .profile-pic-label:hover .change-image-overlay {
+    opacity: 1;
+  }
+  
+  .file-input {
+    display: none;
+  }
+  

@@ -32,6 +32,7 @@ ALLOWED_HOSTS = []#environ.get("ALLOWED_HOSTS", default="").split(" ")
 # Application definition
 
 INSTALLED_APPS = [
+    'daphne',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -39,7 +40,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'pong',
-    'channels'
 ]
 
 CHANNEL_LAYERS = {
@@ -77,7 +77,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'indianpong.wsgi.application'
-ASGI_APPLICATION = 'indianpong.routing.application'
+ASGI_APPLICATION = 'indianpong.asgi.application'
 
 
 # Database
@@ -89,6 +89,17 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+""" DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': environ.get("DB_NAME", default="transcendence"),
+        'USER': environ.get("DB_USER"),
+        'PASSWORD': environ.get("DB_PASSWORD"),
+        'HOST': environ.get("DB_HOST", default="localhost"),
+        'PORT': environ.get("DB_PORT", default="5432")
+    }
+} """
 
 AUTH_USER_MODEL = "pong.UserProfile"
 
@@ -126,7 +137,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     BASE_DIR / 'static',
 ]
@@ -136,4 +147,5 @@ STATICFILES_DIRS = [
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
