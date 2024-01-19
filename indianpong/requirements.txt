@@ -1,0 +1,5 @@
+Django==4.2.3
+Pillow==10.1.0
+requests==2.31.0
+channels==4.0.0
+daphne
