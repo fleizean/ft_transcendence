@@ -1,0 +1,30 @@
+.attention-container {
+	width: auto;
+	height: 70px; /* Allow the height to adjust based on content */
+	display: flex;
+	background-color: #ffbfbf;
+	text-align: center;
+	padding: 20px; /* Add padding for better appearance */
+}
+
+.attention-info{
+	margin-left: 1em;
+	overflow: hidden;
+	text-align: left;
+	font-size: 16px;
+	color: #000000;
+	text-overflow: ellipsis; /* Display ellipsis (...) foroverflowed       content */
+	font-family: "system-ui, sans-serif";
+}
+
+.attention img {
+	height: 72px !important;
+	width: 72px !important; /* Set a maximum width for the image */
+	margin-right: 10px;
+}
+
+.user-cards {
+	margin-top: 5em;
+	display: flex;
+}
+
