@@ -34,7 +34,7 @@ class Room(models.Model):
     second_user = models.ForeignKey(UserProfile, related_name="room_second", on_delete=models.CASCADE, null=True)
     room_name = models.CharField(max_length=100)
 
-    def save(self, *args, **kwargs): #?
+    def save(self, *args, **kwargs):
         if self.first_user and self.second_user:
             self.room_name = f"{self.first_user.username}_{self.second_user.username}"
         super().save(*args, **kwargs)
