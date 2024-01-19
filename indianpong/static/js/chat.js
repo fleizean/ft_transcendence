@@ -4,6 +4,8 @@ const conversation = document.getElementById("conversation")
 const sendButton = document.getElementById("send")
 const inputField = document.getElementById("comment")
 const inviteButton = document.getElementById("inviteButton")
+const userNameOnChat =document.getElementById("userNameOnChat")
+
 
 
 const chatSocket = new WebSocket("ws://" + window.location.host + "/ws/chat/" + roomName + "/")
@@ -95,7 +97,7 @@ inviteButton.onclick = function (e) {
         </div>
       </div>
     </div>
-</li>`
+  </li>`
     chatSocket.send(JSON.stringify({
         "user": user, 
         "message": message,
@@ -112,6 +114,15 @@ function decline() {
   chatSocket.send(JSON.stringify({
     "user": user, 
     "message": message,
-}))
-inputField.value = ''
+  }))
+  inputField.value = ''
+}
+
+userNameOnChat.onclick = function(e){
+  var username = userNameOnChat.getAttribute("data-username");
+  var secondUser = userNameOnChat.getAttribute("data-seconduser");
+  if( user === username)
+    window.location.href = "/profile/" + secondUser
+  else
+    window.location.href = "/profile/" + username
 }

@@ -268,7 +268,7 @@ def game(request):
 @login_required(login_url="login")
 def chat(request):
     users = UserProfile.objects.all().exclude(username = request.user)
-    return render(request, 'chat.html', {'username': request.user.username,'users': users})
+    return render(request, 'chat.html', {'users': users})
 
 ### New Chat ###
 @login_required(login_url = "login")
