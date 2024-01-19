@@ -125,7 +125,7 @@ function closeCreateRoom() {
 
 
 function displaySection(sectionId) {
-    var sections = ["editProfile", "addSocial", "closeAccount", "changePassword", "google2FA"];
+    var sections = ["editProfile", "addSocial", "closeAccount", "changePassword", "google2FA", "blockedUsers"];
 
     for (var i = 0; i < sections.length; i++) {
         var section = document.getElementById(sections[i]);
