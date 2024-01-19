@@ -29,7 +29,7 @@ urlpatterns = [
     path('auth_callback', auth_callback, name='auth_callback'),
     path('logout', logout_view, name='logout'),
     
-    path('chat', chat, name='chat'),
+    path('chat/', chat, name='chat'),
     path("start_chat/<str:username>", start_chat, name="start_chat"),
     path("chat/<str:room_name>/", room, name="room"),
     #path('chat_room', chat_room, name='chat_room'),

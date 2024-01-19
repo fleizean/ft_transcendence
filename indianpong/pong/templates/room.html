@@ -74,15 +74,12 @@
                 <button type="button" class="conversation-back"><i class="bi bi-arrow-left-circle-fill"></i></button>
                 <div class="conversation-user">
                   <img class="conversation-user-image" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8cGVvcGxlfGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60" alt="" />
-                  <div>
-                    <div class="conversation-user-name">
+                    <div id="userNameOnChat" class="conversation-user-name" data-username="{{ room.first_user|default:'' }}" data-seconduser="{{ room.second_user|default:'' }}" >
                       {% if room.first_user == request.user %}
                           {{ room.second_user }}
                           {% else %}
                               {{ room.first_user}}
                       {% endif %}
-                    </div>
-                    <div class="conversation-user-status online">online</div>
                   </div>
                 </div>
                 <div class="conversation-buttons">
@@ -145,6 +142,7 @@
         </div>
         {{ room_name|json_script:"room-name" }}
         {{ request.user.username|json_script:"user" }}
+        
 
         <script src="../../static/js/chat.js"></script>
       </section>
