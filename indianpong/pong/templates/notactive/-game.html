@@ -1,0 +1,33 @@
+{% comment %} {% extends "base.html" %} {% endcomment %}
+
+{% load static %}
+  
+{% comment %} {% block title %}Game{% endblock title %} {% endcomment %}
+
+
+{% comment %} 
+  <div class="container-top">
+<div class="card"></div>
+</div> {% endcomment %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pong Game</title>
+    <style>
+        canvas {
+            display: block;
+            margin: 20px auto;
+            border: 1px solid #000;
+        }
+    </style>
+</head>
+<body>
+  <canvas id="pongCanvas" width="800" height="600"></canvas>
+  <script src="{% static "js/socketless.js" %}"></script>
+</body>
+</html>
+
+
