@@ -72,7 +72,53 @@ class PongConsumer(AsyncWebsocketConsumer):
         # Receive a message from the client
         data = json.loads(text_data)
         action = data["action"]
-        if action == "invite": #* Validated
+
+        ### CHAT ###
+        if action == "room":
+            peer = data["peer"]
+            self.room_name = self.user.username + "_" + peer
+            self.room_group_name = "chat_%s" % self.room_name
+
+            # Join room group
+            await self.channel_layer.group_add(self.room_group_name, self.channel_name)
+
+            await self.channel_layer.group_send(
+                self.room_group_name,
+                {
+                    "type": "room",
+                    "first_user": self.user.username, #? oda ismi için
+                    "second_user": peer,
+                    "room_name": self.room_name,
+                }
+            )
+        elif action == "exit":
+            await self.channel_layer.group_send(
+                self.room_group_name,
+                {
+                    "type": "exit",
+                    "left": self.user.username,
+                }
+            )
+            # Leave room group
+            await self.channel_layer.group_discard(self.room_group_name, self.channel_name)
+
+        elif action == "message":
+            user = data["user"]
+            message = data["message"]
+            # Create Message Object
+            msg = await Message.objects.acreate(content=message, user=user, room_id=self.room_name)
+            # Send message to room group
+            await self.channel_layer.group_send(
+                self.room_group_name, 
+                {
+                    "type": "chat_message", 
+                    "message": msg,
+                    "user": user.username,
+                    "created_date": msg.get_short_date(),
+                }
+            )
+        ### GAME ###
+        elif action == "invite": #* Validated
             # Invite another user to play a game
             invited = data["invited"]
             # Check if the opponent exists #TODO remove these when you implement button invite
@@ -519,6 +565,18 @@ class PongConsumer(AsyncWebsocketConsumer):
             "type": "user.offline",
             "username": username,
             #"users": users,
+        }))
+
+        # Receive message from room group
+    async def chat_message(self, event):
+        message = event["message"]
+        user = event["user"]
+        created_date = event["created_date"]
+        # Send message to WebSocket
+        await self.send(text_data=json.dumps({
+            "message": message,
+            "user": user,
+            "created_date": created_date,
         }))
 
     async def game_invite(self, event):

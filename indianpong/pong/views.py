@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.cache import never_cache
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
+from django.db.models import Q
 from django.http import HttpResponseBadRequest
 from .forms import BlockUserForm, PasswordChangeUserForm, PasswordResetUserForm, SetPasswordUserForm, UserProfileForm, UpdateUserProfileForm, AuthenticationUserForm, TournamentForm, TournamentMatchForm
 from .models import BlockedUser, OAuthToken, UserProfile, Tournament, TournamentMatch, Room, Message
@@ -274,7 +275,7 @@ def chat(request):
 @login_required(login_url = "login")
 def room(request, room_name):
     users = UserProfile.objects.all().exclude(username = request.user)
-    room = Room.objects.get(id = room_name)
+    room = Room.objects.get(room_name = room_name)
     messages = Message.objects.filter(room=room)
     return render(request, "room.html", {
         "room_name": room_name, 
@@ -286,14 +287,19 @@ def room(request, room_name):
 @login_required(login_url = "login")
 def start_chat(request, username):
     second_user = UserProfile.objects.get(username=username)
-    try:
+    room, created = Room.objects.get_or_create(
+        Q(first_user=request.user, second_user=second_user) | 
+        Q(first_user=second_user, second_user=request.user)
+    )
+    room.save()
+    """     try:
         room = Room.objects.get(first_user = request.user, second_user = second_user)
     except Room.DoesNotExist:
         try:
             room = Room.objects.get(second_user = request.user, first_user = second_user)
         except Room.DoesNotExist:
-            room = Room.objects.create(first_user = request.user, second_user = second_user)
-    return redirect("room", room.id)
+            room = Room.objects.create(first_user = request.user, second_user = second_user) """
+    return redirect("room", room.room_name)
 
 
 ### OldChat ###

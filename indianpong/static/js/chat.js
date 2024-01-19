@@ -6,51 +6,74 @@ const inputField = document.getElementById("comment")
 const inviteButton = document.getElementById("inviteButton")
 
 
-const chatSocket = new WebSocket("ws://" + window.location.host + "/ws/chat/" + roomName + "/")
+const chatSocket = new WebSocket("ws://" + window.location.host + "/ws/chat/")
 
 chatSocket.onmessage = function (e) {
     const data = JSON.parse(e.data)
 
-    if(user === data.user){
+    switch (data.type) {
+      case 'user.online':
 
-        
-       var message = `                  
-            <li class="conversation-item me">
-              <div class="conversation-item-content">
-                <div class="conversation-item-wrapper">
-                  <div class="conversation-item-box">
+        console.log('Player connected:', data.username);
+        console.log(my.username);
+        break;
+
+      case 'user.offline':
+
+        console.log('Player disconnected:', data.username);
+        break;
+
+      case 'room':
+
+        console.log('Room Created:', data.room_name);
+
+      
+      case 'exit':
+
+        console.log('Left Conversation:', data.left);
+      
+      case 'message':
+        if(user === data.user){
+           var message = `                  
+                <li class="conversation-item me">
+                  <div class="conversation-item-content">
+                    <div class="conversation-item-wrapper">
+                      <div class="conversation-item-box">
+                      </div>
+                    </div>
+                    <div class="conversation-item-wrapper">
+                      <div class="conversation-item-box">
+                        <div class="conversation-item-text">
+                        ${data.message}
+                          <div class="conversation-item-time">${data.created_date}</div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                </div>
-                <div class="conversation-item-wrapper">
-                  <div class="conversation-item-box">
-                    <div class="conversation-item-text">
-                    ${data.message}
-                      <div class="conversation-item-time">${data.created_date}</div>
+                </li>`
+        }else{var message = `
+            <li class="conversation-item">
+                <div class="conversation-item-content">
+                  <div class="conversation-item-wrapper">
+                    <div class="conversation-item-box">
+                      <div class="conversation-item-text">
+                        <p>${data.message}</p>
+                        <div class="conversation-item-time">${data.created_date}</div>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
             </li>`
-    }else{var message = `
-        <li class="conversation-item">
-            <div class="conversation-item-content">
-              <div class="conversation-item-wrapper">
-                <div class="conversation-item-box">
-                  <div class="conversation-item-text">
-                    <p>${data.message}</p>
-                    <div class="conversation-item-time">${data.created_date}</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-        </li>`
-    }
-   
-    conversation.innerHTML += message
-    setTimeout(() => {
-      conversation.scrollTop = conversation.scrollHeight;
-    }, 0);
-};
+        }
+       
+        conversation.innerHTML += message
+        setTimeout(() => {
+          conversation.scrollTop = conversation.scrollHeight;
+        }, 0);
+    };
+}
+
+
 
 chatSocket.onclose = function (e) {
     console.error("soket beklenmedik şekilde kapandı!")

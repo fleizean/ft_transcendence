@@ -29,10 +29,15 @@ class BlockedUser(models.Model):
 #------------------------------------------------------------#
     
 class Room(models.Model):
-    id = models.UUIDField(primary_key = True, default = uuid.uuid4)
-    first_user = models.ForeignKey(UserProfile, related_name = "room_first", on_delete = models.CASCADE, null = True)
-    second_user = models.ForeignKey(UserProfile, related_name = "room_second", on_delete = models.CASCADE, null = True)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4)
+    first_user = models.ForeignKey(UserProfile, related_name="room_first", on_delete=models.CASCADE, null=True)
+    second_user = models.ForeignKey(UserProfile, related_name="room_second", on_delete=models.CASCADE, null=True)
+    room_name = models.CharField(max_length=100)
 
+    def save(self, *args, **kwargs):
+        if self.first_user and self.second_user:
+            self.room_name = f"{self.first_user.username}_{self.second_user.username}"
+        super().save(*args, **kwargs)
 
 class Message(models.Model):
     user = models.ForeignKey(UserProfile, related_name = "message_user", on_delete = models.CASCADE)
@@ -40,7 +45,7 @@ class Message(models.Model):
     content = models.TextField(verbose_name = "Text Content")
     created_date = models.DateTimeField(auto_now_add = True)
 
-    def get_short_date(self):
+    def get_short_date(self): #? Wrong clock
         return str(self.created_date.strftime("%H:%M"))
     
 class Game(models.Model):
