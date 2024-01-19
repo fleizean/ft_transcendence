@@ -27,7 +27,7 @@ class Ball:
         self.y = HEIGHT / 2
         self.radius = BALL_RADIUS
         self.speed = BALL_SPEED
-        self.dx = random.choice([-1, 1])
+        self.dx = 1
         self.dy = random.choice([-1, 1])
 
 class Paddle:
@@ -96,7 +96,7 @@ class PongGame:
     def resetBall(self):
         self.ball.x = WIDTH / 2
         self.ball.y = HEIGHT / 2
-        self.ball.dx = random.choice([-1, 1])
+        self.ball.dx *= -1
         self.ball.dy = random.choice([-1, 1])
         if self.player1.score >= MAX_SCORE or self.player2.score >= MAX_SCORE:
             self.status = Status.ENDED
