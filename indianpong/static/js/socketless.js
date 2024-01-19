@@ -124,3 +124,19 @@ document.addEventListener("keydown", function(event) {
         paddle2.y += paddle2.dy;
     }
 });
+
+// Ai Player
+
+let errorProbability = 0.05; // 5% chance to make a mistake
+
+setInterval(() => {
+    let shouldMoveUp = Math.random() < errorProbability ? true : false;
+    if (ball.y < paddle2.y && !shouldMoveUp) {
+        paddle2.y -= paddle2.dy;
+    } else if (ball.y > paddle2.y && !shouldMoveUp) {
+        paddle2.y += paddle2.dy;
+    } else {
+        // Occasionally move in the opposite direction
+        paddle2.y += shouldMoveUp ? -paddle2.dy : paddle2.dy;
+    }
+}, 16);
