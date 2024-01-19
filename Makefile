@@ -1,5 +1,5 @@
 DOCKER = docker
-DOCKER_COMPOSE = docker-compose
+DOCKER_COMPOSE = sudo docker-compose
 
 all: up
 
