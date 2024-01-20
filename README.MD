@@ -170,3 +170,59 @@ only be valid if you use the associated constraints. </i>
         </ul>
         This minor module aims to enhance the accessibility and inclusivity of your website by offering content in multiple languages, making it more user-friendly for a diverse international audience.
 </details>
+
+<div class="user-cards">
+<aside class="profile-card">
+  <header>
+    <!-- here’s the avatar -->
+    <a target="_blank" href="#">
+      <img src="https://avatars.githubusercontent.com/u/66090171?v=4" class="hoverZoomLink">
+    </a>
+
+    <!-- the username -->
+    <h1>
+            John Doe
+          </h1>
+
+    <!-- and role or location -->
+    <h2>
+            Better Visuals
+          </h2>
+
+  </header>
+
+  <!-- bit of a bio; who are you? -->
+  <div class="profile-bio">
+
+    <p>
+      It takes monumental improvement for us to change how we live our lives. Design is the way we access that improvement.
+    </p>
+
+  </div>
+
+  <!-- some social links to show off -->
+  <ul class="profile-social-links">
+    <li>
+      <a target="_blank" href="https://www.facebook.com/creativedonut">
+        <i class="fa fa-facebook"></i>
+      </a>
+    </li>
+    <li>
+      <a target="_blank" href="https://twitter.com/dropyourbass">
+        <i class="fa fa-twitter"></i>
+      </a>
+    </li>
+    <li>
+      <a target="_blank" href="https://github.com/vipulsaxena">
+        <i class="fa fa-github"></i>
+      </a>
+    </li>
+    <li>
+      <a target="_blank" href="https://www.behance.net/vipulsaxena">
+       
+        <i class="fa fa-behance"></i>
+      </a>
+    </li>
+  </ul>
+</aside>
+</div>
