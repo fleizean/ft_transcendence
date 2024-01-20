@@ -4,6 +4,7 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 from django.utils.html import mark_safe
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
+from indianpong.settings import EMAIL_HOST_USER
 from django.utils import timezone
 import uuid
 
@@ -39,7 +40,7 @@ class VerifyToken(models.Model):
             'domain': request.META['HTTP_HOST'],
             'token': token.token,
         })
-        send_mail(mail_subject, message, 'noreply@indianpong.com', [user.email])
+        send_mail(mail_subject, message, EMAIL_HOST_USER, [user.email], fail_silently=True, html_message=message)
 
 class ChatMessage(models.Model):
     sender = models.ForeignKey(UserProfile, related_name='sent_messages', on_delete=models.CASCADE)

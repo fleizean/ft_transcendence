@@ -57,7 +57,7 @@ def activate_account(request, token):
     token.save()
     messages.success(request, 'Your account has been verified.')
     login(request, token.user)
-    return redirect('profile', request.user)
+    return redirect('profile', request.user.username)
 
 #state_req = secrets.token_hex(25)
 @never_cache
@@ -207,7 +207,7 @@ def update_profile(request):
             form.save()
             # Perform additional actions if needed
             messages.success(request, 'Profile updated successfully.')
-            return redirect('profile', request.user)
+            return redirect('profile', request.user.username)
     else:
         form = UpdateUserProfileForm(instance=request.user)
     return render(request, 'update_profile.html', {'form': form})
@@ -221,7 +221,7 @@ def password_change(request):
             form.save()
             # Perform additional actions if needed
             messages.success(request, 'Password changed successfully.')
-            return redirect('profile', request.user)
+            return redirect('profile', request.user.username)
     else:
         form = PasswordChangeUserForm(request.user)
     return render(request, 'password_change.html', {'form': form})
@@ -292,7 +292,7 @@ def set_password(request, uidb64, token):
             form.save()
             # Perform additional actions if needed
             messages.success(request, 'Password set successfully.')
-            return redirect('profile', request.user)
+            return redirect('profile', request.user.username)
     else:
         form = SetPasswordUserForm()
     return render(request, 'set_password.html', {'form': form}) """
@@ -472,7 +472,7 @@ def setup_two_factor_auth(request):
             form.save()
 
             messages.success(request, 'Two-Factor Authentication successfully set up.')
-            return redirect('profile', request.user)
+            return redirect('profile', request.user.username)
     else:
         form = TwoFactorAuthSetupForm(instance=request.user.twofactorauth)
     return render(request, 'setup_two_factor_auth.html', {'form': form})
@@ -485,7 +485,7 @@ def generate_jwt_token(request):
         if form.is_valid():
             form.save()
             messages.success(request, 'JWT Token generated successfully.')
-            return redirect('profile', request.user)
+            return redirect('profile', request.user.username)
     else:
         form = JWTTokenForm(instance=request.user.jwttoken)
     return render(request, 'generate_jwt_token.html', {'form': form})

@@ -1,12 +1,15 @@
 # forms.py
 from datetime import timedelta
+from django.core.mail import send_mail
 from django import forms
+from django.urls import reverse
+from django.utils.safestring import mark_safe
 from django.utils import timezone
 from django.contrib.auth.tokens import default_token_generator
-from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from django.utils.http import urlsafe_base64_encode
 from django.utils.encoding import force_bytes
+from indianpong.settings import EMAIL_HOST_USER
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, UserChangeForm, PasswordChangeForm, PasswordResetForm, SetPasswordForm 
 from .models import VerifyToken, BlockedUser, ChatMessage, GameInvitation, UserProfile, TwoFactorAuth, JWTToken, Tournament, TournamentMatch, OAuthToken
 
@@ -34,9 +37,11 @@ class UpdateUserProfileForm(UserChangeForm):
     displayname = forms.CharField(label='Displayname', widget=forms.TextInput(attrs={'class': 'input'}))
     email = forms.EmailField(label='Email', widget=forms.EmailInput(attrs={'class': 'input'}))
     avatar = forms.ImageField(required=False ,label='Avatar', widget=forms.FileInput(attrs={'class': 'input'}))
+    password = forms.CharField(widget=forms.HiddenInput(), required=False, help_text="")
     class Meta:
         model = UserProfile
-        fields = ['username', 'displayname', 'email', 'avatar']
+        fields = ['username', 'displayname', 'email', 'avatar', 'password']
+
 
 """ class UpdateProfileForm(forms.ModelForm):
     username = forms.CharField(label='Username', widget=forms.TextInput(attrs={'class': 'input'}))
@@ -66,17 +71,23 @@ class PasswordResetUserForm(PasswordResetForm):
     def save(self, domain_override=None, subject_template_name=None,
             email_template_name=None, use_https=False, token_generator=default_token_generator,
             from_email=None, request=None, html_email_template_name=None, extra_email_context=None):
-        super().save(request=request, token_generator=token_generator, use_https=use_https)
-        token = token_generator.make_token(request.user)
-        VerifyToken.objects.create(user=request.user, token=token)
+        email = self.cleaned_data["email"]
+        # check if user exists with given email
+        user = UserProfile.objects.filter(email=email).first()
+        if user is None:
+            self.add_error('email', 'User does not exist with this email.')
+            return
+        token = token_generator.make_token(user)
+        VerifyToken.objects.create(user=user, token=token)
         mail_subject = 'Reset your password'
         message = render_to_string('password_reset_email.html', {
-            'user': request.user,
+            'user': user,
             'domain': domain_override or request.META['HTTP_HOST'],
-            'uid': urlsafe_base64_encode(force_bytes(request.user.pk)),
+            'uid': urlsafe_base64_encode(force_bytes(user.pk)),
             'token': token,
         })
-        send_mail(mail_subject, message, 'noreply@indianpong.com', [request.user.email])
+        send_mail(mail_subject, message, EMAIL_HOST_USER, [user.email], fail_silently=True, html_message=message)
+
         #return uid, token
 
 """ class TokenValidationForm(forms.Form):
