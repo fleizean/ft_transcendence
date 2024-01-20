@@ -7,43 +7,6 @@
 ## Modules
 ### Major Modules
 
-<style>
-.attention-container {
-	width: auto;
-	height: 70px; /* Allow the height to adjust based on content */
-	display: flex;
-	background-color: #ffbfbf;
-	text-align: center;
-	padding: 20px; /* Add padding for better appearance */
-}
-.attention-info{
-	margin-left: 1em;
-	overflow: hidden;
-	text-align: left;
-	font-size: 16px;
-	color: #000000;
-	text-overflow: ellipsis; /* Display ellipsis (...) foroverflowed       content */
-	font-family: "system-ui, sans-serif";
-}
-.attention img {
-	height: 72px !important;
-	width: 72px !important; /* Set a maximum width for the image */
-	margin-right: 10px;
-}
-.ourteam a {
-  text-decoration: none; /* Text decoration'ı kaldırır */
-  color: #00ff15; /* Link rengini siyah olarak ayarlar */
-}
-/* :hover seçicisi ile üzerine gelince kırmızı çizgi eklenir */
-.ourteam a:hover {
-  text-decoration: underline;
-  color: red; /* :hover durumunda link rengini kırmızı olarak ayarlar */
-}
-.ourteam img:hover {
-  filter:brightness(50%)
-}
-</style>
-
 <div class="details">
   <details>
       <summary> <b> Standard user management, authentication, users across  tournaments. ⌛</b></summary>
@@ -58,9 +21,11 @@
           <li><input type="checkbox" disabled/> Each user has a <b>Match  History</b> including 1v1 games, dates, and relevant
           details, accessible to logged-in users.</li>
           </ul>
-          <div class="attention-container">
-              <img src="https://cdn.pixabay.com/photo/2013/07/12/14/33/ attention-148478_960_720.png">
-              <p class="attention-info">Be carefull, the management of duplicate  usernames/emails is at your discretion. You must provide a   justification for your decision.</p>
+          <div class="attention-container" style="width: auto; height: 70px; display: flex; background-color: #ffbfbf; text-align: center; padding: 20px;">
+            <img src="https://cdn.pixabay.com/photo/2013/07/12/14/33/attention-148478_960_720.png" style="height: 72px !important; width: 72px !important; margin-right: 10px">
+            <p class="attention-info" style="margin-left: 1em; overflow: hidden; text-align: left; font-size: 16px; color: #000000; text-overflow: ellipsis;">
+              Be careful, the management of duplicate usernames/emails is at your discretion. You must provide a justification for your decision.
+            </p>
           </div>
   </details>
   
@@ -118,9 +83,11 @@
           <li><input type="checkbox" disabled/> Implement AI logic and  decision-making processes that enable the AI player to make  intelligent and strategic moves. </li>
           <li><input type="checkbox" checked disabled/> Explore alternative   algorithms and techniques to create an effective AI player without  relying on A*. </li>
           <li><input type="checkbox" disabled/> Ensure that the AI adapts to  different gameplay scenarios and user interactions. </li>
-          <div class="attention-container">
-              <img src="https://cdn.pixabay.com/photo/2013/07/12/14/33/ attention-148478_960_720.png">
-              <p class="attention-info">Attention: You will need to explain in  detail how your AI functions during your evaluation. Creating an   AI that does nothing is strictly prohibited; it must have the   capability to win occasionally.</p>
+          <div class="attention-container" style="width: auto; height: 70px; display: flex; background-color: #ffbfbf; text-align: center; padding: 20px;">
+            <img src="https://cdn.pixabay.com/photo/2013/07/12/14/33/attention-148478_960_720.png" style="height: 72px !important; width: 72px !important; margin-right: 10px">
+            <p class="attention-info" style="margin-left: 1em; overflow: hidden; text-align: left; font-size: 16px; color: #000000; text-overflow: ellipsis;">
+              Attention: You will need to explain in  detail how your AI functions during your evaluation. Creating an   AI that does nothing is strictly prohibited; it must have the   capability to win occasionally.
+            </p>
           </div>
           </br>
           This major module aims to enhance the game by introducing an AI   opponent that adds excitement and competitiveness without relying on  the A* algorithm.
@@ -209,13 +176,13 @@
 
 <table class="ourteam">
   <tr>
-    <td align="center"><a href="https://github.com/temasictfic/"><img src="https://i.hizliresim.com/mu0ink4.jpg" width="100px;" alt=""/><br /><sub><b>sciftci (Samet)</b></sub></a><br />
+    <td align="center"><a href="https://github.com/temasictfic/" style="text-decoration:none; color: #00ff15;"><img src="https://i.hizliresim.com/mu0ink4.jpg" width="100px;" alt=""/><br /><sub><b>sciftci (Samet)</b></sub></a><br />
     <br><a href="https://profile.intra.42.fr/users/sciftci" title="Intra 42"><img src="https://img.shields.io/badge/Kocaeli-FFFFFF?style=plastic&logo=42&logoColor=000000" alt="Intra 42"/></a></td>
-    <td align="center"><a href="https://github.com/fyurtsev/"><img src="https://i.hizliresim.com/ij9ktl2.jpeg" width="100px;" alt=""/><br /><sub><b>fyurtsev (Furkan)</b></sub></a><br /><br>
+    <td align="center"><a href="https://github.com/fyurtsev/" style="text-decoration:none; color: #00ff15;"><img src="https://i.hizliresim.com/ij9ktl2.jpeg" width="100px;" alt=""/><br /><sub><b>fyurtsev (Furkan)</b></sub></a><br /><br>
     <a href="https://profile.intra.42.fr/users/fyurtsev" title="Intra 42"><img src="https://img.shields.io/badge/Kocaeli-FFFFFF?style=plastic&logo=42&logoColor=000000" alt="Intra 42"/></a></td>
-    <td align="center"><a href="https://github.com/yeaktas/"><img src="https://avatars.githubusercontent.com/u/96894640?v=4" width="100px;" alt=""/><br /><sub><b>yaktas (Yunus)</b></sub></a><br /><br>
+    <td align="center"><a href="https://github.com/yeaktas/" style="text-decoration:none; color: #00ff15;"><img src="https://avatars.githubusercontent.com/u/96894640?v=4" width="100px;" alt=""/><br /><sub><b>yaktas (Yunus)</b></sub></a><br /><br>
     <a href="https://profile.intra.42.fr/users/yaktas" title="Intra 42"><img src="https://img.shields.io/badge/Kocaeli-FFFFFF?style=plastic&logo=42&logoColor=000000" alt="Intra 42"/></a></td>
-    <td align="center"><a href="https://github.com/fleizean/"><img src="https://avatars.githubusercontent.com/u/66090171?v=4" width="100px;" alt=""/><br /><sub><b>eyagiz (Enes)</b></sub></a><br /><br>
+    <td align="center"><a href="https://github.com/fleizean/" style="text-decoration:none; color: #00ff15;"><img src="https://avatars.githubusercontent.com/u/66090171?v=4" width="100px;" alt=""/><br /><sub><b>eyagiz (Enes)</b></sub></a><br /><br>
     <a href="https://profile.intra.42.fr/users/eyagiz" title="Intra 42"><img src="https://img.shields.io/badge/Kocaeli-FFFFFF?style=plastic&logo=42&logoColor=000000" alt="Intra 42"/></a></td>
   </tr>
 </table>
