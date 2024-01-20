@@ -7,7 +7,6 @@
 ## Modules
 ### Major Modules
 
-<div class="details">
   <details>
       <summary> <b> Standard user management, authentication, users across  tournaments. ⌛</b></summary>
           <ul>
@@ -85,7 +84,7 @@
   </details>
   
   <details>
-      <> <b> Add Another Game with User History and Matchmaking. ❓</b></  summary>
+      <summary> <b> Add Another Game with User History and Matchmaking. ❓</b></summary>
       In this major module, the objective is to introduce a new game, distinct  from Pong, and incorporate features such as user history tracking and  matchmaking. Key features and goals include:
           <ul>
           <li><input type="checkbox" disabled/> Develop a new, engaging game to   diversify the platform’s offerings and entertain users. </li>
@@ -158,7 +157,8 @@
           </ul>
           This minor module aims to enhance the accessibility and inclusivity of  your website by offering content in multiple languages, making it more   user-friendly for a diverse international audience.
   </details>
-</div>
+
+
 <hr>
 <br>
 <br>
