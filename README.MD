@@ -21,12 +21,7 @@
           <li><input type="checkbox" disabled/> Each user has a <b>Match  History</b> including 1v1 games, dates, and relevant
           details, accessible to logged-in users.</li>
           </ul>
-          <div class="attention-container" style="width: auto; height: 70px; display: flex; background-color: #ffbfbf; text-align: center; padding: 20px;">
-            <img src="https://cdn.pixabay.com/photo/2013/07/12/14/33/attention-148478_960_720.png" style="height: 72px !important; width: 72px !important; margin-right: 10px">
-            <p class="attention-info" style="margin-left: 1em; overflow: hidden; text-align: left; font-size: 16px; color: #000000; text-overflow: ellipsis;">
-              Be careful, the management of duplicate usernames/emails is at your discretion. You must provide a justification for your decision.
-            </p>
-          </div>
+          
   </details>
   
   <details>
@@ -83,12 +78,7 @@
           <li><input type="checkbox" disabled/> Implement AI logic and  decision-making processes that enable the AI player to make  intelligent and strategic moves. </li>
           <li><input type="checkbox" checked disabled/> Explore alternative   algorithms and techniques to create an effective AI player without  relying on A*. </li>
           <li><input type="checkbox" disabled/> Ensure that the AI adapts to  different gameplay scenarios and user interactions. </li>
-          <div class="attention-container" style="width: auto; height: 70px; display: flex; background-color: #ffbfbf; text-align: center; padding: 20px;">
-            <img src="https://cdn.pixabay.com/photo/2013/07/12/14/33/attention-148478_960_720.png" style="height: 72px !important; width: 72px !important; margin-right: 10px">
-            <p class="attention-info" style="margin-left: 1em; overflow: hidden; text-align: left; font-size: 16px; color: #000000; text-overflow: ellipsis;">
-              Attention: You will need to explain in  detail how your AI functions during your evaluation. Creating an   AI that does nothing is strictly prohibited; it must have the   capability to win occasionally.
-            </p>
-          </div>
+          
           </br>
           This major module aims to enhance the game by introducing an AI   opponent that adds excitement and competitiveness without relying on  the A* algorithm.
           </ul>
