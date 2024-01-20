@@ -168,109 +168,20 @@
           This minor module aims to enhance the accessibility and inclusivity of  your website by offering content in multiple languages, making it more   user-friendly for a diverse international audience.
   </details>
 </div>
+<hr>
+<br>
+<br>
+<h1> Our Team - indian full stack developers 🇮🇳</h1>
 
-<div class="user-cards">
-  <div class="responsive-container-block container">
-      <p class="text-blk team-head-text">
-        42 Indian Developers
-      </p>
-      <div class="responsive-container-block">
-        <div class="responsive-cell-block wk-desk-3 wk-ipadp-3 wk-tab-6 wk-mobile-12 card-container">
-          <div class="card">
-            <div class="team-image-wrapper">
-              <img class="team-member-image" src="https://media-ist1-1.cdn.whatsapp.net/v/t61.24694-24/57564842_721317714983120_5899913033106325504_n.jpg?ccb=11-4&   oh=01_AdTh2vxN_PsiGTh_DfCFpc9eybyJaxkXQ-uKLYza-__Jwg&oe=65B6C007&_nc_sid=e6ed6c&_nc_cat=102">
-            </div>
-            <p class="text-blk name">
-              Samet Çiftçi
-            </p>
-            <p class="text-blk position">
-              Django - Backend
-            </p>
-            <p class="text-blk feature-text">
-              👑 Kısaca İmparator 👑
-            </p>
-            <div class="social-icons">  
-              <a href="https://github.com/temasictfic" target="_blank">
-                <img width="20" height="20" src="https://img.icons8.com/ios-filled/50/228BE6/github.png" alt="github"/>
-              </a>
-              <a href="https://x.com/temasictfic" target="_blank">
-              <img width="20" height="20" src="https://img.icons8.com/ios-filled/50/228BE6/twitterx--v1.png" alt="twitterx--v1"/>
-              </a>
-          </div>
-        </div>
-      </div>
-      <div class="responsive-cell-block wk-desk-3 wk-ipadp-3 wk-tab-6 wk-mobile-12 card-container">
-        <div class="card">
-          <div class="team-image-wrapper">
-            <img class="team-member-image" src="https://i.hizliresim.com/ij9ktl2.jpeg">
-          </div>
-          <p class="text-blk name">
-            Furkan Yurtseven
-          </p>
-          <p class="text-blk position">
-            Django - Backend
-          </p>
-          <p class="text-blk feature-text">
-            👑 Jr. İmparator 👑
-          </p>
-          <div class="social-icons">
-            <a href="https://github.com/fyurtsev" target="_blank">
-              <img width="20" height="20" src="https://img.icons8.com/ios-filled/50/228BE6/github.png" alt="github"/>
-            </a>
-            <a href="https://x.com/fyurtsev" target="_blank">
-            <img width="20" height="20" src="https://img.icons8.com/ios-filled/50/228BE6/twitterx--v1.png" alt="twitterx--v1"/>
-            </a>
-          </div>
-        </div>
-      </div>
-      <div class="responsive-cell-block wk-desk-3 wk-ipadp-3 wk-tab-6 wk-mobile-12 card-container">
-        <div class="card">
-          <div class="team-image-wrapper">
-            <img class="team-member-image" src="https://avatars.githubusercontent.com/u/96894640?v=4">
-          </div>
-          <p class="text-blk name">
-            Yunus Emre Aktaş
-          </p>
-          <p class="text-blk position">
-            Joker
-          </p>
-          <p class="text-blk feature-text">
-            👑 Jr. İmparator 👑
-          </p>
-          <div class="social-icons">
-            <a href="https://github.com/temasictfic" target="_blank">
-              <img width="20" height="20" src="https://img.icons8.com/ios-filled/50/228BE6/github.png" alt="github"/>
-            </a>
-            <a href="https://x.com/temasictfic" target="_blank">
-            <img width="20" height="20" src="https://img.icons8.com/ios-filled/50/228BE6/twitterx--v1.png" alt="twitterx--v1"/>
-            </a>
-          </div>
-        </div>
-      </div>
-      <div class="responsive-cell-block wk-desk-3 wk-ipadp-3 wk-tab-6 wk-mobile-12 card-container">
-        <div class="card">
-          <div class="team-image-wrapper">
-            <img class="team-member-image" src="https://avatars.githubusercontent.com/u/66090171?v=4">
-          </div>
-          <p class="text-blk name">
-            Enes Yağız
-          </p>
-          <p class="text-blk position">
-            Frontend
-          </p>
-          <p class="text-blk feature-text">
-            👑 Jr. İmparator 👑
-          </p>
-          <div class="social-icons">
-            <a href="https://github.com/fleizean" target="_blank">
-              <img width="20" height="20" src="https://img.icons8.com/ios-filled/50/228BE6/github.png" alt="github"/>
-            </a>
-            <a href="https://x.com/onlyflei" target="_blank">
-            <img width="20" height="20" src="https://img.icons8.com/ios-filled/50/228BE6/twitterx--v1.png" alt="twitterx--v1"/>
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+<table class="ourteam">
+  <tr>
+    <td align="center"><a href="https://github.com/temasictfic/"><img src="https://i.hizliresim.com/mu0ink4.jpg" width="100px;" alt=""/><br /><sub><b>sciftci (Samet)</b></sub></a><br />
+    <br><a href="https://profile.intra.42.fr/users/sciftci" title="Intra 42"><img src="https://img.shields.io/badge/Kocaeli-FFFFFF?style=plastic&logo=42&logoColor=000000" alt="Intra 42"/></a></td>
+    <td align="center"><a href="https://github.com/fyurtsev/"><img src="https://i.hizliresim.com/ij9ktl2.jpeg" width="100px;" alt=""/><br /><sub><b>fyurtsev (Furkan)</b></sub></a><br /><br>
+    <a href="https://profile.intra.42.fr/users/fyurtsev" title="Intra 42"><img src="https://img.shields.io/badge/Kocaeli-FFFFFF?style=plastic&logo=42&logoColor=000000" alt="Intra 42"/></a></td>
+    <td align="center"><a href="https://github.com/yeaktas/"><img src="https://avatars.githubusercontent.com/u/96894640?v=4" width="100px;" alt=""/><br /><sub><b>yaktas (Yunus)</b></sub></a><br /><br>
+    <a href="https://profile.intra.42.fr/users/yaktas" title="Intra 42"><img src="https://img.shields.io/badge/Kocaeli-FFFFFF?style=plastic&logo=42&logoColor=000000" alt="Intra 42"/></a></td>
+    <td align="center"><a href="https://github.com/fleizean/"><img src="https://avatars.githubusercontent.com/u/66090171?v=4" width="100px;" alt=""/><br /><sub><b>eyagiz (Enes)</b></sub></a><br /><br>
+    <a href="https://profile.intra.42.fr/users/eyagiz" title="Intra 42"><img src="https://img.shields.io/badge/Kocaeli-FFFFFF?style=plastic&logo=42&logoColor=000000" alt="Intra 42"/></a></td>
+  </tr>
+</table>
