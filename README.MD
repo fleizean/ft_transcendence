@@ -6,9 +6,42 @@
 
 ## Modules
 ### Major Modules
-<head>
-<link rel="stylesheet" href="readme-assets/readme.css">
-</head>
+<style>
+.attention-container {
+	width: auto;
+	height: 70px; /* Allow the height to adjust based on content */
+	display: flex;
+	background-color: #ffbfbf;
+	text-align: center;
+	padding: 20px; /* Add padding for better appearance */
+}
+.attention-info{
+	margin-left: 1em;
+	overflow: hidden;
+	text-align: left;
+	font-size: 16px;
+	color: #000000;
+	text-overflow: ellipsis; /* Display ellipsis (...) foroverflowed       content */
+	font-family: "system-ui, sans-serif";
+}
+.attention img {
+	height: 72px !important;
+	width: 72px !important; /* Set a maximum width for the image */
+	margin-right: 10px;
+}
+.ourteam a {
+  text-decoration: none; /* Text decoration'ı kaldırır */
+  color: #00ff15; /* Link rengini siyah olarak ayarlar */
+}
+/* :hover seçicisi ile üzerine gelince kırmızı çizgi eklenir */
+.ourteam a:hover {
+  text-decoration: underline;
+  color: red; /* :hover durumunda link rengini kırmızı olarak ayarlar */
+}
+.ourteam img:hover {
+  filter:brightness(50%)
+}
+</style>
 
 <div class="details">
   <details>
