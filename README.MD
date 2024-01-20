@@ -1,8 +1,10 @@
 # ft_transcendence_newpdf
 
 <p align="center">
-    <img src="readme-assets/logo.png"/>
+    <img src="https://i.hizliresim.com/ctrhatw.png"/>
 </p>
+
+
 
 ## Modules
 ### Major Modules
