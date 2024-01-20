@@ -4,12 +4,10 @@
     <img src="https://i.hizliresim.com/ctrhatw.png"/>
 </p>
 
-
-
 ## Modules
 ### Major Modules
 <head>
-   <link rel="stylesheet" href="readme-assets/readme.css">
+<link rel="stylesheet" href="readme-assets/readme.css">
 </head>
 
 <div class="details">
@@ -26,7 +24,7 @@
           <li><input type="checkbox" disabled/> Each user has a <b>Match  History</b> including 1v1 games, dates, and relevant
           details, accessible to logged-in users.</li>
           </ul>
-          <div class="attention-container" stlye="">
+          <div class="attention-container">
               <img src="https://cdn.pixabay.com/photo/2013/07/12/14/33/ attention-148478_960_720.png">
               <p class="attention-info">Be carefull, the management of duplicate  usernames/emails is at your discretion. You must provide a   justification for your decision.</p>
           </div>
@@ -86,7 +84,7 @@
           <li><input type="checkbox" disabled/> Implement AI logic and  decision-making processes that enable the AI player to make  intelligent and strategic moves. </li>
           <li><input type="checkbox" checked disabled/> Explore alternative   algorithms and techniques to create an effective AI player without  relying on A*. </li>
           <li><input type="checkbox" disabled/> Ensure that the AI adapts to  different gameplay scenarios and user interactions. </li>
-          <div class="attention-container" stlye="">
+          <div class="attention-container">
               <img src="https://cdn.pixabay.com/photo/2013/07/12/14/33/ attention-148478_960_720.png">
               <p class="attention-info">Attention: You will need to explain in  detail how your AI functions during your evaluation. Creating an   AI that does nothing is strictly prohibited; it must have the   capability to win occasionally.</p>
           </div>
@@ -170,108 +168,109 @@
           This minor module aims to enhance the accessibility and inclusivity of  your website by offering content in multiple languages, making it more   user-friendly for a diverse international audience.
   </details>
 </div>
+
 <div class="user-cards">
-    <div class="responsive-container-block container">
-  <p class="text-blk team-head-text">
-    42 Indian Developers
-  </p>
-  <div class="responsive-container-block">
-    <div class="responsive-cell-block wk-desk-3 wk-ipadp-3 wk-tab-6 wk-mobile-12 card-container">
-      <div class="card">
-        <div class="team-image-wrapper">
-          <img class="team-member-image" src="https://media-ist1-1.cdn.whatsapp.net/v/t61.24694-24/57564842_721317714983120_5899913033106325504_n.jpg?ccb=11-4&oh=01_AdTh2vxN_PsiGTh_DfCFpc9eybyJaxkXQ-uKLYza-__Jwg&oe=65B6C007&_nc_sid=e6ed6c&_nc_cat=102">
-        </div>
-        <p class="text-blk name">
-          Samet Çiftçi
-        </p>
-        <p class="text-blk position">
-          Django - Backend
-        </p>
-        <p class="text-blk feature-text">
-          👑 Kısaca İmparator 👑
-        </p>
-        <div class="social-icons">
-          <a href="https://github.com/temasictfic" target="_blank">
-            <img width="20" height="20" src="https://img.icons8.com/ios-filled/50/228BE6/github.png" alt="github"/>
-          </a>
-          <a href="https://x.com/temasictfic" target="_blank">
-          <img width="20" height="20" src="https://img.icons8.com/ios-filled/50/228BE6/twitterx--v1.png" alt="twitterx--v1"/>
-          </a>
-        </div>
-      </div>
-    </div>
-    <div class="responsive-cell-block wk-desk-3 wk-ipadp-3 wk-tab-6 wk-mobile-12 card-container">
-      <div class="card">
-        <div class="team-image-wrapper">
-          <img class="team-member-image" src="https://i.hizliresim.com/ij9ktl2.jpeg">
-        </div>
-        <p class="text-blk name">
-          Furkan Yurtseven
-        </p>
-        <p class="text-blk position">
-          Django - Backend
-        </p>
-        <p class="text-blk feature-text">
-          👑 Jr. İmparator 👑
-        </p>
-        <div class="social-icons">
-          <a href="https://github.com/fyurtsev" target="_blank">
-            <img width="20" height="20" src="https://img.icons8.com/ios-filled/50/228BE6/github.png" alt="github"/>
-          </a>
-          <a href="https://x.com/fyurtsev" target="_blank">
-          <img width="20" height="20" src="https://img.icons8.com/ios-filled/50/228BE6/twitterx--v1.png" alt="twitterx--v1"/>
-          </a>
+  <div class="responsive-container-block container">
+      <p class="text-blk team-head-text">
+        42 Indian Developers
+      </p>
+      <div class="responsive-container-block">
+        <div class="responsive-cell-block wk-desk-3 wk-ipadp-3 wk-tab-6 wk-mobile-12 card-container">
+          <div class="card">
+            <div class="team-image-wrapper">
+              <img class="team-member-image" src="https://media-ist1-1.cdn.whatsapp.net/v/t61.24694-24/57564842_721317714983120_5899913033106325504_n.jpg?ccb=11-4&   oh=01_AdTh2vxN_PsiGTh_DfCFpc9eybyJaxkXQ-uKLYza-__Jwg&oe=65B6C007&_nc_sid=e6ed6c&_nc_cat=102">
+            </div>
+            <p class="text-blk name">
+              Samet Çiftçi
+            </p>
+            <p class="text-blk position">
+              Django - Backend
+            </p>
+            <p class="text-blk feature-text">
+              👑 Kısaca İmparator 👑
+            </p>
+            <div class="social-icons">  
+              <a href="https://github.com/temasictfic" target="_blank">
+                <img width="20" height="20" src="https://img.icons8.com/ios-filled/50/228BE6/github.png" alt="github"/>
+              </a>
+              <a href="https://x.com/temasictfic" target="_blank">
+              <img width="20" height="20" src="https://img.icons8.com/ios-filled/50/228BE6/twitterx--v1.png" alt="twitterx--v1"/>
+              </a>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="responsive-cell-block wk-desk-3 wk-ipadp-3 wk-tab-6 wk-mobile-12 card-container">
-      <div class="card">
-        <div class="team-image-wrapper">
-          <img class="team-member-image" src="https://avatars.githubusercontent.com/u/96894640?v=4">
-        </div>
-        <p class="text-blk name">
-          Yunus Emre Aktaş
-        </p>
-        <p class="text-blk position">
-          Joker
-        </p>
-        <p class="text-blk feature-text">
-          👑 Jr. İmparator 👑
-        </p>
-        <div class="social-icons">
-          <a href="https://github.com/temasictfic" target="_blank">
-            <img width="20" height="20" src="https://img.icons8.com/ios-filled/50/228BE6/github.png" alt="github"/>
-          </a>
-          <a href="https://x.com/temasictfic" target="_blank">
-          <img width="20" height="20" src="https://img.icons8.com/ios-filled/50/228BE6/twitterx--v1.png" alt="twitterx--v1"/>
-          </a>
+      <div class="responsive-cell-block wk-desk-3 wk-ipadp-3 wk-tab-6 wk-mobile-12 card-container">
+        <div class="card">
+          <div class="team-image-wrapper">
+            <img class="team-member-image" src="https://i.hizliresim.com/ij9ktl2.jpeg">
+          </div>
+          <p class="text-blk name">
+            Furkan Yurtseven
+          </p>
+          <p class="text-blk position">
+            Django - Backend
+          </p>
+          <p class="text-blk feature-text">
+            👑 Jr. İmparator 👑
+          </p>
+          <div class="social-icons">
+            <a href="https://github.com/fyurtsev" target="_blank">
+              <img width="20" height="20" src="https://img.icons8.com/ios-filled/50/228BE6/github.png" alt="github"/>
+            </a>
+            <a href="https://x.com/fyurtsev" target="_blank">
+            <img width="20" height="20" src="https://img.icons8.com/ios-filled/50/228BE6/twitterx--v1.png" alt="twitterx--v1"/>
+            </a>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="responsive-cell-block wk-desk-3 wk-ipadp-3 wk-tab-6 wk-mobile-12 card-container">
-      <div class="card">
-        <div class="team-image-wrapper">
-          <img class="team-member-image" src="https://avatars.githubusercontent.com/u/66090171?v=4">
+      <div class="responsive-cell-block wk-desk-3 wk-ipadp-3 wk-tab-6 wk-mobile-12 card-container">
+        <div class="card">
+          <div class="team-image-wrapper">
+            <img class="team-member-image" src="https://avatars.githubusercontent.com/u/96894640?v=4">
+          </div>
+          <p class="text-blk name">
+            Yunus Emre Aktaş
+          </p>
+          <p class="text-blk position">
+            Joker
+          </p>
+          <p class="text-blk feature-text">
+            👑 Jr. İmparator 👑
+          </p>
+          <div class="social-icons">
+            <a href="https://github.com/temasictfic" target="_blank">
+              <img width="20" height="20" src="https://img.icons8.com/ios-filled/50/228BE6/github.png" alt="github"/>
+            </a>
+            <a href="https://x.com/temasictfic" target="_blank">
+            <img width="20" height="20" src="https://img.icons8.com/ios-filled/50/228BE6/twitterx--v1.png" alt="twitterx--v1"/>
+            </a>
+          </div>
         </div>
-        <p class="text-blk name">
-          Enes Yağız
-        </p>
-        <p class="text-blk position">
-          Frontend
-        </p>
-        <p class="text-blk feature-text">
-          👑 Jr. İmparator 👑
-        </p>
-        <div class="social-icons">
-          <a href="https://github.com/fleizean" target="_blank">
-            <img width="20" height="20" src="https://img.icons8.com/ios-filled/50/228BE6/github.png" alt="github"/>
-          </a>
-          <a href="https://x.com/onlyflei" target="_blank">
-          <img width="20" height="20" src="https://img.icons8.com/ios-filled/50/228BE6/twitterx--v1.png" alt="twitterx--v1"/>
-          </a>
+      </div>
+      <div class="responsive-cell-block wk-desk-3 wk-ipadp-3 wk-tab-6 wk-mobile-12 card-container">
+        <div class="card">
+          <div class="team-image-wrapper">
+            <img class="team-member-image" src="https://avatars.githubusercontent.com/u/66090171?v=4">
+          </div>
+          <p class="text-blk name">
+            Enes Yağız
+          </p>
+          <p class="text-blk position">
+            Frontend
+          </p>
+          <p class="text-blk feature-text">
+            👑 Jr. İmparator 👑
+          </p>
+          <div class="social-icons">
+            <a href="https://github.com/fleizean" target="_blank">
+              <img width="20" height="20" src="https://img.icons8.com/ios-filled/50/228BE6/github.png" alt="github"/>
+            </a>
+            <a href="https://x.com/onlyflei" target="_blank">
+            <img width="20" height="20" src="https://img.icons8.com/ios-filled/50/228BE6/twitterx--v1.png" alt="twitterx--v1"/>
+            </a>
+          </div>
         </div>
       </div>
     </div>
   </div>
-</div>
 </div>
