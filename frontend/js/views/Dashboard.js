@@ -56,7 +56,6 @@ export default class extends AbstractView {
                   <div class="card-block">
                       <h6 class="m-b-20">Games Played</h6>
                       <h2 class="text-right"><i class="bi bi-dice-1-fill"></i><span>50</span></h2>
-                      <p class="m-b-0">Achievement Reach<span class="f-right">500</span></p>
                   </div>
               </div>
           </div>
@@ -66,7 +65,6 @@ export default class extends AbstractView {
                   <div class="card-block">
                       <h6 class="m-b-20">Win Count</h6>
                       <h2 class="text-right"><i class="bi bi-trophy-fill"></i><span>486</span></h2>
-                      <p class="m-b-0">Achievement Reach<span class="f-right">500</span></p>
                   </div>
               </div>
           </div>
@@ -76,7 +74,6 @@ export default class extends AbstractView {
                   <div class="card-block">
                       <h6 class="m-b-20">Win Streak</h6>
                       <h2 class="text-right"><i class="bi bi-emoji-wink-fill"></i><span>486</span></h2>
-                      <p class="m-b-0">Achievement Reach<span class="f-right">500</span></p>
                   </div>
               </div>
           </div>
@@ -86,7 +83,6 @@ export default class extends AbstractView {
                   <div class="card-block">
                       <h6 class="m-b-20">Lose Streak</h6>
                       <h2 class="text-right"><i class="bi bi-emoji-frown-fill"></i><span>486</span></h2>
-                      <p class="m-b-0">Achievement Reach<span class="f-right">500</span></p>
                   </div>
               </div>
           </div>
@@ -96,7 +92,6 @@ export default class extends AbstractView {
                   <div class="card-block">
                       <h6 class="m-b-20">Win Rate %</h6>
                       <h2 class="text-right"><i class="bi bi-award-fill"></i><span>50</span></h2>
-                      <p class="m-b-0">Achievement Reach<span class="f-right">70</span></p>
                   </div>
               </div>
           </div>
@@ -109,7 +104,6 @@ export default class extends AbstractView {
                         <i class="bi bi-clock-fill"></i>
                         <span class="big">30</span> <span class="small">min</span>
                         </h2>
-                    <p class="m-b-0">Achievement Reach<span class="f-right">15 and 30</span></p>
                   </div>
               </div>
           </div>
@@ -119,7 +113,6 @@ export default class extends AbstractView {
                   <div class="card-block">
                       <h6 class="m-b-20">Average Points Won</h6>
                       <h2 class="text-right"><i class="bi bi-star-fill"></i><span>30</span></h2>
-                      <p class="m-b-0">Achievement Reach<span class="f-right">50</span></p>
                   </div>
               </div>
           </div>
@@ -129,7 +122,6 @@ export default class extends AbstractView {
                   <div class="card-block">
                       <h6 class="m-b-20">Average Points Lost</h6>
                       <h2 class="text-right"><i class="bi bi-bucket-fill"></i><span>20</span></h2>
-                      <p class="m-b-0">Achievement Reach<span class="f-right">50</span></p>
                   </div>
               </div>
           </div>

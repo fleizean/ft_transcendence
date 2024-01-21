@@ -287,7 +287,7 @@ export default class extends AbstractView {
                                             <a href="/profile" data-link><h5>Fatih Terim</h5></a>
                                             <p>@fatihterim</p>
                                         </div>
-                                        <button class="btn-block">Engellendi</button>
+                                        <button class="btn-block">Blocked</button>
                                     </div>
                                 </div>
                                 <div class="account">
@@ -297,8 +297,67 @@ export default class extends AbstractView {
                                             <h5>Fatih Terim</h5>
                                             <p>@fatihterim</p>
                                         </div>
-                                        <button class="btn-block">Engellendi</button>
+                                        <button class="btn-block">Blocked</button>
                                     </div>
+                                </div>
+                                 <div class="account">
+                                    <div class="profile-info">
+                                        <img src="../../assets/profile/profilephoto.jpeg" alt="Profile Image">
+                                        <div class="user-details">
+                                            <h5>Fatih Terim</h5>
+                                            <p>@fatihterim</p>
+                                        </div>
+                                        <button class="btn-block">Blocked</button>
+                                    </div>
+                                </div>
+                                 <div class="account">
+                                    <div class="profile-info">
+                                        <img src="../../assets/profile/profilephoto.jpeg" alt="Profile Image">
+                                        <div class="user-details">
+                                            <h5>Fatih Terim</h5>
+                                            <p>@fatihterim</p>
+                                        </div>
+                                        <button class="btn-block">Blocked</button>
+                                    </div>
+                                </div>
+                                 <div class="account">
+                                    <div class="profile-info">
+                                        <img src="../../assets/profile/profilephoto.jpeg" alt="Profile Image">
+                                        <div class="user-details">
+                                            <h5>Fatih Terim</h5>
+                                            <p>@fatihterim</p>
+                                        </div>
+                                        <button class="btn-block">Blocked</button>
+                                    </div>
+                                </div>
+                                 <div class="account">
+                                    <div class="profile-info">
+                                        <img src="../../assets/profile/profilephoto.jpeg" alt="Profile Image">
+                                        <div class="user-details">
+                                            <h5>Fatih Terim</h5>
+                                            <p>@fatihterim</p>
+                                        </div>
+                                        <button class="btn-block">Blocked</button>
+                                    </div>
+                                </div>
+                                <div class="pagination-menu">
+                                    <nav aria-label="Page navigation example">
+                                      <ul class="pagination">
+                                        <li class="page-item">
+                                          <a class="page-link" href="#" aria-label="Previous">
+                                            <span aria-hidden="true">&laquo;</span>
+                                          </a>
+                                        </li>
+                                        <li class="page-item"><a class="page-link" href="#">1</a></li>
+                                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                        <li class="page-item">
+                                          <a class="page-link" href="#" aria-label="Next">
+                                            <span aria-hidden="true">&raquo;</span>
+                                          </a>
+                                        </li>
+                                      </ul>
+                                    </nav>
                                 </div>
                             </div>
                         </form>

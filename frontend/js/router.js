@@ -7,9 +7,7 @@ import Rankings from "./views/Rankings.js";
 import Profile from "./views/Profile.js";
 import MatchHistory from "./views/MatchHistory.js";
 import ProfileSettings from "./views/ProfileSettings.js";
-import ProfileStats from "./views/ProfileStats.js";
 import Error404 from "./views/Error404.js";
-import Achievements from "./views/Achievements.js";
 import Friends from "./views/Friends.js";
 import PongGame from "./views/PongGame.js";
 import RpsGame from "./views/RpsGame.js";
@@ -19,6 +17,7 @@ import RoomList from "./views/RoomList.js";
 import GameChart from "./views/GameChart.js";
 import Chat from "./views/Chat.js";
 import InChat from "./views/InChat.js";
+import ForgotPassword from "./views/ForgotPassword.js";
 
 const pathToRegex = path => new RegExp("^" + path.replace(/\//g, "\\/").replace(/:\w+/g, "(.+)") + "$");
 
@@ -50,13 +49,12 @@ const router = async () => {
         { path: '/game-room', view: GameRoom},
         { path: '/room-list', view: RoomList},
         { path: '/game-chart', view: GameChart},
+        { path: '/forgot-password', view: ForgotPassword},
         { path: '/chat', view: Chat},
         { path: '/in-chat', view: InChat},
         { path: '/pass2fa', view: Pass2FA},
         { path: '/profile-settings', view: ProfileSettings},
         { path: '/match-history', view: MatchHistory},
-        { path: '/profile-stats', view: ProfileStats},
-        { path: '/achievements', view: Achievements},
         { path: '/friends', view: Friends},
         { path: '/404', view: Error404},
         { path: '(.*)', view: Error404 },

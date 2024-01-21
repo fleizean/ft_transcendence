@@ -193,6 +193,9 @@
 
 }
 
+.accounts-list .account:first-child {
+  margin-top: 3.5px; /* İstenilen boşluğu piksel cinsinden ayarlayabilirsiniz */
+}
 
 .account {
   font-family: 'Roboto', sans-serif;
@@ -212,6 +215,13 @@
   height: 48px;
   width: 48px;
   margin-right: 10px;
+}
+
+.pagination-menu {
+  margin-top: 1em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .profile-info img:hover {

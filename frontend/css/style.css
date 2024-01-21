@@ -99,22 +99,6 @@ body {
   text-align: center;
 }
 
-.LoginArea {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  text-align: center;
-}
-
-.RegisterArea {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  text-align: center;
-}
-
 img {
   max-width: 100%;
   height: auto;
@@ -203,25 +187,6 @@ img {
   }
 }
 
-.snow {
-  position: absolute;
-  background-color: #fff;
-  /* Kar tanelerinin rengi */
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 2;
-}
-
-@keyframes snowRain {
-  from {
-    transform: translateY(-100vh);
-  }
-
-  to {
-    transform: translateY(100vh);
-  }
-}
-
 
 .PixellButton:active {
   background-color: rgb(75, 195, 75);
@@ -246,7 +211,77 @@ img {
 
 }
 
+/* Forgot Password */
+
+.ForgotPasswordArea {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.link {
+  color: #1778f2;
+  text-decoration: none;
+}
+
+.signup-link {
+  color: #000000;
+  font-family: inherit;
+  margin-top: 20px;
+  align-self: center;
+  font-weight: 700;
+}
+
+.signup-link .link {
+  color: #2260ff;
+  font-family: inherit;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.signup-link .link:hover {
+  text-decoration: underline;
+}
+
+
+.button-send-email {
+  width: auto;
+  height: 40px;
+  border-radius: 5px;
+  border: 2px solid var(--main-color);
+  background-color: var(--bg-color);
+  box-shadow: 4px 4px var(--main-color);
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--font-color);
+  margin-bottom: -10px;
+  cursor: url('../assets/scrool/crossedsword.png'), auto;
+}
+
+.button-send-email:hover {
+  transform: translate(-0.05em, -0.05em);
+  box-shadow: 0.15em 0.15em;
+}
+
 /* Login - Register Pop Up Area */
+
+.LoginArea {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.RegisterArea {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
 
 .form {
   --input-focus: #f0302d;
@@ -297,6 +332,22 @@ img {
   opacity: 0.8;
 }
 
+.forgot-pass {
+  position: relative;
+  text-align: right;
+  margin-bottom: -10px;
+}
+
+.forgot-password-link {
+  left: 0;
+  text-decoration: none;
+  color: black;
+}
+
+.forgot-password-link:hover {
+  text-decoration-line: underline; /* Add underline on hover */
+}
+
 .input:focus {
   border: 2px solid var(--input-focus);
 }
@@ -335,7 +386,6 @@ img {
 }
 
 .button-confirm {
-  margin: 5px auto 0 auto;
   width: 120px;
   height: 40px;
   border-radius: 5px;
@@ -345,6 +395,7 @@ img {
   font-size: 17px;
   font-weight: 600;
   color: var(--font-color);
+  margin-bottom: -10px;
   cursor: url('../assets/scrool/crossedsword.png'), auto;
 }
 
@@ -355,7 +406,6 @@ img {
 
 
 .registerbtn {
-  margin: 5px auto 0 auto;
   width: 120px;
   height: 40px;
   background: #FBCA1F;
@@ -653,6 +703,17 @@ img {
   margin: 0 auto; /* Ortalamak için */
 }
 
+.profile-card {
+  background-color: #F1F1FB;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  max-width: 1300px;
+  width: 100%;
+  height: auto; /* Yüksekliği otomatik ayarla */
+  max-height: auto;
+  margin: 0 auto; /* Ortalamak için */
+}
 
 
 
@@ -772,6 +833,11 @@ img {
   text-align: center;
 }
 
+.rank-img img {
+  max-height: 190px;
+  max-width: 200px;
+}
+
 .rank-h4 {
   font-family: 'Spiegel', sans-serif;
   color: transparent; /* Metin rengini şeffaf hale getirin */
@@ -783,33 +849,14 @@ img {
   text-transform: uppercase;
 }
 
+.rank-info {
+  text-align: center;
+}
+
 .rank-img img {
   height: 224px; /* ya da istediğiniz başka bir değer */
   /* İsteğe bağlı olarak width özelliğini de kullanabilirsiniz. */
   /* width: auto; */
-}
-
-
-.follower {
-  margin-bottom: 5px;
-}
-
-.follower img {
-  text-align: left;
-  width: 48px;
-  height: 48px;
-  object-fit: cover; /* Fotoğrafın boyutunu koruyarak kırpmayı sağlar */
-  border-radius: 50%;
-  margin-right: 10px;
-}
-
-.follower a:hover img {
-  opacity: 0.8;
-}
-
-.displayname {
-  font-family: 'Roboto', sans-serif;
-  font-size: 18px;
 }
 
 .card-stat {
@@ -1110,7 +1157,7 @@ h1 {
   position: relative;
 }
 
-table {
+.leaderboard table {
   width: 100%;
   border-collapse: collapse;
   table-layout: fixed;
@@ -1118,27 +1165,27 @@ table {
   cursor: default;
 }
 
-tr {
+.leaderboard tr {
   transition: all 0.2s ease-in-out;
   border-radius: 0.2rem;
 }
 
-tr:not(:first-child):hover {
+.leaderboard tr:not(:first-child):hover {
   background-color: #fff;
   transform: scale(1.1);
   -webkit-box-shadow: 0px 5px 15px 8px #e4e7fb;
   box-shadow: 0px 5px 15px 8px #e4e7fb;
 }
 
-tr:nth-child(odd) {
+.leaderboard tr:nth-child(odd) {
   background-color: #f9f9f9;
 }
 
-tr:nth-child(1) {
+.leaderboard tr:nth-child(1) {
   color: #fff;
 }
 
-td {
+.leaderboard td {
   height: 5rem;
   font-family: "Rubik", sans-serif;
   font-size: 1.4rem;
@@ -1295,69 +1342,6 @@ td {
 
 
 
-/* Match History */
-
-
-
-
-
-/*****************/
-
-
-
-
-
-
-/* Achievements */
-
-.achievements-container {
-  display: flex;
-  flex-wrap: wrap;
-}
-
-.achievement-card {
-  max-width: calc(20% - 5px); /* 6 kart yan yana sığacak şekilde hesaplanmış maksimum genişlik */
-  max-height: 300px;
-  margin-bottom: 10px;
-  text-align: left;
-}
-
-.achievement-card img {
-  width: 50%;
-  max-height: 150px; /* Kartın maksimum yüksekliği */
-  object-fit: cover; /* Resmi boyutunu koruyarak kırpma */
-  border-radius: 8px;
-}
-
-.achievement-details {
-  padding: 10px;
-}
-
-.achievement-details h4 {
-  font-size: 20px;
-  margin-bottom: 8px;
-}
-
-.achievement-details p {
-  margin-bottom: 6px;
-}
-
-.achievement-details .achievement-date {
-  font-style: italic;
-  color: #555;
-}
-
-.achievement-img {
-  text-align: center;
-}
-
-
-
-
-
-
-
-
 
 
 
@@ -1397,6 +1381,13 @@ td {
 }
 
 
+.friends-list nav {
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px; /* İhtiyaca göre ayarlayabilirsiniz */
+}
 
 
 
@@ -1698,111 +1689,6 @@ td {
   background-color: var(--tomato);
   color: var(--white);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* Match History */
-
-.match-card {
-  position: relative;
-  margin-bottom: 0.5em;
-  width: 1000px;
-  height: 60px;
-  background: #ffffff;
-  border-radius: 10px;
-  align-items: center;
-  box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
-}
-
-
-.match-score {
-  font-family: 'Roboto', sans-serif;
-  padding: 5px;
-  box-shadow: rgba(181, 12, 227, 0.4) 0px 5px, rgba(166, 46, 240, 0.3) 0px 10px;  border-radius: 5px;
-  position: absolute;
-  top: 50%;
-  -ms-transform: translateY(-50%);
-  transform: translateY(-50%);
-  margin-left: 1em;
-  margin-right: 1em;
-  font-size: 16px;
-  font-weight: bold;
-}
-
-
-.match-card.win .match-score {
-  color: #82aa30; /* Win durumu için yeşil renk */
-}
-
-.match-card.lose .match-score {
-  color: #FF0000; /* Lose durumu için kırmızı renk */
-}
-
-.player-text img {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%; /* Yuvarlak fotoğraf için */
-  margin-right: 10px; /* İstenirse sağa bir boşluk ekleyebilirsiniz */
-  margin-left: 10px;
-}
-
-.player-texts {
-  position: absolute;
-  display: flex;
-  top: 50%;
-  -ms-transform: translateY(-50%);
-  transform: translateY(-50%);
-  align-items: center;
-  margin-left: 8em;
-}
-
-.text-versus {
-  margin-left: 4em;
-  margin-right: 2em;
-  color: #000000;
-  font-weight:500;
-}
-
-.player-home,
-.player-enemy {
-  color: #000000;
-  box-shadow: rgba(181, 12, 227, 0.4) 0px 5px, rgba(166, 46, 240, 0.3) 0px 10px;  border-radius: 5px;
-  font-weight: bold;
-  margin-left: 2em;
-}
-
-.match-date {
-  color: #000000; 
-  position: absolute;
-  display: flex;
-  font-weight: 300;
-  font-size: 14px;
-  top: 50%;
-  -ms-transform: translateY(-50%);
-  transform: translateY(-50%);
-  align-items: center;
-  right: 0;
-  margin-right: 1em;
-}
-
-
-
-
-
-
-
-
-
 
 
 

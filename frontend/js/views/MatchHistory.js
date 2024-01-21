@@ -46,7 +46,6 @@ export default class extends AbstractView {
       </nav>
 
       <div class="container-top">
-      <!-- "Edit Profile" ve "Match History" Navbar -->
       <div class="row mt-4" style="margin-bottom:5px">
           <div class="col">
               <nav class="navbar navbar-expand-lg navbar-light bg-light rounded">
@@ -65,9 +64,7 @@ export default class extends AbstractView {
                           <li class="nav-item">
                               <a class="nav-link" href="/friends"><i class="bi bi-people-fill"></i> Friends</a>
                           </li>
-                          <li class="nav-item">
-                            <a class="nav-link" href="/achievements"><i class="bi bi-magic"></i> Achievements</a>
-                          </li>
+
                       </ul>
                   </div>
               </nav>
@@ -75,103 +72,80 @@ export default class extends AbstractView {
       </div>
   </div>
 </div>
-    <div class="card" style="align-items:center">
-        <div class="match-card win">
-          <div class="match-score">5-3</div>
-          <div class="player-texts">
-            <div class="player-home">
-              <div class="player-text"><img src="../../assets/profile/profilephoto.jpeg">Fatih Terim</div>
-            </div>
-            <div class="text-versus">
-              vs
-            </div>
-            <div class="player-enemy">
-              <div class="player-text">Test Terim<img src="../../assets/profile/profilephoto.jpeg"></div>
-            </div>
-          </div>
-          <div class="match-date">July 29, 2023 11:07</div>
-       
-        </div>
+    <div class="card">
+      <div class="match-history">
+        <table class="card-table">
+          <thead>
+            <tr>
+              <th>Opponent</th>
+              <th>Result</th>
+              <th>Score</th>
+              <th>Date</th>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Aykut Kocaman</td>
+              <td>Won</th>
+              <td>5-2</th>
+              <td>27-07-2024-16:53</td>
+            </tr>
+            <tr>
+              <td>Aykut Kocaman</td>
+              <td class="won">Won</th>
+              <td>5-2</th>
+              <td>27-07-2024-16:53</td>
+            </tr>
+            <tr>
+              <td>Aykut Kocaman</td>
+              <td class="won">Won</th>
+              <td>5-2</th>
+              <td>27-07-2024-16:53</td>
+            </tr>
+            <tr>
+              <td>Aykut Kocaman</td>
+              <td class="won">Won</th>
+              <td>5-2</th>
+              <td>27-07-2024-16:53</td>
+            </tr>
+            <tr class="disabled">
+              <td>Aykut Kocaman</td>
+              <td class="won">Won</th>
+              <td>5-2</th>
+              <td>27-07-2024-16:53</td>
+            </tr>
+            <tr>
+              <td>Aykut Kocaman</td>
+              <td class="lose">Lose</th>
+              <td>2-5</th>
+              <td>27-07-2024-16:53</td>
+            </tr>
+            <tr>
+             <td>Aykut Kocaman</td>
+             <td class="lose">Lose</th>
+             <td>2-5</th>
+             <td>27-07-2024-16:53</td>
+            </tr>
 
-        <div class="match-card lose">
-          <div class="match-score">3-5</div>
-          <div class="player-texts">
-            <div class="player-home">
-              <div class="player-text"><img src="../../assets/profile/profilephoto.jpeg">Fatih Terim</div>
-            </div>
-            <div class="text-versus">
-              vs
-            </div>
-            <div class="player-enemy">
-              <div class="player-text">Test Terim<img src="../../assets/profile/profilephoto.jpeg"></div>
-            </div>
-          </div>
-          <div class="match-date">July 29, 2023 11:07</div>
-        </div>
-
-        <div class="match-card lose">
-          <div class="match-score">3-5</div>
-          <div class="player-texts">
-            <div class="player-home">
-              <div class="player-text"><img src="../../assets/profile/profilephoto.jpeg">Fatih Terim</div>
-            </div>
-            <div class="text-versus">
-              vs
-            </div>
-            <div class="player-enemy">
-              <div class="player-text">Test Terim<img src="../../assets/profile/profilephoto.jpeg"></div>
-            </div>
-          </div>
-          <div class="match-date">July 29, 2023 11:07</div>
-        </div>
-
-        <div class="match-card lose">
-          <div class="match-score">3-5</div>
-          <div class="player-texts">
-            <div class="player-home">
-              <div class="player-text"><img src="../../assets/profile/profilephoto.jpeg">Fatih Terim</div>
-            </div>
-            <div class="text-versus">
-              vs
-            </div>
-            <div class="player-enemy">
-              <div class="player-text">Test Terim<img src="../../assets/profile/profilephoto.jpeg"></div>
-            </div>
-          </div>
-          <div class="match-date">July 29, 2023 11:07</div>
-        </div>
-
-        <div class="match-card lose">
-          <div class="match-score">3-5</div>
-          <div class="player-texts">
-            <div class="player-home">
-              <div class="player-text"><img src="../../assets/profile/profilephoto.jpeg">Fatih Terim</div>
-            </div>
-            <div class="text-versus">
-              vs
-            </div>
-            <div class="player-enemy">
-              <div class="player-text">Test Terim<img src="../../assets/profile/profilephoto.jpeg"></div>
-            </div>
-          </div>
-          <div class="match-date">July 29, 2023 11:07</div>
-        </div>
-
-        <div class="match-card lose">
-          <div class="match-score">3-5</div>
-          <div class="player-texts">
-            <div class="player-home">
-              <div class="player-text"><img src="../../assets/profile/profilephoto.jpeg">Fatih Terim</div>
-            </div>
-            <div class="text-versus">
-              vs
-            </div>
-            <div class="player-enemy">
-              <div class="player-text">Test Terim<img src="../../assets/profile/profilephoto.jpeg"></div>
-            </div>
-          </div>
-          <div class="match-date">July 29, 2023 11:07</div>
-        </div>
+          </tbody>
+        </table>
+        <nav aria-label="Page navigation example">
+          <ul class="pagination">
+            <li class="page-item">
+              <a class="page-link" href="#" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+              </a>
+            </li>
+            <li class="page-item"><a class="page-link" href="#">1</a></li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item">
+              <a class="page-link" href="#" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
     </div>
 
 

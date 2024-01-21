@@ -1,0 +1,61 @@
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,600);
+
+.match-history {
+  font-family: 'Open Sans', sans-serif;
+  margin: 1em auto; /* Merkezlemek için margin kullanıyoruz */
+  max-width: 1200px;
+  text-align: center;
+  width: 100%; /* Make the table take up 100% of the container */
+}
+
+.match-history nav {
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px; /* İhtiyaca göre ayarlayabilirsiniz */
+}
+
+.card-table {
+  background: #012B39;
+  border-radius: 0.25em;
+  border-collapse: collapse;
+  overflow-x: auto;
+  margin: 1em auto; /* "card" elemanının genişliğine göre ortalamak için */
+  max-width: 1300px; /* "card" elemanıyla aynı max-width değeri */
+  width: 100%;
+}
+
+.card-table th {
+  border-bottom: 1px solid #364043;
+  color: #E2B842;
+  font-size: 0.85em;
+  font-weight: 600;
+  padding: 0.5em 1em;
+}
+
+.card-table td {
+  color: #fff;
+  font-weight: 400;
+  padding: 0.65em 1em;
+}
+
+.card-table tr .lose {
+  color: red;
+}
+
+.card-table tr .won {
+  color: green;
+}
+
+.card-table .disabled td {
+  color: #4F5F64;
+}
+
+.card-table tbody tr {
+  transition: background 0.25s ease;
+}
+
+.card-table tbody tr:hover {
+  background: #014055;
+}
