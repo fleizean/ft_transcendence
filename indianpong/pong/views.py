@@ -136,6 +136,7 @@ def auth_callback(request):
                 profile, _ = UserProfile.objects.get_or_create(username=user.username)
                 profile.displayname = user_data.get('displayname', '')
                 profile.email = user_data.get('email', '')
+                profile.is_verified = True
 
                 image_url = user_data.get('image_url', '')
                 if image_url:
