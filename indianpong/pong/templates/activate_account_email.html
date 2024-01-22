@@ -61,7 +61,7 @@
 																<div
 																	style="color:#ffffff;font-family:'Varela Round', 'Trebuchet MS', Helvetica, sans-serif;font-size:30px;line-height:120%;text-align:center;mso-line-height-alt:36px;">
 																	<p style="margin: 0; word-break: break-word;">
-																		<span>Reset Your Password</span></p>
+																		<span>Activate Your Account</span></p>
 																</div>
 															</td>
 														</tr>
@@ -75,11 +75,7 @@
 																<div
 																	style="color:#ffffff;font-family:'Varela Round', 'Trebuchet MS', Helvetica, sans-serif;font-size:14px;line-height:150%;text-align:center;mso-line-height-alt:21px;">
 																	<p style="margin: 0; word-break: break-word;">Dear {{ user.username }},</p>
-																	<p style="margin: 0; word-break: break-word;">We
-																		received a request to reset your password. Don’t
-																		worry,</p>
-																	<p style="margin: 0; word-break: break-word;">we are
-																		here to help you.</p>
+																	<p style="margin: 0; word-break: break-word;">Please click the link below to activate your account:</p>
 																</div>
 															</td>
 														</tr>
@@ -96,14 +92,14 @@
 <w:anchorlock/>
 <v:textbox inset="0px,0px,0px,0px">
 <center style="color:#091548; font-family:'Trebuchet MS', sans-serif; font-size:15px">
-<![endif]--><a href="http://{{domain}}{% url 'set_password' uidb64=uid token=token %}" style="text-decoration:none;display:inline-block;color:#091548;background-color:#ffffff;border-radius:24px;width:auto;border-top:0px solid transparent;font-weight:undefined;border-right:0px solid transparent;border-bottom:0px solid transparent;border-left:0px solid transparent;padding-top:5px;padding-bottom:5px;font-family:'Varela Round', 'Trebuchet MS', Helvetica, sans-serif;font-size:15px;text-align:center;mso-border-alt:none;word-break:keep-all;"
+<![endif]--><a href="http://{{domain}}{% url 'activate' token=token %}" style="text-decoration:none;display:inline-block;color:#091548;background-color:#ffffff;border-radius:24px;width:auto;border-top:0px solid transparent;font-weight:undefined;border-right:0px solid transparent;border-bottom:0px solid transparent;border-left:0px solid transparent;padding-top:5px;padding-bottom:5px;font-family:'Varela Round', 'Trebuchet MS', Helvetica, sans-serif;font-size:15px;text-align:center;mso-border-alt:none;word-break:keep-all;"
 																		target="_blank"><span
 																			style="padding-left:25px;padding-right:25px;font-size:15px;display:inline-block;letter-spacing:normal;"><span
 																				style="word-break:break-word;"><span
 																					data-mce-style=""
-																					style="line-height: 30px;"><strong>RESET
+																					style="line-height: 30px;"><strong>ACTIVATE
 																						MY
-																						PASSWORD</strong></span></span></span></a><!--[if mso]></center></v:textbox></v:roundrect><![endif]-->
+																						ACCOUNT</strong></span></span></span></a><!--[if mso]></center></v:textbox></v:roundrect><![endif]-->
 																</div>
 															</td>
 														</tr>
@@ -140,8 +136,7 @@
 																<div
 																	style="color:#7f96ef;font-family:'Varela Round', 'Trebuchet MS', Helvetica, sans-serif;font-size:14px;line-height:150%;text-align:center;mso-line-height-alt:21px;">
 																	<p style="margin: 0; word-break: break-word;">
-																		<strong>Didn’t request a password
-																			reset?</strong></p>
+																		<strong>Already activated your account?</strong></p>
 																	<p style="margin: 0; word-break: break-word;">You
 																		can safely ignore this message.</p>
 																</div>

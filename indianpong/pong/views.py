@@ -53,8 +53,9 @@ def activate_account(request, token):
         token = VerifyToken.objects.get(token=token)
     except VerifyToken.DoesNotExist:
         return render(request, 'activation_fail.html')
-    token.is_verified = True
-    token.save()
+    token.user.is_verified = True
+    token.user.save()
+    token.delete()
     messages.success(request, 'Your account has been verified.')
     login(request, token.user)
     return redirect('profile', request.user.username)
@@ -164,6 +165,9 @@ def login_view(request):
         form = AuthenticationUserForm(request, request.POST)
         if form.is_valid():
             user = form.get_user()
+            if not user.is_verified:
+                messages.error(request, "Account not verified")
+                return redirect('login')
             login(request, user)
             return redirect('dashboard')
     else:

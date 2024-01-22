@@ -1,5 +1,8 @@
 # forms.py
 from datetime import timedelta
+from email.mime.image import MIMEImage
+import os
+from django.core.mail import EmailMultiAlternatives
 from django.core.mail import send_mail
 from django import forms
 from django.urls import reverse
@@ -9,7 +12,7 @@ from django.contrib.auth.tokens import default_token_generator
 from django.template.loader import render_to_string
 from django.utils.http import urlsafe_base64_encode
 from django.utils.encoding import force_bytes
-from indianpong.settings import EMAIL_HOST_USER
+from indianpong.settings import EMAIL_HOST_USER, STATICFILES_DIRS
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, UserChangeForm, PasswordChangeForm, PasswordResetForm, SetPasswordForm 
 from .models import VerifyToken, BlockedUser, ChatMessage, GameInvitation, UserProfile, TwoFactorAuth, JWTToken, Tournament, TournamentMatch, OAuthToken
 
@@ -68,9 +71,7 @@ class PasswordResetUserForm(PasswordResetForm):
         model = UserProfile
         fields = ['email'] """
 
-    def save(self, domain_override=None, subject_template_name=None,
-            email_template_name=None, use_https=False, token_generator=default_token_generator,
-            from_email=None, request=None, html_email_template_name=None, extra_email_context=None):
+    def save(self, domain_override=None, token_generator=default_token_generator, request=None):
         email = self.cleaned_data["email"]
         # check if user exists with given email
         user = UserProfile.objects.filter(email=email).first()
@@ -86,9 +87,41 @@ class PasswordResetUserForm(PasswordResetForm):
             'uid': urlsafe_base64_encode(force_bytes(user.pk)),
             'token': token,
         })
-        send_mail(mail_subject, message, EMAIL_HOST_USER, [user.email], fail_silently=True, html_message=message)
 
-        #return uid, token
+        
+        email = EmailMultiAlternatives(
+            subject=mail_subject,
+            body=message,  # this is the simple text version
+            from_email=EMAIL_HOST_USER,
+            to=[user.email]
+        )
+
+        # Add the HTML version. This could be the same as the body if your email is only HTML.
+        email.attach_alternative(message, "text/html")
+
+        # List of images
+        images = ['1_icons8-github-50.png', '2_68747470733a.jpg', 'background_2.png', 'header3.png']
+
+        for img_name in images:
+            img_path = os.path.join(STATICFILES_DIRS[0], "assets", "email", img_name)
+
+            # Open the image file in binary mode
+            with open(img_path, 'rb') as f:
+                image_data = f.read()
+
+            # Create a MIMEImage
+            img = MIMEImage(image_data)
+
+            # Add a 'Content-ID' header. The angle brackets are important.
+            img.add_header('Content-ID', f'<{img_name}>')
+
+            # Attach the image to the email
+            email.attach(img)
+
+        # Send the email
+        email.send(fail_silently=True)
+        #send_mail(mail_subject, message, EMAIL_HOST_USER, [user.email], fail_silently=True, html_message=message)
+
 
 """ class TokenValidationForm(forms.Form):
     token = forms.CharField(label='Token', widget=forms.TextInput(attrs={'class': 'input'}) )
