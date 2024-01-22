@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% include "_nav.html" %}
+
+{% block app %}
+    <form method="post" enctype="multipart/form-data" id="editProfileForm">
+        {% csrf_token %}
+        
+        <div class="profile-pic-container">
+            <label for="{{ form.avatar.id_for_label }}" class="profile-pic-label">
+                <img src="{% if form.avatar.value %}{{ form.avatar.value.url }}{% else %}{% static "assets/profile/profilephoto.jpeg" %}{% endif %}" alt="Profile Picture" class="profile-pic">
+                <div class="change-image-overlay">
+                    <span class="bi bi-image-fill"></span>
+                    <span class="change-image-text">Change Image</span>
+                </div>
+            </label>
+            {{ form.avatar }}
+        </div>
+
+        <!-- Other form fields -->
+        {{ form.username }}
+        {{ form.email }}
+        {{ form.displayname }}
+        {{ form.first_name }}
+        {{ form.last_name }}
+        {{ form.phone_number }}
+        {{ form.birthday }}
+
+        <!-- Submit button -->
+        <button type="submit" class="btn btn-success">Save Changes</button>
+    </form>
+
+{% endblock %}
+
