@@ -18,6 +18,7 @@ import GameChart from "./views/GameChart.js";
 import Chat from "./views/Chat.js";
 import InChat from "./views/InChat.js";
 import ForgotPassword from "./views/ForgotPassword.js";
+import Pong from "./views/Pong.js";
 
 const pathToRegex = path => new RegExp("^" + path.replace(/\//g, "\\/").replace(/:\w+/g, "(.+)") + "$");
 
@@ -52,12 +53,11 @@ const router = async () => {
         { path: '/forgot-password', view: ForgotPassword},
         { path: '/chat', view: Chat},
         { path: '/in-chat', view: InChat},
+        { path: '/in-game', view: Pong},
         { path: '/pass2fa', view: Pass2FA},
         { path: '/profile-settings', view: ProfileSettings},
         { path: '/match-history', view: MatchHistory},
         { path: '/friends', view: Friends},
-        { path: '/404', view: Error404},
-        { path: '(.*)', view: Error404 },
     ];
 
     // Test each route for potential match

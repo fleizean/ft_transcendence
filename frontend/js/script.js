@@ -190,18 +190,19 @@ jQuery(document).ready(function () {
     });
 });
 
+var canvas = document.getElementById("myCanvas");
 
-document.getElementById("optionsButton").addEventListener("click", function () {
-    var dropdown = document.getElementById("optionsDropdown");
-    dropdown.style.display = (dropdown.style.display === "block") ? "none" : "block";
-  });
-  
-  // Pencerenin dışındaki bir yere tıklanırsa pencereyi kapat
-  window.onclick = function (event) {
-    if (!event.target.matches('#optionsButton')) {
-      var dropdown = document.getElementById("optionsDropdown");
-      if (dropdown.style.display === 'block') {
-        dropdown.style.display = 'none';
-      }
+function setCanvasSize() {
+    if (canvas) {
+        var maxWidth = window.innerWidth - 370;
+        var maxHeight = window.innerHeight - 100;
+        console.log("width" + maxWidth)
+        console.log("height" + maxHeight)
+        // Canvas'ın genişliğini ve yüksekliğini belirle
+        canvas.width = maxWidth;
+        canvas.height = maxHeight;
     }
-  };
+}
+
+document.addEventListener("DOMContentLoaded", setCanvasSize);
+window.addEventListener("resize", setCanvasSize);
