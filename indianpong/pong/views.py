@@ -272,6 +272,7 @@ def chat(request):
     return render(request, 'chat.html', {'username': request.user.username,'users': users})
 
 ### New Chat ###
+@never_cache
 @login_required(login_url = "login")
 def room(request, room_name):
     users = UserProfile.objects.all().exclude(username = request.user)
@@ -284,14 +285,21 @@ def room(request, room_name):
         "messages": messages,
     })
 
+@never_cache
 @login_required(login_url = "login")
 def start_chat(request, username):
     second_user = UserProfile.objects.get(username=username)
-    room, created = Room.objects.get_or_create(
+
+    room = Room.objects.filter(
         Q(first_user=request.user, second_user=second_user) | 
         Q(first_user=second_user, second_user=request.user)
-    )
-    room.save()
+    ).first()
+
+    if room is None:
+        room = Room.objects.create(first_user=request.user, second_user=second_user)
+        # For assigning the room name
+        room.save()
+
     """     try:
         room = Room.objects.get(first_user = request.user, second_user = second_user)
     except Room.DoesNotExist:

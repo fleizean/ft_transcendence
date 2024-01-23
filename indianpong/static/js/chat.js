@@ -6,16 +6,23 @@ const inputField = document.getElementById("comment")
 const inviteButton = document.getElementById("inviteButton")
 
 
-const chatSocket = new WebSocket("ws://" + window.location.host + "/ws/chat/")
+const chatSocket = new WebSocket("ws://" + window.location.host + "/ws/chat/" + roomName + "/")
 
 chatSocket.onmessage = function (e) {
     const data = JSON.parse(e.data)
 
     switch (data.type) {
       case 'user.online':
+        chatSocket.send(JSON.stringify({
+          "action": "room",
+          "room_name": roomName,
+        }))
+
+        // Show online users
+        console.log('Online users:', data.users);
 
         console.log('Player connected:', data.username);
-        console.log(my.username);
+        //console.log(my.username);
         break;
 
       case 'user.offline':
@@ -23,16 +30,7 @@ chatSocket.onmessage = function (e) {
         console.log('Player disconnected:', data.username);
         break;
 
-      case 'room':
-
-        console.log('Room Created:', data.room_name);
-
-      
-      case 'exit':
-
-        console.log('Left Conversation:', data.left);
-      
-      case 'message':
+      case 'chat.message':
         if(user === data.user){
            var message = `                  
                 <li class="conversation-item me">
@@ -95,10 +93,10 @@ function showOptions() {
     }
 }
 
-
 sendButton.onclick = function (e) {
     const message = inputField.value
     chatSocket.send(JSON.stringify({
+        "action": "message",
         "user": user, 
         "message": message,
     }))
@@ -120,6 +118,7 @@ inviteButton.onclick = function (e) {
     </div>
 </li>`
     chatSocket.send(JSON.stringify({
+        "action": "message",
         "user": user, 
         "message": message,
     }))
@@ -133,6 +132,7 @@ inviteButton.onclick = function (e) {
 function decline() {
   const message = `İstemiyorum mk`
   chatSocket.send(JSON.stringify({
+    "action": "message",
     "user": user, 
     "message": message,
 }))

@@ -32,7 +32,7 @@ class Room(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4)
     first_user = models.ForeignKey(UserProfile, related_name="room_first", on_delete=models.CASCADE, null=True)
     second_user = models.ForeignKey(UserProfile, related_name="room_second", on_delete=models.CASCADE, null=True)
-    room_name = models.CharField(max_length=100)
+    room_name = models.CharField(max_length=100, default="not saved")
 
     def save(self, *args, **kwargs):
         if self.first_user and self.second_user:

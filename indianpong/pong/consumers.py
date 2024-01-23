@@ -13,6 +13,7 @@ class PongConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         # Get the user from the scope
         self.user = self.scope["user"]
+        self.room_group_name = None
         # Check if the user is authenticated
         if self.user.is_anonymous:
             # Reject the connection
@@ -59,6 +60,9 @@ class PongConsumer(AsyncWebsocketConsumer):
         await USER_STATUS.delete(self.user.username) 
         # Remove the user from the 'online' group
         await self.channel_layer.group_discard("online", self.channel_name)
+        if self.room_group_name != None:
+            # Leave room group
+            await self.channel_layer.group_discard(self.room_group_name, self.channel_name)
         # Send a message to the group with the user's username
         await self.channel_layer.group_send(
             "online",
@@ -75,44 +79,26 @@ class PongConsumer(AsyncWebsocketConsumer):
 
         ### CHAT ###
         if action == "room":
-            peer = data["peer"]
-            self.room_name = self.user.username + "_" + peer
-            self.room_group_name = "chat_%s" % self.room_name
+            room_name = data["room_name"]
+            self.room_name = room_name
+            self.room_group_name = "chat_%s" % room_name
 
             # Join room group
             await self.channel_layer.group_add(self.room_group_name, self.channel_name)
-
-            await self.channel_layer.group_send(
-                self.room_group_name,
-                {
-                    "type": "room",
-                    "first_user": self.user.username, #? oda ismi için
-                    "second_user": peer,
-                    "room_name": self.room_name,
-                }
-            )
-        elif action == "exit":
-            await self.channel_layer.group_send(
-                self.room_group_name,
-                {
-                    "type": "exit",
-                    "left": self.user.username,
-                }
-            )
-            # Leave room group
-            await self.channel_layer.group_discard(self.room_group_name, self.channel_name)
 
         elif action == "message":
             user = data["user"]
             message = data["message"]
             # Create Message Object
-            msg = await Message.objects.acreate(content=message, user=user, room_id=self.room_name)
+            room = await Room.objects.aget(room_name=self.room_name)
+            user = await UserProfile.objects.aget(username = user)
+            msg = await Message.objects.acreate(content=message, user=user, room=room)
             # Send message to room group
             await self.channel_layer.group_send(
                 self.room_group_name, 
                 {
-                    "type": "chat_message", 
-                    "message": msg,
+                    "type": "chat.message", 
+                    "message": message,
                     "user": user.username,
                     "created_date": msg.get_short_date(),
                 }
@@ -564,16 +550,16 @@ class PongConsumer(AsyncWebsocketConsumer):
         await self.send(text_data=json.dumps({
             "type": "user.offline",
             "username": username,
-            #"users": users,
         }))
 
-        # Receive message from room group
+    # Receive message from room group
     async def chat_message(self, event):
         message = event["message"]
         user = event["user"]
         created_date = event["created_date"]
         # Send message to WebSocket
         await self.send(text_data=json.dumps({
+            "type": "chat.message",
             "message": message,
             "user": user,
             "created_date": created_date,
@@ -747,48 +733,3 @@ class PongConsumer(AsyncWebsocketConsumer):
             "winner": winner,
         }))
 '''
-
-
-class ChatConsumer(AsyncWebsocketConsumer):
-    async def connect(self):
-        self.room_name = self.scope["url_route"]["kwargs"]["room_name"]
-        self.room_group_name = "chat_%s" % self.room_name
-        
-        # Join room group
-        await self.channel_layer.group_add(self.room_group_name, self.channel_name)
-
-        await self.accept()
-
-    async def disconnect(self, close_code):
-        # Leave room group
-        await self.channel_layer.group_discard(self.room_group_name, self.channel_name)
-
-    # Receive message from WebSocket
-    async def receive(self, text_data):
-        text_data_json = json.loads(text_data)
-        message = text_data_json["message"]
-
-        user = await UserProfile.objects.aget(username = text_data_json["user"])
-        m = await Message.objects.acreate(content=message, user=user, room_id=self.room_name) #? Room object isn't created yet
-        # Send message to room group
-        await self.channel_layer.group_send(
-            self.room_group_name, 
-            {
-                "type": "chat_message", 
-                "message": message,
-                "user": user.username,
-                "created_date": m.get_short_date(), #? blocking?
-            }
-        )
-
-    # Receive message from room group
-    async def chat_message(self, event):
-        message = event["message"]
-        user = event["user"]
-        created_date = event["created_date"]
-        # Send message to WebSocket
-        await self.send(text_data=json.dumps({
-            "message": message,
-            "user": user,
-            "created_date": created_date,
-        }))
