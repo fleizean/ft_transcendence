@@ -48,28 +48,6 @@ class Message(models.Model):
     def get_short_date(self): #? Wrong clock
         return str(self.created_date.strftime("%H:%M"))
     
-class Game(models.Model):
-
-    group_name = models.CharField(max_length=100)
-    player1 = models.ForeignKey(UserProfile, related_name='games_as_player1', on_delete=models.CASCADE)
-    player2 = models.ForeignKey(UserProfile, related_name='games_as_player2', on_delete=models.CASCADE)
-    player1_score = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(20)], default=0)
-    player2_score = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(20)], default=0)
-    created_at = models.DateTimeField(auto_now_add=True)
-    winner = models.ForeignKey(UserProfile, related_name='games_won', on_delete=models.CASCADE, null=True, blank=True)
-
-    def __str__(self):
-        return f"{self.player1.username} vs {self.player2.username}"
-    
-class MatchRecord(models.Model):
-    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='matches')
-    opponent = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='opponent_matches')
-    date = models.DateTimeField(auto_now_add=True)
-    result = models.CharField(max_length=10)  # 'win' or 'lose'
-
-    def __str__(self) -> str:
-        return f"{self.user + '-' + self.opponent}"
-
 class Tournament(models.Model):
     STATUS_CHOICES = (
         ("open", "Opened"),
@@ -81,16 +59,29 @@ class Tournament(models.Model):
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default="open")
     start_date = models.DateTimeField(auto_now_add=True)
     #end_date = models.DateTimeField()
-    participants = models.ManyToManyField(UserProfile, related_name='tournaments')
+    standings = models.ManyToManyField(UserProfile, related_name='tournaments')
 
     def __str__(self) -> str:
         return f"{self.name}"
     
-class TournamentMatch(models.Model):
-    tournament = models.ForeignKey(Tournament, on_delete=models.CASCADE, related_name='matches')
-    player1 = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='tournament_matches_as_player1')
-    player2 = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='tournament_matches_as_player2')
-    winner = models.ForeignKey(UserProfile, on_delete=models.CASCADE, null=True, blank=True, related_name='tournament_wins')
+
+class Game(models.Model):
+    group_name = models.CharField(max_length=100)
+    player1 = models.ForeignKey(UserProfile, related_name='games_as_player1', on_delete=models.CASCADE)
+    player2 = models.ForeignKey(UserProfile, related_name='games_as_player2', on_delete=models.CASCADE)
+    player1_score = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(20)], default=0)
+    player2_score = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(20)], default=0)
+    created_at = models.DateTimeField(auto_now_add=True)
+    winner = models.ForeignKey(UserProfile, related_name='games_won', on_delete=models.CASCADE, null=True, blank=True)
+    tournament = models.ForeignKey(Tournament, related_name='games', on_delete=models.CASCADE, null=True, blank=True)
+
+    """     def save(self, *args, **kwargs):
+        self.group_name = f"{self.player1.username}_{self.player2.username}"
+        super().save(*args, **kwargs) """
+
+    def __str__(self):
+        return f"{self.player1.username} vs {self.player2.username}"
+    
 
 class OAuthToken(models.Model):
     user = models.OneToOneField(UserProfile, on_delete=models.CASCADE)
