@@ -1,7 +1,11 @@
 DOCKER = docker
-DOCKER_COMPOSE = sudo docker-compose
+DOCKER_COMPOSE = docker-compose 
+SUDO_DOCKER_COMPOSE = sudo docker-compose
 
 all: up
+
+sudo_up:
+	$(SUDO_DOCKER_COMPOSE) up -d --build
 
 up:
 	$(DOCKER_COMPOSE) up -d --build
@@ -23,4 +27,4 @@ prune: down fclean
 
 re: fclean all
 
-.PHONY: all up down image stop fclean re
+.PHONY: all up down image stop fclean re sudo_up
