@@ -99,3 +99,16 @@ document.addEventListener('DOMContentLoaded', function () {
         navLinks.classList.toggle('show');
     });
 });
+
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelector('#app').addEventListener('click', function(event) {
+      if (event.target.matches('a[data-link]')) {
+        event.preventDefault();
+        fetch(event.target.href)
+          .then(response => response.text())
+          .then(html => {
+            document.querySelector('#app').innerHTML = html;
+          });
+      }
+    });
+  });

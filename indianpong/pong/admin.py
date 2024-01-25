@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import UserProfile, Tournament, TournamentMatch, Room, Message
+from .models import UserProfile, Tournament, Room, Message
 from django.utils.html import format_html
 
 @admin.register(UserProfile)
@@ -31,11 +31,6 @@ class UserProfileAdmin(admin.ModelAdmin):
 class TournamentAdmin(admin.ModelAdmin):
     list_display = ('name', 'start_date')
     search_fields = ('name',)
-
-@admin.register(TournamentMatch)
-class TournamentMatchAdmin(admin.ModelAdmin):
-    list_display = ('tournament', 'player1', 'player2', 'winner')
-    search_fields = ('tournament__name', 'player1__username', 'player2__username', 'winner__username')
 
 @admin.register(Room)
 class RoomAdmin(admin.ModelAdmin):

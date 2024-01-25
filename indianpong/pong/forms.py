@@ -2,7 +2,7 @@
 
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, UserChangeForm, PasswordChangeForm, PasswordResetForm, SetPasswordForm 
-from .models import BlockedUser, OAuthToken, UserProfile, Tournament, TournamentMatch
+from .models import BlockedUser, OAuthToken, UserProfile, Tournament
 
 class UserProfileForm(UserCreationForm):
 
@@ -79,10 +79,6 @@ class TournamentForm(forms.ModelForm):
         model = Tournament
         fields = ['name']
 
-class TournamentMatchForm(forms.ModelForm):
-    class Meta:
-        model = TournamentMatch
-        fields = ['tournament', 'player1', 'player2']
 
 class OAuthTokenForm(forms.ModelForm):
     class Meta:

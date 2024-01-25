@@ -3,11 +3,12 @@ from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.cache import never_cache
 from django.contrib.auth import login, logout, authenticate
+from django.template.loader import render_to_string
 from django.contrib import messages
 from django.db.models import Q
-from django.http import HttpResponseBadRequest
-from .forms import BlockUserForm, PasswordChangeUserForm, PasswordResetUserForm, SetPasswordUserForm, UserProfileForm, UpdateUserProfileForm, AuthenticationUserForm, TournamentForm, TournamentMatchForm
-from .models import BlockedUser, OAuthToken, UserProfile, Tournament, TournamentMatch, Room, Message
+from django.http import HttpResponse, HttpResponseBadRequest
+from .forms import BlockUserForm, PasswordChangeUserForm, PasswordResetUserForm, SetPasswordUserForm, UserProfileForm, UpdateUserProfileForm, AuthenticationUserForm, TournamentForm
+from .models import BlockedUser, OAuthToken, UserProfile, Tournament, Room, Message
 from .utils import pass2fa
 from os import environ
 from datetime import datetime, timedelta
@@ -23,7 +24,11 @@ import json
 
 @never_cache
 def index(request):
-    return render(request, 'base.html')
+    return render(request, '_nav.html')
+
+@never_cache
+def base(request):
+    return HttpResponse(render_to_string('base.html'))
 
 def handler404(request, exception):
     return render(request, '404.html', status=404)
@@ -152,7 +157,7 @@ def login_view(request):
             return redirect('dashboard')
     else:
         form = AuthenticationUserForm()
-    return render(request, 'login.html', {'form': form})
+    return HttpResponse(render_to_string('login.html', {'form': form}))#render(request, 'login.html', {'form': form})
 
 @never_cache
 @login_required(login_url="login")
@@ -407,7 +412,7 @@ def create_tournament(request):
         form = TournamentForm()
     return render(request, 'create_tournament.html', {'form': form})
 
-@never_cache
+""" @never_cache
 @login_required(login_url="login")
 def create_tournament_match(request):
     if request.method == 'POST':
@@ -418,7 +423,7 @@ def create_tournament_match(request):
             return redirect('tournament_match_list')
     else:
         form = TournamentMatchForm()
-    return render(request, 'create_tournament_match.html', {'form': form})
+    return render(request, 'create_tournament_match.html', {'form': form}) """
 
 ### Two-Factor Authentication ###
 
