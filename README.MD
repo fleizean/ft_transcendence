@@ -1,24 +1,5 @@
 # ft_transcendence_newpdf
 
-<style>
-  .test {
-    text-align: center;
-  }
-
-  .ourteam {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 20px;
-  }
-
-  .ourteam td {
-    text-align: center;
-  }
-</style>
-
 <p align="center">
     <img src="https://i.hizliresim.com/ctrhatw.png"/>
 </p>
@@ -179,7 +160,7 @@
 <hr>
 <br>
 <br>
-<div class="test">
+<center>
 <h1> Our Team - indian full stack developers 🇮🇳</h1>
 
 <table class="ourteam">
@@ -194,4 +175,4 @@
     <a href="https://profile.intra.42.fr/users/eyagiz" title="Intra 42"><img src="https://img.shields.io/badge/Kocaeli-FFFFFF?style=plastic&logo=42&logoColor=000000" alt="Intra 42"/></a></td>
   </tr>
 </table>
-</div>
+</center>
