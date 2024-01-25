@@ -1,5 +1,24 @@
 # ft_transcendence_newpdf
 
+<style>
+  .test {
+    text-align: center;
+  }
+
+  .ourteam {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+
+  .ourteam td {
+    text-align: center;
+  }
+</style>
+
 <p align="center">
     <img src="https://i.hizliresim.com/ctrhatw.png"/>
 </p>
@@ -160,7 +179,7 @@
 <hr>
 <br>
 <br>
-<div class="test" style="text-align:center">
+<div class="test">
 <h1> Our Team - indian full stack developers 🇮🇳</h1>
 
 <table class="ourteam">
