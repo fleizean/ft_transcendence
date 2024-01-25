@@ -73,97 +73,97 @@ export default class extends AbstractView {
           </div>
       </div>
   </div>
-    <div class="card">
-    <div class="friends-list">
+  <div class="card-friends-list">
+  <div class="friends-list">
       <div class="row">
-      <div class="col-md-6 col-xl-3">                       
-        <div class="card friends">
-          <div class="card-body">
-            <div class="media align-items-center"><span style="background-image: url(https://bootdey.com/img/Content/avatar/avatar5.png)" class="avatar avatar-xl mr-3"></span>
-              <div class="media-body overflow-hidden">
-                <h5 class="card-text mb-0">Erika Whitaker</h5>
-                <p class="card-text text-uppercase text-muted">Uniworld</p>
-                <p class="card-text">
-
-                  erikawhitaker@uniworld.com<br><abbr title="Phone">P:  </abbr>+1 (911) 484-3333
-                </p>
-                <button type="button" class="btn btn-dark"><i class="bi bi-heartbreak-fill"></i> Unfollow</button>
+          <div class="col-md-6 col-xl-3">                       
+              <div class="card friends">
+                  <div class="card-body">
+                      <div class="media align-items-center">
+                          <span style="background-image: url(https://bootdey.com/img/Content/avatar/avatar5.png)" class="avatar avatar-xl mr-3"></span>
+                          <div class="media-body overflow-hidden">
+                              <h5 class="card-text mb-0">Erika Whitaker</h5>
+                              <p class="card-text text-uppercase text-muted">Uniworld</p>
+                              <p class="card-text">
+                                  erikawhitaker@uniworld.com<br><abbr title="Phone">P:  </abbr>+1 (911) 484-3333
+                              </p>
+                              <button type="button" class="btn btn-dark"><i class="bi bi-heartbreak-fill"></i> Unfollow</button>
+                          </div>
+                      </div><a href="#" class="tile-link"></a>
+                  </div>
               </div>
-            </div><a href="#" class="tile-link"></a>
           </div>
-        </div>
-      </div>
-      <div class="col-md-6 col-xl-3">                       
-        <div class="card friends">
-          <div class="card-body">
-            <div class="media align-items-center"><span style="background-image: url(https://bootdey.com/img/Content/avatar/avatar2.png)" class="avatar avatar-xl mr-3"></span>
-              <div class="media-body overflow-hidden">
-                <h5 class="card-text mb-0">Meyers Swanson</h5>
-                <p class="card-text text-uppercase text-muted">Candecor</p>
-                <p class="card-text">
-
-                  meyersswanson@candecor.com<br><abbr title="Phone">P:  </abbr>+1 (999) 404-3297
-                </p>
-                <button type="button" class="btn btn-dark"><i class="bi bi-heartbreak-fill"></i> Unfollow</button>
+          <div class="col-md-6 col-xl-3">                       
+              <div class="card friends">
+                  <div class="card-body">
+                      <div class="media align-items-center">
+                          <span style="background-image: url(https://bootdey.com/img/Content/avatar/avatar2.png)" class="avatar avatar-xl mr-3"></span>
+                          <div class="media-body overflow-hidden">
+                              <h5 class="card-text mb-0">Meyers Swanson</h5>
+                              <p class="card-text text-uppercase text-muted">Candecor</p>
+                              <p class="card-text">
+                                  meyersswanson@candecor.com<br><abbr title="Phone">P:  </abbr>+1 (999) 404-3297
+                              </p>
+                              <button type="button" class="btn btn-dark"><i class="bi bi-heartbreak-fill"></i> Unfollow</button>
+                          </div>
+                      </div><a href="#" class="tile-link"></a>
+                  </div>
               </div>
-            </div><a href="#" class="tile-link"></a>
           </div>
-        </div>
-      </div>
-      <div class="col-md-6 col-xl-3">                       
-        <div class="card friends">
-          <div class="card-body">
-            <div class="media align-items-center"><span style="background-image: url(https://bootdey.com/img/Content/avatar/avatar7.png)" class="avatar avatar-xl mr-3"></span>
-              <div class="media-body overflow-hidden">
-                <h5 class="card-text mb-0">Townsend Sloan</h5>
-                <p class="card-text text-uppercase text-muted">Rameon</p>
-                <p class="card-text">
-
-                  townsendsloan@rameon.com<br><abbr title="Phone">P:  </abbr>+1 (978) 563-2964
-                </p>
-                <button type="button" class="btn btn-dark"><i class="bi bi-heartbreak-fill"></i> Unfollow</button>
+          <div class="col-md-6 col-xl-3">                       
+              <div class="card friends">
+                  <div class="card-body">
+                      <div class="media align-items-center">
+                          <span style="background-image: url(https://bootdey.com/img/Content/avatar/avatar7.png)" class="avatar avatar-xl mr-3"></span>
+                          <div class="media-body overflow-hidden">
+                              <h5 class="card-text mb-0">Townsend Sloan</h5>
+                              <p class="card-text text-uppercase text-muted">Rameon</p>
+                              <p class="card-text">
+                                  townsendsloan@rameon.com<br><abbr title="Phone">P:  </abbr>+1 (978) 563-2964
+                              </p>
+                              <button type="button" class="btn btn-dark"><i class="bi bi-heartbreak-fill"></i> Unfollow</button>
+                          </div>
+                      </div><a href="#" class="tile-link"></a>
+                  </div>
               </div>
-            </div><a href="#" class="tile-link"></a>
           </div>
-        </div>
-      </div>
-      <div class="col-md-6 col-xl-3">                       
-        <div class="card friends">
-          <div class="card-body">
-            <div class="media align-items-center"><span style="background-image: url(https://bootdey.com/img/Content/avatar/avatar1.png)" class="avatar avatar-xl mr-3"></span>
-              <div class="media-body overflow-hidden">
-                <h5 class="card-text mb-0">Millicent Henry</h5>
-                <p class="card-text text-uppercase text-muted">Balooba</p>
-                <p class="card-text">
-
-                  millicenthenry@balooba.com<br><abbr title="Phone">P:  </abbr>+1 (863) 585-3988
-                </p>
-                <button type="button" class="btn btn-dark"><i class="bi bi-heartbreak-fill"></i> Unfollow</button>
+          <div class="col-md-6 col-xl-3">                       
+              <div class="card friends">
+                  <div class="card-body">
+                      <div class="media align-items-center">
+                          <span style="background-image: url(https://bootdey.com/img/Content/avatar/avatar1.png)" class="avatar avatar-xl mr-3"></span>
+                          <div class="media-body overflow-hidden">
+                              <h5 class="card-text mb-0">Millicent Henry</h5>
+                              <p class="card-text text-uppercase text-muted">Balooba</p>
+                              <p class="card-text">
+                                  millicenthenry@balooba.com<br><abbr title="Phone">P:  </abbr>+1 (863) 585-3988
+                              </p>
+                              <button type="button" class="btn btn-dark"><i class="bi bi-heartbreak-fill"></i> Unfollow</button>
+                          </div>
+                      </div><a href="#" class="tile-link"></a>
+                  </div>
               </div>
-            </div><a href="#" class="tile-link"></a>
           </div>
-        </div>
       </div>
-    </div>
-    <nav aria-label="Page navigation example">
+      <nav aria-label="Page navigation example">
           <ul class="pagination">
-            <li class="page-item">
-              <a class="page-link" href="#" aria-label="Previous">
-                <span aria-hidden="true">&laquo;</span>
-              </a>
-            </li>
-            <li class="page-item"><a class="page-link" href="#">1</a></li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
-            <li class="page-item">
-              <a class="page-link" href="#" aria-label="Next">
-                <span aria-hidden="true">&raquo;</span>
-              </a>
-            </li>
+              <li class="page-item">
+                  <a class="page-link" href="#" aria-label="Previous">
+                      <span aria-hidden="true">&laquo;</span>
+                  </a>
+              </li>
+              <li class="page-item"><a class="page-link" href="#">1</a></li>
+              <li class="page-item"><a class="page-link" href="#">2</a></li>
+              <li class="page-item"><a class="page-link" href="#">3</a></li>
+              <li class="page-item">
+                  <a class="page-link" href="#" aria-label="Next">
+                      <span aria-hidden="true">&raquo;</span>
+                  </a>
+              </li>
           </ul>
-        </nav>
-        </div>
-    </div>
+      </nav>
+  </div>
+</div>
         `;
     }
 }

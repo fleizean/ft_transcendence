@@ -1,0 +1,153 @@
+
+
+/* Friends */
+
+
+.card-friends-list {
+    background-color: #F1F1FB;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    max-width: 1300px;
+    width: 100%;
+    max-height: auto;
+    height: auto; /* Yüksekliği otomatik ayarla */
+    max-height: 900px;
+    margin: 0 auto; /* Ortalamak için */
+  }
+  
+  
+  .avatar.avatar-xl {
+    width: 5rem;
+    height: 5rem;
+  }
+  
+  .avatar {
+    width: 2rem;
+    height: 2rem;
+    line-height: 2rem;
+    border-radius: 50%;
+    display: inline-block;
+    background: #ced4da no-repeat center/cover;
+    position: relative;
+    text-align: center;
+    color: #868e96;
+    font-weight: 600;
+    vertical-align: bottom;
+  }
+  
+  .tile-link {
+    position: absolute;
+    cursor: pointer;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    z-index: 30;
+  }
+  
+  .card.friends {
+    margin-bottom: 1em;
+  }
+  
+  .friends-list nav {
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+  }
+  
+  @media screen and (max-width: 767px) {
+    .friends-list .card {
+        width: 100%; /* Telefonlarda kartları genişletmek için */
+        margin-bottom: 10px; /* Kartlar arası boşluk eklemek için */
+    }
+  
+    .friends-list .row {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around; /* Sütunları hizalamak için */
+    }
+  
+    .friends-list .col-md-6 {
+        flex: 0 0 calc(50% - 10px); /* Telefonlarda iki sütunlu olacak şekilde ayarlamak */
+        margin-right: 10px;
+        margin-bottom: 10px;
+    }
+  
+    .col-md-6.col-xl-3 {
+      flex: 0 0 100%;
+      max-width: 100%;
+  }
+  }
+  
+  @media screen and (min-width: 1200px) {
+    .avatar.avatar-xl {
+      width: 7rem;
+      height: 7rem;
+    }
+  
+    .avatar {
+      width: 3rem;
+      height: 3rem;
+      line-height: 3rem;
+    }
+  
+    .friends-list nav {
+      margin-top: 40px;
+    }
+  
+    /* Diğer büyük ekran stilleri buraya eklenebilir */
+  }
+  
+  @media screen and (max-width: 1199px) and (min-width: 768px) {
+    .avatar.avatar-xl {
+      width: 5rem;
+      height: 5rem;
+    }
+  
+    .avatar {
+      width: 2.5rem;
+      height: 2.5rem;
+      line-height: 2.5rem;
+    }
+  
+    .friends-list nav {
+      margin-top: 30px;
+    }
+  
+    /* Diğer orta büyüklükte ekran stilleri buraya eklenebilir */
+  }
+  
+  /* Küçük ekranlar için stiller */
+  @media screen and (max-width: 767px) {
+    .avatar.avatar-xl {
+      width: 4rem;
+      height: 4rem;
+    }
+  
+    .avatar {
+      width: 2rem;
+      height: 2rem;
+      line-height: 2rem;
+    }
+  
+    .friends-list nav {
+      margin-top: 20px;
+    }
+  
+    .card-friends-list {
+      height: 1350px;
+      max-height: 1350px;
+    }
+  }
+  
+  
+  
+  
+  
+  
+  
+  
+  

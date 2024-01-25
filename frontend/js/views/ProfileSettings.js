@@ -48,41 +48,39 @@ export default class extends AbstractView {
     <div class="container-top">
 
  
-    <div class="card">
+    <div class="profile-settings-card">
       <div class="row">
       <!-- Left Sidebar -->
       <div class="col-md-3">
-          <nav class="navbar navbar-expand-lg navbar-light bg-light rounded">
-              <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#profileNavbar"
-                  aria-controls="profileNavbar" aria-expanded="false" aria-label="Toggle navigation">
-                  <span class="navbar-toggler-icon"></span>
-              </button>
-              <div class="collapse navbar-collapse" id="profileNavbar">
-                  <ul class="navbar-nav flex-column">
-                      <li class="nav-item">
-                          <a class="nav-link" href="javascript:void(0);" onclick="displaySection('editProfile')"><i class="bi bi-pencil-fill"></i> Edit Profile</a>
-                      </li>
-                      <li class="nav-item">
-                          <a class="nav-link" href="javascript:void(0);" onclick="displaySection('changePassword')"><i class="bi bi-lock-fill"></i> Change Password</a>
-                      </li>
-                      <li class="nav-item">
-                          <a class="nav-link" href="javascript:void(0);" onclick="displaySection('addSocial')"><i class="bi bi-bookmark-fill"></i> Add Socials</a>
-                      </li>
-                      <li class="nav-item">
-                          <a class="nav-link" href="javascript:void(0);" onclick="displaySection('blockedUsers')"><i class="bi bi-ban"></i> Blocked Users</a>
-                      </li>
-                      <li class="nav-item">
-                          <a class="nav-link" href="javascript:void(0);" onclick="displaySection('google2FA')"><i class="bi bi-google"></i> Google 2FA</a>
-                      </li>
-                      <li class="nav-item">
-                          <a class="nav-link" href="javascript:void(0);" onclick="displaySection('closeAccount')"><i class="bi bi-door-closed-fill"></i> Close Account</a>
-                      </li>
-                      
-                  </ul>
-              </div>
-          </nav>
-      </div>
-
+    <nav id="profileNavbar" class="navbar navbar-expand-lg navbar-light bg-light rounded">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#profileNavLinks"
+                aria-controls="profileNavLinks" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="profileNavLinks">
+            <ul class="navbar-nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link" href="javascript:void(0);" onclick="displaySection('editProfile')"><i class="bi bi-pencil-fill"></i> Edit Profile</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="javascript:void(0);" onclick="displaySection('changePassword')"><i class="bi bi-lock-fill"></i> Change Password</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="javascript:void(0);" onclick="displaySection('addSocial')"><i class="bi bi-bookmark-fill"></i> Add Socials</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="javascript:void(0);" onclick="displaySection('blockedUsers')"><i class="bi bi-ban"></i> Blocked Users</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="javascript:void(0);" onclick="displaySection('google2FA')"><i class="bi bi-google"></i> Google 2FA</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="javascript:void(0);" onclick="displaySection('closeAccount')"><i class="bi bi-door-closed-fill"></i> Close Account</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</div>
     <!-- Edit Profile Content -->
 
     <div class="col-xl-9">
@@ -151,7 +149,6 @@ export default class extends AbstractView {
                     <section id="changePassword">
                         <!-- Your code for changing password goes here -->
                         <form id="changePasswordForm">
-                                
                                 <div class="mb-3 position-relative">
                                     <label class="small mb-1" for="currentPassword">Current Password</label>
                                     <div class="input-group">
@@ -369,7 +366,3 @@ export default class extends AbstractView {
         `;
     }
 }
-
-
-
-

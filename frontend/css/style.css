@@ -63,7 +63,7 @@ body {
   margin: 0;
   padding: 0;
   background-color: #1a1a1a;
-  cursor: url('../assets/scrool/pixelsword.png'), auto;
+  /* cursor: url('../assets/scrool/pixelsword.png'), auto; */
 }
 
 .backgroundimage {
@@ -265,227 +265,6 @@ img {
   box-shadow: 0.15em 0.15em;
 }
 
-/* Login - Register Pop Up Area */
-
-.LoginArea {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  text-align: center;
-}
-
-.RegisterArea {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  text-align: center;
-}
-
-.form {
-  --input-focus: #f0302d;
-  --font-color: #323232;
-  --font-color-sub: #666;
-  --bg-color: beige;
-  --main-color: black;
-  padding: 20px;
-  background: #f5f2ee;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 20px;
-  border-radius: 5px;
-  border: 2px solid var(--main-color);
-  box-shadow: 4px 4px var(--main-color);
-}
-
-.title {
-  color: var(--font-color);
-  font-weight: 900;
-  font-size: 20px;
-  
-}
-
-.titlebottom {
-  color: var(--font-color-sub);
-  font-weight: 600;
-  font-size: 17px;
-}
-
-.input {
-  width: 250px;
-  height: 40px;
-  border-radius: 5px;
-  border: 2px solid var(--main-color);
-  background-color: var(--bg-color);
-  box-shadow: 4px 4px var(--main-color);
-  font-size: 15px;
-  font-weight: 600;
-  color: var(--font-color);
-  padding: 5px 10px;
-  outline: none;
-}
-
-.input::placeholder {
-  color: var(--font-color-sub);
-  opacity: 0.8;
-}
-
-.forgot-pass {
-  position: relative;
-  text-align: right;
-  margin-bottom: -10px;
-}
-
-.forgot-password-link {
-  left: 0;
-  text-decoration: none;
-  color: black;
-}
-
-.forgot-password-link:hover {
-  text-decoration-line: underline; /* Add underline on hover */
-}
-
-.input:focus {
-  border: 2px solid var(--input-focus);
-}
-
-.login-with {
-  display: flex;
-  gap: 10px;
-  justify-content: center; /* İçeriği yatayda ortala */
-  align-items: center; 
-}
-
-.button-log {
-  cursor: pointer;
-  width: 40px;
-  height: 40px;
-  border-radius: 100%;
-  border: 2px solid var(--main-color);
-  background-color: var(--bg-color);
-  box-shadow: 4px 4px var(--main-color);
-  color: var(--font-color);
-  font-size: 25px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.icon {
-  width: 24px;
-  height: 24px;
-  fill: var(--main-color);
-}
-
-.button-log:active, .button-confirm:active {
-  box-shadow: 0px 0px var(--main-color);
-  transform: translate(3px, 3px);
-}
-
-.button-confirm {
-  width: 120px;
-  height: 40px;
-  border-radius: 5px;
-  border: 2px solid var(--main-color);
-  background-color: var(--bg-color);
-  box-shadow: 4px 4px var(--main-color);
-  font-size: 17px;
-  font-weight: 600;
-  color: var(--font-color);
-  margin-bottom: -10px;
-  cursor: url('../assets/scrool/crossedsword.png'), auto;
-}
-
-.button-confirm:hover {
-  transform: translate(-0.05em, -0.05em);
-  box-shadow: 0.15em 0.15em;
-}
-
-
-.registerbtn {
-  width: 120px;
-  height: 40px;
-  background: #FBCA1F;
-  font-family: inherit;
-  font-weight: 600;
-  font-size: 17px;
-  border: 3px solid black;
-  border-radius: 0.4em;
-  box-shadow: 0.1em 0.1em;
-}
-
-.registerbtn:hover {
-  transform: translate(-0.05em, -0.05em);
-  box-shadow: 0.15em 0.15em;
-}
-
-.registerbtn:active {
-  transform: translate(0.05em, 0.05em);
-  box-shadow: 0.05em 0.05em;
-}
-
-.play {
-  transition: all .5s ease;
-  transition-delay: 300ms;
-}
-
-.registerbtn:hover svg {
-  transform: scale(3) translate(50%);
-}
-
-.now {
-  position: absolute;
-  left: 0;
-  transform: translateX(-100%);
-  transition: all .5s ease;
-  z-index: 2;
-}
-
-.registerbtn:hover .now {
-  transform: translateX(10px);
-  transition-delay: 300ms;
-}
-
-.registerbtn:hover .play {
-  transform: translateX(200%);
-  transition-delay: 300ms;
-}
-
-.backbtn {
-  display: flex;
-  width: 50px;
-  height: 50px;
-  align-items: center;
-  justify-content: center;
-  background-color: rgba(0, 0, 0, 0.294);
-  border-radius: 3px;
-  letter-spacing: 1px;
-  transition: all 0.2s linear;
-  cursor: pointer;
-  border: none;
-  background: #F4F2ED;
- }
- 
- .backbtn > svg {
-  margin-right: 5px;
-  margin-left: 5px;
-  font-size: 30px;
-  transition: all 0.4s ease-in;
- }
- 
- .backbtn:hover > svg {
-  font-size: 1.2em;
-  transform: translateX(-5px);
- }
- 
- .backbtn:hover {
-  box-shadow: 9px 9px 33px #d1d1d1, -9px -9px 33px #ffffff;
-  transform: translateY(-2px);
- }
-
 /* ----------- */
 
 /* NavBar */
@@ -515,7 +294,7 @@ img {
   font-size: 1.2em;
   color: greenyellow;
   position: relative;
-  cursor: url('../assets/scrool/crossedsword.png'), auto;
+  /* cursor: url('../assets/scrool/crossedsword.png'), auto; */
 }
 
 .nav-links li a::after {
@@ -726,7 +505,7 @@ img {
     left: 0;
     width: 100%;
     background-color: rgba(51, 51, 51, 0.5); /* R: 51, G: 51, B: 51, Alfa: 0.5 (50% saydamlık) */
-    z-index: 1;
+    z-index: 700;
     backdrop-filter: blur(10px); /* Bulanıklık miktarını ayarlayabilirsiniz */
     transition: display 0.3s ease-in-out;
   }
@@ -1005,6 +784,7 @@ button.primary {
 	color: #231E39;
 	font-family: Montserrat, sans-serif;
 	font-weight: 500;
+  margin-bottom: 0.5em;
 	padding: 10px 25px;
 }
 
@@ -1066,25 +846,6 @@ p {
 
 
 
-
-
-/* Rankings */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /* Profile Page */
 
 .nav-item {
@@ -1115,181 +876,6 @@ p {
 
 
 
-/* Friends */
-
-.avatar.avatar-xl {
-  width: 5rem;
-  height: 5rem;
-}
-
-.avatar {
-  width: 2rem;
-  height: 2rem;
-  line-height: 2rem;
-  border-radius: 50%;
-  display: inline-block;
-  background: #ced4da no-repeat center/cover;
-  position: relative;
-  text-align: center;
-  color: #868e96;
-  font-weight: 600;
-  vertical-align: bottom;
-}
-
-.tile-link {
-  position: absolute;
-  cursor: pointer;
-  width: 100%;
-  height: 100%;
-  left: 0;
-  top: 0;
-  z-index: 30;
-}
-
-.card.friends {
-  margin-bottom: 1em;
-}
-
-
-.friends-list nav {
-  text-align: center;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 20px; /* İhtiyaca göre ayarlayabilirsiniz */
-}
-
-
-
-
-
-
-
-
-
-
-
-/* Game */
-
-.ai-btn {
-  margin-top: 0.5em;
-}
-
-.opponent-btn {
-  margin-top: 1em;
-  margin-bottom: 0.5em;
-}
-
-.pong-game-text {
-  text-align: center;
-}
-
-.custom-text {
-  text-align: center;
-  top: 50%;
-  left: 50%;
-  margin-bottom: 2em;
-}
-
-.ponggamebtn {
-  font-size: 36px;
-  font-family: 'Rajdhani', sans-serif;
-  text-align: center;
-  line-height: 85px;
-  color: #fff;
-  margin: 0 auto;
-  width: 350px;
-  height: 85px;
-  background: linear-gradient(#1d7751, #0e382c);
-  border: 3px #25793b solid; 
-  border-radius: 5px;
-  text-shadow: 0 0 20px rgba(255,255,255,0.3);
-  transition: .1s;
-  transform: scale(1);
-  cursor: pointer;
-  box-shadow: 0 0 50px rgba(0,117,9,0.5);
-  overflow: hidden;
-}
-
-.ponggamebtn:hover {
-  text-shadow: 0 0 20px rgba(255,255,255,0.5);
-  transform: scale(1.05);
-}
-
-.ponggamebtn:active {
-  background: linear-gradient(#1f8258, #114435);
-  text-shadow: 0 0 20px rgba(255,255,255,0.5);
-  transform: scale(1);
-  box-shadow: 0 0 75px rgba(43,137,68,0.5);
-}
-
-.ponggamebtn:after {
-  content: "";
-  position: relative;
-  top: -120px;
-  left: -90px;
-  display: block;
-  width: 35px;
-  height: 150px;
-  background: rgba(255, 255, 255, 0.5);
-  transform: rotate(35deg);
-  transition: none;
-}
-
-.ponggamebtn:hover:after {
-  left: 400px;
-  transition: .3s ease-in-out;
-}
-
-.ponggamebtn-ai {
-  font-size: 36px;
-  font-family: 'Rajdhani', sans-serif;
-  text-align: center;
-  line-height: 85px;
-  color: #fff;
-  margin: 0 auto;
-  width: 350px;
-  height: 85px;
-  background: linear-gradient(#1d6d77, #0e2e38);
-  border: 3px #2195a4 solid; 
-  border-radius: 5px;
-  text-shadow: 0 0 20px rgba(255,255,255,0.3);
-  transition: .1s;
-  transform: scale(1);
-  cursor: pointer;
-  box-shadow: 0 0 50px rgba(0,117,9,0.5);
-  overflow: hidden;
-}
-
-.ponggamebtn-ai:hover {
-  text-shadow: 0 0 20px rgba(255,255,255,0.5);
-  transform: scale(1.05);
-}
-
-.ponggamebtn-ai:active {
-  background: linear-gradient(#1f8258, #114435);
-  text-shadow: 0 0 20px rgba(255,255,255,0.5);
-  transform: scale(1);
-  box-shadow: 0 0 75px rgba(43,137,68,0.5);
-}
-
-.ponggamebtn-ai:after {
-  content: "";
-  position: relative;
-  top: -120px;
-  left: -90px;
-  display: block;
-  width: 35px;
-  height: 150px;
-  background: rgba(255, 255, 255, 0.5);
-  transform: rotate(35deg);
-  transition: none;
-}
-
-.ponggamebtn-ai:hover:after {
-  left: 400px;
-  transition: .3s ease-in-out;
-}
 
 
 
@@ -1592,6 +1178,10 @@ p {
 .room.pong {
   position: relative; 
   background: url('../assets/backgrounds/pong-room-bg.jpeg') center/cover;
+}
+
+.pong-game-text {
+  text-align: center;
 }
 
 .room.rps {

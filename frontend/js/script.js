@@ -190,6 +190,14 @@ jQuery(document).ready(function () {
     });
 });
 
+$(document).ready(function () {
+    // Handle the click event on the navbar toggler button
+    $('#profileNavbar .navbar-toggler').click(function () {
+        // Toggle the 'show' class on the navbar collapse
+        $('#profileNavLinks').toggleClass('show');
+    });
+});
+
 var canvas = document.getElementById("myCanvas");
 
 function setCanvasSize() {

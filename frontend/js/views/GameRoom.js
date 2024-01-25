@@ -51,13 +51,14 @@ export default class extends AbstractView {
                 <div class="indian-logo">
                     <img class="logo-indian" src="../../assets/logo-dark.png">
                 </div>
-                <h3 class="pong-game-text">Room #1 - Ping Pong Tournament Room</h3>
+                <div class="pong-game-text">
+                  <h3 class="pong-game-text">Room #1 - Ping Pong Tournament Room</h3>
+                </div>
                 <div class="game-room-buttons">
                     <button class="leave-button" type="button"><i class="bi bi-x-circle-fill"></i> LEAVE GAME</button>
                     <button class="leave-button" type="button"><i class="bi bi-flag-fill"></i> START GAME</button>
                     <button class="leave-button" id="checkbracket" onclick="displaySectionGame('game-bracket-section')" type="button"><i class="bi bi-calendar-check-fill"></i> CHECK BRACKET</button>
                     <button class="leave-button" id="gameroombracket" onclick="displaySectionGame('game-room-section')" type="button"><i class="bi bi-4-square-fill"></i> GAME ROOM</button>
-
                 </div>
                 <section id="game-room-section">
                 <div class="player-wrapper">
