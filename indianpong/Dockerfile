@@ -14,7 +14,7 @@ RUN pip install -r requirements.txt
 COPY . .
 COPY ./start.sh .
 RUN chmod +x /ft_transcendence/start.sh
-
+###
 EXPOSE 8000
 
 ENTRYPOINT ["sh", "/ft_transcendence/start.sh"]
