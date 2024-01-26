@@ -4,10 +4,13 @@ from channels.db import database_sync_to_async
 from pong.utils import AsyncLockedDict
 from .models import Game, Tournament, UserProfile, Room, Message #Match, Score, chat
 from pong.game import *
+from pong.tournament import *
 
 USER_CHANNEL_NAME = AsyncLockedDict() # key: username, value: channel_name
 USER_STATUS = AsyncLockedDict() # key: username, value: game_id or online
 GAMES = AsyncLockedDict() # key: game_id, value: PongGame object
+TOURNAMENTS = AsyncLockedDict() # key: tournament_id, value: Tournament object
+MAX_PLAYERS = 8
 
 class PongConsumer(AsyncWebsocketConsumer):
     async def connect(self):
@@ -238,13 +241,12 @@ class PongConsumer(AsyncWebsocketConsumer):
                 )
         ### TOURNAMENT
 
-        elif action == "create":
+        elif action == "create.tournament":
             # Create a new tournament
             name = data["name"]
-            #start_date = data["start_date"]
-            #end_date = data["end_date"]
             # Create a new tournament instance with the given details and save it to the database
-            tournament = await Tournament.objects.acreate(name)
+            tournament = await Tournament.objects.acreate(name, creator=self.user)
+            await TOURNAMENTS.set(tournament.id, Tournament(tournament.id)) #? name 
             # Send a message to the 'online' group with the tournament id and the tournament details
             await self.channel_layer.group_send(
                 "online",
@@ -252,151 +254,96 @@ class PongConsumer(AsyncWebsocketConsumer):
                     "type": "tournament.create",
                     "tournament_id": tournament.id,
                     "name": tournament.name,
+                    "creator": tournament.creator.username, #? maybe redundant
                     "start_date": tournament.start_date,
                     #"end_date": tournament.end_date,
                 }
             )
-        elif action == "join":
+            await self.join_tournament_handler(tournament.id)
+
+        elif action == "join.tournament":
             # Join a tournament
             tournament_id = data["tournament_id"]
-            # Get the tournament instance from the database
-            tournament = await Tournament.objects.aget(id = tournament_id)
-            # Add the user to the tournament players and save it to the database
-            tournament.standings.add(self.user)
-            await tournament.asave()
-            # Send a message to the 'online' group with the tournament id and the user's username
-            await self.channel_layer.group_send(
-                "online",
-                {
-                    "type": "tournament.join",
-                    "tournament_id": tournament.id,
-                    "username": self.user.username,
-                }
-            )
-        elif action == "leave":
+            await self.join_tournament_handler(tournament_id)
+
+        elif action == "leave.tournament":
             # Leave a tournament
             tournament_id = data["tournament_id"]
-            # Get the tournament instance from the database
-            tournament = await Tournament.objects.aget(id = tournament_id)
-            # Remove the user from the tournament players and save it to the database
-            tournament.standings.remove(self.user)
-            await tournament.asave()
-            # Send a message to the 'online' group with the tournament id and the user's username
-            await self.channel_layer.group_send(
-                "online",
-                {
-                    "type": "tournament.leave",
-                    "tournament_id": tournament.id,
-                    "username": self.user.username,
-                }
-            )
-        elif action == "cancel": # TODO Only the tournament creator can cancel the tournament
+            await self.leave_tournament_handler(tournament_id)
+
+        elif action == "cancel.tournament":
             # Cancel a tournament
             tournament_id = data["tournament_id"]
-            # Get the tournament instance from the database
-            tournament = await Tournament.objects.aget(id = tournament_id)
-            # Delete the tournament instance from the database
-            await tournament.adelete()
-            # Send a message to the 'online' group with the tournament id
-            await self.channel_layer.group_send(
-                "online",
-                {
-                    "type": "tournament.cancel",
-                    "tournament_id": tournament.id,
-                }
-            )
-        elif action == "start": # TODO Only the tournament creator can start the tournament
+            await self.cancel_tournament_handler(tournament_id)
+
+        elif action == "start.tournament": # TODO Only the tournament creator can start the tournament
             # Start a tournament
             tournament_id = data["tournament_id"]
             # Get the tournament instance from the database
             tournament = await Tournament.objects.aget(id = tournament_id)
-            # Update the tournament status to 'started' and save it to the database
-            tournament.status = "started"
-            await tournament.asave()
-            # Create the first round of matches and save them to the database
-            matches = await self.create_matches(tournament)
-            # Send a message to the 'online' group with the tournament id and the matches details
-            for match in matches:
-                await self.accept_handler(match.group_name, match.player1.username, match.player2.username, tournament_id)
-            """             await self.channel_layer.group_send(
-                "online",
-                {
-                    "type": "tournament.start",
-                    "tournament_id": tournament.id,
-                    "matches": [
-                        {
-                            "match_id": match.id,
-                            "player1": match.player1.username,
-                            "player2": match.player2.username,
-                        }
-                        for match in matches
-                    ],
-                }
-            ) """
-            """         elif action == "finish":  # TODO move logic to end_handler
-            # Finish a match in a tournament
-            tournament_id = data["tournament_id"]
-            match_id = data["match_id"]
-            winner = data["winner"]
-            # Get the match instance from the database
-            match = await GAMES.get(match_id)
-            # Update the match status to 'finished' and save it to the database
-            match.status = Status.ENDED
-            await Game.objects.asave(id = match_id)
-            # Remove loser from the standings and save it to the database
-            tournament = await Tournament.objects.aget(id = tournament_id)
-            loser =  match.player1.username == winner and match.player2.username or match.player1.username
-            loser = await UserProfile.objects.aget(username = loser)
-            tournament.standings.remove(loser)
-            # Send a message to the 'online' group with the match id and the winner's username
-            await self.channel_layer.group_send(
-                "online",
-                {
-                    "type": "tournament.finish",
-                    "match_id": match.id,
-                    "winner": winner,
-                }
-            ) """
+            if tournament.creator == self.user and tournament.status == "open":
+                # Update the tournament status to 'started' and save it to the database
+                tournament.status = "started"
+                await tournament.asave()
+                # Create the first round of matches and save them to the database
+                tournament_obj = await TOURNAMENTS.get(tournament_id)
+                matches = tournament_obj.create_matches() #! Implement this
+                #matches = await self.create_matches(tournament)
+                # Send a message to the 'online' group with the tournament id and the matches details
+                for match in matches:
+                    await self.accept_handler(match.group_name, match.player1.username, match.player2.username, tournament_id)
+            else:
+                await self.send(text_data=json.dumps({
+                    "error": "You are not the creator of this tournament or the tournament is already started",
+                }))
+
         elif action == "next": # TODO Somehow check if all players finished their matches
             # Start the next round of matches in a tournament
             tournament_id = data["tournament_id"]
             # Get the tournament instance from the database
             tournament = await Tournament.objects.aget(id = tournament_id)
-            # Check if the tournament is over
-            if await tournament.standings.acount() == 1:
-                # Update the tournament status to 'ended' and save it to the database
-                tournament.status = "ended"
-                await tournament.asave()
-                # Send a message to the 'online' group with the tournament id and the winner's username
-                await self.channel_layer.group_send(
-                    "online",
-                    {
-                        "type": "tournament.end",
-                        "tournament_id": tournament.id,
-                        "winner": tournament.standings.username, #? Is this correct?
-                    }
-                )
-            else:
-                # Create the next round of matches and save them to the database
-                matches = await self.create_matches(tournament)
-                # Send a message to the 'online' group with the tournament id and the matches details
-                for match in matches:
-                    await self.accept_handler(match.group_name, match.player1.username, match.player2.username, tournament_id)
-                """                 await self.channel_layer.group_send(
-                    "online",
-                    {
-                        "type": "tournament.next",
-                        "tournament_id": tournament.id,
-                        "matches": [
-                            {
-                                "match_id": match.id,
-                                "player1": match.player1.username,
-                                "player2": match.player2.username,
-                            }
-                            for match in matches
-                        ],
-                    }
-                ) """
+            tournamen_obj = await TOURNAMENTS.get(tournament_id)
+            # Get all games with tournament_id and check if all games winner is set
+            allPlayed = (True for match in tournamen_obj.matches if match.winner != None).all() #? maybe use database
+            # If all games winner is set, start the next round of matches
+            if allPlayed:
+                # Check if the tournament is over
+                if tournament_obj.standings.count() == 1:
+                    # Update the tournament status to 'ended' and save it to the database
+                    tournament.status = "ended"
+                    await tournament.asave()
+                    # Send a message to the 'online' group with the tournament id and the winner's username
+                    await self.channel_layer.group_send(
+                        "online",
+                        {
+                            "type": "tournament.end",
+                            "tournament_id": tournament.id,
+                            "winner": tournament_obj.standings[0], #? Is this correct?
+                        }
+                    )
+                    await TOURNAMENTS.delete(tournament_id)
+                else:
+                    # Create the next round of matches and save them to the database
+                    matches = tournament_obj.create_matches() #! Implement this
+                    #matches = await self.create_matches(tournament)
+                    # Send a message to the 'online' group with the tournament id and the matches details
+                    for match in matches:
+                        await self.accept_handler(match.group_name, match.player1.username, match.player2.username, tournament_id)
+                    """                 await self.channel_layer.group_send(
+                        "online",
+                        {
+                            "type": "tournament.next",
+                            "tournament_id": tournament.id,
+                            "matches": [
+                                {
+                                    "match_id": match.id,
+                                    "player1": match.player1.username,
+                                    "player2": match.player2.username,
+                                }
+                                for match in matches
+                            ],
+                        }
+                    ) """
 
     # Handler methods for indivual or tournament games
     async def accept_handler(self, group_name, accepted, accepter, tournament_id=None):
@@ -447,6 +394,9 @@ class PongConsumer(AsyncWebsocketConsumer):
                     "winner": opponent,
                 }
             )
+            tournament_obj = await TOURNAMENTS.get(game.tournament_id)
+            tournament_obj.standings.remove(left)
+
         await self.channel_layer.group_send(
             game.group_name,
             {
@@ -469,6 +419,7 @@ class PongConsumer(AsyncWebsocketConsumer):
         player1_score = game.player1.score
         player2_score = game.player2.score
         winner = player1_score > player2_score and game.player1.username or game.player2.username
+        loser = winner == game.player1.username and game.player2.username or game.player1.username
         # Set the game winner, scores and save it to the database
         await self.record_game(game_id, player1_score, player2_score, winner)
         # Send a message to the game group with the game id and the winner's username
@@ -483,8 +434,11 @@ class PongConsumer(AsyncWebsocketConsumer):
                     "player1_score": player1_score,
                     "player2_score": player2_score,
                     "winner": winner,
+                    "loser": loser, #? maybe redundant
                 }
             )
+            tournament_obj = await TOURNAMENTS.get(game.tournament_id)
+            tournament_obj.standings.remove(loser)
         await self.channel_layer.group_send(
             game.group_name,
             {
@@ -493,10 +447,102 @@ class PongConsumer(AsyncWebsocketConsumer):
                 "player1_score": player1_score, #? maybe redundant
                 "player2_score": player2_score,
                 "winner": winner,
+                "loser": loser, #? maybe redundant
             }
         )
         # delete game from cache
         await GAMES.delete(game_id)
+
+    # TOURNAMENT HANDLERS
+    async def join_tournament_handler(self, tournament_id):
+            # Get the tournament instance from the database
+            tournament = await Tournament.objects.aget(id = tournament_id)
+            if tournament.status == "open":
+                # Check if the user is already in the tournament
+                if tournament.participants.filter(username = self.user.username).exists(): #? async
+                    await self.send(text_data=json.dumps({
+                        "error": "You are already in this tournament",
+                    }))
+                    return
+                # Check if the tournament is full
+                if tournament.participants.count() == MAX_PLAYERS:
+                    await self.send(text_data=json.dumps({
+                        "error": "This tournament is full",
+                    }))
+                    return
+                # Add the user to the tournament standings and save it to the cache
+                tournament_obj = await TOURNAMENTS.get(tournament_id)
+                tournament_obj.standings.append(self.user.username)
+                # Add the user to the tournament players and save it to the database
+                tournament.participants.add(self.user)
+                await tournament.asave()
+                # Send a message to the 'online' group with the tournament id and the user's username
+                await self.channel_layer.group_send(
+                    "online",
+                    {
+                        "type": "tournament.join",
+                        "tournament_id": tournament.id,
+                        "username": self.user.username,
+                    }
+                )
+            else:
+                await self.send(text_data=json.dumps({
+                    "error": "This tournament is already started",
+                }))
+
+    async def leave_tournament_handler(self, tournament_id): # When tournament is started, user leave when t?s?he?y lose
+            # Get the tournament instance from the database and cache
+            tournament = await Tournament.objects.aget(id = tournament_id)
+            remaining = tournament.participants.count()
+            if tournament.status == "open":
+                # Check if the tournament creator and the user is not the only player
+                if tournament.creator == self.user and remaining > 1:
+                    # Make another user the creator of the tournament
+                    tournament.creator = tournament.participants.all()[1]
+                    await tournament.asave()
+                # Check if the tournament creator and the user is the only player
+                elif tournament.creator == self.user and remaining == 1:
+                    await self.cancel_tournament_handler(tournament_id)
+                    return
+                # Remove the user from the tournament players and save it to the database
+                tournament.participants.remove(self.user)
+                await tournament.asave()
+            # Remove the user to the tournament standings and save it to the cache
+            tournament_obj = await TOURNAMENTS.get(tournament_id)
+            tournament_obj.standings.remove(self.user.username)
+            # Send a message to the 'online' group with the tournament id and the user's username
+            await self.channel_layer.group_send(
+                "online",
+                {
+                    "type": "tournament.leave",
+                    "tournament_id": tournament.id,
+                    "username": self.user.username,
+                }
+            )
+
+    async def cancel_tournament_handler(self, tournament_id):
+        # Get the tournament instance from the database
+        tournament = await Tournament.objects.aget(id = tournament_id)
+        if tournament.creator == self.user and tournament.status == "open":
+            # Delete the tournament instance from the cache
+            await TOURNAMENTS.delete(tournament_id)
+            # Delete the tournament instance from the database
+            await tournament.adelete()
+            # Send a message to the 'online' group with the tournament id
+            await self.channel_layer.group_send(
+                "online",
+                {
+                    "type": "tournament.cancel",
+                    "tournament_id": tournament.id,
+                }
+            ) 
+        else:
+            await self.send(text_data=json.dumps({
+                "error": "You are not the creator of this tournament or the tournament is already started",
+            }))
+
+
+
 
     # Helper methods to interact with the database
     async def create_game(self, group_name, player1, player2, tournament_id=None):

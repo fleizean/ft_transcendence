@@ -56,10 +56,11 @@ class Tournament(models.Model):
     )
 
     name = models.CharField(max_length=100)
+    creator = models.ForeignKey(UserProfile, related_name='tournaments_created', on_delete=models.CASCADE, null=True, blank=True)
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default="open")
     start_date = models.DateTimeField(auto_now_add=True)
     #end_date = models.DateTimeField()
-    standings = models.ManyToManyField(UserProfile, related_name='tournaments')
+    participants = models.ManyToManyField(UserProfile, related_name='tournaments')
 
     def __str__(self) -> str:
         return f"{self.name}"
