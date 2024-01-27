@@ -275,8 +275,10 @@ def chat(request):
 @never_cache
 @login_required(login_url = "login")
 def room(request, room_name):
-    users = UserProfile.objects.all().exclude(username = request.user)
-    room = Room.objects.get(room_name = room_name)
+    if not request.user.username in room_name:
+        return HttpResponseBadRequest("You are not allowed to enter this room")
+    users = UserProfile.objects.all().exclude(username=request.user)
+    room = Room.objects.get(room_name=room_name)
     messages = Message.objects.filter(room=room)
     return render(request, "room.html", {
         "room_name": room_name, 
