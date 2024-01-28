@@ -74,7 +74,7 @@
                 <button type="button" class="conversation-back"><i class="bi bi-arrow-left-circle-fill"></i></button>
                 <div class="conversation-user">
                   <img class="conversation-user-image" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8cGVvcGxlfGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60" alt="" />
-                    <div id="userNameOnChat" class="conversation-user-name" data-username="{{ room.first_user|default:'' }}" data-seconduser="{{ room.second_user|default:'' }}" >
+                    <div id="otherUser" class="conversation-user-name" data-username="{{ room.first_user|default:'' }}" data-seconduser="{{ room.second_user|default:'' }}" >
                       {% if room.first_user == request.user %}
                           {{ room.second_user }}
                           {% else %}
@@ -84,7 +84,7 @@
                 </div>
                 <div class="conversation-buttons">
                   <button type="button"><i class="bi bi-person-add"></i></button>
-                  <button type="button"><i class="bi bi-controller" id="inviteButton"></i></button>
+                  <button type="button"><i class="bi bi-controller" id="chatInviteButton"></i></button>
            
                   <button type="button" id="block"><i class="bi bi-ban"></i></button>
                 </div>
@@ -144,7 +144,7 @@
         {{ request.user.username|json_script:"user" }}
         
 
-        <script src="../../static/js/chat.js"></script>
+        <script src="../../static/js/sockpong.js"></script>
       </section>
     </div>
   </div>
