@@ -205,7 +205,7 @@ socket.onmessage = function (e) {
                     leaveButton.style.display = 'none';
                 }
 
-                // Control paddle1 with w, s keys
+                // Control paddle with w, s keys
                 document.addEventListener("keydown", function(event) {
                     if (event.key === "w" || event.key === "ArrowUp") {
                         PaddleRequest("up");
@@ -213,6 +213,16 @@ socket.onmessage = function (e) {
                         PaddleRequest("down");
                     }
                 });
+
+                // Control paddle with mouse scroll //TODO not working
+/*                 document.addEventListener("wheel", function(event) {
+                    if (event.deltaY < 0) {
+                        PaddleRequest("up");
+                    } else if (event.deltaY > 0) {
+                        PaddleRequest("down");
+                    }
+                }); */
+
                 // Ask ball coordinates every 16 milliseconds
                 startGame();
                 setInterval(BallRequest, 16);
