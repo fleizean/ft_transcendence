@@ -1,11 +1,12 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}
   Chat
 {% endblock %}
 
 {% block app %}
-  <link rel="stylesheet" href="../../static/css/chat.css" />
+  <link rel="stylesheet" href="{% static "css/chat.css" %}"/>
   {% include "_nav.html" %}
   <div class="container-top">
     <div class="card">
@@ -66,18 +67,20 @@
                         </a>
                       </li>
                   {% endfor %}
-
+                </div>
               </div>
-            </div>
-            <!-- end: Content side -->
-            <!-- start: Conversation -->
-            <div class="conversation conversation-default active">
-              <i class="bi bi-chat-square"></i>
-              <p>Select chat and view conversation!</p>
-            </div>
-          </div>
-          <!-- end: Content -->
-        </div>
+              {% block diff %}
+                  <!-- end: Content side -->
+                  <!-- start: Conversation -->
+                  <div class="conversation conversation-default active">
+                    <i class="bi bi-chat-square"></i>
+                    <p>Select chat and view conversation!</p>
+                  </div>
+                </div>
+                <!-- end: Content -->
+              </div>
+
+            {% endblock diff %}
       </section>
     </div>
   </div>

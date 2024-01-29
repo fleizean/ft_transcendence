@@ -5,7 +5,7 @@ from django.views.decorators.cache import never_cache
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
 from django.db.models import Q
-from django.http import HttpResponseBadRequest
+from django.http import HttpResponse, HttpResponseBadRequest
 from .forms import BlockUserForm, PasswordChangeUserForm, PasswordResetUserForm, SetPasswordUserForm, UserProfileForm, UpdateUserProfileForm, AuthenticationUserForm, TournamentForm
 from .models import BlockedUser, OAuthToken, UserProfile, Tournament, Room, Message
 from .utils import pass2fa
@@ -17,6 +17,7 @@ from urllib.parse import urlencode
 import secrets, json
 from django.core.files import File
 import json
+from django.template.loader import render_to_string
 
 
 ### Homepage and Error Page ###
@@ -263,7 +264,7 @@ def search(request):
 
 @login_required(login_url="login")
 def game(request):
-    return render(request, 'sock.html', {'username': request.user.username})
+    return HttpResponse(render_to_string('sock.html', {'username': request.user.username}))
 
 @never_cache
 @login_required(login_url="login")

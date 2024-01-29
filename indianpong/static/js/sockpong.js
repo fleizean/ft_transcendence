@@ -1,6 +1,6 @@
 // sockpong.js
-const socket = new WebSocket('ws://' + window.location.host + '/ws/pong/');  // Replace with your WebSocket endpoint
-
+//export const socket = new WebSocket('ws://' + window.location.host + '/ws/pong/');  // Replace with your WebSocket endpoint
+import { socket } from "./gamesocket.js";
 
 const canvas = document.getElementById('pongCanvas');
 const context = canvas.getContext('2d');
@@ -319,7 +319,7 @@ socket.onmessage = function (e) {
         }
     }
     
-socket.sendJSON = function (data) {
+ socket.sendJSON = function (data) {
     socket.send(JSON.stringify(data));
 }
 

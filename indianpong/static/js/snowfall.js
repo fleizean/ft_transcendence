@@ -79,7 +79,7 @@ function togglePasswordVisibility(inputId) {
     }
 }
 
-document.addEventListener('DOMContentLoaded', function () {
+/* document.addEventListener('DOMContentLoaded', function () {
     const navbarToggler = document.querySelector(".navbar-toggler");
     const navbarNav = document.querySelector("#navbarNav");
 
@@ -88,7 +88,7 @@ document.addEventListener('DOMContentLoaded', function () {
         navbarNav.classList.toggle('show');
     });
 });
-
+ */
 
 document.addEventListener('DOMContentLoaded', function () {
     const burgerMenu = document.querySelector(".burger-menu");

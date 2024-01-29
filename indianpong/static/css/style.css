@@ -2748,3 +2748,11 @@ td {
   opacity: 1;
   visibility: visible;
 } */
+
+#pongCanvas {
+  display: block;
+  margin: 20px auto;
+  border: 1px solid #000;
+  position: relative; /* Required for z-index to take effect */
+  z-index: 2; /* Any number greater than the z-index of the background image */
+}
