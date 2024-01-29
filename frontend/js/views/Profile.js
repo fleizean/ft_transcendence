@@ -3,7 +3,7 @@ import AbstractView from "./AbstractView.js";
 export default class extends AbstractView {
     constructor(params) {
         super(params);
-        this.setTitle("Dashboard");
+        this.setTitle("Profile");
     }
     
     async getHtml() {
@@ -13,67 +13,68 @@ export default class extends AbstractView {
           <div class="logo">
             <img src="../../assets/logo.png" alt="IndianPong Logo" width="48" height="48">
             IndianPong
-          </div></a>
-      </div>
-        <ul class="nav-links">
-          <li><a href="/dashboard" data-link><i class="bi bi-house-door-fill"></i>Dashboard</a></li>
-          <li><a href="/chat" data-link><i class="bi bi-chat-fill"></i>Chat</a></li>
-          <li><a href="/pong-game" data-link><i class="bi bi-play-circle-fill"></i>Pong Game</a></li>
-          <li><a href="/rps-game" data-link><i class="bi bi-scissors"></i>RPS Game</a></li>
-          <li><a href="/rankings" data-link><i class="bi bi-bar-chart-fill"></i>Rankings</a></li>
-          <li><a href="/search" data-link><i class="bi bi-binoculars-fill"></i>Search</a></li>
-                    <li class="notification-menu">
-            <div class="notification-icon">
-                <i class="bi bi-bell-fill"></i>
-                
-            </div>
-            <div class="notification-submenu">
-            <a href="/test" data-link><i class="bi bi-person-fill"></i>Arda followed you!</a>
-            </div>
-         </li>
-          <li class="profile-menu">
-            <div class="profile-image">
-              <img src="../../assets/profile/profilephoto.jpeg" alt="Profile Image" width="48" height="48">
-            </div>
-            <div class="profile-submenu">
-              <a href="/profile" data-link><i class="bi bi-person-fill"></i>Profile</a>
-              <a href="/profile-settings" data-link><i class="bi bi-gear-fill"></i>Settings</a> 
-              <a href="/logout" data-link><i class="bi bi-box-arrow-right"></i>Logout</a>
-            </div>
-          </li>
-        </ul>
-        <div class="burger-menu">&#9776;</div>
-      </nav>
-
-      <div class="container-top">
-      <!-- "Edit Profile" ve "Match History" Navbar -->
-      <div class="row mt-4" style="margin-bottom:5px">
-          <div class="col">
-              <nav class="navbar navbar-expand-lg navbar-light bg-light rounded">
-                  <!-- Navbar Marka -->
-                  <!-- Navbar Toggle Butonu -->
-                  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-                      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                      <span class="navbar-toggler-icon"></span>
-                  </button>
-                  <!-- Navbar Menü -->
-                  <div class="collapse navbar-collapse" id="navbarNav">
-                      <ul class="navbar-nav ml-auto">                          
-                          <!-- "Match History" Linki -->
-                          <li class="nav-item">
-                              <a class="nav-link" href="/match-history"><i class="bi bi-easel-fill"></i> Match History</a>
-                          </li>
-                          <li class="nav-item">
-                            <a class="nav-link" href="/friends"><i class="bi bi-people-fill"></i> Friends</a>
-                          </li>
-
-                      </ul>
-                  </div>
-              </nav>
           </div>
-      </div>
-</div>
-    <div class="profile-card">
+            </a>
+              </div>
+                <ul class="nav-links">
+                  <li><a href="/dashboard" data-link><i class="bi bi-house-door-fill"></i>Dashboard</a></li>
+                  <li><a href="/chat" data-link><i class="bi bi-chat-fill"></i>Chat</a></li>
+                  <li><a href="/pong-game" data-link><i class="bi bi-play-circle-fill"></i>Pong Game</a></li>
+                  <li><a href="/rps-game" data-link><i class="bi bi-scissors"></i>RPS Game</a></li>
+                  <li><a href="/rankings" data-link><i class="bi bi-bar-chart-fill"></i>Rankings</a></li>
+                  <li><a href="/search" data-link><i class="bi bi-binoculars-fill"></i>Search</a></li>
+                            <li class="notification-menu">
+                    <div class="notification-icon">
+                        <i class="bi bi-bell-fill"></i>
+
+                    </div>
+                    <div class="notification-submenu">
+                    <a href="/test" data-link><i class="bi bi-person-fill"></i>Arda followed you!</a>
+                    </div>
+                 </li>
+                  <li class="profile-menu">
+                    <div class="profile-image">
+                      <img src="../../assets/profile/profilephoto.jpeg" alt="Profile Image" width="48" height="48">
+                    </div>
+                    <div class="profile-submenu">
+                      <a href="/profile" data-link><i class="bi bi-person-fill"></i>Profile</a>
+                      <a href="/profile-settings" data-link><i class="bi bi-gear-fill"></i>Settings</a> 
+                      <a href="/logout" data-link><i class="bi bi-box-arrow-right"></i>Logout</a>
+                    </div>
+                  </li>
+                </ul>
+                <div class="burger-menu">&#9776;</div>
+              </nav>
+
+              <div class="container-top">
+              <!-- "Edit Profile" ve "Match History" Navbar -->
+              <div class="row mt-4" style="margin-bottom:5px">
+                  <div class="col">
+                      <nav class="navbar navbar-expand-lg navbar-light bg-light rounded">
+                          <!-- Navbar Marka -->
+                          <!-- Navbar Toggle Butonu -->
+                          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                              aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                              <span class="navbar-toggler-icon"></span>
+                          </button>
+                          <!-- Navbar Menü -->
+                          <div class="collapse navbar-collapse" id="navbarNav">
+                              <ul class="navbar-nav ml-auto">                          
+                                  <!-- "Match History" Linki -->
+                                  <li class="nav-item">
+                                      <a class="nav-link" href="/match-history"><i class="bi bi-easel-fill"></i> Match History</a>
+                                  </li>
+                                  <li class="nav-item">
+                                    <a class="nav-link" href="/friends"><i class="bi bi-people-fill"></i> Friends</a>
+                                  </li>
+
+                              </ul>
+                          </div>
+                      </nav>
+                          </div>
+                      </div>
+                </div>
+            <div class="profile-card">
     
         <div class="row">
             <!-- Sol Sütun (col-lg-4) -->
@@ -94,7 +95,7 @@ export default class extends AbstractView {
                         <!-- Takip ve İstatistik Butonları -->
                         <div class="d-flex justify-content-center mb-2">
                             <button type="button" class="btn btn-danger"><i class="bi bi-heart-fill"></i> Follow</button>
-                            <button type="button" class="btn btn-dark" style="display:none"><i class="bi bi-heartbreak-fill"></i> Unfollow</button>
+                            <button type="button" class="unfollow-btn" style="display:none"><i class="bi bi-heartbreak-fill"></i> Unfollow</button>
                         </div>
                     </div>
                 </div>
@@ -191,7 +192,7 @@ export default class extends AbstractView {
                         <div class="card mb-4 mb-md-0">
                             <div class="card-body">
                                 <!-- Proje Durumu Başlığı -->
-                                <p class="mb-4"><span class="text-primary font-italic me-1">Fatih Terim </span> Rank</p>
+                                <p class="mb-4"><span class="text-primary font-italic me-1">Fatih Terim </span>/ Rank</p>
                                 <div class="rank-img">
                                     <img src="../../assets/ranks/challenger.png" alt="Challenger Rank">
                                 </div>
@@ -206,8 +207,33 @@ export default class extends AbstractView {
                         <div class="card mb-4 mb-md-0">
                             <div class="card-body">
                                 <!-- Proje Durumu Başlığı -->
-                                <p class="mb-4"><span class="text-primary font-italic me-1">Fatih Terim</span> Stats</p>
-                                    
+                                <p class="mb-4"><span class="text-primary font-italic me-1">Fatih Terim</span>/ Stats</p>
+                                <div class="stats-info">
+                                    <div class="stats">
+                                        <p class="stats-p"><i class="bi bi-dice-1-fill"></i> Games Played:</p>
+                                        <p class="stats-result-p">150</p>
+                                    </div>
+                                    <div class="stats">
+                                        <p class="stats-p"><i class="bi bi-trophy-fill"></i> Wins:</p>
+                                        <p class="stats-result-p">100</p>
+                                    </div>
+                                    <div class="stats">
+                                        <p class="stats-p"><i class="bi bi-emoji-frown-fill"></i> Loses:</p>
+                                        <p class="stats-result-p">50</p>
+                                    </div>
+                                    <div class="stats">
+                                        <p class="stats-p"><i class="bi bi-award-fill"></i> Win Rate:</p>
+                                        <p class="stats-result-p">50%</p>
+                                    </div>
+                                    <div class="stats">
+                                        <p class="stats-p"><i class="bi bi-bucket-fill"></i> Lose Rate:</p>
+                                        <p class="stats-result-p">50%</p>
+                                    </div>
+                                    <div class="stats">
+                                        <p class="stats-p"><i class="bi bi-clock-fill"></i> Average Game Duration:</p>
+                                        <p class="stats-result-p">14.1m</p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

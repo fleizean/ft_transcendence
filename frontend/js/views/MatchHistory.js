@@ -45,7 +45,7 @@ export default class extends AbstractView {
         <div class="burger-menu">&#9776;</div>
       </nav>
 
-      <div class="container-top">
+    <div class="container-top">
       <div class="row mt-4" style="margin-bottom:5px">
           <div class="col">
               <nav class="navbar navbar-expand-lg navbar-light bg-light rounded">
@@ -73,8 +73,11 @@ export default class extends AbstractView {
   </div>
 </div>
     <div class="card">
+      <div class="mhistory-card-header">
+          <h3 class="mhistory-header">/ Match History</h3>
+      </div>
       <div class="match-history">
-        <table class="card-table">
+        <table class="card-mhistory-table">
           <thead>
             <tr>
               <th>Opponent</th>
@@ -84,43 +87,43 @@ export default class extends AbstractView {
           </thead>
           <tbody>
             <tr>
-              <td>Aykut Kocaman</td>
-              <td>Won</th>
-              <td>5-2</th>
-              <td>27-07-2024-16:53</td>
-            </tr>
-            <tr>
-              <td>Aykut Kocaman</td>
+              <td class="mhistory-username">akocaman</td>
               <td class="won">Won</th>
               <td>5-2</th>
               <td>27-07-2024-16:53</td>
             </tr>
             <tr>
-              <td>Aykut Kocaman</td>
+              <td class="mhistory-username">akocaman</td>
               <td class="won">Won</th>
               <td>5-2</th>
               <td>27-07-2024-16:53</td>
             </tr>
             <tr>
-              <td>Aykut Kocaman</td>
-              <td class="won">Won</th>
-              <td>5-2</th>
-              <td>27-07-2024-16:53</td>
-            </tr>
-            <tr class="disabled">
-              <td>Aykut Kocaman</td>
+              <td class="mhistory-username">akocaman</td>
               <td class="won">Won</th>
               <td>5-2</th>
               <td>27-07-2024-16:53</td>
             </tr>
             <tr>
-              <td>Aykut Kocaman</td>
+              <td class="mhistory-username">akocaman</td>
+              <td class="won">Won</th>
+              <td>5-2</th>
+              <td>27-07-2024-16:53</td>
+            </tr>
+            <tr>
+              <td class="mhistory-username">akocaman</td>
+              <td class="won">Won</th>
+              <td>5-2</th>
+              <td>27-07-2024-16:53</td>
+            </tr>
+            <tr>
+              <td class="mhistory-username">akocaman</td>
               <td class="lose">Lose</th>
               <td>2-5</th>
               <td>27-07-2024-16:53</td>
             </tr>
             <tr>
-             <td>Aykut Kocaman</td>
+              <td class="mhistory-username">akocaman</td>
              <td class="lose">Lose</th>
              <td>2-5</th>
              <td>27-07-2024-16:53</td>

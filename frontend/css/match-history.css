@@ -1,8 +1,19 @@
 @import url(https://fonts.googleapis.com/css?family=Open+Sans:400,600);
 
+.mhistory-card-header {
+  margin-left: 1.8em;
+}
+
+.mhistory-header {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 1.2em;
+  font-weight: 600;
+}
+
 .match-history {
   font-family: 'Open Sans', sans-serif;
   margin: 1em auto; /* Merkezlemek için margin kullanıyoruz */
+  margin-top: -0.5em;
   max-width: 1200px;
   text-align: center;
   width: 100%; /* Make the table take up 100% of the container */
@@ -16,7 +27,7 @@
   margin-top: 20px; /* İhtiyaca göre ayarlayabilirsiniz */
 }
 
-.card-table {
+.card-mhistory-table {
   background: #012B39;
   border-radius: 0.25em;
   border-collapse: collapse;
@@ -26,36 +37,33 @@
   width: 100%;
 }
 
-.card-table th {
+.card-mhistory-table th {
   border-bottom: 1px solid #364043;
-  color: #E2B842;
+  color: #46c9f1;
   font-size: 0.85em;
   font-weight: 600;
   padding: 0.5em 1em;
 }
 
-.card-table td {
+.card-mhistory-table thead {
+  background-color: #061d24;
+}
+
+.card-mhistory-table td {
   color: #fff;
-  font-weight: 400;
   padding: 0.65em 1em;
 }
 
-.card-table tr .lose {
+.card-mhistory-table tr .lose {
   color: red;
+  font-weight: 400;
 }
 
-.card-table tr .won {
+.card-mhistory-table tr .won {
   color: green;
+  font-weight: 400;
 }
 
-.card-table .disabled td {
-  color: #4F5F64;
-}
-
-.card-table tbody tr {
-  transition: background 0.25s ease;
-}
-
-.card-table tbody tr:hover {
-  background: #014055;
+.card-mhistory-table tr .mhistory-username {
+  font-weight: 400;
 }

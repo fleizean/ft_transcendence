@@ -74,6 +74,9 @@ export default class extends AbstractView {
       </div>
   </div>
   <div class="card-friends-list">
+    <div class="friend-list-card-header">
+        <h3 class="friend-list-header">/ Friends List</h3>
+    </div>
   <div class="friends-list">
       <div class="row">
           <div class="col-md-6 col-xl-3">                       
@@ -87,9 +90,9 @@ export default class extends AbstractView {
                               <p class="card-text">
                                   erikawhitaker@uniworld.com<br><abbr title="Phone">P:  </abbr>+1 (911) 484-3333
                               </p>
-                              <button type="button" class="btn btn-dark"><i class="bi bi-heartbreak-fill"></i> Unfollow</button>
+                              <button type="button" class="unfollow-btn"><i class="bi bi-heartbreak-fill"></i> Unfollow</button>
                           </div>
-                      </div><a href="#" class="tile-link"></a>
+                      </div>
                   </div>
               </div>
           </div>
@@ -104,9 +107,9 @@ export default class extends AbstractView {
                               <p class="card-text">
                                   meyersswanson@candecor.com<br><abbr title="Phone">P:  </abbr>+1 (999) 404-3297
                               </p>
-                              <button type="button" class="btn btn-dark"><i class="bi bi-heartbreak-fill"></i> Unfollow</button>
+                              <button type="button" class="unfollow-btn"><i class="bi bi-heartbreak-fill"></i> Unfollow</button>
                           </div>
-                      </div><a href="#" class="tile-link"></a>
+                      </div>
                   </div>
               </div>
           </div>
@@ -121,9 +124,9 @@ export default class extends AbstractView {
                               <p class="card-text">
                                   townsendsloan@rameon.com<br><abbr title="Phone">P:  </abbr>+1 (978) 563-2964
                               </p>
-                              <button type="button" class="btn btn-dark"><i class="bi bi-heartbreak-fill"></i> Unfollow</button>
+                              <button type="button" class="unfollow-btn"><i class="bi bi-heartbreak-fill"></i> Unfollow</button>
                           </div>
-                      </div><a href="#" class="tile-link"></a>
+                          </div>
                   </div>
               </div>
           </div>
@@ -138,9 +141,9 @@ export default class extends AbstractView {
                               <p class="card-text">
                                   millicenthenry@balooba.com<br><abbr title="Phone">P:  </abbr>+1 (863) 585-3988
                               </p>
-                              <button type="button" class="btn btn-dark"><i class="bi bi-heartbreak-fill"></i> Unfollow</button>
+                              <button type="button" class="unfollow-btn"><i class="bi bi-heartbreak-fill"></i> Unfollow</button>
                           </div>
-                      </div><a href="#" class="tile-link"></a>
+                      </div>
                   </div>
               </div>
           </div>

@@ -69,6 +69,7 @@
   .forgot-pass {
     position: relative;
     text-align: right;
+    margin-top: -10px;
     margin-bottom: -10px;
   }
   

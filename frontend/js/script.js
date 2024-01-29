@@ -214,3 +214,20 @@ function setCanvasSize() {
 
 document.addEventListener("DOMContentLoaded", setCanvasSize);
 window.addEventListener("resize", setCanvasSize);
+
+
+function changeIcon(button) {
+    var icon = button.querySelector('.bi');
+    if (icon) {
+      icon.classList.remove('bi-heartbreak-fill');
+      icon.classList.add('bi-heart-fill');
+    }
+  }
+  
+  function restoreIcon(button) {
+    var icon = button.querySelector('.bi');
+    if (icon) {
+      icon.classList.remove('bi-heart-fill');
+      icon.classList.add('bi-heartbreak-fill');
+    }
+  }

@@ -44,9 +44,101 @@ export default class extends AbstractView {
     </ul>
     <div class="burger-menu">&#9776;</div>
   </nav>
-            <div class="container-top">
-                <div class="card">
-                </div>
+          <div class="container-top">
+            <div class="card">
+            <div class="rankings-card-header">
+              <h3 class="rankings-header"> / Rankings</h3>
+            </div>
+            <div class="rankings">
+            <table class="card-rankings-table">
+              <thead>
+                <tr>
+                  <th>Rank</th>
+                  <th>Users</th>
+                  <th>Wins</th>
+                  <th>Losses</th>
+                  <th>Win Rate</th>
+                  <th>Pong Point (PP)</th>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="rank-number">1</td>
+                  <td class="rank-username">fterim</th>
+                  <td class="wins">5</th>
+                  <td class="losses">0</td>
+                  <td class="win-rate">100%</td>
+                  <td>60</td>
+                </tr>
+                <tr>
+                  <td class="rank-number">2</td>
+                  <td class="rank-username">fterim</th>
+                  <td class="wins">5</th>
+                  <td class="losses">0</td>
+                  <td class="win-rate">100%</td>
+                  <td>60</td>
+                </tr>
+                <tr>
+                  <td class="rank-number">3</td>
+                  <td class="rank-username">fterim</th>
+                  <td class="wins">5</th>
+                  <td class="losses">0</td>
+                  <td class="win-rate">100%</td>
+                  <td>60</td>
+                </tr>
+                <tr>
+                  <td class="rank-number">4</td>
+                  <td class="rank-username">fterim</th>
+                  <td class="wins">5</th>
+                  <td class="losses">0</td>
+                  <td class="win-rate">100%</td>
+                  <td>60</td>
+                </tr>
+                <tr>
+                  <td class="rank-number">5</td>
+                  <td class="rank-username">fterim</th>
+                  <td class="wins">5</th>
+                  <td class="losses">0</td>
+                  <td class="win-rate">100%</td>
+                  <td>60</td>
+                </tr>
+                <tr>
+                  <td class="rank-number">6</td>
+                  <td class="rank-username">fterim</th>
+                  <td class="wins">5</th>
+                  <td class="losses">0</td>
+                  <td class="win-rate">100%</td>
+                  <td>60</td>
+                </tr>
+                <tr>
+                  <td class="rank-number">7</td>
+                  <td class="rank-username">fterim</th>
+                  <td class="wins">5</th>
+                  <td class="losses">0</td>
+                  <td class="win-rate">100%</td>
+                  <td>60</td>
+                </tr>
+    
+              </tbody>
+            </table>
+            <nav aria-label="Page navigation example">
+              <ul class="pagination">
+                <li class="page-item">
+                  <a class="page-link" href="#" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                  </a>
+                </li>
+                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item">
+                  <a class="page-link" href="#" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                  </a>
+                </li>
+              </ul>
+            </nav>
+          </div>
+            </div>
 	        </div>
 
         `;
