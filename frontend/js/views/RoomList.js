@@ -23,6 +23,7 @@ export default class extends AbstractView {
 			<li><a href="/rps-game" data-link><i class="bi bi-scissors"></i>RPS Game</a></li>
 			<li><a href="/rankings" data-link><i class="bi bi-bar-chart-fill"></i>Rankings</a></li>
 			<li><a href="/search" data-link><i class="bi bi-binoculars-fill"></i>Search</a></li>
+			<li><a href="/about-us" data-link><i class="bi bi-4-square-fill"></i>About Us</a></li>
 			<li class="notification-menu">
 			<div class="notification-icon">
 					<i class="bi bi-bell-fill"></i>

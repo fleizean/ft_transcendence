@@ -23,6 +23,7 @@ export default class extends AbstractView {
                   <li><a href="/rps-game" data-link><i class="bi bi-scissors"></i>RPS Game</a></li>
                   <li><a href="/rankings" data-link><i class="bi bi-bar-chart-fill"></i>Rankings</a></li>
                   <li><a href="/search" data-link><i class="bi bi-binoculars-fill"></i>Search</a></li>
+                  <li><a href="/about-us" data-link><i class="bi bi-4-square-fill"></i>About Us</a></li>
                             <li class="notification-menu">
                     <div class="notification-icon">
                         <i class="bi bi-bell-fill"></i>
@@ -105,23 +106,23 @@ export default class extends AbstractView {
                         <ul class="list-group list-group-flush rounded-3">
                             <!-- Website -->
                             <li class="list-group-item d-flex justify-content-between align-items-center p-3">
-                                <i class="bi bi-globe"></i>
-                                <p class="mb-0">www.indianpong.com</p>
+                                <i class="bi bi-stack-overflow" style="color: orange"></i>
+                                <p class="mb-0">fatihterim</p>
                             </li>
                             <!-- GitHub -->
                             <li class="list-group-item d-flex justify-content-between align-items-center p-3">
                                 <i class="bi bi-github" style="color: #333333;"></i>
-                                <p class="mb-0">fleizean</p>
+                                <p class="mb-0">fatihterim</p>
                             </li>
                             <!-- Twitter -->
                             <li class="list-group-item d-flex justify-content-between align-items-center p-3">
-                                <i class="bi bi-twitter" style="color: #55acee;"></i>
-                                <p class="mb-0">@test</p>
+                                <i class="bi bi-twitter-x" style="color: #55acee;"></i>
+                                <p class="mb-0">fatihterim</p>
                             </li>
                             <!-- Instagram -->
                             <li class="list-group-item d-flex justify-content-between align-items-center p-3">
                                 <i class="bi bi-instagram" style="color: #ac2bac;"></i>
-                                <p class="mb-0">fleizean</p>
+                                <p class="mb-0">fatihterim</p>
                             </li>
                         </ul>
                     </div>

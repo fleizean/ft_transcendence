@@ -14,11 +14,11 @@ import RpsGame from "./views/RpsGame.js";
 import Pass2FA from "./views/Pass2FA.js";
 import GameRoom from "./views/GameRoom.js";
 import RoomList from "./views/RoomList.js";
-import GameChart from "./views/GameChart.js";
 import Chat from "./views/Chat.js";
 import InChat from "./views/InChat.js";
 import ForgotPassword from "./views/ForgotPassword.js";
 import Pong from "./views/Pong.js";
+import AboutUs from "./views/AboutUs.js";
 
 const pathToRegex = path => new RegExp("^" + path.replace(/\//g, "\\/").replace(/:\w+/g, "(.+)") + "$");
 
@@ -49,15 +49,17 @@ const router = async () => {
         { path: '/profile', view: Profile},
         { path: '/game-room', view: GameRoom},
         { path: '/room-list', view: RoomList},
-        { path: '/game-chart', view: GameChart},
         { path: '/forgot-password', view: ForgotPassword},
         { path: '/chat', view: Chat},
         { path: '/in-chat', view: InChat},
         { path: '/in-game', view: Pong},
+        { path: '/about-us', view: AboutUs},
         { path: '/pass2fa', view: Pass2FA},
         { path: '/profile-settings', view: ProfileSettings},
         { path: '/match-history', view: MatchHistory},
         { path: '/friends', view: Friends},
+        { path: '/404', view: Error404},
+        { path: '(.*)', view: Error404 },
     ];
 
     // Test each route for potential match

@@ -482,6 +482,18 @@ img {
   margin: 0 auto; /* Ortalamak için */
 }
 
+.dashboard-card {
+  background-color: #F1F1FB;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  max-width: 1300px;
+  width: 100%;
+  height: auto; /* Yüksekliği otomatik ayarla */
+  max-height: auto;
+  margin: 0 auto; /* Ortalamak için */
+}
+
 .profile-card {
   background-color: #F1F1FB;
   padding: 20px;
@@ -496,7 +508,7 @@ img {
 
 
 
-@media screen and (max-width: 991px) {
+@media screen and (max-width: 1029px) {
   .nav-links {
     display: none;
     flex-direction: column;
@@ -1514,7 +1526,7 @@ p {
 
 
 
-/* Game Chart Area */
+/* Game Room Area */
 
 .game-chart-middle {
   text-align: center;

@@ -22,6 +22,7 @@ export default class extends AbstractView {
 	  <li><a href="/rps-game" data-link><i class="bi bi-scissors"></i>RPS Game</a></li>
       <li><a href="/rankings" data-link><i class="bi bi-bar-chart-fill"></i>Rankings</a></li>
       <li><a href="/search" data-link><i class="bi bi-binoculars-fill"></i>Search</a></li>
+      <li><a href="/about-us" data-link><i class="bi bi-4-square-fill"></i>About Us</a></li>
       <li class="notification-menu">
         <div class="notification-icon">
             <i class="bi bi-bell-fill"></i>
@@ -46,7 +47,7 @@ export default class extends AbstractView {
   </nav>
 
       <div class="container-top">
-        <div class="card">
+        <div class="dashboard-card">
           <div class="page-rotation">
             <h1>Welcome to IndianPong %Name</h1>
             <p>Indian Pong is a collaborative project developed for the 42 school community, offering a nostalgic gaming experience through the classic Atari game, Ping-Pong. This platform allows users to engage in Ping-Pong matches with each other, fostering a sense of friendly competition. In addition to the gaming aspect, Indian Pong provides a social dimension, featuring chat rooms where users can communicate and connect with one another. The platform also enables users to expand their network by adding friends within the 42 school community. Overall, Indian Pong combines the joy of retro gaming with modern social interaction, creating a vibrant and interactive experience for the 42 school community.</p>
