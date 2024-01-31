@@ -1,0 +1,75 @@
+
+.left-card {
+    width: 300px;
+    height: auto;
+    background-color: #ddd;
+    padding: 10px;
+    margin-right: 20px; /* İstediğiniz boşluk değerini ayarlayabilirsiniz */
+    margin-left: 1em;
+    float: left;
+}
+
+.custom-table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.custom-table th, .custom-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.custom-table img {
+    border-radius: 50%;
+    border: 1px soldi #ffffff;
+    width: 28px;
+    height: 28px;
+    object-fit: cover; /* Ya da 'contain' kullanabilirsiniz */
+}
+
+.custom-table tr:hover {
+    background-color: #b6b6b6;
+}
+
+.custom-table .btn-outline-success {
+    padding: 4px 8px;
+    font-size: 14px;
+}
+
+.custom-table .btn-outline-primary {
+    padding: 4px 8px;
+    font-size: 14px;
+}
+
+.custom-table .btn-outline-danger {
+    padding: 4px 8px;
+    font-size: 14px;
+}
+
+.pagination {
+    display: flex;
+    list-style: none;
+    padding: 0;
+}
+
+.pagination a {
+    color: rgb(0, 0, 0);
+    padding: 8px 16px;
+    text-decoration: none;
+    transition: background-color .3s;
+}
+
+.pagination a:hover {
+    background-color: #ffffff;
+}
+
+.canvas-container {
+    float: left;
+}
+
+#myCanvas {
+    border: 1px solid #ffffff;
+    background-image: url("https://s1.dmcdn.net/v/NGyfI1X-BUVhMfsej/x1080");
+    background-repeat: no-repeat;
+}
