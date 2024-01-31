@@ -186,6 +186,10 @@ def profile_view(request, username):
     return render(request, 'profile.html', {'profile': profile})
 
 ### Profile Settings ###
+@never_cache
+@login_required(login_url="login")
+def profile_settings(request, username): #TODO: Implement
+    pass
 
 @never_cache
 @login_required(login_url="login")

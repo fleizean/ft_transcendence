@@ -18,7 +18,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
-from pong.views import auth_callback, chat,base, rankings, dashboard, game, index, auth, profile_view, search, signup, login_view, logout_view, update_profile, create_tournament, start_chat, room
+from pong.views import auth_callback, chat,base, profile_settings, rankings, dashboard, game, index, auth, profile_view, search, signup, login_view, logout_view, update_profile, create_tournament, start_chat, room
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -40,6 +40,7 @@ urlpatterns = [
     path('search', search, name='search'),
     path('game', game, name='game'),
     path('profile/<str:username>', profile_view, name='profile'),
+    path("profile/<str:username>/settings", profile_settings, name="settings"),
     path('update_profile', update_profile, name='update_profile'),
     path('create_tournament', create_tournament, name='create_tournament'),
     #path('create_tournament_match', create_tournament_match, name='create_tournament_match'),
