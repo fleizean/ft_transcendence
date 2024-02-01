@@ -1,50 +1,54 @@
 {% load static %}
 
-
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    {% block title %}<title>Indian-Pong</title>{% endblock  %}
-    <link rel="stylesheet" href="{% static "css/style.css" %}">
-    <link rel="stylesheet" href="{% static "css/chat.css" %}">
-    <link rel="stylesheet" href="{% static "css/profilesettings.css" %}">
-    <link rel="stylesheet" href="{% static "css/in-game.css" %}">
-    <link rel="stylesheet" href="{% static "css/match-history.css" %}">
-    <link rel="stylesheet" href="{% static "css/friends-list.css" %}">
-    <link rel="stylesheet" href="{% static "css/game-find.css" %}">
-    <link rel="stylesheet" href="{% static "css/rankings.css" %}">
-    <link rel="stylesheet" href="{% static "css/profile.css" %}">
-    <link rel="stylesheet" href="{% static "css/register.css" %}">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  {% block title %}<title>Indian-Pong</title>{% endblock %}
+  <link rel="stylesheet" href="../../../static/css/style.css">
+  <link rel="stylesheet" href="../../../static/css/chat.css">
+  <link rel="stylesheet" href="../../../static/css/profilesettings.css">
+  <link rel="stylesheet" href="../../../static/css/in-game.css">
+  <link rel="stylesheet" href="../../../static/css/match-history.css">
+  <link rel="stylesheet" href="../../../static/css/friends-list.css">
+  <link rel="stylesheet" href="../../../static/css/game-find.css">
+  <link rel="stylesheet" href="../../../static/css/rankings.css">
+  <link rel="stylesheet" href="../../../static/css/profile.css">
+  <link rel="stylesheet" href="../../../static/css/register.css">
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
 
 </head>
 
 <body>
-        <div class="backgroundimage">
-          <div id="nav">
-            
-          </div>
-            <div class="app" id="app">
-                <div class="cursor">
-                    <div class="container">
-                      <div class="HeaderArea" id="HeaderArea">
-                        <div class="big-text">Indian-Pong</div>
-                        <div class="small-text">
-                          Indian-Pong created for 42 school by Indian Dev!
-                        </div>
-                        <a href="/login" data-link><button type="button" class="PixellButton">Get Started!</button></a>
-                      </div>
-                    </div>
-                  </div>
+  <div class="backgroundimage">
+
+    <div class="app" id="app">
+      <div class="cursor">
+        <div class="container">
+          <div class="HeaderArea" id="HeaderArea">
+            <div class="big-text">Indian-Pong</div>
+            <div class="small-text">
+              Indian-Pong created for 42 school by Indian Dev!
             </div>
+            <a href="/login" data-link><button type="button" class="PixellButton">Get Started!</button></a>
+          </div>
         </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="{% static "js/index.js" %} "></script>
+      </div>
+    </div>
+  </div>
+  <script>
+    fetch('/base')
+      .then(response => response.text())
+      .then(html => {
+        document.querySelector('#app').innerHTML = html;
+    });
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="{% static " js/index.js" %} "></script>
 </body>
 
 </html>

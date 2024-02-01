@@ -24,13 +24,13 @@
       <a href="/test" data-link><i class="bi bi-person-fill"></i>Arda followed you!</a>
       </div>
    </li>
-      <li class="profile-menu">
+      <li class="profile-menu"> 
         <div class="profile-image">
           <img src="{% static "assets/profile/profilephoto.jpeg" %}" alt="Profile Image" width="48" height="48">
         </div>
         <div class="profile-submenu">
-          <a href="{% url "profile" username %}" data-link><i class="bi bi-person-fill"></i>Profile</a>
-          <a href="{% url "settings" username %}" data-link><i class="bi bi-gear-fill"></i>Settings</a> 
+          <a href="/profile/{{username}}" data-link><i class="bi bi-person-fill"></i>Profile</a>
+          <a href="/profile/{{username}}" data-link><i class="bi bi-gear-fill"></i>Settings</a> 
           <a href="/logout" data-link><i class="bi bi-box-arrow-right"></i>Logout</a>
         </div>
       </li>
