@@ -24,11 +24,8 @@ import json
 
 @never_cache
 def index(request):
-    return render(request, '_nav.html')
+    return HttpResponse(render_to_string('new/index.html'))
 
-@never_cache
-def base(request):
-    return HttpResponse(render_to_string('base.html'))
 
 def handler404(request, exception):
     return render(request, '404.html', status=404)
@@ -46,7 +43,7 @@ def signup(request):
             return redirect('profile', request.user)
     else:
         form = UserProfileForm()
-    return render(request, 'signup.html', {'form': form})
+    return HttpResponse(render_to_string('signup.html', {'form': form}))
 
 #state_req = secrets.token_hex(25)
 @never_cache
@@ -157,7 +154,7 @@ def login_view(request):
             return redirect('dashboard')
     else:
         form = AuthenticationUserForm()
-    return HttpResponse(render_to_string('login.html', {'form': form}))#render(request, 'login.html', {'form': form})
+    return HttpResponse(render_to_string('new/login.html', {'form': form}))#render(request, 'login.html', {'form': form})
 
 @never_cache
 @login_required(login_url="login")

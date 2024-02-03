@@ -1,8 +1,13 @@
-{% include '_nav.html' %} 
+{% extends "base.html" %}
+
+{% block title %}Dashboard{% endblock title %}
+
+{% block app %}
+  {% include "_nav.html" %}
 <div class="container-top">
   <div class="dashboard-card">
     <div class="page-rotation">
-      <h1>Welcome to IndianPong %Name</h1>
+      <h1>Welcome to IndianPong {{username}}</h1>
       <p>
         Indian Pong is a collaborative project developed for the 42 school
         community, offering a nostalgic gaming experience through the classic
@@ -22,7 +27,7 @@
             <div class="card-block">
               <h6 class="m-b-20">Games Played</h6>
               <h2 class="text-right">
-                <i class="bi bi-dice-1-fill"></i><span>50</span>
+                <i class="bi bi-dice-1-fill"></i><span>{{games_played}}</span>
               </h2>
             </div>
           </div>
@@ -33,7 +38,7 @@
             <div class="card-block">
               <h6 class="m-b-20">Win Count</h6>
               <h2 class="text-right">
-                <i class="bi bi-trophy-fill"></i><span>486</span>
+                <i class="bi bi-trophy-fill"></i><span>{{win_count}}</span>
               </h2>
             </div>
           </div>
@@ -44,7 +49,7 @@
             <div class="card-block">
               <h6 class="m-b-20">Win Streak</h6>
               <h2 class="text-right">
-                <i class="bi bi-emoji-wink-fill"></i><span>486</span>
+                <i class="bi bi-emoji-wink-fill"></i><span>{{win_streak}}</span>
               </h2>
             </div>
           </div>
@@ -55,7 +60,7 @@
             <div class="card-block">
               <h6 class="m-b-20">Lose Streak</h6>
               <h2 class="text-right">
-                <i class="bi bi-emoji-frown-fill"></i><span>486</span>
+                <i class="bi bi-emoji-frown-fill"></i><span>{{lose_streak}}</span>
               </h2>
             </div>
           </div>
@@ -66,7 +71,7 @@
             <div class="card-block">
               <h6 class="m-b-20">Win Rate %</h6>
               <h2 class="text-right">
-                <i class="bi bi-award-fill"></i><span>50</span>
+                <i class="bi bi-award-fill"></i><span>{{win_rate}}</span>
               </h2>
             </div>
           </div>
@@ -78,7 +83,7 @@
               <h6 class="m-b-20">Average Game Duration</h6>
               <h2 class="text-right">
                 <i class="bi bi-clock-fill"></i>
-                <span class="big">30</span> <span class="small">min</span>
+                <span class="big">{{avg_game_duration}}</span> <span class="small">min</span>
               </h2>
             </div>
           </div>
@@ -89,7 +94,7 @@
             <div class="card-block">
               <h6 class="m-b-20">Average Points Won</h6>
               <h2 class="text-right">
-                <i class="bi bi-star-fill"></i><span>30</span>
+                <i class="bi bi-star-fill"></i><span>{{average_points_won}}</span>
               </h2>
             </div>
           </div>
@@ -100,7 +105,7 @@
             <div class="card-block">
               <h6 class="m-b-20">Average Points Lost</h6>
               <h2 class="text-right">
-                <i class="bi bi-bucket-fill"></i><span>20</span>
+                <i class="bi bi-bucket-fill"></i><span>{{average_points_lost}}</span>
               </h2>
             </div>
           </div>
@@ -109,3 +114,4 @@
     </div>
   </div>
 </div>
+{% endblock %}

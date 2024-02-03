@@ -1,4 +1,8 @@
-{% include '_nav.html' %} 
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ profile.username }}{% endblock title %}
+{% block app %}
 <div class="container-top">
     <!-- "Edit Profile" ve "Match History" Navbar -->
     <div class="row mt-4" style="margin-bottom:5px">
@@ -18,7 +22,7 @@
                             <a class="nav-link" href="/match-history"><i class="bi bi-easel-fill"></i> Match History</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="/friends"><i class="bi bi-people-fill"></i> Friends</a>
+                            <a class="nav-link" href="{% url "friends" username%}"><i class="bi bi-people-fill"></i> Friends</a>
                         </li>
 
                     </ul>
@@ -38,7 +42,7 @@
                 <span class="pro-profile"><i class="bi bi-award-fill"></i> 1ST IN RANKINGS</span>
                 <div class="card-body text-center">
                     <!-- Avatar -->
-                    <img src="../../assets/profile/profilephoto.jpeg" alt="avatar" class="rounded-circle img-fluid"
+                    <img src="{% static "assets/profile/profilephoto.jpeg" %}" alt="avatar" class="rounded-circle img-fluid"
                         style="width: 150px;">
                     <!-- İsim -->
                     <h5 class="my-3">Fatih Terim</h5>
@@ -149,7 +153,7 @@
                             <!-- Proje Durumu Başlığı -->
                             <p class="mb-4"><span class="text-primary font-italic me-1">Fatih Terim </span>/ Rank</p>
                             <div class="rank-img">
-                                <img src="../../assets/ranks/challenger.png" alt="Challenger Rank">
+                                <img src="{% static "assets/ranks/challenger.png" %}" alt="Challenger Rank">
                             </div>
                             <div class="rank-info">
                                 <h4 class="rank-h4">Challenger</h4>
@@ -196,3 +200,4 @@
         </div>
     </div>
 </div>
+{% endblock %}

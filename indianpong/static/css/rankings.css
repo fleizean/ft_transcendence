@@ -62,6 +62,10 @@
   font-weight: 400;
 }
 
+.card-rankings-table .pong-point {
+  color: #5bb9e2;
+}
+
 
 .card-rankings-table tr .wins {
   color: green;

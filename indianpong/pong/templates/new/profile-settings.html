@@ -1,4 +1,9 @@
-{% include '_nav.html' %} 
+{% extends 'base.html' %}
+
+{% block title %}{{username}} Profile Settings{% endblock %}
+
+{% block app %}
+    {% include "_nav.html" %}
 <div class="container-top">
     <div class="profile-settings-card">
         <div class="row">
@@ -22,16 +27,12 @@
                                     Password</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="javascript:void(0);" onclick="displaySection('addSocial')"><i
+                                <a class="nav-link" href="#addsocial" onclick="displaySection('addSocial')"><i
                                         class="bi bi-bookmark-fill"></i> Add Socials</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="javascript:void(0);"
                                     onclick="displaySection('blockedUsers')"><i class="bi bi-ban"></i> Blocked Users</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="javascript:void(0);" onclick="displaySection('google2FA')"><i
-                                        class="bi bi-google"></i> Google 2FA</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="javascript:void(0);"
@@ -49,10 +50,10 @@
 
                 <!-- Edit Profile Form -->
                 <section id="editProfile">
-                    <form id="editProfileForm">
+                    <form id="editProfileForm" enctype="multipart/form-data" method="post">
                         <div class="profile-pic-container">
                             <label for="fileInput" class="profile-pic-label">
-                                <img src="../../assets/profile/profilephoto.jpeg" alt="Profile Picture"
+                                <img src="{{avatar}}" alt="Profile Picture"
                                     class="profile-pic">
                                 <div class="change-image-overlay">
                                     <span class="bi bi-image-fill"></span>
@@ -78,34 +79,10 @@
                         </div>
 
                         <!-- Firstname textbox -->
-                        <div class="row gx-3 mb-3">
-                            <!-- Form Group (first name)-->
-                            <div class="col-md-6">
-                                <label class="small mb-1" for="inputFirstName">First name</label>
-                                <input class="form-control" id="inputFirstName" type="text"
-                                    placeholder="Enter your Name" value="Fatih">
-                            </div>
-                            <!-- Form Group (last name)-->
-                            <div class="col-md-6">
-                                <label class="small mb-1" for="inputLastName">Last name</label>
-                                <input class="form-control" id="inputLastName" type="text"
-                                    placeholder="Enter your Last Name" value="Terim">
-                            </div>
-                        </div>
-                        <!-- Email address textbox -->
-                        <div class="row gx-3 mb-3">
-                            <!-- Form Group (phone number)-->
-                            <div class="col-md-6">
-                                <label class="small mb-1" for="inputPhone">Phone number</label>
-                                <input class="form-control" id="inputPhone" type="tel"
-                                    placeholder="Enter your Phone number" value="(545) 411 9245">
-                            </div>
-                            <!-- Form Group (birthday)-->
-                            <div class="col-md-6">
-                                <label class="small mb-1" for="inputBirthday">Birthday</label>
-                                <input class="form-control" id="inputBirthday" type="date" name="birthday"
-                                    value="2002-07-27">
-                            </div>
+                        <div class="mb-3">                           
+                                <label class="small mb-1" for="inputDisplayName">Displayname</label>
+                                <input class="form-control" id="inputDisplayName" type="text"
+                                    placeholder="Enter your Display Name" value="Fatih">
                         </div>
                         <!-- Submit button -->
                         <button type="submit" class="btn btn-success">Save Changes</button>
@@ -117,7 +94,7 @@
                 <!-- Change Password Section -->
                 <section id="changePassword">
                     <!-- Your code for changing password goes here -->
-                    <form id="changePasswordForm">
+                    <form id="changePasswordForm" enctype="multipart/form-data" method="post">
                         <div class="mb-3 position-relative">
                             <label class="small mb-1" for="currentPassword">Current Password</label>
                             <div class="input-group">
@@ -157,7 +134,7 @@
                 </section>
 
                 <section id="addSocial">
-                    <form id="addSocialForm">
+                    <form id="addSocialForm" enctype="multipart/form-data" method="post">
                         <div class="mb-3 position-relative">
                             <label class="small mb-1" for="socialStackoverflow">
                                 <i class="bi bi-stack-overflow fs-4"></i> Stackoverflow
@@ -198,17 +175,6 @@
                             </div>
                         </div>
 
-                        <div class="mb-3 position-relative">
-                            <label class="small mb-1" for="socialLinkedin">
-                                <i class="bi bi-linkedin fs-4"></i> Linkedin
-                            </label>
-                            <div class="input-group">
-                                <input class="form-control" id="socialLinkedin" type="text"
-                                    placeholder="Enter your Linkedin username">
-                            </div>
-                        </div>
-
-
                         <!-- Diğer sosyal medya platformları için benzer şekilde devam edebilirsiniz -->
 
                         <button type="submit" class="btn btn-primary"><i class="bi bi-save-fill"></i> Save
@@ -217,7 +183,7 @@
                 </section>
 
                 <section id="closeAccount">
-                    <form id="closeAccountForm">
+                    <form id="closeAccountForm" enctype="multipart/form-data" method="post">
                         <div class="mb-3 position-relative">
                             <label class="small mb-1" for="passwordToDeleteAccount">
                                 Enter your password to delete your account:
@@ -242,107 +208,48 @@
                     </form>
                 </section>
 
-                <section id="google2FA">
-                    <form id="google2FAForm">
-                        <h3>Secure Your Account</h3>
-                        <div id="qrCodeContainer" class="mb-3"></div>
-                        <p>Scan this QR code using a mobile app (for example, "Google Authenticator"). The application
-                            will show a six-digit number, which must be specified in the login.</p>
-                    </form>
-
-                    <button class="google2fa-active" onclick="active2FA()">Active 2FA</button>
-                    <button class="google2fa-disable" onclick="disable2FA()">Disable 2FA</button>
-                    <button class="google2fa-refresh" onclick="refreshQRCode()">Refresh QR Code</button>
-                </section>
-
                 <section id="blockedUsers">
                     <form id="blockedUsersForm">
                         <h4>Blocked Accounts</h4>
                         <p class="blocked-users-info">Someone you block cannot follow or message you and you will not
                             receive notifications from them.</p>
                         <div class="accounts-list">
-                            <div class="account">
-                                <div class="profile-info">
-                                    <a href="/profile" data-link><img src="../../assets/profile/profilephoto.jpeg"
-                                            alt="Profile Image"></a>
-                                    <div class="user-details">
-                                        <a href="/profile" data-link>
-                                            <h5>Fatih Terim</h5>
+                            {% for blocked in blocked_page_obj %}
+                                <div class="account">
+                                    <!-- form post edileceği yer -->
+                                    <div class="profile-info">
+                                        <a href="/profile" data-link><img src="{{blocked.avatar}}"
+                                                alt="Profile Image"></a>
+                                        <div class="user-details">
+                                            <a href="/profile" data-link>
+                                                <h5>{{blocked.displayname}}</h5>
+                                            </a>
+                                            <p>{{blocked.username}}</p>
+                                        </div>
+                                        <button type="submit" class="btn-block">Blocked</button> <!--kişi blockladığı kişiyi çıkarmak için isim karşılığına button -->
+                                    </div>
+                                </div>
+                            {% endfor %}
+                            
+                            <nav aria-label="Page navigation example">
+                                <ul class="pagination">
+                                    <li class="page-item {% if blocked_page_obj.has_previous %}disabled{% endif %}">
+                                        <a class="page-link" href="{% if blocked_page_obj.has_previous %}?page={{ blocked_page_obj.previous_page_number }}{% endif %}" aria-label="Previous">
+                                            <span aria-hidden="true">&laquo;</span>
                                         </a>
-                                        <p>@fatihterim</p>
-                                    </div>
-                                    <button class="btn-block">Blocked</button>
-                                </div>
-                            </div>
-                            <div class="account">
-                                <div class="profile-info">
-                                    <img src="../../assets/profile/profilephoto.jpeg" alt="Profile Image">
-                                    <div class="user-details">
-                                        <h5>Fatih Terim</h5>
-                                        <p>@fatihterim</p>
-                                    </div>
-                                    <button class="btn-block">Blocked</button>
-                                </div>
-                            </div>
-                            <div class="account">
-                                <div class="profile-info">
-                                    <img src="../../assets/profile/profilephoto.jpeg" alt="Profile Image">
-                                    <div class="user-details">
-                                        <h5>Fatih Terim</h5>
-                                        <p>@fatihterim</p>
-                                    </div>
-                                    <button class="btn-block">Blocked</button>
-                                </div>
-                            </div>
-                            <div class="account">
-                                <div class="profile-info">
-                                    <img src="../../assets/profile/profilephoto.jpeg" alt="Profile Image">
-                                    <div class="user-details">
-                                        <h5>Fatih Terim</h5>
-                                        <p>@fatihterim</p>
-                                    </div>
-                                    <button class="btn-block">Blocked</button>
-                                </div>
-                            </div>
-                            <div class="account">
-                                <div class="profile-info">
-                                    <img src="../../assets/profile/profilephoto.jpeg" alt="Profile Image">
-                                    <div class="user-details">
-                                        <h5>Fatih Terim</h5>
-                                        <p>@fatihterim</p>
-                                    </div>
-                                    <button class="btn-block">Blocked</button>
-                                </div>
-                            </div>
-                            <div class="account">
-                                <div class="profile-info">
-                                    <img src="../../assets/profile/profilephoto.jpeg" alt="Profile Image">
-                                    <div class="user-details">
-                                        <h5>Fatih Terim</h5>
-                                        <p>@fatihterim</p>
-                                    </div>
-                                    <button class="btn-block">Blocked</button>
-                                </div>
-                            </div>
-                            <div class="pagination-menu">
-                                <nav aria-label="Page navigation example">
-                                    <ul class="pagination">
-                                        <li class="page-item">
-                                            <a class="page-link" href="#" aria-label="Previous">
-                                                <span aria-hidden="true">&laquo;</span>
-                                            </a>
+                                    </li>
+                                    {% for page_num in blocked_page_obj.paginator.page_range %}
+                                        <li class="page-item {% if page_num == blocked_page_obj.number %}active{% endif %}">
+                                            <a class="page-link" href="?page={{ page_num }}">{{ page_num }}</a>
                                         </li>
-                                        <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                        <li class="page-item">
-                                            <a class="page-link" href="#" aria-label="Next">
-                                                <span aria-hidden="true">&raquo;</span>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </nav>
-                            </div>
+                                    {% endfor %}
+                                    <li class="page-item {% if blocked_page_obj.has_next %}disabled{% endif %}">
+                                        <a class="page-link" href="{% if blocked_page_obj.has_next %}?page={{ blocked_page_obj.next_page_number }}{% endif %}" aria-label="Next">
+                                            <span aria-hidden="true">&raquo;</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </nav>        
                         </div>
                     </form>
                 </section>
@@ -350,3 +257,18 @@
         </div>
     </div>
 </div>
+<script>
+function displaySection(sectionId) {
+    var sections = ["editProfile", "addSocial", "closeAccount", "changePassword", "blockedUsers"];
+
+    for (var i = 0; i < sections.length; i++) {
+        var section = document.getElementById(sections[i]);
+        if (sections[i] === sectionId) {
+            section.style.display = 'block';
+        } else {
+            section.style.display = 'none';
+        }
+    }
+}
+</script>
+{% endblock %}

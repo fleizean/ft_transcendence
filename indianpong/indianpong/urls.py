@@ -18,12 +18,11 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
-from pong.views import auth_callback, chat,base, profile_settings, rankings, dashboard, game, index, auth, profile_view, search, signup, login_view, logout_view, update_profile, create_tournament, start_chat, room
+from pong.views import auth_callback, chat, profile_settings, rankings, dashboard, game, index, auth, profile_view, search, signup, login_view, logout_view, update_profile, create_tournament, start_chat, room
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', index, name='index'),
-    path('base', base, name='base'),
     path('signup', signup, name='signup'),
     path('login', login_view, name='login'),
     path('auth', auth, name='auth'),

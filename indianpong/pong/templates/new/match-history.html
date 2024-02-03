@@ -1,3 +1,8 @@
+{% extends 'base.html' %}
+
+{% block title %}{{username}} Match-History{% endblock %}
+
+{% block app %}
 {% include '_nav.html' %} 
 <div class="container-top">
     <div class="row mt-4" style="margin-bottom:5px">
@@ -28,7 +33,7 @@
 </div>
 <div class="card">
     <div class="mhistory-card-header">
-        <h3 class="mhistory-header">/ Match History</h3>
+        <h3 class="mhistory-header">{{username}} / Match History</h3>
     </div>
     <div class="match-history">
         <table class="card-mhistory-table">
@@ -40,67 +45,39 @@
                     <th>Date</th>
             </thead>
             <tbody>
-                <tr>
-                    <td class="mhistory-username">akocaman</td>
-                    <td class="won">Won</th>
-                    <td>5-2</th>
-                    <td>27-07-2024-16:53</td>
-                </tr>
-                <tr>
-                    <td class="mhistory-username">akocaman</td>
-                    <td class="won">Won</th>
-                    <td>5-2</th>
-                    <td>27-07-2024-16:53</td>
-                </tr>
-                <tr>
-                    <td class="mhistory-username">akocaman</td>
-                    <td class="won">Won</th>
-                    <td>5-2</th>
-                    <td>27-07-2024-16:53</td>
-                </tr>
-                <tr>
-                    <td class="mhistory-username">akocaman</td>
-                    <td class="won">Won</th>
-                    <td>5-2</th>
-                    <td>27-07-2024-16:53</td>
-                </tr>
-                <tr>
-                    <td class="mhistory-username">akocaman</td>
-                    <td class="won">Won</th>
-                    <td>5-2</th>
-                    <td>27-07-2024-16:53</td>
-                </tr>
-                <tr>
-                    <td class="mhistory-username">akocaman</td>
-                    <td class="lose">Lose</th>
-                    <td>2-5</th>
-                    <td>27-07-2024-16:53</td>
-                </tr>
-                <tr>
-                    <td class="mhistory-username">akocaman</td>
-                    <td class="lose">Lose</th>
-                    <td>2-5</th>
-                    <td>27-07-2024-16:53</td>
-                </tr>
+                {% for match in history_page_obj %}
+                    <tr>
+                        <td class="mhistory-username">{{match.username}}</td>
+                        {% if match.winner == match.username %}
+                            <td class="won">Won</th>
+                        {% else %}
+                            <td class="lost">Lost</th>
+                        <td>{{match.score}}</th>
+                        <td>{{match.date}}</td>
+                    </tr>
+                {% endfor %}
+                
 
             </tbody>
         </table>
         <nav aria-label="Page navigation example">
             <ul class="pagination">
-                <li class="page-item">
-                    <a class="page-link" href="#" aria-label="Previous">
+                <li class="page-item {% if history_page_obj.has_previous %}disabled{% endif %}">
+                    <a class="page-link" href="{% if history_page_obj.has_previous %}?page={{ history_page_obj.previous_page_number }}{% endif %}" aria-label="Previous">
                         <span aria-hidden="true">&laquo;</span>
                     </a>
                 </li>
-                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item">
-                    <a class="page-link" href="#" aria-label="Next">
+                {% for page_num in history_page_obj.paginator.page_range %}
+                    <li class="page-item {% if page_num == history_page_obj.number %}active{% endif %}">
+                        <a class="page-link" href="?page={{ page_num }}">{{ page_num }}</a>
+                    </li>
+                {% endfor %}
+                <li class="page-item {% if history_page_obj.has_next %}disabled{% endif %}">
+                    <a class="page-link" href="{% if history_page_obj.has_next %}?page={{ history_page_obj.next_page_number }}{% endif %}" aria-label="Next">
                         <span aria-hidden="true">&raquo;</span>
                     </a>
                 </li>
             </ul>
-        </nav>
+        </nav>        
     </div>
 </div>

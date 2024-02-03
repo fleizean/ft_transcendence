@@ -1,4 +1,9 @@
-{% include '_nav.html' %} 
+{% extends 'base.html' %}
+
+{% block title %}Tournament Room{% endblock %}
+
+{% block app %}
+    {% include "_nav.html" %}
 <div class="container-top">
     <div class="card">
 
@@ -147,3 +152,4 @@
         </section>
     </div>
 </div>
+{% endblock %}
