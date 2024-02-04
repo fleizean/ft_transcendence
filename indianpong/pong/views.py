@@ -28,7 +28,7 @@ def index(request):
 
 @never_cache
 def base(request):
-    return HttpResponse(render_to_string('base.html'))
+    return HttpResponse(render_to_string('new/base.html'))
 
 def handler404(request, exception):
     return render(request, '404.html', status=404)
@@ -157,7 +157,7 @@ def login_view(request):
             return redirect('dashboard')
     else:
         form = AuthenticationUserForm()
-    return HttpResponse(render_to_string('login.html', {'form': form}))#render(request, 'login.html', {'form': form})
+    return HttpResponse(render_to_string('new/login.html', {'form': form}))#render(request, 'login.html', {'form': form})
 
 @never_cache
 @login_required(login_url="login")

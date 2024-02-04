@@ -1,5 +1,3 @@
-
-
 /* 2FA Alanı Başlangıç */
 function clear2FA() {
     const inputFields = document.querySelectorAll('.input-fields input');
