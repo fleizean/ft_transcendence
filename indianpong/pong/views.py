@@ -24,7 +24,7 @@ import json
 
 @never_cache
 def index(request):
-    return HttpResponse(render_to_string('new/index.html'))
+    return HttpResponse(render_to_string('new/base.html'))
 
 
 def handler404(request, exception):
