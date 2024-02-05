@@ -89,7 +89,7 @@ def auth_callback(request):
         data = {
             "grant_type": "authorization_code",
             "client_id": "u-s4t2ud-4b7a045a7cc7dd977eeafae807bd4947670f273cb30e1dd674f6bfa490ba6c45",#environ.get("FT_CLIENT_ID"),
-            "client_secret": "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",#environ.get("FT_CLIENT_SECRET"),
+            "client_secret": "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",#environ.get("FT_CLIENT_SECRET"),
             "code": code,
             "redirect_uri": "http://localhost:8000/auth_callback",
         }
@@ -213,13 +213,12 @@ def profile_view(request, username):
     #    return render(request, '404.html', {'username': username}, status=404)
 
     profile = get_object_or_404(UserProfile, username=username)
-    return render(request, 'profile.html', {'profile': profile, 'username':profile.username, 'avatar': profile.avatar.url})
+    return render(request, 'profile.html', {'profile': profile})
 
 ### Profile Settings ###
-
 @never_cache
 @login_required(login_url="login")
-def profile_settings(request, username): #TODO maybe use get_user(username) instead of request.user
+def profile_settings(request, username):
     if request.method == 'POST':
         form = UpdateUserProfileForm(request.POST, request.FILES, instance=request.user)
         if form.is_valid():
@@ -229,7 +228,8 @@ def profile_settings(request, username): #TODO maybe use get_user(username) inst
             return redirect('profile', request.user.username)
     else:
         form = UpdateUserProfileForm(instance=request.user)
-    return render(request, 'profile-settings.html', {'form': form, 'username': request.user.username, 'avatar': request.user.avatar.url})
+
+    return render(request, 'profile-settings.html', {'form': form})
 
 @never_cache
 @login_required(login_url="login")
@@ -321,49 +321,43 @@ def set_password(request, uidb64, token):
 @never_cache
 @login_required(login_url="login")
 def dashboard(request):
-    profile = get_object_or_404(UserProfile, username=request.user.username)
-    return render(request, 'dashboard.html', {'username': profile.username, 'avatar': profile.avatar.url})
+    return render(request, 'dashboard.html')
 
 @never_cache
 @login_required(login_url="login")
 def rankings(request):
-    profile = get_object_or_404(UserProfile, username=request.user.username)
-    return render(request, 'rankings.html', {'username': profile.username, 'avatar': profile.avatar.url})
+    return render(request, 'rankings.html')
 
 @never_cache
 @login_required(login_url="login")
 def search(request):
-    profile = get_object_or_404(UserProfile, username=request.user.username)
-    return render(request, 'search.html', {'username': profile.username, 'avatar': profile.avatar.url})
+    return render(request, 'search.html')
 
 
 @login_required(login_url="login")
 def game(request):
-    profile = get_object_or_404(UserProfile, username=request.user.username)
-    return render(request, 'game.html', {'username': profile.username, 'avatar': profile.avatar.url})
+    return render(request, 'game.html')
 
 @never_cache
 @login_required(login_url="login")
 def chat(request):
     users = UserProfile.objects.all().exclude(username = request.user)
-    profile = get_object_or_404(UserProfile, username=request.user.username)
-    return render(request, 'chat.html', {'username': profile.username, 'avatar': profile.avatar.url, 'users': users})
+    return render(request, 'chat.html', {'users': users})
 
 @login_required(login_url="login")
 def aboutus(request):
-    profile = get_object_or_404(UserProfile, username=request.user.username)
-    return render(request, 'aboutus.html',  {'username': profile.username, 'avatar': profile.avatar.url})
+    return render(request, 'aboutus.html')
 
 @login_required(login_url="login")
 def friends(request, username):
     profile = get_object_or_404(UserProfile, username=username)
     friends = profile.friends.all()
-    return render(request, 'friends.html', {'username': profile.username, 'avatar': profile.avatar.url, 'friends': friends})
+    return render(request, 'friends.html', {'friends': friends})
 
 @login_required(login_url="login")
 def match_history(request, username):
     profile = get_object_or_404(UserProfile, username=username)
-    return render(request, 'match-history.html', {'username': profile.username, 'avatar': profile.avatar.url})
+    return render(request, 'match-history.html')
 
 ### New Chat ###
 @login_required(login_url = "login")
