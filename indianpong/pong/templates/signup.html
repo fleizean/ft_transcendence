@@ -31,45 +31,22 @@
           <a href="/auth" data-link class="no-underline"><div class="button-log"><b>42</b></div></a>
         </div>
         {% csrf_token %}
-        {{form.as_p}}
-        {% for error in form.non_field_errors %}
-
-        <input class="input" name="email" placeholder="Email" type="email" />
-        <span id="propertyEmail" class="text-danger">Emaili hatalı girdiniz</span>
-        <span id="propertyEmail" class="text-primary"></span>
-        <input
-          class="input"
-          name="nickname"
-          placeholder="Nickname"
-          type="text"
-        />
-        <span id="propertyEmail" class="text-danger">Emaili hatalı girdiniz</span>
-        <span id="propertyNickname" class="text-primary"></span>
-        <input
-          class="input"
-          name="firstname"
-          placeholder="Firstname"
-          type="text"
-        />
-        <span id="propertyEmail" class="text-danger">Emaili hatalı girdiniz</span>
-        <span id="propertyEmail" class="text-primary"></span>
-        <input
-          class="input"
-          name="lastname"
-          placeholder="Lastname"
-          type="text"
-        />
-        <span id="propertyEmail" class="text-danger">Emaili hatalı girdiniz</span>
-        <span id="propertyEmail" class="text-primary"></span>
-        <input
-          class="input"
-          name="password"
-          placeholder="Password"
-          type="password"
-        />
-        <span id="propertyEmail" class="text-danger">Emaili hatalı girdiniz</span>
-        <span id="propertyEmail" class="text-primary"></span>
-        <label class="custum-file-upload" for="file">
+        <input type="text" name="username" class="input" placeholder="Username" autofocus required id="id_username">
+        {{form.username.errors}}
+        {{form.username.help_text}}
+        <input type="text" name="displayname" class="input" placeholder="Displayname" required id="id_displayname">
+        {{form.displayname.errors}}
+        {{form.displayname.help_text}}
+        <input type="email" name="email" class="input" maxlength="320" placeholder="Email" required id="id_email">
+        {{form.email.errors}}
+        {{form.email.help_text}}
+        <input type="password" name="password1" class="input" placeholder="Password" required id="id_password1">
+        {{form.password1.errors}}
+        {{form.password1.help_text}}
+        <input type="password" name="password2" class="input" placeholder="Password (again)" required id="id_password2">
+        {{form.password2.errors}}
+        {{form.password2.help_text}}
+        <label class="custom-file-upload" for="id_avatar">
           <div class="icon">
             <svg xmlns="http://www.w3.org/2000/svg" fill="" viewBox="0 0 24 24">
               <g stroke-width="0" id="SVGRepo_bgCarrier"></g>
@@ -91,8 +68,11 @@
           <div class="text">
             <span>Click to upload image</span>
           </div>
-          <input type="file" id="file" />
+          <input type="file" name="avatar" class="input" accept="image/*" id="id_avatar">
+          {{form.avatar.errors}}
+          {{form.avatar.help_text}}
         </label>
+{% comment %}         {% for error in form.non_field_errors %} {% endcomment %}
         <div class="register-buttons">
           <button type="submit" class="button-confirm">Let's shine!</button>
         </div>

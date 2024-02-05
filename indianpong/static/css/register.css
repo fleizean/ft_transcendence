@@ -248,7 +248,7 @@
     transform: translateY(-2px);
    }  
 
-.custum-file-upload {
+.custom-file-upload {
     height: 100px;
     width: 150px;
     display: flex;
@@ -267,36 +267,36 @@
     box-shadow: 0px 48px 35px -48px rgba(0,0,0,0.1);
   }
 
-  .custum-file-upload:hover {
+  .custom-file-upload:hover {
     border: 2px dashed #f0302d;
 
   }
   
-  .custum-file-upload .icon {
+  .custom-file-upload .icon {
     display: flex;
     align-items: center;
     justify-content: center;
   }
   
-  .custum-file-upload .icon svg {
+  .custom-file-upload .icon svg {
     margin-top: 25px;
     height: 25px;
     fill: rgb(0, 0, 0);
   }
   
-  .custum-file-upload .text {
+  .custom-file-upload .text {
     display: flex;
     align-items: left;
     justify-content: center;
   }
   
-  .custum-file-upload .text span {
+  .custom-file-upload .text span {
     font-size: 15px;
     font-weight: 400;
     color: rgb(0, 0, 0);
   }
   
-  .custum-file-upload input {
+  .custom-file-upload input {
     display: none;
   }
   
