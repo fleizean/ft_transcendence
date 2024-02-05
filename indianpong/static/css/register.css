@@ -16,6 +16,29 @@
     transform: translate(-50%, -50%);
     text-align: center;
   }
+
+  .toast-close {
+    right: 0;
+    cursor: pointer;
+    margin-left: auto;
+    margin-top: auto;
+    margin-bottom: auto;
+  }
+
+  .text-danger {
+    margin-top: -15px;
+    --bs-text-opacity: 1;
+    --bs-danger-rgb: 255, 62, 29;
+    color: rgba(var(--bs-danger-rgb), var(--bs-text-opacity)) !important;
+  }
+
+  .text-primary {
+    margin-top: -25px;
+  }
+
+  .no-underline {
+    text-decoration:none;
+  }
   
   .form {
     --input-focus: #f0302d;

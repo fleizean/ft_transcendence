@@ -98,12 +98,19 @@
 
 .pro-profile {
     color: #fff;
-    background: url('../../assets/backgrounds/leader-bg.png');
+    background: url('leader-bg.png');
     border-radius: 3px;
     font-size: 16px;
     font-weight: bold;
     padding: 2px 5px;
-  text-align: center;
+    text-align: center;
+}
+
+.profile-image-circ{
+  overflow:hidden;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
 }
 
 

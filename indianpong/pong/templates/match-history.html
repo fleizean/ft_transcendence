@@ -52,6 +52,7 @@
                             <td class="won">Won</th>
                         {% else %}
                             <td class="lost">Lost</th>
+                        {% endif %}
                         <td>{{match.score}}</th>
                         <td>{{match.date}}</td>
                     </tr>
@@ -81,3 +82,4 @@
         </nav>        
     </div>
 </div>
+{% endblock %}

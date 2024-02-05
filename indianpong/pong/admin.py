@@ -18,7 +18,7 @@ class UserProfileAdmin(admin.ModelAdmin):
     fieldsets = (
     ('User Information', {'fields': ('username', 'password', 'displayname', 'email', 'avatar', 'friends' )}),
     ('Dates', {'fields': ('date_joined', 'last_login')}),
-    ('Roles', {'fields': ('is_staff', 'is_active', 'is_superuser')}),
+    ('Roles', {'fields': ('is_staff', 'is_active', 'is_superuser', 'is_verified')}),
     ('Permissions', {'fields': ('groups', 'user_permissions')}),
     ('Stats', {'fields': ('wins', 'losses')}),
     )

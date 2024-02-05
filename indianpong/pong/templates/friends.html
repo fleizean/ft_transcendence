@@ -18,14 +18,12 @@
                 <!-- Navbar Menü -->
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav ml-auto">
-                        <!-- "Match History" Linki -->
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url "profile" username %}"><i class="bi bi-person-fill"></i> Profile</a>
+                            <a class="nav-link" href="{% url 'profile' username=username %}" data-link><i class="bi bi-person-fill"></i>Profile</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url "match-history" username %}"><i class="bi bi-easel-fill"></i> Match History</a>
+                            <a class="nav-link" href="{% url 'match_history' username=username %}"><i class="bi bi-easel-fill"></i>Match History</a>
                         </li>
-
                     </ul>
                 </div>
             </nav>

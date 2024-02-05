@@ -1,4 +1,4 @@
-// Function to update inner HTML of app class with fetched text
+/* // Function to update inner HTML of app class with fetched text
 function updateAppInnerHTML(text) {
     console.log("çalışıyorum");
     const appElement = document.querySelector('.app');
@@ -19,3 +19,4 @@ window.addEventListener('popstate', async () => {
         console.error('Error fetching data:', error);
     }
 });
+ */
