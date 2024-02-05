@@ -23,7 +23,6 @@ from pong.views import auth_callback, chat,base, profile_settings, rankings, das
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', index, name='index'),
-    path('base', base, name='base'),
     path('signup', signup, name='signup'),
     path('login', login_view, name='login'),
     path('auth', auth, name='auth'),

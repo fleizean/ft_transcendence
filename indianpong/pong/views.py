@@ -24,7 +24,7 @@ import json
 
 @never_cache
 def index(request):
-    return render(request, '_nav.html')
+    return render(request, 'new/index.html')
 
 @never_cache
 def base(request):
@@ -46,7 +46,7 @@ def signup(request):
             return redirect('profile', request.user)
     else:
         form = UserProfileForm()
-    return render(request, 'signup.html', {'form': form})
+    return HttpResponse(render_to_string('new/signup.html', {'form': form}))
 
 #state_req = secrets.token_hex(25)
 @never_cache

@@ -83,7 +83,6 @@ function closeCreateRoom() {
     }
 }
 
-
 function displaySection(sectionId) {
     var sections = ["editProfile", "addSocial", "closeAccount", "changePassword", "google2FA", "blockedUsers"];
 
