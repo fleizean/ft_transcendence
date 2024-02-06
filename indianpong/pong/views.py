@@ -20,6 +20,8 @@ from django.template.loader import render_to_string
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.auth import get_user_model
 import json
+import re
+from django.db.models import Q
 from django.contrib.auth import update_session_auth_hash
 
 
@@ -40,6 +42,8 @@ def handler404(request, exception):
 
 @never_cache
 def signup(request):
+    valid = True
+    toast_message = ""
     if request.method == 'POST':
         form = UserProfileForm(request.POST, request.FILES)
         if form.is_valid():
@@ -49,8 +53,10 @@ def signup(request):
             messages.success(request, 'Please check your email to verify your account.')
             return redirect('login')
     else:
+        valid = False
+        toast_message = "HATAA"
         form = UserProfileForm()
-    return render(request, 'signup.html', {'form': form})
+    return render(request, 'signup.html', {'form': form, 'valid': valid, 'toast_message': toast_message})
 
 @never_cache
 def activate_account(request, token):
@@ -216,6 +222,18 @@ def profile_view(request, username):
     profile = get_object_or_404(UserProfile, username=username)
     return render(request, 'profile.html', {'profile': profile})
 
+## Rps Game ##
+@never_cache
+@login_required(login_url="login")
+def rps_game_find(request):
+    return render(request, 'rps-game-find.html')
+
+## Pong Game ##
+@never_cache
+@login_required(login_url="login")
+def pong_game_find(request):
+    return render(request, 'pong-game-find.html')
+
 ### Profile Settings ###
 @never_cache
 @login_required(login_url="login")
@@ -349,7 +367,11 @@ def search(request):
     if request.method == "POST":
         search_query = request.POST.get('search_query', '')
         if len(search_query) >= 3:
-            results = UserProfile.objects.filter(username__icontains=search_query)
+            email_regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
+            if re.fullmatch(email_regex, search_query):
+                results = UserProfile.objects.filter(Q(username__icontains=search_query) | Q(email__icontains=search_query))
+            else:
+                results = UserProfile.objects.filter(username__icontains=search_query)
             return render(request, 'search.html', {'results': results})
     return render(request, 'search.html')
 

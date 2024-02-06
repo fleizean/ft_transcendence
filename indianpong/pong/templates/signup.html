@@ -32,19 +32,40 @@
         </div>
         {% csrf_token %}
         <input type="text" name="username" class="input" placeholder="Username" autofocus required id="id_username">
-        {{form.username.errors}}
-        {{form.username.help_text}}
+        {% for error in form.username.errors %}
+            <span id="propertyUsernameError" class="text-danger">{{error}}</span>
+        {% endfor %}
+        {% for infos in form.username.help_text %}
+          <span id="propertyUsernameInfo" class="text-primary">- {{infos}}</span>
+        {% endfor %}
         <input type="text" name="displayname" class="input" placeholder="Displayname" required id="id_displayname">
-        {{form.displayname.errors}}
-        {{form.displayname.help_text}}
+        {% for error in form.displayname.errors %}
+            <span id="propertyDisplaynameError" class="text-danger">{{error}}</span>
+        {% endfor %}
+        {% for infos in form.displayname.help_text %}
+          <span id="propertyDisplaynameInfo" class="text-primary">- {{infos}}</span>
+        {% endfor %}
         <input type="email" name="email" class="input" maxlength="320" placeholder="Email" required id="id_email">
-        {{form.email.errors}}
-        {{form.email.help_text}}
+        {% for error in form.email.errors %}
+            <span id="propertyEmailError" class="text-danger">{{error}}</span>
+        {% endfor %}
+        {% for infos in form.email.help_text %}
+          <span id="propertyEmailInfo" class="text-primary">- {{infos}}</span>
+        {% endfor %}
         <input type="password" name="password1" class="input" placeholder="Password" required id="id_password1">
-        {{form.password1.errors}}
-        {{form.password1.help_text}}
+        
+        {% for error in form.password1.errors %}
+            <span id="propertyPassword1Error" class="text-danger">{{error}}</span>
+        {% endfor %}
+        {% for infos in form.password1.help_text %}
+          <span id="propertyPassword1Info" class="text-primary">- {{infos}}</span>
+        {% endfor %}
         <input type="password" name="password2" class="input" placeholder="Password (again)" required id="id_password2">
-        {{form.password2.errors}}
+        
+        {% for error in form.password2.errors %}
+          <span id="propertyPassword2Error" class="text-danger">- {{error}}</span>
+        {% endfor %}
+      
         {{form.password2.help_text}}
         <label class="custom-file-upload" for="id_avatar">
           <div class="icon">
@@ -66,7 +87,7 @@
             </svg>
           </div>
           <div class="text">
-            <span>Click to upload image</span>
+            <span style="font-weight: 500;">Upload image</span>
           </div>
           <input type="file" name="avatar" class="input" accept="image/*" id="id_avatar">
           {{form.avatar.errors}}

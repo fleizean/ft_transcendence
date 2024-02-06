@@ -28,12 +28,18 @@
   .text-danger {
     margin-top: -15px;
     --bs-text-opacity: 1;
+    text-align: left;
+    margin-left: 5px;
+    font-size: 12px !important;
     --bs-danger-rgb: 255, 62, 29;
     color: rgba(var(--bs-danger-rgb), var(--bs-text-opacity)) !important;
   }
 
   .text-primary {
     margin-top: -25px;
+    text-align: left;
+    margin-left: 5px;
+    font-size: 12px !important;
   }
 
   .no-underline {
@@ -48,6 +54,7 @@
     --main-color: black;
     padding: 20px;
     background: #f5f2ee;
+    max-width: 300px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -61,7 +68,8 @@
     color: var(--font-color);
     font-weight: 900;
     font-size: 20px;
-    
+    margin-bottom: -10px;
+    margin-top: -20px;
   }
   
   .titlebottom {
@@ -249,7 +257,7 @@
    }  
 
 .custom-file-upload {
-    height: 100px;
+    height: 80px;
     width: 150px;
     display: flex;
     flex-direction: column;
