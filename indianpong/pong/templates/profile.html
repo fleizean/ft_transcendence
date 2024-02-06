@@ -43,7 +43,11 @@
                 <span class="pro-profile"><i class="bi bi-award-fill"></i> 1ST IN RANKINGS</span>
                 <div class="card-body text-center">
                     <!-- Avatar -->
-                    <img src="{{ avatar }}" alt="avatar" class="profile-image-circ">
+                    {% if not profile.avatar %}
+                        <img src="{{ avatar }}" alt="avatar" class="profile-image-circ">
+                    {% else %}
+                        <img src="{{ profile.avatar.url }}" alt="avatar" class="profile-image-circ">
+                    {% endif %}
                     <!-- isim -->
                     <h5 class="my-3">{{profile.username}}</h5>
                     <!-- Meslek -->

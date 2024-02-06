@@ -100,11 +100,6 @@ body {
   text-align: center;
 }
 
-img {
-  max-width: 100%;
-  height: auto;
-}
-
 @keyframes backInDown {
   0% {
     transform: translateY(-1200px) scale(0.7);
@@ -497,7 +492,8 @@ img {
 }
 
 .dashboard-card {
-  background-color: #F1F1FB;
+  background-color: rgba(241, 241, 251, 0.3) !important;
+  backdrop-filter: blur(3px); /* Arka planı 10 piksel bulanıklaştır */
   padding: 20px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
@@ -506,6 +502,20 @@ img {
   height: auto; /* Yüksekliği otomatik ayarla */
   max-height: auto;
   margin: 0 auto; /* Ortalamak için */
+}
+
+.page-rotation h1 {
+  font-family: "Rubik", sans-serif;
+  font-size: 1.7rem;
+  color: white;
+  text-transform: uppercase;
+  cursor: default;
+}
+
+.page-rotation p {
+  font-size: 15px;
+  color: white;
+  cursor: default;
 }
 
 .profile-card {

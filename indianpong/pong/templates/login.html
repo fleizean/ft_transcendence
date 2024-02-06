@@ -44,7 +44,20 @@
         <a ><button type="submit" class="button-confirm">Let's go →</button></a>
         <a href="/signup" data-link><button type="button" class="registerbtn">Join Us ✓</button></a>
       </form>
-     
+      
+    </div>
+    <div class="toast-container position-fixed bottom-0 end-0 p-6" style="margin-right: 20px; margin-bottom: 20px">
+      <div class="toast text-bg-success" id="liveToast2" role="alert">
+          <div class="toast-body">
+              <div class="d-flex gap-4">
+                  <span class="i-class" style="margin-top: auto; margin-bottom:auto; font-size: 15px; margin-right: -10px"><i class="bi bi-check-circle-fill"></i></span>
+                  <div class="d-flex flex-grow-1 align-items-center">
+                      <span class="fw-semibold">Register Success!</span>
+                      <span class="toast-close" data-bs-dismiss="toast"><i class="bi bi-x-circle-fill"></i></span>
+                  </div>
+              </div>
+          </div>
+      </div>
     </div>
     {% if not valid %}
     <div class="toast-container position-fixed bottom-0 end-0 p-6" style="margin-right: 20px; margin-bottom: 20px">
@@ -83,5 +96,24 @@
   </div>
 </div>
 <script src="{% static "js/index.js" %}"></script>
-
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+              // Toast'ı gösterme fonksiyonu
+              function showToastSuccess() {
+                  const liveToast2 = document.getElementById('liveToast2');
+                  const toast1 = new bootstrap.Toast(liveToast2);
+                  toast1.show();
+                  setTimeout(function() {
+                      toast1.hide();
+                  }, 3000);
+              }
+              const urlParams = new URLSearchParams(window.location.search);
+              const statusValue = urlParams.get('status');
+              const isToastShown = localStorage.getItem('isToastShown');
+              if (statusValue === 'success' && !isToastShown) {
+                  localStorage.setItem('isToastShown', true);
+                  showToastSuccess();
+              }
+          });
+</script>
 {% endblock %}

@@ -4,6 +4,7 @@ from django.views.decorators.cache import never_cache
 from django.contrib.auth import login, logout
 from django.contrib import messages
 from django.http import HttpResponseBadRequest
+from django.http import HttpResponseRedirect
 from .forms import BlockUserForm, ChatMessageForm, InviteToGameForm, PasswordChangeUserForm, PasswordResetUserForm, SetPasswordUserForm, UserProfileForm, UpdateUserProfileForm, TwoFactorAuthSetupForm, JWTTokenForm, AuthenticationUserForm, TournamentForm, TournamentMatchForm, OAuthTokenForm
 from .models import BlockedUser, ChatMessage, GameWarning, VerifyToken, UserProfile, TwoFactorAuth, JWTToken, Tournament, TournamentMatch, OAuthToken, Room, Message
 from .utils import pass2fa
@@ -39,11 +40,8 @@ def handler404(request, exception):
     return render(request, '404.html', status=404)
 
 ### User Authentication ###
-
 @never_cache
 def signup(request):
-    valid = True
-    toast_message = ""
     if request.method == 'POST':
         form = UserProfileForm(request.POST, request.FILES)
         if form.is_valid():
@@ -51,12 +49,11 @@ def signup(request):
             obj = VerifyToken.objects.create(user=user, token=default_token_generator.make_token(user))
             obj.send_verification_email(request, user)
             messages.success(request, 'Please check your email to verify your account.')
-            return redirect('login')
+            return HttpResponseRedirect('login?status=success')
     else:
-        valid = False
-        toast_message = "HATAA"
+
         form = UserProfileForm()
-    return render(request, 'signup.html', {'form': form, 'valid': valid, 'toast_message': toast_message})
+    return render(request, 'signup.html', {'form': form})
 
 @never_cache
 def activate_account(request, token):
@@ -174,7 +171,7 @@ def auth_callback(request):
 @never_cache
 def login_view(request):
     if request.user.is_authenticated:
-        return redirect("dashboard")
+        return HttpResponseRedirect('dashboard?status=success')
     valid = True
     toast_message = ""
     if request.method == 'POST':
@@ -187,10 +184,10 @@ def login_view(request):
                 return redirect('login') """
             
             login(request, user)
-            return redirect('dashboard')
+            return HttpResponseRedirect('dashboard?status=success')
         else:
             valid = False # şifre yanlışsa
-            toast_message = "Kullanıcı adı veya şifre hatalı girdiniz"
+            toast_message = "Username or password incorrectly"
     else:
         form = AuthenticationUserForm()
     return render(request, 'login.html', {'form': form, 'valid': valid, 'toast_message': toast_message})
