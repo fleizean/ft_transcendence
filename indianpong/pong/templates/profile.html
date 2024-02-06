@@ -20,7 +20,7 @@
                     <ul class="navbar-nav ml-auto">
                         <!-- "Match History" Linki -->
                         <li class="nav-item">
-                            <a class="nav-link" href="/match-history"><i class="bi bi-easel-fill"></i> Match History</a>
+                            <a class="nav-link" href="/match-history/{{profile.username}}"><i class="bi bi-easel-fill"></i> Match History</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="/friends/{{profile.username}}"><i class="bi bi-people-fill"></i> Friends</a>
@@ -32,28 +32,25 @@
         </div>
     </div>
 </div>
-<audio autoplay>
-    <source src="{% static 'music/test.mp3' %}" type="audio/mpeg">
-</audio>
 <div class="profile-card">
 
     <div class="row">
         <!-- Sol Sütun (col-lg-4) -->
         <div class="col-lg-4 col-md-6 col-sm-12">
             <!-- Profil Kartı -->
-            <div class="card mb-4">
-                <!-- Profil Kartı İçeriği -->
+            <div class="card mb-4" style="background-color:white !important">
+                <!-- Profil Kartı içeriği -->
                 <span class="pro-profile"><i class="bi bi-award-fill"></i> 1ST IN RANKINGS</span>
                 <div class="card-body text-center">
                     <!-- Avatar -->
                     <img src="{{ avatar }}" alt="avatar" class="profile-image-circ">
-                    <!-- İsim -->
+                    <!-- isim -->
                     <h5 class="my-3">{{profile.username}}</h5>
                     <!-- Meslek -->
                     <p class="text-muted mb-1">Full Stack Developer</p>
                     <!-- Konum -->
                     <p class="text-muted mb-4">Bay Area, San Francisco, CA</p>
-                    <!-- Takip ve İstatistik Butonları -->
+                    <!-- Takip ve istatistik Butonları -->
 
                     <div class="d-flex justify-content-center mb-2">
                         <button type="button" class="btn btn-danger"><i class="bi bi-heart-fill"></i> Follow</button>
@@ -63,7 +60,7 @@
                 </div>
             </div>
             <!-- Sosyal Medya ve Website Bilgileri -->
-            <div class="card mb-4">
+            <div class="card mb-4" style="background-color:white !important">
                 <div class="card-body p-0">
                     <ul class="list-group list-group-flush rounded-3">
                         <!-- Website -->
@@ -93,7 +90,7 @@
         <!-- Sağ Sütun (col-lg-8) -->
         <div class="col-lg-8">
             <!-- Profil Bilgileri -->
-            <div class="card">
+            <div class="card" style="background-color:white !important;">
                 <div class="card-body">
                     <div class="mb-4">
                         <!-- isim -->
@@ -125,6 +122,24 @@
                                 <p class="text-muted mb-0">{{profile.date_joined}}</p>
                             </div>
                         </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <p class="mb-0">Joined Date</p>
+                            </div>
+                            <div class="col-sm-9">
+                                <p class="text-muted mb-0">{{profile.date_joined}}</p>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <p class="mb-0">Joined Date</p>
+                            </div>
+                            <div class="col-sm-9">
+                                <p class="text-muted mb-0">{{profile.date_joined}}</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -132,7 +147,7 @@
             <div class="row">
                 <!-- Sol Proje Kartı -->
                 <div class="col-md-6">
-                    <div class="card mb-4 mb-md-0">
+                    <div class="card mb-4 mb-md-0" style="background-color:white !important; margin-top:10px">
                         <div class="card-body">
                             <!-- Proje Durumu Başlığı -->
                             <p class="mb-4"><span class="text-primary font-italic me-1">{{profile.username}} </span>/ Rank</p>
@@ -142,12 +157,15 @@
                             <div class="rank-info">
                                 <h4 class="rank-h4">Challenger</h4>
                             </div>
+                            <div class="rank-info">
+                                <h4 class="rank-h4">600PP</h4>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <!-- Sağ Proje Kartı -->
                 <div class="col-md-6">
-                    <div class="card mb-4 mb-md-0">
+                    <div class="card mb-4 mb-md-0" style="background-color:white !important; margin-top:10px; height: 328px;">
                         <div class="card-body">
                             <!-- Proje Durumu Başlığı -->
                             <p class="mb-4"><span class="text-primary font-italic me-1">{{profile.username}} </span>/ Stats</p>

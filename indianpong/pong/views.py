@@ -20,6 +20,7 @@ from django.template.loader import render_to_string
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.auth import get_user_model
 import json
+from django.contrib.auth import update_session_auth_hash
 
 
 ### Homepage and Error Page ###
@@ -219,17 +220,31 @@ def profile_view(request, username):
 @never_cache
 @login_required(login_url="login")
 def profile_settings(request, username):
+    profile_form = UpdateUserProfileForm(request.POST or None, request.FILES or None, instance=request.user)
+    password_form = PasswordChangeUserForm(request.user, request.POST or None)
     if request.method == 'POST':
-        form = UpdateUserProfileForm(request.POST, request.FILES, instance=request.user)
-        if form.is_valid():
-            form.save()
-            # Perform additional actions if needed
-            messages.success(request, 'Profile updated successfully.')
-            return redirect('profile', request.user.username)
+        if 'editProfileForm' in request.POST:
+            if profile_form.is_valid():
+                profile_form.save()
+                messages.success(request, 'Profile updated successfully.')
+                return redirect('profile_settings')
+        elif 'changePasswordForm' in request.POST:
+            if password_form.is_valid():
+                user = password_form.save()
+                update_session_auth_hash(request, user)  # Important!
+                messages.success(request, 'Your password was successfully updated!')
+                return redirect('profile_settings')
     else:
-        form = UpdateUserProfileForm(instance=request.user)
+        profile_form = UpdateUserProfileForm(instance=request.user.username)
+        password_form = PasswordChangeUserForm(request.user)
 
-    return render(request, 'profile-settings.html', {'form': form})
+    profile = get_object_or_404(UserProfile, username=username)                 
+    return render(request, 'profile-settings.html', {
+        'profile': profile,
+        'profile_form': profile_form,
+        'password_form': password_form
+    })
+
 
 @never_cache
 @login_required(login_url="login")
@@ -331,6 +346,11 @@ def rankings(request):
 @never_cache
 @login_required(login_url="login")
 def search(request):
+    if request.method == "POST":
+        search_query = request.POST.get('search_query', '')
+        if len(search_query) >= 3:
+            results = UserProfile.objects.filter(username__icontains=search_query)
+            return render(request, 'search.html', {'results': results})
     return render(request, 'search.html')
 
 
@@ -349,15 +369,16 @@ def aboutus(request):
     return render(request, 'aboutus.html')
 
 @login_required(login_url="login")
-def friends(request, username):
-    profile = get_object_or_404(UserProfile, username=username)
+def friends(request, profile):
+    profile = get_object_or_404(UserProfile, username=profile)
     friends = profile.friends.all()
-    return render(request, 'friends.html', {'friends': friends})
+    return render(request, 'friends.html', {'friends': friends, 'profile': profile})
 
 @login_required(login_url="login")
-def match_history(request, username):
-    profile = get_object_or_404(UserProfile, username=username)
-    return render(request, 'match-history.html')
+def match_history(request, profile):
+    profile = get_object_or_404(UserProfile, username=profile)
+    
+    return render(request, 'match-history.html', {'profile': profile})
 
 ### New Chat ###
 @login_required(login_url = "login")

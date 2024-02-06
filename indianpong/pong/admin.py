@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import UserProfile, Tournament, Room, Message
+from .models import OAuthToken, UserProfile, Tournament, Room, Message
 from django.utils.html import format_html
 
 @admin.register(UserProfile)
@@ -40,6 +40,12 @@ class RoomAdmin(admin.ModelAdmin):
 class MessageAdmin(admin.ModelAdmin):
     list_display = ["user", "room", "created_date"]
 
+
+@admin.register(OAuthToken)
+class OAuthTokenAdmin(admin.ModelAdmin):
+    list_display = ('user', 'access_token', 'refresh_token', 'expires_at')
+    search_fields = ('user__username',) 
+
 """ @admin.register(TwoFactorAuth)
 class TwoFactorAuthAdmin(admin.ModelAdmin):
     list_display = ('user', 'is_enabled')
@@ -49,8 +55,4 @@ class TwoFactorAuthAdmin(admin.ModelAdmin):
 class JWTTokenAdmin(admin.ModelAdmin):
     list_display = ('user', 'token', 'expires_at')
     search_fields = ('user__username',)
-
-@admin.register(OAuthToken)
-class OAuthTokenAdmin(admin.ModelAdmin):
-    list_display = ('user', 'access_token', 'refresh_token', 'expires_at')
-    search_fields = ('user__username',) """
+"""

@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}{{username}} Friends{% endblock %}
+{% block title %}{{profile.username}} Friends{% endblock %}
 
 {% block app %}
     {% include "_nav.html" %}
@@ -19,10 +19,10 @@
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'profile' username=username %}" data-link><i class="bi bi-person-fill"></i>Profile</a>
+                            <a class="nav-link" href="{% url "profile" username=profile.username %}"><i class="bi bi-person"></i>Profile</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'match_history' username=username %}"><i class="bi bi-easel-fill"></i>Match History</a>
+                            <a class="nav-link" href="{% url "match_history" profile=profile.username %}"><i class="bi bi-easel-fill"></i>Match History</a>
                         </li>
                     </ul>
                 </div>
@@ -32,7 +32,7 @@
 </div>
 <div class="card-friends-list">
     <div class="friend-list-card-header">
-        <h3 class="friend-list-header">{{username}} / Friends List</h3>
+        <h3 class="friend-list-header">{{profile.username}} / Friends List</h3>
     </div>
     <div class="friends-list">
         <div class="row">

@@ -13,19 +13,12 @@ import uuid
 
 class UserProfile(AbstractUser):
     displayname = models.CharField(max_length=100, blank=True, null=True)
+    avatar = models.ImageField(upload_to='pong.utils.FilePath("avatars/")', null=True, blank=True)
     friends = models.ManyToManyField('self', symmetrical=False)
     #channel_name = models.CharField(max_length=100, blank=True, null=True)
     wins = models.IntegerField(default=0)
     losses = models.IntegerField(default=0)
     is_verified = models.BooleanField(default=False)
-
-    @staticmethod
-    def get_file_path(instance, filename):
-        ext = filename.split('.')[-1]
-        filename = "%s.%s" % (uuid.uuid4(), ext)
-        return os.path.join('avatars/', filename)
-
-    avatar = models.ImageField(upload_to=get_file_path, null=True, blank=True)
 
     def __str__(self) -> str:
         return f"{self.username}"
@@ -35,7 +28,7 @@ class UserProfile(AbstractUser):
         if self.avatar:
             return mark_safe('<img src="%s" width="50" height="50" />' % (self.avatar.url))
         else:
-            return mark_safe('<img src="/static/assets/profile/default_avatar.jpeg" width="50" height="50" />')
+            return mark_safe('<img src="/static/assets/profile/profilephoto.jpeg" width="50" height="50" />')
 
 class VerifyToken(models.Model):
     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)

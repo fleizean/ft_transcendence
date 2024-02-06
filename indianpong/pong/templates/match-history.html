@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}{{username}} Match-History{% endblock %}
+{% block title %}{{profile.username}} Match-History{% endblock %}
 
 {% block app %}
 {% include '_nav.html' %} 
@@ -18,10 +18,10 @@
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item">
-                            <a class="nav-link" href="/profile"><i class="bi bi-person"></i> Profile</a>
+                            <a class="nav-link" href="{% url "profile" username=profile.username %}"><i class="bi bi-person"></i>Profile</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="/friends"><i class="bi bi-people-fill"></i> Friends</a>
+                            <a class="nav-link" href="{% url "friends" profile=profile.username %}"><i class="bi bi-people-fill"></i>Friends</a>
                         </li>
 
                     </ul>
@@ -33,7 +33,7 @@
 </div>
 <div class="card">
     <div class="mhistory-card-header">
-        <h3 class="mhistory-header">{{username}} / Match History</h3>
+        <h3 class="mhistory-header">{{profile.username}} / Match History</h3>
     </div>
     <div class="match-history">
         <table class="card-mhistory-table">

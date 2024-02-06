@@ -483,7 +483,8 @@ img {
 }
 
 .card {
-  background-color: #F1F1FB;
+  background-color: rgba(241, 241, 251, 0.3) !important;
+  backdrop-filter: blur(3px); /* Arka planı 10 piksel bulanıklaştır */
   padding: 20px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
@@ -507,7 +508,8 @@ img {
 }
 
 .profile-card {
-  background-color: #F1F1FB;
+  background-color: rgba(241, 241, 251, 0.3) !important;
+  backdrop-filter: blur(3px); /* Arka planı 10 piksel bulanıklaştır */
   padding: 20px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
@@ -655,13 +657,9 @@ img {
   text-align: center;
 }
 
-.rank-img img {
-  max-height: 190px;
-  max-width: 200px;
-}
-
 .rank-h4 {
   font-family: 'Spiegel', sans-serif;
+  font-size: 20px;
   color: transparent; /* Metin rengini şeffaf hale getirin */
   background: url('leader-bg.png');
   background-size: cover; /* Resmi kaplama özelliği */
@@ -676,7 +674,7 @@ img {
 }
 
 .rank-img img {
-  height: 224px; /* ya da istediğiniz başka bir değer */
+  height: 145px !important;
   /* İsteğe bağlı olarak width özelliğini de kullanabilirsiniz. */
   /* width: auto; */
 }
@@ -741,14 +739,14 @@ img {
 
 .search-button {
   border: 2px solid black;
-  background-color: transparent;
+  background-color: white;  
   cursor: pointer;
-  padding: 5px;
+  padding: 9px;
   margin-left: 1px; /* İkon ile arama alanı arasında bir boşluk bırakmak için */
 }
 
 .search-button:hover {
-  background-color: green;
+  background-color: #ff9900;
   color: white;
 }
 
