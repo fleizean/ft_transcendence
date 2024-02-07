@@ -26,7 +26,11 @@
                                 alt="user" width="128px" height="128px"/></a>
                         {% endif %}
                         <h3>{{kullanici.username}}</h3>
-                        <h6>{{kullanici.displayname}}</h6>
+                        {% if kullanici.displayname %}
+                            <h6>{{kullanici.displayname}}</h6>
+                        {% else %}
+                            <h6>Unspecified</h6>
+                        {% endif %}
                         <div class="buttons">
                             <button class="primary">Message</button>
                             <button class="primary ghost">Add Friends</button>

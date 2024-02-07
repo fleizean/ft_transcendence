@@ -134,9 +134,16 @@ def auth_callback(request):
 
             if user_info_response.status == 200:
                 user_data = json.loads(user_info_response.read().decode('utf-8'))
+               
+                # if username have already taken, add random string to username
+                username = user_data.get('login')
+                user = UserProfile.objects.filter(username=username).first()
+                if user:
+                    username += get_random_string(length=3)
+                ######
 
                 # Create or get the user based on the 42 user ID
-                user, created = UserProfile.objects.get_or_create(username=user_data['login'])
+                user, created = UserProfile.objects.get_or_create(username=username)
                 if created:
                     user.set_unusable_password()
 
