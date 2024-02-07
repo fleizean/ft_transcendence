@@ -62,6 +62,14 @@ class UpdateUserProfileForm(UserChangeForm):
         model = UserProfile
         fields = ['username', 'displayname', 'email', 'avatar'] """
 
+class UpdateSocialProfileForm(UserChangeForm):
+    stackoverflow = forms.CharField(label='Stackoverflow', widget=forms.TextInput(attrs={'class': 'input'}))
+    github = forms.CharField(label='Github', widget=forms.TextInput(attrs={'class': 'input'}))
+    linkedin = forms.CharField(label='Linkedin', widget=forms.TextInput(attrs={'class': 'input'}))
+    twitter = forms.CharField(label='Twitter', widget=forms.TextInput(attrs={'class': 'input'}))
+    class Meta:
+        model = UserProfile
+        fields = ['stackoverflow', 'github', 'linkedin', 'twitter']
 
 class PasswordChangeUserForm(PasswordChangeForm):
     old_password = forms.CharField(label='Old Password', widget=forms.PasswordInput(attrs={'class': 'input'}))
@@ -159,6 +167,7 @@ class SetPasswordUserForm(SetPasswordForm):
             user.save()
             VerifyToken.objects.filter(user=user).delete()
         return user
+
 
     
 

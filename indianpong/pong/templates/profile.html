@@ -51,12 +51,14 @@
                     <!-- isim -->
                     <h5 class="my-3">{{profile.username}}</h5>
                     <!-- Meslek -->
-                    
-                    <p class="text-muted mb-1">Developer</p>
-                    <div class="d-flex justify-content-center mb-2">
-                        <button type="button" class="btn btn-danger"><i class="bi bi-heart-fill"></i> Follow</button>
-                        <button type="button" class="unfollow-btn" style="display:none"><i
-                                class="bi bi-heartbreak-fill"></i> Unfollow</button>
+                    {% if profile.github %}
+                        <p class="text-muted mb-1" style="color: orange !important;margin-top: -15px;font-size: 15px; font-weight: 600;">Software Developer</p>
+                    {% endif %}
+                    <div class="d-flex justify-content-center mb-2" style="margin-top: 30px;">
+                        {% if request.user.username != profile.username %}
+                            <button type="button" class="btn btn-danger"><i class="bi bi-heart-fill"></i> Follow</button>
+                            <button type="button" class="unfollow-btn" style="display:none"><i class="bi bi-heartbreak-fill"></i> Unfollow</button>
+                        {% endif %}
                     </div>
                 </div>
             </div>
@@ -67,22 +69,38 @@
                         <!-- Website -->
                         <li class="list-group-item d-flex justify-content-between align-items-center p-3">
                             <i class="bi bi-stack-overflow" style="color: orange"></i>
-                            <p class="mb-0">{{profile.username}}</p>
+                            {% if profile.stackoverflow %}
+                                <a href="{{profile.stackoverflow}}" style="text-decoration: none;"><p class="mb-0">{{profile.username}} - Stackoverflow</p></a>
+                            {% else %}
+                                <p class="mb-0">No Stackoverflow</p>
+                            {% endif %}
                         </li>
                         <!-- GitHub -->
                         <li class="list-group-item d-flex justify-content-between align-items-center p-3">
                             <i class="bi bi-github" style="color: #333333;"></i>
-                            <p class="mb-0">{{profile.username}}</p>
+                            {% if profile.github %}
+                                <a href="{{profile.github}}" style="text-decoration: none;"><p class="mb-0">{{profile.username}} - Github</p></a>
+                            {% else %}
+                                <p class="mb-0">No Github</p>
+                            {% endif %}
                         </li>
                         <!-- Twitter -->
                         <li class="list-group-item d-flex justify-content-between align-items-center p-3">
                             <i class="bi bi-twitter-x" style="color: #55acee;"></i>
-                            <p class="mb-0">{{profile.username}}</p>
+                            {% if profile.twitter %}
+                                <a href="{{profile.twitter}}" style="text-decoration: none;"><p class="mb-0">{{profile.username}} - Twitter</p></a>
+                            {% else %}
+                                <p class="mb-0">No Twitter</p>
+                            {% endif %}
                         </li>
                         <!-- Instagram -->
                         <li class="list-group-item d-flex justify-content-between align-items-center p-3">
                             <i class="bi bi-instagram" style="color: #ac2bac;"></i>
-                            <p class="mb-0">{{profile.username}}</p>
+                            {% if profile.instagram %}
+                                <a href="{{profile.instagram}}" style="text-decoration: none;"><p class="mb-0">{{profile.username}} - Instagram</p></a>
+                            {% else %}
+                                <p class="mb-0">No Instagram</p>
+                            {% endif %}
                         </li>
                     </ul>
                 </div>

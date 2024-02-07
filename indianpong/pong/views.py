@@ -18,6 +18,7 @@ from .forms import (
     TwoFactorAuthSetupForm,
     JWTTokenForm,
     AuthenticationUserForm,
+    UpdateSocialProfileForm,
     TournamentForm,
     TournamentMatchForm,
 )
@@ -51,6 +52,8 @@ from django.contrib.auth import get_user_model
 from django.db.models import Q
 from django.contrib.auth import update_session_auth_hash
 from django.utils.crypto import get_random_string
+from django.urls import reverse
+
 
 
 ### Homepage and Error Page ###
@@ -283,10 +286,13 @@ def pong_game_find(request):
 @never_cache
 @login_required(login_url="login")
 def profile_settings(request, username):
+    if request.user.username != username:
+        return redirect(reverse('profile_settings', kwargs={'username': request.user.username}))
     profile_form = UpdateUserProfileForm(
         request.POST or None, request.FILES or None, instance=request.user
     )
     password_form = PasswordChangeUserForm(request.user, request.POST or None)
+    social_form = UpdateSocialProfileForm(request.POST or None, instance=request.user)
     if request.method == "POST":
         if "editProfileForm" in request.POST:
             if profile_form.is_valid():
@@ -298,6 +304,13 @@ def profile_settings(request, username):
                 user = password_form.save()
                 update_session_auth_hash(request, user)  # Important!
                 messages.success(request, "Your password was successfully updated!")
+                return redirect("profile_settings")
+        elif "addSocialForm" in request.POST:
+            print("test1")
+            if social_form.is_valid():
+                print("test1")
+                social_form.save()
+                messages.success(request, "Social profile updated successfully.")
                 return redirect("profile_settings")
     else:
         profile_form = UpdateUserProfileForm(instance=request.user)
@@ -311,6 +324,7 @@ def profile_settings(request, username):
             "profile": profile,
             "profile_form": profile_form,
             "password_form": password_form,
+            "social_form": social_form,
         },
     )
 

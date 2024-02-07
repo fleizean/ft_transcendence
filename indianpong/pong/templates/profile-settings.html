@@ -17,25 +17,25 @@
                     <div class="collapse navbar-collapse" id="profileNavLinks">
                         <ul class="navbar-nav flex-column">
                             <li class="nav-item">
-                                <a class="nav-link" href="#editprofile"
+                                <a class="nav-link" href="#editProfile"
                                     onclick="displaySection('editProfile')"><i class="bi bi-pencil-fill"></i> Edit
                                     Profile</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#changepassword"
+                                <a class="nav-link" href="#changePassword"
                                     onclick="displaySection('changePassword')"><i class="bi bi-lock-fill"></i> Change
                                     Password</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#addsocial" onclick="displaySection('addSocial')"><i
+                                <a class="nav-link" href="#addSocial" onclick="displaySection('addSocial')"><i
                                         class="bi bi-bookmark-fill"></i> Add Socials</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#blockedusers"
+                                <a class="nav-link" href="#blockedUsers"
                                     onclick="displaySection('blockedUsers')"><i class="bi bi-ban"></i> Blocked Users</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#closeaccount"
+                                <a class="nav-link" href="#closeAccount"
                                     onclick="displaySection('closeAccount')"><i class="bi bi-door-closed-fill"></i>
                                     Close Account</a>
                             </li>
@@ -136,14 +136,15 @@
                 </section>
 
                 <section id="addSocial">
-                    <form id="addSocialForm" enctype="multipart/form-data" method="post">
+                    <form id="addSocialForm" name="addSocialForm" enctype="multipart/form-data" method="post" action="{% url 'profile_settings' username=request.user.username %}">
+                        {% csrf_token %}
                         <div class="mb-3 position-relative">
                             <label class="small mb-1" for="socialStackoverflow">
                                 <i class="bi bi-stack-overflow fs-4"></i> Stackoverflow
                             </label>
                             <div class="input-group">
-                                <input class="form-control" id="socialStackoverflow" type="text"
-                                    placeholder="Enter your Stackoverflow username">
+                                <input class="form-control" id="socialStackoverflow" type="text" name="stackoverflow" 
+                                    placeholder="Enter your Stackoverflow username" value="{{ profile.stackoverflow }}">
                             </div>
                         </div>
 
@@ -152,8 +153,8 @@
                                 <i class="bi bi-twitter-x fs-4"></i> Twitter
                             </label>
                             <div class="input-group">
-                                <input class="form-control" id="socialTwitter" type="text"
-                                    placeholder="Enter your Twitter username">
+                                <input class="form-control" id="socialTwitter" type="text" name="twitter" 
+                                    placeholder="Enter your Twitter username" value="{{ profile.twitter }}">
                             </div>
                         </div>
 
@@ -162,8 +163,8 @@
                                 <i class="bi bi-instagram fs-4"></i> Instagram
                             </label>
                             <div class="input-group">
-                                <input class="form-control" id="socialInstagram" type="text"
-                                    placeholder="Enter your Instagram username">
+                                <input class="form-control" id="socialInstagram" type="text" name="instagram" 
+                                    placeholder="Enter your Instagram username" value="{{ profile.instagram }}">
                             </div>
                         </div>
 
@@ -172,8 +173,8 @@
                                 <i class="bi bi-github fs-4"></i> Github
                             </label>
                             <div class="input-group">
-                                <input class="form-control" id="socialGithub" type="text"
-                                    placeholder="Enter your Github username">
+                                <input class="form-control" id="socialGithub" type="text" name="github" 
+                                    placeholder="Enter your Github username" value="{{ profile.github }}">
                             </div>
                         </div>
 
@@ -261,7 +262,7 @@
 </div>
 <script>
 function displaySection(sectionId) {
-    var sections = ["editProfile", "addSocial", "closeAccount", "changePassword", "blockedUsers"];
+    var sections = ["editProfile", "addSocial", "closeAccount","blockedUsers", "changePassword"];
 
     for (var i = 0; i < sections.length; i++) {
         var section = document.getElementById(sections[i]);
@@ -271,6 +272,28 @@ function displaySection(sectionId) {
             section.style.display = 'none';
         }
     }
+    
+   
 }
+window.onload = function() {
+        // Get the hash from the URL
+        var hash = window.location.hash;
+        console.log('test: ' +hash)
+        
+        // If there's a hash
+        if(hash) {
+            // Remove the '#' from the start of the hash
+            var sectionId = hash.substring(1);
+        
+            // Call the displaySection function with the sectionId
+            displaySection(sectionId);
+        }
+    }
+    window.onhashchange = function() {
+    var currentFragment = window.location.hash.substring(1);
+    displaySection(currentFragment);
+};
+
+
 </script>
 {% endblock %}
