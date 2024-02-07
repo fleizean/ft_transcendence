@@ -250,7 +250,7 @@ def profile_settings(request, username):
                 messages.success(request, 'Your password was successfully updated!')
                 return redirect('profile_settings')
     else:
-        profile_form = UpdateUserProfileForm(instance=request.user.username)
+        profile_form = UpdateUserProfileForm(instance=request.user)
         password_form = PasswordChangeUserForm(request.user)
 
     profile = get_object_or_404(UserProfile, username=username)                 
