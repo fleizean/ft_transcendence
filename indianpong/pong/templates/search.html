@@ -22,7 +22,7 @@
                             <a href="/profile/{{kullanici.username}}" class="go-profile"><img class="round" src="{{kullanici.avatar.url}}" width="156px" height="156px"
                                 alt="user" /></a>
                         {% else %}
-                            <a href="#" class="go-profile"><img class="round" src="/static/assets/profile/profilephoto.jpeg"
+                            <a href="/profile/{{kullanici.username}}" class="go-profile"><img class="round" src="/static/assets/profile/profilephoto.jpeg"
                                 alt="user" width="128px" height="128px"/></a>
                         {% endif %}
                         <h3>{{kullanici.username}}</h3>

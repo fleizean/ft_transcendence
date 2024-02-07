@@ -43,7 +43,7 @@ class MessageAdmin(admin.ModelAdmin):
 
 @admin.register(OAuthToken)
 class OAuthTokenAdmin(admin.ModelAdmin):
-    list_display = ('user', 'access_token', 'refresh_token', 'expires_at')
+    list_display = ('user', 'access_token', 'refresh_token', 'expires_in', 'created_at', 'secret_valid_until')
     search_fields = ('user__username',) 
 
 """ @admin.register(TwoFactorAuth)

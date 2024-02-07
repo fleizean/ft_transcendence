@@ -51,11 +51,8 @@
                     <!-- isim -->
                     <h5 class="my-3">{{profile.username}}</h5>
                     <!-- Meslek -->
-                    <p class="text-muted mb-1">Full Stack Developer</p>
-                    <!-- Konum -->
-                    <p class="text-muted mb-4">Bay Area, San Francisco, CA</p>
-                    <!-- Takip ve istatistik Butonları -->
-
+                    
+                    <p class="text-muted mb-1">Developer</p>
                     <div class="d-flex justify-content-center mb-2">
                         <button type="button" class="btn btn-danger"><i class="bi bi-heart-fill"></i> Follow</button>
                         <button type="button" class="unfollow-btn" style="display:none"><i
@@ -123,7 +120,7 @@
                                 <p class="mb-0">Joined Date</p>
                             </div>
                             <div class="col-sm-9">
-                                <p class="text-muted mb-0">{{profile.date_joined}}</p>
+                                <p class="text-muted mb-0">{{ profile.date_joined|date:"d.m.Y H:i:s" }}</p>
                             </div>
                         </div>
                         <hr>

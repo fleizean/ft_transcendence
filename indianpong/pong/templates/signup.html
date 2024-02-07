@@ -99,6 +99,42 @@
         </div>
       </form>
     </div>
+    <div class="toast-container position-fixed bottom-0 end-0 p-6" style="margin-right: 20px; margin-bottom: 20px">
+      <div class="toast text-bg-danger" id="liveToast" role="alert">
+          <div class="toast-body">
+              <div class="d-flex gap-4">
+                  <span class="i-class"><i class="bi bi-bug-fill"></i></span>
+                  <div class="d-flex flex-grow-1 align-items-center">
+                      <span class="fw-semibold">NULL</span>
+                      <span class="toast-close" data-bs-dismiss="toast"><i class="bi bi-x-circle-fill"></i></span>
+                  </div>
+              </div>
+          </div>
+      </div>
+    </div>
   </div>
+  
 </div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+              // Toast'ı gösterme fonksiyonu
+              function showToastFailed(content) {
+                  const liveToast = document.getElementById('liveToast');
+                  var toastContent = document.querySelector('#liveToast .fw-semibold');
+                  toastContent.textContent = content;
+                  const toast = new bootstrap.Toast(liveToast);
+                  toast.show();
+                  setTimeout(function() {
+                      toast.hide();
+                  }, 3000);
+              }
+              const urlParams = new URLSearchParams(window.location.search);
+              const statusValue = urlParams.get('status');
+              if (statusValue === 'failed_42email') {
+                  showToastFailed("You cannot register with email 42");
+              }
+              
+          });
+</script>
 {% endblock %}

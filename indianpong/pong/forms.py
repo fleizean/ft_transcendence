@@ -1,6 +1,7 @@
 from datetime import timedelta
 from email.mime.image import MIMEImage
 import os
+import re
 from django.core.mail import EmailMultiAlternatives
 from django.core.mail import send_mail
 from django import forms
@@ -13,7 +14,7 @@ from django.utils.http import urlsafe_base64_encode
 from django.utils.encoding import force_bytes
 from indianpong.settings import EMAIL_HOST_USER, STATICFILES_DIRS
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, UserChangeForm, PasswordChangeForm, PasswordResetForm, SetPasswordForm 
-from .models import VerifyToken, BlockedUser, ChatMessage, GameInvitation, UserProfile, TwoFactorAuth, JWTToken, Tournament, TournamentMatch, OAuthToken
+from .models import VerifyToken, BlockedUser, ChatMessage, GameInvitation, UserProfile, TwoFactorAuth, JWTToken, Tournament, TournamentMatch
 
 class UserProfileForm(UserCreationForm):
 
@@ -26,6 +27,13 @@ class UserProfileForm(UserCreationForm):
     class Meta:
         model = UserProfile
         fields = ['username', 'displayname', 'email', 'password1', 'password2', 'avatar']
+
+    def clean_email(self): #TODO not just 42kocaeli.com.tr
+        email = self.cleaned_data.get('email')
+
+        if "@student.42" in email:
+            raise forms.ValidationError('Use 42 login')
+        return email
 
 class AuthenticationUserForm(AuthenticationForm):
     username = forms.CharField(label='Username', widget=forms.TextInput(attrs={'class': 'input'}))
@@ -200,13 +208,5 @@ class TournamentMatchForm(forms.ModelForm):
     class Meta:
         model = TournamentMatch
         fields = ['tournament', 'player1', 'player2']
-
-class OAuthTokenForm(forms.ModelForm):
-    class Meta:
-        model = OAuthToken
-        fields = ['access_token', 'refresh_token', 'expires_at']
-
-"""     def savem2m(self):
-        pass """
 
 

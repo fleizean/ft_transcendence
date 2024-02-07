@@ -12,13 +12,21 @@ from django.utils import timezone
 import uuid
 
 class UserProfile(AbstractUser):
+    email = models.EmailField(unique=True, max_length=254)
     displayname = models.CharField(max_length=100, blank=True, null=True)
-    avatar = models.ImageField(upload_to='pong.utils.FilePath("avatars/")', null=True, blank=True)
+    avatar = models.ImageField(upload_to='avatars/', null=True, blank=True)
     friends = models.ManyToManyField('self', symmetrical=False)
     #channel_name = models.CharField(max_length=100, blank=True, null=True)
     wins = models.IntegerField(default=0)
     losses = models.IntegerField(default=0)
     is_verified = models.BooleanField(default=False)
+    # social media links
+    stackoverflow = models.URLField(max_length=200, blank=True, null=True)
+    github = models.URLField(max_length=200, blank=True, null=True)
+    twitter = models.URLField(max_length=200, blank=True, null=True)
+    instagram = models.URLField(max_length=200, blank=True, null=True)
+
+
 
     def __str__(self) -> str:
         return f"{self.username}"
@@ -29,6 +37,14 @@ class UserProfile(AbstractUser):
             return mark_safe('<img src="%s" width="50" height="50" />' % (self.avatar.url))
         else:
             return mark_safe('<img src="/static/assets/profile/profilephoto.jpeg" width="50" height="50" />')
+    
+    def save(self, *args, **kwargs):
+        if self.avatar:
+            _, ext = os.path.splitext(self.avatar.name)
+            if not ext:
+                ext = '.jpg'
+            self.avatar.name = f"avatars/{self.username}{ext}"
+        super().save(*args, **kwargs)
 
 class VerifyToken(models.Model):
     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
@@ -152,7 +168,9 @@ class OAuthToken(models.Model):
     user = models.OneToOneField(UserProfile, on_delete=models.CASCADE)
     access_token = models.CharField(max_length=255)
     refresh_token = models.CharField(max_length=255)
-    expires_at = models.DateTimeField(default=None ,null=True, blank=True)
+    expires_in = models.IntegerField(null=True, blank=True)
+    created_at = models.IntegerField(null=True, blank=True)
+    secret_valid_until = models.IntegerField(null=True, blank=True)
 
 class TwoFactorAuth(models.Model):
     user = models.OneToOneField(UserProfile, on_delete=models.CASCADE)

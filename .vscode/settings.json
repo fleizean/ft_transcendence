@@ -1,0 +1,4 @@
+{
+    "remote.autoForwardPortsFallback": 0,
+    "python.analysis.autoImportCompletions": false
+}
