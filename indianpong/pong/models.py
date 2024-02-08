@@ -16,7 +16,7 @@ class UserProfile(AbstractUser):
     email = models.EmailField(unique=True, max_length=254)
     displayname = models.CharField(max_length=100, blank=True, null=True)
     avatar = models.ImageField(upload_to='avatars/', null=True, blank=True)
-    friends = models.ManyToManyField('self', symmetrical=False)
+    friends = models.ManyToManyField('self', symmetrical=False, blank=True)
     #channel_name = models.CharField(max_length=100, blank=True, null=True)
     wins = models.IntegerField(default=0)
     losses = models.IntegerField(default=0)

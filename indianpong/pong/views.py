@@ -303,7 +303,10 @@ def profile_settings(request, username):
                 return redirect(reverse('profile_settings', args=[username]) + '#editProfile')
         elif "password_form" in request.POST:
             if password_form.is_valid():
-                user = password_form.save()
+                print("sdlfsşfsşfsf")
+                user = password_form.save(commit=False)
+                user.set_password(password_form.cleaned_data["new_password1"])
+                user.save()
                 update_session_auth_hash(request, user)  # Important!
                 messages.success(request, "Your password was successfully updated!")
                 return redirect(reverse('profile_settings', args=[username]) + '#changePassword')
