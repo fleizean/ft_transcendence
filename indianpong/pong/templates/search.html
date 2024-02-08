@@ -19,62 +19,72 @@
             </div>
         </form>
 
-
-        <div class="profiles">
-            {% if results %}
-                {% for kullanici in results %}
-                    <div class="profile_card c4{% comment %} {{ forloop.counter }} {% endcomment %}">
-                        <div class="profile_card__inner">
-                            <div class="profile_card__front">
-                                <img src="{% if kullanici.avatar %}{{kullanici.avatar.url}}{% else %}/static/assets/profile/profilephoto.jpeg{% endif %}" alt="Avatar" class="profile-img">
-                                <div class="profile_card__detail">
-                                    <br>
-                                    <p class="profile__title">{{kullanici.username}}</p>
-                                    <p class="">{{kullanici.displayname}}</p>
-                                </div>
-                            </div>
-                            <div class="profile_links">
-                                <div><a href="/profile/{{kullanici.username}}"><i class="bi bi-person-bounding-box"></i></a></div>
-                                <div><a href="/profile/{{kullanici.username}}"><i class="bi bi-plus-square-fill"></i></a></div>
-                                <div><a href="/start_chat/{{kullanici.username}}"><i class="bi bi-chat-dots-fill"></i></a></div>
-                            </div>
-                        </div>
-                    </div>
-                {% endfor %}
-            {% else %}
-                <p style="color:orange; font-weight:bold">No results found.</p>
-            {% endif %}
-        </div>
-        
-
         <div class="card-container-wrapper">
-            {% if results %}
-                {% for kullanici in results %}
-                    <div class="card-container">
-
-                        <span class="pro">1ST</span>
+        <!-- Arama sonuçları -->
+        {% if results %}
+            {% for kullanici in results %}
+            
+              <div class="card-containers">
+                <div class="profile-card">
+                    <div class="image">
                         {% if kullanici.avatar %}
-                            <a href="/profile/{{kullanici.username}}" class="go-profile"><img class="round" src="{{kullanici.avatar.url}}" width="156px" height="156px"
-                                alt="user" /></a>
+                            <img src="{{kullanici.avatar.url}}" alt="" class="profile-img" />
                         {% else %}
-                            <a href="/profile/{{kullanici.username}}" class="go-profile"><img class="round" src="/static/assets/profile/profilephoto.jpeg"
-                                alt="user" width="128px" height="128px"/></a>
+                            <img src="/static/assets/profile/profilephoto.jpeg" alt="" class="profile-img" />
                         {% endif %}
-                        <h3>{{kullanici.username}}</h3>
-                        {% if kullanici.displayname %}
-                            <h6>{{kullanici.displayname}}</h6>
-                        {% else %}
-                            <h6>Unspecified</h6>
-                        {% endif %}
-                        <div class="buttons">
-                            <button class="primary">Message</button>
-                            <button class="primary ghost">Add Friends</button>
-                        </div>
                     </div>
-                {% endfor %}
-            {% else %}
-                <p style="color:orange; font-weight:bold">No results found.</p>
-            {% endif %}
+                    <div class="text-data">
+                      <span class="name">{{kullanici.username}}</span>
+                      <span class="job">{{kullanici.displayname}}</span>
+                    </div>
+                    <div class="media-buttons">
+                      {% if kullanici.stackoverflow %}
+                        <a href="{{kullanici.stackoverflow}}" class="medialinks stackoverflow"><i class="bi bi-stack-overflow"></i></a>
+                      {% endif %}
+                      {% if kullanici.twitter %}
+                        <a href="{{kullanici.twitter}}" class="medialinks twitter"><i class="bi bi-twitter"></i></a>
+                      {% endif %}
+                      {% if kullanici.github %}
+                        <a href="{{kullanici.github}}" class="medialinks github"><i class="bi bi-github"></i></a>
+                      {% endif %}
+                      {% if kullanici.instagram %}
+                        <a href="{{kullanici.instagram}}" class="medialinks instagram"><i class="bi bi-instagram"></i></a>
+                      {% endif %}
+                    </div>
+                    {% if not kullanici.stackoverflow and not kullanici.twitter and not kullanici.github and not kullanici.instagram %}
+                      <div class="buttons" style="margin-top: 60px !important;">
+                        <button class="button-follow">Follow</button>
+                        <button class="button-message">Message</button>
+                      </div>
+                    {% else %}
+                      <div class="buttons">
+                        <button class="button-follow">Follow</button>
+                        <button class="button-message">Message</button>
+                      </div>
+                    {% endif %}
+                  
+                      <div class="analytics">
+                        <div class="data">
+                          <i class="bi bi-dice-1-fill" style="color: #FF5733;"></i>
+                          <span class="number">50</span>
+                        </div>
+                        <div class="data">
+                          <i class="bi bi-trophy-fill" style="color: #FFD601;"></i>
+                          <span class="number">50</span>
+                        </div>
+                        <div class="data">
+                          <i class="bi bi-award-fill" style="color: #4CAF4F;"></i>
+                          <span class="number">100%</span>
+                        </div>
+                      </div>
+                   
+                </div>
+              </div>
+            {% endfor %}
+        {% else %}
+            <p style="color:orange; font-weight:bold; text-align: center;">No results found.</p>
+        {% endif %}
+      </div>
         </div>
     </div>
 </div>
