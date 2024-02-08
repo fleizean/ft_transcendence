@@ -9,7 +9,7 @@
 {% block app %}
   {% include "_nav.html" %}
 <div class="container-top">
-    <div class="card">
+    <div class="search-card">
         <!-- Arama kutusu ve butonu -->
         <form action="{% url 'search' %}" method="POST">
             {% csrf_token %}
