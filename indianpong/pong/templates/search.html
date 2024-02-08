@@ -1,6 +1,11 @@
 {% extends 'base.html' %}
 
 {% block title %}Search{% endblock title %}
+
+{% load static %}
+
+{% block stylesheet %}<link rel="stylesheet" href="../../../static/css/search.css">{% endblock stylesheet %}
+
 {% block app %}
   {% include "_nav.html" %}
 <div class="container-top">
@@ -9,14 +14,44 @@
         <form action="{% url 'search' %}" method="POST">
             {% csrf_token %}
             <div class="search-container">
-                <input type="text" name="search_query" placeholder="Email or Username Search..." class="search-input">
+                <input type="text" name="search_query" placeholder="Email or Username Search..." class="search-input" autocomplete="off" data-lpignore="true">
                 <button class="search-button" type="submit"><i class="bi bi-search"></i></button>
             </div>
         </form>
+
+
+        <div class="profiles">
+            {% if results %}
+                {% for kullanici in results %}
+                    <div class="profile_card c4{% comment %} {{ forloop.counter }} {% endcomment %}">
+                        <div class="profile_card__inner">
+                            <div class="profile_card__front">
+                                <img src="{% if kullanici.avatar %}{{kullanici.avatar.url}}{% else %}/static/assets/profile/profilephoto.jpeg{% endif %}" alt="Avatar" class="profile-img">
+                                <div class="profile_card__detail">
+                                    <br>
+                                    <p class="profile__title">{{kullanici.username}}</p>
+                                    <p class="">{{kullanici.displayname}}</p>
+                                </div>
+                            </div>
+                            <div class="profile_links">
+                                <div><a href="/profile/{{kullanici.username}}"><i class="bi bi-person-bounding-box"></i></a></div>
+                                <div><a href="/profile/{{kullanici.username}}"><i class="bi bi-plus-square-fill"></i></a></div>
+                                <div><a href="/start_chat/{{kullanici.username}}"><i class="bi bi-chat-dots-fill"></i></a></div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p style="color:orange; font-weight:bold">No results found.</p>
+            {% endif %}
+        </div>
+        
+
         <div class="card-container-wrapper">
             {% if results %}
                 {% for kullanici in results %}
                     <div class="card-container">
+
                         <span class="pro">1ST</span>
                         {% if kullanici.avatar %}
                             <a href="/profile/{{kullanici.username}}" class="go-profile"><img class="round" src="{{kullanici.avatar.url}}" width="156px" height="156px"
@@ -40,7 +75,6 @@
             {% else %}
                 <p style="color:orange; font-weight:bold">No results found.</p>
             {% endif %}
-           
         </div>
     </div>
 </div>
