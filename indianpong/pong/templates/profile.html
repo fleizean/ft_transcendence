@@ -25,7 +25,6 @@
                         <li class="nav-item">
                             <a class="nav-link" href="/friends/{{profile.username}}"><i class="bi bi-people-fill"></i> Friends</a>
                         </li>
-
                     </ul>
                 </div>
             </nav>
@@ -44,9 +43,9 @@
                 <div class="card-body text-center">
                     <!-- Avatar -->
                     {% if not profile.avatar %}
-                        <img src="{{ avatar }}" alt="avatar" class="profile-image-circ">
+                        <img src="{{ avatar }}" alt="avatar" class="profile-image-circ" style="aspect-ratio: 1/1; object-fit: cover;">
                     {% else %}
-                        <img src="{{ profile.avatar.url }}" alt="avatar" class="profile-image-circ">
+                        <img src="{{ profile.avatar.url }}" alt="avatar" class="profile-image-circ" style="aspect-ratio: 1/1; object-fit: cover;">
                     {% endif %}
                     <!-- isim -->
                     <h5 class="my-3">{{profile.username}}</h5>
