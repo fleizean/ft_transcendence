@@ -9,16 +9,17 @@ from django.http import HttpResponseRedirect
 from .forms import (
     BlockUserForm,
     ChatMessageForm,
+    DeleteAccountForm,
     InviteToGameForm,
     PasswordChangeUserForm,
     PasswordResetUserForm,
     SetPasswordUserForm,
+    SocialForm,
     UserProfileForm,
     UpdateUserProfileForm,
     TwoFactorAuthSetupForm,
     JWTTokenForm,
     AuthenticationUserForm,
-    UpdateSocialProfileForm,
     TournamentForm,
     TournamentMatchForm,
 )
@@ -292,29 +293,37 @@ def profile_settings(request, username):
         request.POST or None, request.FILES or None, instance=request.user
     )
     password_form = PasswordChangeUserForm(request.user, request.POST or None)
-    social_form = UpdateSocialProfileForm(request.POST or None, instance=request.user)
+    social_form = SocialForm(request.POST or None, instance=request.user.social)
+    delete_account_form = DeleteAccountForm(request.POST or None, user=request.user)
     if request.method == "POST":
-        if "editProfileForm" in request.POST:
+        if "profile_form" in request.POST:
             if profile_form.is_valid():
                 profile_form.save()
                 messages.success(request, "Profile updated successfully.")
-                return redirect("profile_settings")
-        elif "changePasswordForm" in request.POST:
+                return redirect(reverse('profile_settings', args=[username]) + '#editProfile')
+        elif "password_form" in request.POST:
             if password_form.is_valid():
                 user = password_form.save()
                 update_session_auth_hash(request, user)  # Important!
                 messages.success(request, "Your password was successfully updated!")
-                return redirect("profile_settings")
-        elif "addSocialForm" in request.POST:
-            print("test1")
+                return redirect(reverse('profile_settings', args=[username]) + '#changePassword')
+        elif "social_form" in request.POST:
             if social_form.is_valid():
-                print("test1")
-                social_form.save()
-                messages.success(request, "Social profile updated successfully.")
-                return redirect("profile_settings")
+                social = social_form.save(commit=False)
+                social.user = request.user
+                social.save()
+                messages.success(request, "Socials updated successfully.")
+                return redirect(reverse('profile_settings', args=[username]) + '#addSocial')
+        elif "delete_account_form" in request.POST:
+            if delete_account_form.is_valid():
+                request.user.delete()
+                logout(request)
+                return redirect('')
     else:
         profile_form = UpdateUserProfileForm(instance=request.user)
         password_form = PasswordChangeUserForm(request.user)
+        social_form = SocialForm(instance=request.user.social)
+        delete_account_form = DeleteAccountForm(user=request.user)
 
     profile = get_object_or_404(UserProfile, username=username)
     return render(
@@ -325,9 +334,9 @@ def profile_settings(request, username):
             "profile_form": profile_form,
             "password_form": password_form,
             "social_form": social_form,
+            "delete_account_form": delete_account_form,
         },
     )
-
 
 @never_cache
 @login_required(login_url="login")

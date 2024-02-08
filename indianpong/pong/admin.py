@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import OAuthToken, UserProfile, Tournament, Room, Message
+from .models import OAuthToken, Social, UserProfile, Tournament, Room, Message
 from django.utils.html import format_html
 
 @admin.register(UserProfile)
@@ -16,7 +16,7 @@ class UserProfileAdmin(admin.ModelAdmin):
     list_display = ('username', 'email', 'displayname', 'avatar_thumbnail', 'wins', 'losses')
     search_fields = ('username', 'email', 'displayname')
     fieldsets = (
-    ('User Information', {'fields': ('username', 'password', 'displayname', 'email', 'avatar', 'friends', 'github', 'instagram', 'stackoverflow', 'twitter', )}),
+    ('User Information', {'fields': ('username', 'password', 'displayname', 'email', 'avatar', 'friends')}),
     ('Dates', {'fields': ('date_joined', 'last_login')}),
     ('Roles', {'fields': ('is_staff', 'is_active', 'is_superuser', 'is_verified')}),
     ('Permissions', {'fields': ('groups', 'user_permissions')}),
@@ -26,6 +26,12 @@ class UserProfileAdmin(admin.ModelAdmin):
     def avatar_thumbnail(self, obj):
         return format_html(obj.thumbnail)
     avatar_thumbnail.short_description = 'Avatar'
+
+    
+@admin.register(Social)
+class SocialAdmin(admin.ModelAdmin):
+    list_display = ('user', 'stackoverflow', 'github', 'twitter', 'instagram')
+    search_fields = ('user__user__username', 'stackoverflow', 'github', 'twitter', 'instagram')
     
 @admin.register(Tournament)
 class TournamentAdmin(admin.ModelAdmin):

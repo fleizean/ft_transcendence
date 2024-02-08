@@ -50,7 +50,7 @@
 
                 <!-- Edit Profile Form -->
                 <section id="editProfile">
-                    <form id="editProfileForm" enctype="multipart/form-data" method="post">
+                    <form id="profile_form" name="profile_form" enctype="multipart/form-data" method="post">
                         {% csrf_token %}
                         <div class="profile-pic-container">
                             <label for="id_avatar" class="profile-pic-label">
@@ -82,20 +82,19 @@
                         <!-- Displayname textbox -->
                         <div class="mb-3">                           
                                 <label class="small mb-1" for="id_displayname">Displayname</label>
-                                <input class="form-control" id="id_displayname" required type="text"
+                                <input class="form-control" id="id_displayname" name="displayname" required type="text"
                                     placeholder="{{profile.displayname}}" value="{{profile.displayname}}">
                         </div>
                         <!-- Submit button -->
-                        <button type="submit" class="btn btn-success">Save Changes</button>
+                        <button type="submit" name="profile_form" class="btn btn-success">Save Changes</button>
                     </form>
                 </section>
-
 
 
                 <!-- Change Password Section -->
                 <section id="changePassword">
                     <!-- Your code for changing password goes here -->
-                    <form id="changePasswordForm" enctype="multipart/form-data" method="post">
+                    <form id="password_form" name="password_form" enctype="multipart/form-data" method="post">
                         {% csrf_token %}
                         <div class="mb-3 position-relative">
                             <label class="small mb-1" for="id_old_password">Current Password</label>
@@ -130,69 +129,70 @@
                             </div>
                         </div>
 
-                        <button type="submit" class="btn btn-primary"><i class="bi bi-lock-fill"></i> Change
+                        <button type="submit" name="password_form" class="btn btn-primary"><i class="bi bi-lock-fill"></i> Change
                             Password</button>
                     </form>
                 </section>
 
                 <section id="addSocial">
-                    <form id="addSocialForm" name="addSocialForm" enctype="multipart/form-data" method="post" action="{% url 'profile_settings' username=request.user.username %}">
+                    <form id="social_form" name="social_form" enctype="multipart/form-data" method="post" action="{% url 'profile_settings' username=request.user.username %}">
                         {% csrf_token %}
                         <div class="mb-3 position-relative">
-                            <label class="small mb-1" for="socialStackoverflow">
+                            <label class="small mb-1" for="id_stackoverflow">
                                 <i class="bi bi-stack-overflow fs-4"></i> Stackoverflow
                             </label>
                             <div class="input-group">
-                                <input class="form-control" id="socialStackoverflow" type="text" name="stackoverflow" 
-                                    placeholder="Enter your Stackoverflow username" value="{{ profile.stackoverflow }}">
+                                <input type="text" name="stackoverflow" class="form-control" id="id_stackoverflow" 
+                                    placeholder="Enter your Stackoverflow username" value="{{ profile.social.stackoverflow }}">
                             </div>
                         </div>
 
                         <div class="mb-3 position-relative">
-                            <label class="small mb-1" for="socialTwitter">
+                            <label class="small mb-1" for="id_twitter">
                                 <i class="bi bi-twitter-x fs-4"></i> Twitter
                             </label>
                             <div class="input-group">
-                                <input class="form-control" id="socialTwitter" type="text" name="twitter" 
-                                    placeholder="Enter your Twitter username" value="{{ profile.twitter }}">
+                                <input type="text" name="twitter" class="form-control" id="id_twitter" 
+                                    placeholder="Enter your Twitter username" value="{{ profile.social.twitter }}">
                             </div>
                         </div>
 
                         <div class="mb-3 position-relative">
-                            <label class="small mb-1" for="socialInstagram">
+                            <label class="small mb-1" for="id_instagram">
                                 <i class="bi bi-instagram fs-4"></i> Instagram
                             </label>
                             <div class="input-group">
-                                <input class="form-control" id="socialInstagram" type="text" name="instagram" 
-                                    placeholder="Enter your Instagram username" value="{{ profile.instagram }}">
+                                <input type="text" name="instagram" class="form-control" id="id_instagram"
+                                    placeholder="Enter your Instagram username" value="{{ profile.social.instagram }}">
                             </div>
                         </div>
 
                         <div class="mb-3 position-relative">
-                            <label class="small mb-1" for="socialGithub">
+                            <label class="small mb-1" for="id_github">
                                 <i class="bi bi-github fs-4"></i> Github
                             </label>
                             <div class="input-group">
-                                <input class="form-control" id="socialGithub" type="text" name="github" 
-                                    placeholder="Enter your Github username" value="{{ profile.github }}">
+                                <input type="text" name="github" class="form-control" id="id_github"
+                                    placeholder="Enter your Github username" value="{{ profile.social.github }}">
                             </div>
                         </div>
 
                         <!-- Diğer sosyal medya platformları için benzer şekilde devam edebilirsiniz -->
 
-                        <button type="submit" class="btn btn-primary"><i class="bi bi-save-fill"></i> Save
+                        <button type="submit" name="social_form" class="btn btn-primary"><i class="bi bi-save-fill"></i> Save
                             Changes</button>
                     </form>
                 </section>
 
                 <section id="closeAccount">
-                    <form id="closeAccountForm" enctype="multipart/form-data" method="post">
+                    <form id="delete_account_form" name="delete_account_form" enctype="multipart/form-data" method="post">
+                        {% csrf_token %}
                         <div class="mb-3 position-relative">
-                            <label class="small mb-1" for="passwordToDeleteAccount">
+                            <label class="small mb-1" for="id_password">
                                 Enter your password to delete your account:
                             </label>
                             <div class="input-group">
-                                <input class="form-control" id="passwordToDeleteAccount" type="password" required>
+                                <input class="form-control" id="id_password" type="password" name="password" required>
                                 <button class="btn btn-outline-danger" type="button"
                                     onclick="togglePasswordVisibility('passwordToDeleteAccount')">
                                     <i class="bi bi-eye"></i>
@@ -205,7 +205,7 @@
                             the 'Delete Account' button, you will be separated from us, so please think carefully, as
                             there will be no turning back. Anyway, see you around!
                         </p>
-                        <button type="button" class="btn btn-danger" onclick="deleteAccount()">
+                        <button type="button" name="delete_account_form" class="btn btn-danger">
                             <i class="bi bi-trash-fill"></i> Delete Account
                         </button>
                     </form>

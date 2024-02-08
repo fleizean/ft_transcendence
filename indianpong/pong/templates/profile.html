@@ -68,8 +68,8 @@
                         <!-- Website -->
                         <li class="list-group-item d-flex justify-content-between align-items-center p-3">
                             <i class="bi bi-stack-overflow" style="color: orange"></i>
-                            {% if profile.stackoverflow %}
-                                <a href="{{profile.stackoverflow}}" style="text-decoration: none;"><p class="mb-0">{{profile.username}} - Stackoverflow</p></a>
+                            {% if profile.socials.stackoverflow%}
+                                <a href="{{profile.socials.stackoverflow}}" style="text-decoration: none;"><p class="mb-0">{{profile.username}} - Stackoverflow</p></a>
                             {% else %}
                                 <p class="mb-0">No Stackoverflow</p>
                             {% endif %}
@@ -77,8 +77,8 @@
                         <!-- GitHub -->
                         <li class="list-group-item d-flex justify-content-between align-items-center p-3">
                             <i class="bi bi-github" style="color: #333333;"></i>
-                            {% if profile.github %}
-                                <a href="{{profile.github}}" style="text-decoration: none;"><p class="mb-0">{{profile.username}} - Github</p></a>
+                            {% if profile.socials.github %}
+                                <a href="{{profile.socials.github}}" style="text-decoration: none;"><p class="mb-0">{{profile.username}} - Github</p></a>
                             {% else %}
                                 <p class="mb-0">No Github</p>
                             {% endif %}
@@ -86,8 +86,8 @@
                         <!-- Twitter -->
                         <li class="list-group-item d-flex justify-content-between align-items-center p-3">
                             <i class="bi bi-twitter-x" style="color: #55acee;"></i>
-                            {% if profile.twitter %}
-                                <a href="{{profile.twitter}}" style="text-decoration: none;"><p class="mb-0">{{profile.username}} - Twitter</p></a>
+                            {% if profile.socials.twitter %}
+                                <a href="{{profile.socials.twitter}}" style="text-decoration: none;"><p class="mb-0">{{profile.username}} - Twitter</p></a>
                             {% else %}
                                 <p class="mb-0">No Twitter</p>
                             {% endif %}
@@ -95,8 +95,8 @@
                         <!-- Instagram -->
                         <li class="list-group-item d-flex justify-content-between align-items-center p-3">
                             <i class="bi bi-instagram" style="color: #ac2bac;"></i>
-                            {% if profile.instagram %}
-                                <a href="{{profile.instagram}}" style="text-decoration: none;"><p class="mb-0">{{profile.username}} - Instagram</p></a>
+                            {% if profile.socials.instagram %}
+                                <a href="{{profile.socials.instagram}}" style="text-decoration: none;"><p class="mb-0">{{profile.username}} - Instagram</p></a>
                             {% else %}
                                 <p class="mb-0">No Instagram</p>
                             {% endif %}

@@ -14,7 +14,7 @@ from django.utils.http import urlsafe_base64_encode
 from django.utils.encoding import force_bytes
 from indianpong.settings import EMAIL_HOST_USER, STATICFILES_DIRS
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, UserChangeForm, PasswordChangeForm, PasswordResetForm, SetPasswordForm 
-from .models import VerifyToken, BlockedUser, ChatMessage, GameInvitation, UserProfile, TwoFactorAuth, JWTToken, Tournament, TournamentMatch
+from .models import Social, VerifyToken, BlockedUser, ChatMessage, GameInvitation, UserProfile, TwoFactorAuth, JWTToken, Tournament, TournamentMatch
 
 class UserProfileForm(UserCreationForm):
 
@@ -34,6 +34,30 @@ class UserProfileForm(UserCreationForm):
         if "@student.42" in email:
             raise forms.ValidationError('Use 42 login')
         return email
+    
+class SocialForm(forms.ModelForm):
+    stackoverflow = forms.CharField(label='Stackoverflow', widget=forms.TextInput(attrs={'class': 'form-control'}), required=False)
+    twitter = forms.CharField(label='Twitter', widget=forms.TextInput(attrs={'class': 'form-control'}), required=False)
+    instagram = forms.CharField(label='Instagram', widget=forms.TextInput(attrs={'class': 'form-control'}), required=False)
+    github = forms.CharField(label='Github', widget=forms.TextInput(attrs={'class': 'form-control'}), required=False)
+
+    class Meta:
+        model = Social
+        fields = ['stackoverflow', 'twitter', 'instagram', 'github']
+
+class DeleteAccountForm(forms.Form):
+    password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control'}), help_text="Enter your password to confirm account deletion.")
+
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user')
+        super(DeleteAccountForm, self).__init__(*args, **kwargs)
+
+    def clean(self):
+        cleaned_data = super().clean()
+        password = cleaned_data.get('password')
+        if not self.user.check_password(password):
+            raise forms.ValidationError("Password does not match")
+        return cleaned_data
 
 class AuthenticationUserForm(AuthenticationForm):
     username = forms.CharField(label='Username', widget=forms.TextInput(attrs={'class': 'input'}))
@@ -43,15 +67,16 @@ class AuthenticationUserForm(AuthenticationForm):
         fields = ['username', 'password']
 
 class UpdateUserProfileForm(UserChangeForm):
-    username = forms.CharField(label='Username', widget=forms.TextInput(attrs={'class': 'input'}))
-    displayname = forms.CharField(label='Displayname', widget=forms.TextInput(attrs={'class': 'input'}))
-    email = forms.EmailField(label='Email', widget=forms.EmailInput(attrs={'class': 'input'}))
-    avatar = forms.ImageField(required=False ,label='Avatar', widget=forms.FileInput(attrs={'class': 'input'}))
-    password = forms.CharField(widget=forms.HiddenInput(), required=False, help_text="")
+    avatar = forms.ImageField(required=False ,label='Avatar', widget=forms.FileInput(attrs={'class': 'file-input'}))
+    username = forms.CharField(label='Username', widget=forms.TextInput(attrs={'class': 'form-control'}))
+    email = forms.EmailField(label='Email', widget=forms.EmailInput(attrs={'class': 'form-control'}))
+    displayname = forms.CharField(label='Displayname', widget=forms.TextInput(attrs={'class': 'form-control'}))
+    #password = forms.CharField(widget=forms.HiddenInput(), required=False, help_text="")
+    password = None
     class Meta:
         model = UserProfile
-        fields = ['username', 'displayname', 'email', 'avatar', 'password']
-
+        fields = ['avatar', 'username', 'email', 'displayname']
+        #exclude = ['password']
 
 """ class UpdateProfileForm(forms.ModelForm):
     username = forms.CharField(label='Username', widget=forms.TextInput(attrs={'class': 'input'}))
@@ -62,19 +87,19 @@ class UpdateUserProfileForm(UserChangeForm):
         model = UserProfile
         fields = ['username', 'displayname', 'email', 'avatar'] """
 
-class UpdateSocialProfileForm(UserChangeForm):
+""" class UpdateSocialProfileForm(UserChangeForm):
     stackoverflow = forms.CharField(label='Stackoverflow', widget=forms.TextInput(attrs={'class': 'input'}))
     github = forms.CharField(label='Github', widget=forms.TextInput(attrs={'class': 'input'}))
     linkedin = forms.CharField(label='Linkedin', widget=forms.TextInput(attrs={'class': 'input'}))
     twitter = forms.CharField(label='Twitter', widget=forms.TextInput(attrs={'class': 'input'}))
     class Meta:
         model = UserProfile
-        fields = ['stackoverflow', 'github', 'linkedin', 'twitter']
+        fields = ['stackoverflow', 'github', 'linkedin', 'twitter'] """
 
 class PasswordChangeUserForm(PasswordChangeForm):
-    old_password = forms.CharField(label='Old Password', widget=forms.PasswordInput(attrs={'class': 'input'}))
-    new_password1 = forms.CharField(label='New Password', widget=forms.PasswordInput(attrs={'class': 'input'}))
-    new_password2 = forms.CharField(label='ReNew Password', widget=forms.PasswordInput(attrs={'class': 'input'}))
+    old_password = forms.CharField(label='Old Password', widget=forms.PasswordInput(attrs={'class': 'form-control'}))
+    new_password1 = forms.CharField(label='New Password', widget=forms.PasswordInput(attrs={'class': 'form-control'}))
+    new_password2 = forms.CharField(label='ReNew Password', widget=forms.PasswordInput(attrs={'class': 'form-control'}))
     class Meta:
         model = UserProfile
         fields = ['old_password', 'new_password1', 'new_password2']

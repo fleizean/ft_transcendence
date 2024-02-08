@@ -11,6 +11,7 @@ from indianpong.settings import EMAIL_HOST_USER, STATICFILES_DIRS
 from django.utils import timezone
 import uuid
 
+    
 class UserProfile(AbstractUser):
     email = models.EmailField(unique=True, max_length=254)
     displayname = models.CharField(max_length=100, blank=True, null=True)
@@ -20,13 +21,6 @@ class UserProfile(AbstractUser):
     wins = models.IntegerField(default=0)
     losses = models.IntegerField(default=0)
     is_verified = models.BooleanField(default=False)
-    # social media links
-    stackoverflow = models.URLField(max_length=200, blank=True, null=True)
-    github = models.URLField(max_length=200, blank=True, null=True)
-    twitter = models.URLField(max_length=200, blank=True, null=True)
-    instagram = models.URLField(max_length=200, blank=True, null=True)
-
-
 
     def __str__(self) -> str:
         return f"{self.username}"
@@ -45,6 +39,13 @@ class UserProfile(AbstractUser):
                 ext = '.jpg'
             self.avatar.name = f"avatars/{self.username}{ext}"
         super().save(*args, **kwargs)
+
+class Social(models.Model):
+    user = models.OneToOneField(UserProfile, on_delete=models.CASCADE, blank=True, null=True)
+    stackoverflow = models.CharField(max_length=200, blank=True, null=True)
+    github = models.CharField(max_length=200, blank=True, null=True)
+    twitter = models.CharField(max_length=200, blank=True, null=True)
+    instagram = models.CharField(max_length=200, blank=True, null=True)
 
 class VerifyToken(models.Model):
     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
