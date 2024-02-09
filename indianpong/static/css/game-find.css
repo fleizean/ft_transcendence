@@ -4,6 +4,10 @@
 .ai-btn {
     margin-top: 0.5em;
   }
+
+.ai-btn a {
+  text-decoration:none !important;
+}
   
   .opponent-btn {
     margin-top: 1em;

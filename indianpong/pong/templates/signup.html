@@ -52,7 +52,7 @@
         {% for infos in form.email.help_text %}
           <span id="propertyEmailInfo" class="text-primary">- {{infos}}</span>
         {% endfor %}
-        <input type="password" name="password1" class="input" placeholder="Password" required id="id_password1">
+        <input type="password" name="password1" class="input" placeholder="Password" onmouseover="showPassword('id_password1')" onmouseout="hidePassword('id_password1')" required id="id_password1">
         
         {% for error in form.password1.errors %}
             <span id="propertyPassword1Error" class="text-danger">{{error}}</span>
@@ -60,7 +60,7 @@
         {% for infos in form.password1.help_text %}
           <span id="propertyPassword1Info" class="text-primary">- {{infos}}</span>
         {% endfor %}
-        <input type="password" name="password2" class="input" placeholder="Password (again)" required id="id_password2">
+        <input type="password" name="password2" class="input" placeholder="Password (again)" onmouseover="showPassword('id_password2')" onmouseout="hidePassword('id_password2')"  required id="id_password2">
         
         {% for error in form.password2.errors %}
           <span id="propertyPassword2Error" class="text-danger">- {{error}}</span>

@@ -1598,3 +1598,13 @@ body {
 .bracket-area {
   justify-content: center !important;
 }
+
+/* AI GAME */
+
+.ai-game canvas {
+  display: block;
+  margin: 20px auto;
+  z-index: 50;
+  background: #FFFF;
+  border: 1px solid #FFFF;
+}

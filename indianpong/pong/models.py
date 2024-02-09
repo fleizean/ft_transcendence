@@ -21,6 +21,8 @@ class UserProfile(AbstractUser):
     wins = models.IntegerField(default=0)
     losses = models.IntegerField(default=0)
     is_verified = models.BooleanField(default=False)
+    is_42student = models.BooleanField(default=False)
+
 
     def __str__(self) -> str:
         return f"{self.username}"
@@ -33,6 +35,11 @@ class UserProfile(AbstractUser):
             return mark_safe('<img src="/static/assets/profile/profilephoto.jpeg" width="50" height="50" />')
     
     def save(self, *args, **kwargs):
+        # If the UserProfile instance is being created for the first time
+        if not self.pk:
+            super().save(*args, **kwargs)
+            # Create a Social instance associated with this UserProfile
+            Social.objects.create(user=self)
         if self.avatar:
             _, ext = os.path.splitext(self.avatar.name)
             if not ext:

@@ -36,7 +36,7 @@
           <input type="text" name="username" class="input" placeholder="Username" maxlength="150" required id="id_username">
         </p>
         <p>
-          <input type="password" name="password" class="input" placeholder="Password" required id="id_password">
+          <input type="password" name="password" class="input" placeholder="Password" onmouseover="showPassword('id_password')" onmouseout="hidePassword('id_password')" required id="id_password">
         </p>
         <div class="forgot-pass">
           <a href="/password_reset" class="forgot-password-link">Forgot Password?</a>

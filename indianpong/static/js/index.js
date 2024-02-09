@@ -43,17 +43,27 @@ document.addEventListener('input', function(event) {
     }
 });
 
+    
+    function showPassword(input) {
+        var passwordField = document.getElementById(input);
+        passwordField.type = "text";
+    }
+
+    function hidePassword(input) {
+        var passwordField = document.getElementById(input);
+        passwordField.type = "password";
+    }
 
 function activateCreateRoom() {
     var value = document.getElementById("createRoom-popup");
-    var overlay = document.getElementBywId("overlay");
+    var overlay = document.getElementById("overlay");
     if (value) {
         value.style.display = 'flex';
         overlay.style.display = 'block';
 
     }
 }
- 
+
 function closeCreateRoom() {
     var value = document.getElementById("createRoom-popup");
     var overlay = document.getElementById("overlay");

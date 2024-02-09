@@ -177,6 +177,7 @@ def auth_callback(request):
                     user.username = user_data["login"]
                 user.displayname = user_data.get("displayname", "")
                 user.is_verified = True
+                user.is_42student = True
 
                 image_url = (
                     user_data.get("image", {}).get("versions", {}).get("medium", "")
@@ -465,6 +466,10 @@ def search(request):
 @login_required(login_url="login")
 def game(request):
     return render(request, "game.html")
+
+@login_required(login_url="login")
+def play_ai(request):
+    return render(request, "play-ai.html")
 
 
 @never_cache

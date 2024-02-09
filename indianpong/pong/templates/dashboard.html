@@ -27,7 +27,7 @@
             <div class="card-block">
               <h6 class="m-b-20">Games Played</h6>
               <h2 class="text-right">
-                <i class="bi bi-dice-1-fill"></i><span>{{games_played}}</span>
+                <i class="bi bi-dice-1-fill"></i><span>{% if games_played %} {{ games_played }} {% else %} 0 {% endif %}</span>
               </h2>
             </div>
           </div>
@@ -38,7 +38,7 @@
             <div class="card-block">
               <h6 class="m-b-20">Win Count</h6>
               <h2 class="text-right">
-                <i class="bi bi-trophy-fill"></i><span>{{win_count}}</span>
+                <i class="bi bi-trophy-fill"></i><span>{% if win_count %} {{ win_count }} {% else %} 0 {% endif %}</span>
               </h2>
             </div>
           </div>
@@ -49,7 +49,7 @@
             <div class="card-block">
               <h6 class="m-b-20">Win Streak</h6>
               <h2 class="text-right">
-                <i class="bi bi-emoji-wink-fill"></i><span>{{win_streak}}</span>
+                <i class="bi bi-emoji-wink-fill"></i><span>{% if win_streak %} {{ win_streak }} {% else %} 0 {% endif %}</span>
               </h2>
             </div>
           </div>
@@ -60,7 +60,7 @@
             <div class="card-block">
               <h6 class="m-b-20">Lose Streak</h6>
               <h2 class="text-right">
-                <i class="bi bi-emoji-frown-fill"></i><span>{{lose_streak}}</span>
+                <i class="bi bi-emoji-frown-fill"></i><span> {% if lose_streak %} {{ lose_streak }} {% else %} 0 {% endif %} </span>
               </h2>
             </div>
           </div>
@@ -71,7 +71,7 @@
             <div class="card-block">
               <h6 class="m-b-20">Win Rate %</h6>
               <h2 class="text-right">
-                <i class="bi bi-award-fill"></i><span>{{win_rate}}</span>
+                <i class="bi bi-award-fill"></i><span> {% if win_rate %} {{ win_rate }} {% else %} 0 {% endif %}</span>
               </h2>
             </div>
           </div>
@@ -83,7 +83,7 @@
               <h6 class="m-b-20">Average Game Duration</h6>
               <h2 class="text-right">
                 <i class="bi bi-clock-fill"></i>
-                <span class="big">{{avg_game_duration}}</span> <span class="small">min</span>
+                <span class="big">{% if average_game_duration %} {{ average_game_duration }} {% else %} 0 {% endif %}</span> <span class="small">min</span>
               </h2>
             </div>
           </div>
@@ -94,7 +94,7 @@
             <div class="card-block">
               <h6 class="m-b-20">Average Points Won</h6>
               <h2 class="text-right">
-                <i class="bi bi-star-fill"></i><span>{{average_points_won}}</span>
+                <i class="bi bi-star-fill"></i><span>{% if average_points_won %} {{ average_points_won }} {% else %} 0 {% endif %}</span>
               </h2>
             </div>
           </div>
@@ -105,7 +105,7 @@
             <div class="card-block">
               <h6 class="m-b-20">Average Points Lost</h6>
               <h2 class="text-right">
-                <i class="bi bi-bucket-fill"></i><span>{{average_points_lost}}</span>
+                <i class="bi bi-bucket-fill"></i><span> {% if average_points_won %} {{ average_points_lost }} {% else %} 0 {% endif %}</span>
               </h2>
             </div>
           </div>

@@ -18,7 +18,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
-from pong.views import aboutus, activate_account, pong_game_find, rps_game_find, auth_callback, chat, friends, match_history, password_change, password_reset, password_reset_done, rankings, dashboard, game, index, auth, chat_room, profile_view, search, set_password, signup, login_view, logout_view, profile_settings, setup_two_factor_auth, generate_jwt_token, create_tournament, create_tournament_match, start_chat, room
+from pong.views import aboutus, activate_account, play_ai, pong_game_find, rps_game_find, auth_callback, chat, friends, match_history, password_change, password_reset, password_reset_done, rankings, dashboard, game, index, auth, chat_room, profile_view, search, set_password, signup, login_view, logout_view, profile_settings, setup_two_factor_auth, generate_jwt_token, create_tournament, create_tournament_match, start_chat, room
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -31,6 +31,7 @@ urlpatterns = [
     path('logout', logout_view, name='logout'),
     path('rps-game-find', rps_game_find, name='rps_game_find'),
     path('pong-game-find', pong_game_find, name='pong_game_find'),
+    path('play-ai', play_ai, name='play_ai'),
     path('chat', chat, name='chat'),
     path("start_chat/<str:username>", start_chat, name="start_chat"),
     path("chat/<str:room_name>/", room, name="room"),
