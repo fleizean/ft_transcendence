@@ -13,6 +13,7 @@ from .forms import (
     InviteToGameForm,
     PasswordChangeUserForm,
     PasswordResetUserForm,
+    ProfileAvatarForm,
     SetPasswordUserForm,
     SocialForm,
     UserProfileForm,
@@ -164,18 +165,17 @@ def auth_callback(request):
             """with open('user_data.json', 'w') as file:
                 json.dump(user_data, file) """
 
-            # Create or get the user based on the 42 user ID
-            user, created = UserProfile.objects.get_or_create(email=user_data["email"])
+            # add random string to username if it already exists
+            if UserProfile.objects.filter(username=user_data["login"]).exists():
+                username = user_data["login"] + get_random_string(length=3)
+            else:
+                username = user_data["login"]
+            user, created = UserProfile.objects.get_or_create(username=username)
             if created:
-                user.set_unusable_password()
-
                 # Update user profile
-                # add random string to username if it already exists
-                if UserProfile.objects.filter(username=user_data["login"]).exists():
-                    user.username = user_data["login"] + get_random_string(length=3)
-                else:
-                    user.username = user_data["login"]
+                user.set_unusable_password()
                 user.displayname = user_data.get("displayname", "")
+                user.email = user_data.get("email", "")
                 user.is_verified = True
                 user.is_42student = True
 
@@ -184,12 +184,9 @@ def auth_callback(request):
                 )
                 if image_url:
                     image_name, response = urllib.request.urlretrieve(image_url)
-                    print(image_name)
-                    user.avatar.save(
-                        f"{user.username}.jpg",
-                        File(open(image_name, "rb")),
-                        save=True,
-                    )
+                    file = File(open(image_name, "rb"), name=f"{user.username}.jpg")
+                    user.avatar.save(f"{user.username}.jpg", file, save=True)
+                    file.close() 
                 user.save()
 
                 # Store the access token in the OAuthToken model
@@ -291,14 +288,24 @@ def pong_game_find(request):
 def profile_settings(request, username):
     if request.user.username != username:
         return redirect(reverse('profile_settings', kwargs={'username': request.user.username}))
+    profile = get_object_or_404(UserProfile, username=username)
+    avatar_form = ProfileAvatarForm(request.POST or None, request.FILES or None, instance=request.user)
     profile_form = UpdateUserProfileForm(
-        request.POST or None, request.FILES or None, instance=request.user
+        request.POST or None, instance=request.user
     )
     password_form = PasswordChangeUserForm(request.user, request.POST or None)
     social_form = SocialForm(request.POST or None, instance=request.user.social)
     delete_account_form = DeleteAccountForm(request.POST or None, user=request.user)
     if request.method == "POST":
-        if "profile_form" in request.POST:
+        print("Request method:", request.POST)
+        if "avatar_form" in request.POST:
+            print('test2')
+            if avatar_form.is_valid():
+                profile.avatar = avatar_form.cleaned_data["avatar"]
+                profile.save()
+                messages.success(request, "Avatar updated successfully.")
+                return redirect(reverse('profile_settings', args=[username]) + '#editProfile')
+        elif "profile_form" in request.POST:
             if profile_form.is_valid():
                 profile_form.save()
                 messages.success(request, "Profile updated successfully.")
@@ -306,17 +313,16 @@ def profile_settings(request, username):
         elif "password_form" in request.POST:
             if password_form.is_valid():
                 print("sdlfsşfsşfsf")
-                user = password_form.save(commit=False)
-                user.set_password(password_form.cleaned_data["new_password1"])
-                user.save()
-                update_session_auth_hash(request, user)  # Important!
+                profile.set_password(password_form.cleaned_data["new_password1"])
+                profile.save()
+                update_session_auth_hash(request, profile)  # Important!
                 messages.success(request, "Your password was successfully updated!")
                 return redirect(reverse('profile_settings', args=[username]) + '#changePassword')
         elif "social_form" in request.POST:
             if social_form.is_valid():
-                social = social_form.save(commit=False)
-                social.user = request.user
-                social.save()
+                social = social_form.save()
+                profile.social = social
+                profile.save()
                 messages.success(request, "Socials updated successfully.")
                 return redirect(reverse('profile_settings', args=[username]) + '#addSocial')
         elif "delete_account_form" in request.POST:
@@ -325,17 +331,18 @@ def profile_settings(request, username):
                 logout(request)
                 return redirect('')
     else:
+        avatar_form = ProfileAvatarForm(instance=request.user)
         profile_form = UpdateUserProfileForm(instance=request.user)
         password_form = PasswordChangeUserForm(request.user)
         social_form = SocialForm(instance=request.user.social)
         delete_account_form = DeleteAccountForm(user=request.user)
 
-    profile = get_object_or_404(UserProfile, username=username)
     return render(
         request,
         "profile-settings.html",
         {
             "profile": profile,
+            "avatar_form": avatar_form,
             "profile_form": profile_form,
             "password_form": password_form,
             "social_form": social_form,

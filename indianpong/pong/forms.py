@@ -23,10 +23,10 @@ class UserProfileForm(UserCreationForm):
     email = forms.EmailField(label='Email', widget=forms.EmailInput(attrs={'class': 'input'}))
     password1 = forms.CharField(label='Password', widget=forms.PasswordInput(attrs={'class': 'input'}))
     password2 = forms.CharField(label='RePassword', widget=forms.PasswordInput(attrs={'class': 'input'}))
-    avatar = forms.ImageField(required=False ,label='Avatar', widget=forms.FileInput(attrs={'class': 'input'}))
+    #avatar = forms.ImageField(required=False ,label='Avatar', widget=forms.FileInput(attrs={'class': 'input'}))
     class Meta:
         model = UserProfile
-        fields = ['username', 'displayname', 'email', 'password1', 'password2', 'avatar']
+        fields = ['username', 'displayname', 'email', 'password1', 'password2']
 
     def clean_email(self): #TODO not just 42kocaeli.com.tr
         email = self.cleaned_data.get('email')
@@ -67,7 +67,6 @@ class AuthenticationUserForm(AuthenticationForm):
         fields = ['username', 'password']
 
 class UpdateUserProfileForm(UserChangeForm):
-    avatar = forms.ImageField(required=False ,label='Avatar', widget=forms.FileInput(attrs={'class': 'file-input'}))
     username = forms.CharField(label='Username', widget=forms.TextInput(attrs={'class': 'form-control'}))
     email = forms.EmailField(label='Email', widget=forms.EmailInput(attrs={'class': 'form-control'}))
     displayname = forms.CharField(label='Displayname', widget=forms.TextInput(attrs={'class': 'form-control'}))
@@ -75,8 +74,14 @@ class UpdateUserProfileForm(UserChangeForm):
     password = None
     class Meta:
         model = UserProfile
-        fields = ['avatar', 'username', 'email', 'displayname']
+        fields = ['username', 'email', 'displayname']
         #exclude = ['password']
+
+class ProfileAvatarForm(forms.ModelForm):
+    avatar = forms.ImageField(label='Avatar', widget=forms.FileInput(attrs={'class': 'form-control'}))
+    class Meta:
+        model = UserProfile
+        fields = ['avatar']
 
 """ class UpdateProfileForm(forms.ModelForm):
     username = forms.CharField(label='Username', widget=forms.TextInput(attrs={'class': 'input'}))

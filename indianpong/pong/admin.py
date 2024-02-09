@@ -27,11 +27,16 @@ class UserProfileAdmin(admin.ModelAdmin):
         return format_html(obj.thumbnail)
     avatar_thumbnail.short_description = 'Avatar'
 
-    
+
 @admin.register(Social)
 class SocialAdmin(admin.ModelAdmin):
-    list_display = ('user', 'stackoverflow', 'github', 'twitter', 'instagram')
-    search_fields = ('user__user__username', 'stackoverflow', 'github', 'twitter', 'instagram')
+    list_display = ('get_user', 'stackoverflow', 'github', 'twitter', 'instagram')
+
+    def get_user(self, obj):
+        return obj.userprofile
+    get_user.short_description = 'User'
+
+    search_fields = ('userprofile__username', 'stackoverflow', 'github', 'twitter', 'instagram')
     
 @admin.register(Tournament)
 class TournamentAdmin(admin.ModelAdmin):

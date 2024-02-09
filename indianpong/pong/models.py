@@ -11,18 +11,24 @@ from indianpong.settings import EMAIL_HOST_USER, STATICFILES_DIRS
 from django.utils import timezone
 import uuid
 
+class Social(models.Model):
+    stackoverflow = models.CharField(max_length=200, blank=True, null=True)
+    github = models.CharField(max_length=200, blank=True, null=True)
+    twitter = models.CharField(max_length=200, blank=True, null=True)
+    instagram = models.CharField(max_length=200, blank=True, null=True)
     
 class UserProfile(AbstractUser):
-    email = models.EmailField(unique=True, max_length=254)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     displayname = models.CharField(max_length=100, blank=True, null=True)
-    avatar = models.ImageField(upload_to='avatars/', null=True, blank=True)
+    email = models.EmailField(unique=True, max_length=254)
+    avatar = models.ImageField(upload_to='', null=True, blank=True)
     friends = models.ManyToManyField('self', symmetrical=False, blank=True)
+    social = models.OneToOneField('Social', on_delete=models.CASCADE, null=True, blank=True)
     #channel_name = models.CharField(max_length=100, blank=True, null=True)
     wins = models.IntegerField(default=0)
     losses = models.IntegerField(default=0)
     is_verified = models.BooleanField(default=False)
     is_42student = models.BooleanField(default=False)
-
 
     def __str__(self) -> str:
         return f"{self.username}"
@@ -35,24 +41,18 @@ class UserProfile(AbstractUser):
             return mark_safe('<img src="/static/assets/profile/profilephoto.jpeg" width="50" height="50" />')
     
     def save(self, *args, **kwargs):
-        # If the UserProfile instance is being created for the first time
-        if not self.pk:
-            super().save(*args, **kwargs)
-            # Create a Social instance associated with this UserProfile
-            Social.objects.create(user=self)
         if self.avatar:
-            _, ext = os.path.splitext(self.avatar.name)
-            if not ext:
-                ext = '.jpg'
-            self.avatar.name = f"avatars/{self.username}{ext}"
+            name, ext = os.path.splitext(self.avatar.name)
+            if name!=self.username:
+                if not ext:
+                    ext = '.jpg'
+                # Update the avatar name to reflect the new username
+                new_avatar_name = f"{self.username}{ext}"
+                if self.avatar.name != new_avatar_name:
+                    os.rename(self.avatar.path, os.path.join(os.path.dirname(self.avatar.path), new_avatar_name))
+                    self.avatar.name = new_avatar_name
         super().save(*args, **kwargs)
 
-class Social(models.Model):
-    user = models.OneToOneField(UserProfile, on_delete=models.CASCADE, blank=True, null=True)
-    stackoverflow = models.CharField(max_length=200, blank=True, null=True)
-    github = models.CharField(max_length=200, blank=True, null=True)
-    twitter = models.CharField(max_length=200, blank=True, null=True)
-    instagram = models.CharField(max_length=200, blank=True, null=True)
 
 class VerifyToken(models.Model):
     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)

@@ -50,44 +50,46 @@
 
                 <!-- Edit Profile Form -->
                 <section id="editProfile">
-                    <form id="profile_form" name="profile_form" enctype="multipart/form-data" method="post">
-                        {% csrf_token %}
-                        <div class="profile-pic-container">
-                            <label for="id_avatar" class="profile-pic-label">
-                                <img src="{{avatar}}" alt="Profile Picture"
-                                class="profile-pic">
-                                <div class="change-image-overlay">
-                                    <span class="bi bi-image-fill"></span>
-                                    <span class="change-image-text">Change Image</span>
-                                </div>
-                            </label>
-                            <input type="file" name="avatar" accept="image/*" id="id_avatar" class="file-input">
-                        </div>
+                        <form id="avatar_form" name="avatar_form" enctype="multipart/form-data" method="post">
+                            {% csrf_token %}
+                           <div class="profile-pic-container">
+                                <label for="id_avatar" class="profile-pic-label">
+                                    <img src="{{avatar}}" alt="Profile Picture"
+                                    class="profile-pic">
+                                    <div class="change-image-overlay">
+                                        <span class="bi bi-image-fill"></span>
+                                        <span class="change-image-text">Change Image</span>
+                                    </div>
+                                </label>
+                                <input type="file" name="avatar" accept="image/*" id="id_avatar" class="file-input" value="{{avatar}}">
+                            </div> 
+                        </form>
+                        <form id="profile_form" name="profile_form" enctype="multipart/form-data" method="post">
+                            {% csrf_token %}
+                            <!-- Username textbox -->
+                            <div class="mb-3">
+                                <label class="small mb-1" for="id_username">Username (how your name will appear to other
+                                    users on the site)</label>
+                                <input class="form-control" id="id_username" name="username" required type="text" value="{{username}}"
+                                    placeholder="{{username}}">
+                            </div>
 
-                        <!-- Username textbox -->
-                        <div class="mb-3">
-                            <label class="small mb-1" for="id_username">Username (how your name will appear to other
-                                users on the site)</label>
-                            <input class="form-control" id="id_username" name="username" required type="text" value="{{username}}"
-                                placeholder="{{username}}">
-                        </div>
+                            <!-- Email textbox -->
+                            <div class="mb-3">
+                                <label class="small mb-1" for="id_email">Email</label>
+                                <input class="form-control" id="id_email" name="email" maxlength="320" value="{{profile.email}}" required
+                                    placeholder="{{profile.email}}" type="email">
+                            </div>
 
-                        <!-- Email textbox -->
-                        <div class="mb-3">
-                            <label class="small mb-1" for="id_email">Email</label>
-                            <input class="form-control" id="id_email" name="email" maxlength="320" value="{{profile.email}}" required
-                                placeholder="{{profile.email}}" type="email">
-                        </div>
-
-                        <!-- Displayname textbox -->
-                        <div class="mb-3">                           
-                                <label class="small mb-1" for="id_displayname">Displayname</label>
-                                <input class="form-control" id="id_displayname" name="displayname" required type="text"
-                                    placeholder="{{profile.displayname}}" value="{{profile.displayname}}">
-                        </div>
-                        <!-- Submit button -->
-                        <button type="submit" name="profile_form" class="btn btn-success">Save Changes</button>
-                    </form>
+                            <!-- Displayname textbox -->
+                            <div class="mb-3">                           
+                                    <label class="small mb-1" for="id_displayname">Displayname</label>
+                                    <input class="form-control" id="id_displayname" name="displayname" required type="text"
+                                        placeholder="{{profile.displayname}}" value="{{profile.displayname}}">
+                            </div>
+                            <!-- Submit button -->
+                            <button type="submit" name="profile_form" class="btn btn-success">Save Changes</button>
+                        </form>
                 </section>
 
 
@@ -292,6 +294,20 @@ window.onload = function() {
     displaySection(currentFragment);
 };
 
+const fileInput = document.getElementById('id_avatar');
+fileInput.addEventListener('change', function(event) {
+    const form = document.getElementById('avatar_form');
+    
+    // Form alanına form_name değerini ekleyelim
+    const hiddenInput = document.createElement('input');
+    hiddenInput.type = 'hidden';
+    hiddenInput.name = 'avatar_form'; // Bu, form_name değeridir
+    hiddenInput.value = 'avatar_form';
+    form.appendChild(hiddenInput);
+    
+    // Formu submit et
+    form.submit();
+});
 
 </script>
 {% endblock %}
