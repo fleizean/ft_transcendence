@@ -3,34 +3,9 @@
 
 {% block title %}{{ profile.username }}{% endblock title %}
 {% block app %}
-    {% include "_nav.html" %}
-<div class="container-top">
+{% include "_nav.html" %}
     <!-- "Edit Profile" ve "Match History" Navbar -->
-    <div class="row mt-4" style="margin-bottom:5px">
-        <div class="col">
-            <nav class="navbar navbar-expand-lg navbar-light bg-light rounded">
-                <!-- Navbar Marka -->
-                <!-- Navbar Toggle Butonu -->
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <!-- Navbar Menü -->
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav ml-auto">
-                        <!-- "Match History" Linki -->
-                        <li class="nav-item">
-                            <a class="nav-link" href="/match-history/{{profile.username}}"><i class="bi bi-easel-fill"></i> Match History</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/friends/{{profile.username}}"><i class="bi bi-people-fill"></i> Friends</a>
-                        </li>
-                    </ul>
-                </div>
-            </nav>
-        </div>
-    </div>
-</div>
+    
 <div class="profile-card">
 
     <div class="row">
@@ -110,54 +85,50 @@
             <!-- Profil Bilgileri -->
             <div class="card" style="background-color:white !important;">
                 <div class="card-body">
-                    <div class="mb-4">
-                        <!-- isim -->
-                        <div class="row">
-                            <div class="col-sm-3">
-                                <p class="mb-0">Full Name</p>
-                            </div>
-                            <div class="col-sm-9">
-                                <p class="text-muted mb-0">{{profile.displayname}}</p>
-                            </div>
-                        </div>
-                        <hr>
-                        <!-- Email -->
-                        <div class="row">
-                            <div class="col-sm-3">
-                                <p class="mb-0">Email</p>
-                            </div>
-                            <div class="col-sm-9">
-                                <p class="text-muted mb-0"> {{profile.email}} </p>
-                            </div>
-                        </div>
-                        <hr>
-                        <!-- Adres -->
-                        <div class="row">
-                            <div class="col-sm-3">
-                                <p class="mb-0">Joined Date</p>
-                            </div>
-                            <div class="col-sm-9">
-                                <p class="text-muted mb-0">{{ profile.date_joined|date:"d.m.Y H:i:s" }}</p>
-                            </div>
-                        </div>
-                        <hr>
-                        <div class="row">
-                            <div class="col-sm-3">
-                                <p class="mb-0">Joined Date</p>
-                            </div>
-                            <div class="col-sm-9">
-                                <p class="text-muted mb-0">{{profile.date_joined}}</p>
-                            </div>
-                        </div>
-                        <hr>
-                        <div class="row">
-                            <div class="col-sm-3">
-                                <p class="mb-0">Joined Date</p>
-                            </div>
-                            <div class="col-sm-9">
-                                <p class="text-muted mb-0">{{profile.date_joined}}</p>
-                            </div>
-                        </div>
+                    <div class="match-history">
+                        <table class="card-mhistory-table">
+                            <thead>
+                                <tr>
+                                    <th>Opponent</th>
+                                    <th>Result</th>
+                                    <th>Score</th>
+                                    <th>Date</th>
+                            </thead>
+                            <tbody>
+                                {% for match in history_page_obj %}
+                                    <tr>
+                                        <td class="mhistory-username">{{match.username}}</td>
+                                        {% if match.winner == match.username %}
+                                            <td class="won">Won</th>
+                                        {% else %}
+                                            <td class="lost">Lost</th>
+                                        {% endif %}
+                                        <td>{{match.score}}</th>
+                                        <td>{{match.date}}</td>
+                                    </tr>
+                                {% endfor %}
+                                
+                            </tbody>
+                        </table>
+                        <nav aria-label="Page navigation example">
+                            <ul class="pagination">
+                                <li class="page-item {% if history_page_obj.has_previous %}disabled{% endif %}">
+                                    <a class="page-link" href="{% if history_page_obj.has_previous %}?page={{ history_page_obj.previous_page_number }}{% endif %}" aria-label="Previous">
+                                        <span aria-hidden="true">&laquo;</span>
+                                    </a>
+                                </li>
+                                {% for page_num in history_page_obj.paginator.page_range %}
+                                    <li class="page-item {% if page_num == history_page_obj.number %}active{% endif %}">
+                                        <a class="page-link" href="?page={{ page_num }}">{{ page_num }}</a>
+                                    </li>
+                                {% endfor %}
+                                <li class="page-item {% if history_page_obj.has_next %}disabled{% endif %}">
+                                    <a class="page-link" href="{% if history_page_obj.has_next %}?page={{ history_page_obj.next_page_number }}{% endif %}" aria-label="Next">
+                                        <span aria-hidden="true">&raquo;</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>        
                     </div>
                 </div>
             </div>

@@ -62,8 +62,9 @@ from django.urls import reverse
 
 @never_cache
 def index(request):
+    if request.user.is_authenticated:
+        return redirect("dashboard")
     return render(request, "base.html")
-
 
 @login_required(login_url="login")
 def aboutus(request):

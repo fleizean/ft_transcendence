@@ -1,16 +1,3 @@
-function displaySection(sectionId) {
-    var sections = ["editProfile", "addSocial", "closeAccount", "changePassword"];
-
-    for (var i = 0; i < sections.length; i++) {
-        var section = document.getElementById(sections[i]);
-        if (sections[i] === sectionId) {
-            section.style.display = 'block';
-        } else {
-            section.style.display = 'none';
-        }
-    }
-}
-
 function displaySectionGame(sectionId) {
     var sections = ["game-bracket-section", "game-room-section"];
     var buttons = ["checkbracket", "gameroombracket"];
@@ -34,6 +21,9 @@ function displaySectionGame(sectionId) {
         }
     }
 }
+
+var sections = ["profile_form", "social_form", "delete_account_form", "blockedUsers", "password_form"];
+
 
 document.addEventListener('input', function(event) {
     if (event.target.classList.contains('numbers-only')) {
