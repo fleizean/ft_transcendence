@@ -67,7 +67,7 @@
   </details>
   
   <details>
-      <summary> <b> Introduce an AI Opponent. ⌛</b></summary>
+      <summary> <b> Introduce an AI Opponent. ✅</b></summary>
       In this major module, the objective is to incorporate an AI player into   the game. Notably, the use of the <b>A* algorithm</b> is not permitted for  this task. Key features and goals include:
           <ul>
           <li>✅ Develop an AI opponent  that provides a challenging and engaging gameplay experience for   users. </li>
