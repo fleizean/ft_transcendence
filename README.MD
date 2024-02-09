@@ -171,6 +171,8 @@
     <a href="https://profile.intra.42.fr/users/fyurtsev" title="Intra 42"><img src="https://img.shields.io/badge/Kocaeli-FFFFFF?style=plastic&logo=42&logoColor=000000" alt="Intra 42"/></a></td>
     <td align="center"><a href="https://github.com/yeaktas/" style="text-decoration:none; color: #00ff15;"><img src="https://avatars.githubusercontent.com/u/96894640?v=4" width="100px;" alt=""/><br /><sub><b>yaktas (Yunus Emre)</b></sub></a><br /><br>
     <a href="https://profile.intra.42.fr/users/yaktas" title="Intra 42"><img src="https://img.shields.io/badge/Kocaeli-FFFFFF?style=plastic&logo=42&logoColor=000000" alt="Intra 42"/></a></td>
+    <td align="center"><a href="https://github.com/cantaskin/" style="text-decoration:none; color: #00ff15;"><img src="https://avatars.githubusercontent.com/u/94763376?v=4" width="100px;" alt=""/><br /><sub><b>ataskin (Can) </b></sub></a><br /><br>
+    <a href="https://profile.intra.42.fr/users/ataskin" title="Intra 42"><img src="https://img.shields.io/badge/Kocaeli-FFFFFF?style=plastic&logo=42&logoColor=000000" alt="Intra 42"/></a></td>
     <td align="center"><a href="https://github.com/fleizean/" style="text-decoration:none; color: #00ff15;"><img src="https://avatars.githubusercontent.com/u/66090171?v=4" width="100px;" alt=""/><br /><sub><b>eyagiz (Enes)</b></sub></a><br /><br>
     <a href="https://profile.intra.42.fr/users/eyagiz" title="Intra 42"><img src="https://img.shields.io/badge/Kocaeli-FFFFFF?style=plastic&logo=42&logoColor=000000" alt="Intra 42"/></a></td>
   </tr>
