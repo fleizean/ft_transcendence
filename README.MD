@@ -73,9 +73,9 @@
           <li>✅ Develop an AI opponent  that provides a challenging and engaging gameplay experience for   users. </li>
           <li>✅ The AI must replicate   human behavior, meaning that in your AI implementation, you must  simulate keyboard input. The constraint here is that the AI can only   refresh its view of the game once per second, requiring it to   anticipate bounces and other actions. </li>
           <i>The AI must utilize power-ups if you have chosen to implement the  Game customization options module.</i>
-          <li>⌛ Implement AI logic and  decision-making processes that enable the AI player to make  intelligent and strategic moves. </li>
+          <li>✅ Implement AI logic and  decision-making processes that enable the AI player to make  intelligent and strategic moves. </li>
           <li>✅ Explore alternative   algorithms and techniques to create an effective AI player without  relying on A*. </li>
-          <li>⌛ Ensure that the AI adapts to  different gameplay scenarios and user interactions. </li>
+          <li>✅ Ensure that the AI adapts to  different gameplay scenarios and user interactions. </li>
           </br>
           <b>This major module aims to enhance the game by introducing an AI   opponent that adds excitement and competitiveness without relying on  the A* algorithm.</b>
           </ul>
