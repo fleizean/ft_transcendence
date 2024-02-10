@@ -149,6 +149,17 @@
   margin-top: auto;
 }
 
+.card__shop__action-close {
+  height: 35px;
+  width: 35px;
+  outline: none;
+  border: none;
+  background: linear-gradient(221deg, #343138, #322e5e 60%);
+  border-radius: 12px;
+  cursor: pointer;
+  margin-top: auto;
+}
+
 .card__shop__action span {
   color: #fff;
   font-size: 26px;

@@ -16,164 +16,80 @@
         </div>
         <div class="top-store-card">
           <div class="store-right">
-           <i class="bi bi-piggy-bank-fill flip-horizontal"></i> <span class="small-wallet-name">Wallet: </span> <span class="wallet-amount"> 200P₩</span>
+           <i class="bi bi-piggy-bank-fill flip-horizontal"></i> <span class="small-wallet-name">Wallet: </span> <span class="wallet-amount"> {{profile.pong_wallet}}P₩</span>
           </div>
         </div>
       </div>
         <div class="store-list">
 
-          <div class="product-card">
-            <img src="https://i.hizliresim.com/bpypj5c.png" alt="" />
-            <h2 class="card__title">Ateşin Öfkesi</h2>
-            <span class="card__description">Her vuruşta %50 ihtimalle topu %5 hızlandır.</span>
-            <div class="card__shop">
-              <span class="card__shop__price">15P₩</span>
-              <button class="card__shop__action" style="margin-right:5px">
-                <i class="bi bi-backpack-fill" style="color:white; font-size: 1.3em;"></i>
-              </button>
-              <button class="card__shop__action">
-                <i class="bi bi-bag-heart-fill" style="color:white; font-size: 1.3em;"></i>
-              </button>
-            </div>
-          </div>
-          
-          
-          <div class="product-card">
-            <img src="https://i.hizliresim.com/s827mxz.png" alt="" />
-            <h2 class="card__title">Zamana Karşı</h2>
-            <span class="card__description">Bir kereliğine topu 5 saniye yavaşlat.</span>
-            <div class="card__shop">
-              <span class="card__shop__price">55P₩</span>
-              <button class="card__shop__action" style="margin-right:5px">
-                <i class="bi bi-backpack-fill" style="color:white; font-size: 1.3em;"></i>
-              </button>
-              <button class="card__shop__action">
-                <i class="bi bi-bag-heart-fill" style="color:white; font-size: 1.3em;"></i>
-              </button>
-            </div>
-          </div>
-          
-          <div class="product-card">
-            <img src="https://i.hizliresim.com/nm30bpa.png" alt="" />
-            <h2 class="card__title">Hızlı ve Öfkeli</h2>
-            <span class="card__description">Kullanıldığında topun hızı 5 kat artar.</span>
-            <div class="card__shop">
-              <span class="card__shop__price">55P₩</span>
-              <button class="card__shop__action" style="margin-right:5px">
-                <i class="bi bi-backpack-fill" style="color:white; font-size: 1.3em;"></i>
-              </button>
-              <button class="card__shop__action">
-                <i class="bi bi-bag-heart-fill" style="color:white; font-size: 1.3em;"></i>
-              </button>
-            </div>
-          </div>
+    
+          {% for item in store_items %}
+            {% if item.is_status %}
+              <div class="product-card">
+                <img src="{{item.image_url}}" alt="" />
+                <h2 class="card__title">{{ item.name }}</h2>
+                <span class="card__description">{{item.description}}</span>
+                <div class="card__shop">
+                  <span class="card__shop__price">{{item.price}}P₩</span>
+                  {% if item.is_bought %}
+                    <button class="card__shop__action" onclick="showToast('{{item.name}} öğesini şu an kullanıma aldın', 'text-bg-success', 'bi bi-check-circle-fill')" style="margin-right:5px">
+                      <i class="bi bi-backpack-fill" style="color:white; font-size: 1.3em;"></i>
+                    </button>
+                    <button class="card__shop__action-close" onclick="showToast('{{item.name}} öğesini zaten satın aldın', 'text-bg-danger', 'bi bi-info-square-fill')">
+                      <i class="bi bi-bag-heart-fill" style="color:white; font-size: 1.3em;"></i>
+                    </button>
+                  {% else %}
+                      <button class="card__shop__action" 
+                          {% if item.price < profile.pong_wallet %}
+                              onclick="showToast('{{ item.name }} öğesini başarıyla satın aldın.', 'text-bg-success', 'bi bi-check-circle-fill')"
+                          {% else %}
+                              onclick="showToast('{{ item.name}} öğesini satın almak için yeterli P₩`ın yok', 'text-bg-danger', 'bi bi-info-square-fill')"
+                          {% endif %}
+                      >
+                      <i class="bi bi-bag-heart-fill" style="color:white; font-size: 1.3em;"></i>
+                    </button>
+                  {% endif %}
+                </div>
+              </div>
+            {% endif %}
+          {% endfor %}
 
-          <div class="product-card">
-            <img src="https://i.hizliresim.com/bpypj5c.png" alt="" />
-            <h2 class="card__title">None</h2>
-            <span class="card__description">Her vuruşta %50 ihtimalle topu %5 hızlandır.</span>
-            <div class="card__shop">
-              <span class="card__shop__price">15P₩</span>
-              <button class="card__shop__action" style="margin-right:5px">
-                <i class="bi bi-backpack-fill" style="color:white; font-size: 1.3em;"></i>
-              </button>
-              <button class="card__shop__action">
-                <i class="bi bi-bag-heart-fill" style="color:white; font-size: 1.3em;"></i>
-              </button>
-            </div>
-          </div>
 
-          <div class="product-card">
-            <img src="https://i.hizliresim.com/bpypj5c.png" alt="" />
-            <h2 class="card__title">None</h2>
-            <span class="card__description">Her vuruşta %50 ihtimalle topu %5 hızlandır.</span>
-            <div class="card__shop">
-              <span class="card__shop__price">15P₩</span>
-              <button class="card__shop__action" style="margin-right:5px">
-                <i class="bi bi-backpack-fill" style="color:white; font-size: 1.3em;"></i>
-              </button>
-              <button class="card__shop__action">
-                <i class="bi bi-bag-heart-fill" style="color:white; font-size: 1.3em;"></i>
-              </button>
-            </div>
-          </div>
-
-          <div class="product-card">
-            <img src="https://i.hizliresim.com/bpypj5c.png" alt="" />
-            <h2 class="card__title">None</h2>
-            <span class="card__description">Her vuruşta %50 ihtimalle topu %5 hızlandır.</span>
-            <div class="card__shop">
-              <span class="card__shop__price">15P₩</span>
-              <button class="card__shop__action" style="margin-right:5px">
-                <i class="bi bi-backpack-fill" style="color:white; font-size: 1.3em;"></i>
-              </button>
-              <button class="card__shop__action">
-                <i class="bi bi-bag-heart-fill" style="color:white; font-size: 1.3em;"></i>
-              </button>
-            </div>
-          </div>
-
-          <div class="product-card">
-            <img src="https://i.hizliresim.com/bpypj5c.png" alt="" />
-            <h2 class="card__title">None</h2>
-            <span class="card__description">Her vuruşta %50 ihtimalle topu %5 hızlandır.</span>
-            <div class="card__shop">
-              <span class="card__shop__price">15P₩</span>
-              <button class="card__shop__action" style="margin-right:5px">
-                <i class="bi bi-backpack-fill" style="color:white; font-size: 1.3em;"></i>
-              </button>
-              <button class="card__shop__action">
-                <i class="bi bi-bag-heart-fill" style="color:white; font-size: 1.3em;"></i>
-              </button>
-            </div>
-          </div>
-
-          <div class="product-card">
-            <img src="https://i.hizliresim.com/bpypj5c.png" alt="" />
-            <h2 class="card__title">None</h2>
-            <span class="card__description">Her vuruşta %50 ihtimalle topu %5 hızlandır.</span>
-            <div class="card__shop">
-              <span class="card__shop__price">15P₩</span>
-              <button class="card__shop__action" style="margin-right:5px">
-                <i class="bi bi-backpack-fill" style="color:white; font-size: 1.3em;"></i>
-              </button>
-              <button class="card__shop__action">
-                <i class="bi bi-bag-heart-fill" style="color:white; font-size: 1.3em;"></i>
-              </button>
-            </div>
-          </div>
-
-          <div class="product-card">
-            <img src="https://i.hizliresim.com/bpypj5c.png" alt="" />
-            <h2 class="card__title">None</h2>
-            <span class="card__description">Her vuruşta %50 ihtimalle topu %5 hızlandır.</span>
-            <div class="card__shop">
-              <span class="card__shop__price">15P₩</span>
-              <button class="card__shop__action" style="margin-right:5px">
-                <i class="bi bi-backpack-fill" style="color:white; font-size: 1.3em;"></i>
-              </button>
-              <button class="card__shop__action">
-                <i class="bi bi-bag-heart-fill" style="color:white; font-size: 1.3em;"></i>
-              </button>
-            </div>
-          </div>
-
-          <div class="product-card">
-            <img src="https://i.hizliresim.com/bpypj5c.png" alt="" />
-            <h2 class="card__title">None</h2>
-            <span class="card__description">Her vuruşta %50 ihtimalle topu %5 hızlandır.</span>
-            <div class="card__shop">
-              <span class="card__shop__price">15P₩</span>
-              <button class="card__shop__action" style="margin-right:5px">
-                <i class="bi bi-backpack-fill" style="color:white; font-size: 1.3em;"></i>
-              </button>
-              <button class="card__shop__action">
-                <i class="bi bi-bag-heart-fill" style="color:white; font-size: 1.3em;"></i>
-              </button>
-            </div>
-          </div>
           
         </div>
     </div>
+    <div class="toast-container position-fixed bottom-0 end-0 p-6" style="margin-right: 20px; margin-bottom: 20px">
+      <div class="toast text-bg-danger" id="liveToast" role="alert">
+          <div class="toast-body">
+              <div class="d-flex gap-4">
+                  <span class="i-class"><i class="bi bi-bug-fill"></i></span>
+                  <div class="d-flex flex-grow-1 align-items-center">
+                      <span class="fw-semibold">NULL</span>
+                      <span class="toast-close" data-bs-dismiss="toast"><i class="bi bi-x-circle-fill"></i></span>
+                  </div>
+              </div>
+          </div>
+      </div>
+    </div>
 </div>
+
+<script>
+function showToast(content, status, iconClass) {
+    const liveToast = document.getElementById('liveToast');
+    var toastContent = document.querySelector('#liveToast .fw-semibold');
+    var toastIcon = document.querySelector('.toast-body .i-class i');
+
+    toastIcon.className = iconClass;
+    liveToast.classList.remove('text-bg-danger'); 
+    liveToast.className = 'toast'; 
+    liveToast.classList.add(status);
+
+    toastContent.textContent = content;
+    const toast = new bootstrap.Toast(liveToast);
+    toast.show();
+    setTimeout(function() {
+        toast.hide();
+    }, 8000);
+}
+</script>
 {% endblock app %}

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import OAuthToken, Social, Store, UserProfile, Tournament, Room, Message
+from .models import OAuthToken, Social, UserItem, StoreItem, UserProfile, Tournament, Room, Message
 from django.utils.html import format_html
 
 @admin.register(UserProfile)
@@ -27,10 +27,16 @@ class UserProfileAdmin(admin.ModelAdmin):
         return format_html(obj.thumbnail)
     avatar_thumbnail.short_description = 'Avatar'
 
-@admin.register(Store)
+@admin.register(StoreItem)
 class StoreAdmin(admin.ModelAdmin):
-    list_display = ('product_name', 'product_description', 'product_price', 'product_buystatus', 'product_status')
-    search_fields = ('product_name', 'product_description')
+    list_display = ('name', 'image_url', 'description', 'price', 'is_bought', 'is_status')
+    search_fields = ('name', 'description')
+
+@admin.register(UserItem)
+class UserItemAdmin(admin.ModelAdmin):
+    list_display = ('user', 'item', 'is_equipped')
+    list_filter = ('is_equipped',)
+    search_fields = ('user__username', 'item__name')
 
 @admin.register(Social)
 class SocialAdmin(admin.ModelAdmin):

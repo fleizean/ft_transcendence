@@ -20,12 +20,13 @@ class Social(models.Model):
     twitter = models.CharField(max_length=200, blank=True, null=True)
     instagram = models.CharField(max_length=200, blank=True, null=True)
 
-class Store(models.Model):
-    product_name = models.CharField(max_length=200, blank=True, null=True)
-    product_description = models.CharField(max_length=200, blank=True, null=True)
-    product_price = models.IntegerField(blank=True, null=True)
-    product_buystatus = models.BooleanField(default=False)
-    product_status = models.BooleanField(default=True)
+class StoreItem(models.Model):
+    name = models.CharField(max_length=100)
+    image_url = models.TextField()
+    description = models.TextField()
+    price = models.IntegerField()
+    is_bought = models.BooleanField(default=False)
+    is_status = models.BooleanField(default=False)
 
 class UserProfile(AbstractUser):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -40,7 +41,6 @@ class UserProfile(AbstractUser):
     is_verified = models.BooleanField(default=False)
     is_42student = models.BooleanField(default=False)
     pong_wallet = models.IntegerField(blank=True, null=True, default=0)
-    store = models.OneToOneField('Store', on_delete=models.CASCADE, null=True, blank=True)
 
 
     def __str__(self) -> str:
@@ -53,6 +53,10 @@ class UserProfile(AbstractUser):
         else:
             return mark_safe('<img src="/static/assets/profile/profilephoto.jpeg" width="50" height="50" />')
         
+class UserItem(models.Model):
+    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+    item = models.ForeignKey(StoreItem, on_delete=models.CASCADE)
+    is_equipped = models.BooleanField(default=False)
 
 class VerifyToken(models.Model):
     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)

@@ -35,6 +35,7 @@ from .models import (
     JWTToken,
     Tournament,
     TournamentMatch,
+    StoreItem,
     OAuthToken,
     Room,
     Message,
@@ -460,7 +461,8 @@ def store(request, username):
     if request.user.username != username:
         return redirect(reverse('store', kwargs={'username': request.user.username})) 
     profile = get_object_or_404(UserProfile, username=username)
-    return render(request, "store.html")
+    store_items = StoreItem.objects.all()
+    return render(request, "store.html" , {"store_items": store_items, "profile": profile})
 
 
 @login_required(login_url="login")
