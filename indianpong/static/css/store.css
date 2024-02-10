@@ -1,0 +1,155 @@
+
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap');
+
+.store-card {
+    background-color: rgba(241, 241, 251, 0.3) !important;
+    backdrop-filter: blur(3px); /* Arka planı 10 piksel bulanıklaştır */
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    max-width: 1300px;
+    width: 100%;
+    max-height: auto;
+    height: auto; /* Yüksekliği otomatik ayarla */
+    max-height: auto;
+    margin: 0 auto; /* Ortalamak için */
+  }
+
+  *,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.store-list {
+  min-height: 100vh;
+  gap: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+
+.top-store-card {
+  height: 50px;
+  width: 150px;
+  border-radius: 20px;
+  background: #FFF;
+  
+  margin-bottom: 2rem;
+  margin-left: auto;
+  display: flex;
+}
+
+.top-store {
+  display: flex; /* Flex container olarak ayarlayın */
+}
+
+.store-left {
+  flex-grow: 1;
+  margin-left: 0;
+  margin-right: auto;
+  color: #FFF;
+}
+
+.store-right {
+  margin-top: auto;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: auto;
+}
+
+.store-right i {
+  font-size: 24px;
+  color: #8743ff;
+}
+
+
+.small-wallet-name {
+  font-family: 'Roboto', sans-serif;
+  color: #1a1a1a;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.store-right .wallet-amount {
+  font-family: 'Roboto', sans-serif;
+  color: #1a1a1a;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.product-card {
+  height: 300px;
+  width: 200px;
+  background: #FFF;
+  border-radius: 20px;
+  padding: 10px;
+  font-family: sans-serif;
+  display: flex;
+  color: #000;
+  flex-direction: column;
+  align-items: flex-start;
+  transition: transform 0.3s, background 0.3s;
+}
+
+.product-card:hover {
+  transform: scale(1.09);
+}
+
+.product-card img {
+  width: 180px;
+  height: 140px;
+  border-radius: 14px;
+  object-fit: cover;
+}
+
+.card__title {
+  color: #000;
+  margin-top: 16px;
+  font-size: 15px;
+  font-weight: 400;
+  transition: color 0.3s;
+}
+
+.card__description {
+  margin-top: 5px;
+  display: block;
+  font-size: 15px;
+  opacity: 0.6;
+  transition: color 0.3s;
+}
+
+.card__shop {
+  width: 100%;
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-left: 5px;
+}
+
+.card__shop__price {
+  color: #4136f1;
+  margin-left: -6px;
+  margin-right: auto;
+}
+
+.card__shop__action {
+  height: 35px;
+  width: 35px;
+  outline: none;
+  border: none;
+  background: linear-gradient(221deg, #8743ff, #4136f1 60%);
+  border-radius: 12px;
+  cursor: pointer;
+  margin-top: auto;
+}
+
+.card__shop__action span {
+  color: #fff;
+  font-size: 26px;
+}

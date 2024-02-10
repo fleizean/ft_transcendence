@@ -7,21 +7,31 @@ from django.utils.html import mark_safe
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from django.core.mail import EmailMultiAlternatives
+from .utils import get_upload_to
 from indianpong.settings import EMAIL_HOST_USER, STATICFILES_DIRS
 from django.utils import timezone
 import uuid
+
+
 
 class Social(models.Model):
     stackoverflow = models.CharField(max_length=200, blank=True, null=True)
     github = models.CharField(max_length=200, blank=True, null=True)
     twitter = models.CharField(max_length=200, blank=True, null=True)
     instagram = models.CharField(max_length=200, blank=True, null=True)
-    
+
+class Store(models.Model):
+    product_name = models.CharField(max_length=200, blank=True, null=True)
+    product_description = models.CharField(max_length=200, blank=True, null=True)
+    product_price = models.IntegerField(blank=True, null=True)
+    product_buystatus = models.BooleanField(default=False)
+    product_status = models.BooleanField(default=True)
+
 class UserProfile(AbstractUser):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     displayname = models.CharField(max_length=100, blank=True, null=True)
     email = models.EmailField(unique=True, max_length=254)
-    avatar = models.ImageField(upload_to='', null=True, blank=True)
+    avatar = models.ImageField(upload_to=get_upload_to, null=True, blank=True)
     friends = models.ManyToManyField('self', symmetrical=False, blank=True)
     social = models.OneToOneField('Social', on_delete=models.CASCADE, null=True, blank=True)
     #channel_name = models.CharField(max_length=100, blank=True, null=True)
@@ -29,6 +39,9 @@ class UserProfile(AbstractUser):
     losses = models.IntegerField(default=0)
     is_verified = models.BooleanField(default=False)
     is_42student = models.BooleanField(default=False)
+    pong_wallet = models.IntegerField(blank=True, null=True, default=0)
+    store = models.OneToOneField('Store', on_delete=models.CASCADE, null=True, blank=True)
+
 
     def __str__(self) -> str:
         return f"{self.username}"
@@ -39,20 +52,7 @@ class UserProfile(AbstractUser):
             return mark_safe('<img src="%s" width="50" height="50" />' % (self.avatar.url))
         else:
             return mark_safe('<img src="/static/assets/profile/profilephoto.jpeg" width="50" height="50" />')
-    
-    def save(self, *args, **kwargs):
-        if self.avatar:
-            name, ext = os.path.splitext(self.avatar.name)
-            if name!=self.username:
-                if not ext:
-                    ext = '.jpg'
-                # Update the avatar name to reflect the new username
-                new_avatar_name = f"{self.username}{ext}"
-                if self.avatar.name != new_avatar_name:
-                    os.rename(self.avatar.path, os.path.join(os.path.dirname(self.avatar.path), new_avatar_name))
-                    self.avatar.name = new_avatar_name
-        super().save(*args, **kwargs)
-
+        
 
 class VerifyToken(models.Model):
     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)

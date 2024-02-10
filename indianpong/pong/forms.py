@@ -55,8 +55,9 @@ class DeleteAccountForm(forms.Form):
     def clean(self):
         cleaned_data = super().clean()
         password = cleaned_data.get('password')
-        if not self.user.check_password(password):
-            raise forms.ValidationError("Password does not match")
+        if not self.user.is_42student:
+            if not self.user.check_password(password):
+                raise forms.ValidationError("Password does not match")
         return cleaned_data
 
 class AuthenticationUserForm(AuthenticationForm):

@@ -6,6 +6,7 @@ from django.contrib.auth import login, logout
 from django.contrib import messages
 from django.http import HttpResponseBadRequest
 from django.http import HttpResponseRedirect
+
 from .forms import (
     BlockUserForm,
     ChatMessageForm,
@@ -53,7 +54,6 @@ from django.contrib.auth.tokens import default_token_generator
 from django.contrib.auth import get_user_model
 from django.db.models import Q
 from django.contrib.auth import update_session_auth_hash
-from django.utils.crypto import get_random_string
 from django.urls import reverse
 
 
@@ -111,7 +111,7 @@ def activate_account(request, token):
 # state_req = secrets.token_hex(25)
 @never_cache
 def auth(request):
-    if request.user.is_authenticated:
+    if request.user.is_authenticated and request.user.is_42student:
         return redirect("dashboard")
     auth_url = "https://api.intra.42.fr/oauth/authorize"
     fields = {
@@ -164,28 +164,29 @@ def auth_callback(request):
             user_data = json.loads(user_info_response.read().decode("utf-8"))
             """with open('user_data.json', 'w') as file:
                 json.dump(user_data, file) """
+            
+            if UserProfile.objects.filter(email=user_data["email"]).exists():
+                user = UserProfile.objects.get(email=user_data["email"])
+                login(request, user)
+                return redirect("dashboard")
 
-            # add random string to username if it already exists
-            if UserProfile.objects.filter(username=user_data["login"]).exists():
-                username = user_data["login"] + get_random_string(length=3)
+            user, created = UserProfile.objects.get_or_create(username=user_data["login"])
+            if not created:
+                user = UserProfile.objects.create(username=user_data["login"] + "42")
             else:
-                username = user_data["login"]
-            user, created = UserProfile.objects.get_or_create(username=username)
-            if created:
                 # Update user profile
                 user.set_unusable_password()
                 user.displayname = user_data.get("displayname", "")
                 user.email = user_data.get("email", "")
                 user.is_verified = True
                 user.is_42student = True
-
                 image_url = (
                     user_data.get("image", {}).get("versions", {}).get("medium", "")
                 )
                 if image_url:
                     image_name, response = urllib.request.urlretrieve(image_url)
-                    file = File(open(image_name, "rb"), name=f"{user.username}.jpg")
-                    user.avatar.save(f"{user.username}.jpg", file, save=True)
+                    file = File(open(image_name, "rb"))
+                    user.avatar.save(f"{file.name}.jpg", file, save=True)
                     file.close() 
                 user.save()
 
@@ -297,10 +298,13 @@ def profile_settings(request, username):
     social_form = SocialForm(request.POST or None, instance=request.user.social)
     delete_account_form = DeleteAccountForm(request.POST or None, user=request.user)
     if request.method == "POST":
-        print("Request method:", request.POST)
         if "avatar_form" in request.POST:
-            print('test2')
             if avatar_form.is_valid():
+                # Delete old avatar file from MEDIA_ROOT
+                if profile.avatar:
+                    old_avatar_path = profile.avatar.path
+                    if os.path.isfile(old_avatar_path):
+                        os.remove(old_avatar_path)
                 profile.avatar = avatar_form.cleaned_data["avatar"]
                 profile.save()
                 messages.success(request, "Avatar updated successfully.")
@@ -312,7 +316,6 @@ def profile_settings(request, username):
                 return redirect(reverse('profile_settings', args=[username]) + '#editProfile')
         elif "password_form" in request.POST:
             if password_form.is_valid():
-                print("sdlfsşfsşfsf")
                 profile.set_password(password_form.cleaned_data["new_password1"])
                 profile.save()
                 update_session_auth_hash(request, profile)  # Important!
@@ -327,9 +330,8 @@ def profile_settings(request, username):
                 return redirect(reverse('profile_settings', args=[username]) + '#addSocial')
         elif "delete_account_form" in request.POST:
             if delete_account_form.is_valid():
-                request.user.delete()
-                logout(request)
-                return redirect('')
+                profile.delete()
+                return redirect('logout')
     else:
         avatar_form = ProfileAvatarForm(instance=request.user)
         profile_form = UpdateUserProfileForm(instance=request.user)
@@ -451,6 +453,14 @@ def dashboard(request):
 @login_required(login_url="login")
 def rankings(request):
     return render(request, "rankings.html")
+
+@never_cache
+@login_required(login_url="login")
+def store(request, username):
+    if request.user.username != username:
+        return redirect(reverse('store', kwargs={'username': request.user.username})) 
+    profile = get_object_or_404(UserProfile, username=username)
+    return render(request, "store.html")
 
 
 @login_required(login_url="login")

@@ -1,0 +1,179 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ username }} Store{% endblock title %}
+
+{% load static %}
+
+{% block stylesheet %}<link rel="stylesheet" href="../../../static/css/store.css">{% endblock stylesheet %}
+
+{% block app %}
+  {% include "_nav.html" %}
+  <div class="container-top">
+    <div class="store-card">
+       <div class="top-store">
+        <div class="store-left">
+          <h3>{{username}} / Store</h3>
+        </div>
+        <div class="top-store-card">
+          <div class="store-right">
+           <i class="bi bi-piggy-bank-fill flip-horizontal"></i> <span class="small-wallet-name">Wallet: </span> <span class="wallet-amount"> 200P₩</span>
+          </div>
+        </div>
+      </div>
+        <div class="store-list">
+
+          <div class="product-card">
+            <img src="https://i.hizliresim.com/bpypj5c.png" alt="" />
+            <h2 class="card__title">Ateşin Öfkesi</h2>
+            <span class="card__description">Her vuruşta %50 ihtimalle topu %5 hızlandır.</span>
+            <div class="card__shop">
+              <span class="card__shop__price">15P₩</span>
+              <button class="card__shop__action" style="margin-right:5px">
+                <i class="bi bi-backpack-fill" style="color:white; font-size: 1.3em;"></i>
+              </button>
+              <button class="card__shop__action">
+                <i class="bi bi-bag-heart-fill" style="color:white; font-size: 1.3em;"></i>
+              </button>
+            </div>
+          </div>
+          
+          
+          <div class="product-card">
+            <img src="https://i.hizliresim.com/s827mxz.png" alt="" />
+            <h2 class="card__title">Zamana Karşı</h2>
+            <span class="card__description">Bir kereliğine topu 5 saniye yavaşlat.</span>
+            <div class="card__shop">
+              <span class="card__shop__price">55P₩</span>
+              <button class="card__shop__action" style="margin-right:5px">
+                <i class="bi bi-backpack-fill" style="color:white; font-size: 1.3em;"></i>
+              </button>
+              <button class="card__shop__action">
+                <i class="bi bi-bag-heart-fill" style="color:white; font-size: 1.3em;"></i>
+              </button>
+            </div>
+          </div>
+          
+          <div class="product-card">
+            <img src="https://i.hizliresim.com/nm30bpa.png" alt="" />
+            <h2 class="card__title">Hızlı ve Öfkeli</h2>
+            <span class="card__description">Kullanıldığında topun hızı 5 kat artar.</span>
+            <div class="card__shop">
+              <span class="card__shop__price">55P₩</span>
+              <button class="card__shop__action" style="margin-right:5px">
+                <i class="bi bi-backpack-fill" style="color:white; font-size: 1.3em;"></i>
+              </button>
+              <button class="card__shop__action">
+                <i class="bi bi-bag-heart-fill" style="color:white; font-size: 1.3em;"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="product-card">
+            <img src="https://i.hizliresim.com/bpypj5c.png" alt="" />
+            <h2 class="card__title">None</h2>
+            <span class="card__description">Her vuruşta %50 ihtimalle topu %5 hızlandır.</span>
+            <div class="card__shop">
+              <span class="card__shop__price">15P₩</span>
+              <button class="card__shop__action" style="margin-right:5px">
+                <i class="bi bi-backpack-fill" style="color:white; font-size: 1.3em;"></i>
+              </button>
+              <button class="card__shop__action">
+                <i class="bi bi-bag-heart-fill" style="color:white; font-size: 1.3em;"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="product-card">
+            <img src="https://i.hizliresim.com/bpypj5c.png" alt="" />
+            <h2 class="card__title">None</h2>
+            <span class="card__description">Her vuruşta %50 ihtimalle topu %5 hızlandır.</span>
+            <div class="card__shop">
+              <span class="card__shop__price">15P₩</span>
+              <button class="card__shop__action" style="margin-right:5px">
+                <i class="bi bi-backpack-fill" style="color:white; font-size: 1.3em;"></i>
+              </button>
+              <button class="card__shop__action">
+                <i class="bi bi-bag-heart-fill" style="color:white; font-size: 1.3em;"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="product-card">
+            <img src="https://i.hizliresim.com/bpypj5c.png" alt="" />
+            <h2 class="card__title">None</h2>
+            <span class="card__description">Her vuruşta %50 ihtimalle topu %5 hızlandır.</span>
+            <div class="card__shop">
+              <span class="card__shop__price">15P₩</span>
+              <button class="card__shop__action" style="margin-right:5px">
+                <i class="bi bi-backpack-fill" style="color:white; font-size: 1.3em;"></i>
+              </button>
+              <button class="card__shop__action">
+                <i class="bi bi-bag-heart-fill" style="color:white; font-size: 1.3em;"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="product-card">
+            <img src="https://i.hizliresim.com/bpypj5c.png" alt="" />
+            <h2 class="card__title">None</h2>
+            <span class="card__description">Her vuruşta %50 ihtimalle topu %5 hızlandır.</span>
+            <div class="card__shop">
+              <span class="card__shop__price">15P₩</span>
+              <button class="card__shop__action" style="margin-right:5px">
+                <i class="bi bi-backpack-fill" style="color:white; font-size: 1.3em;"></i>
+              </button>
+              <button class="card__shop__action">
+                <i class="bi bi-bag-heart-fill" style="color:white; font-size: 1.3em;"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="product-card">
+            <img src="https://i.hizliresim.com/bpypj5c.png" alt="" />
+            <h2 class="card__title">None</h2>
+            <span class="card__description">Her vuruşta %50 ihtimalle topu %5 hızlandır.</span>
+            <div class="card__shop">
+              <span class="card__shop__price">15P₩</span>
+              <button class="card__shop__action" style="margin-right:5px">
+                <i class="bi bi-backpack-fill" style="color:white; font-size: 1.3em;"></i>
+              </button>
+              <button class="card__shop__action">
+                <i class="bi bi-bag-heart-fill" style="color:white; font-size: 1.3em;"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="product-card">
+            <img src="https://i.hizliresim.com/bpypj5c.png" alt="" />
+            <h2 class="card__title">None</h2>
+            <span class="card__description">Her vuruşta %50 ihtimalle topu %5 hızlandır.</span>
+            <div class="card__shop">
+              <span class="card__shop__price">15P₩</span>
+              <button class="card__shop__action" style="margin-right:5px">
+                <i class="bi bi-backpack-fill" style="color:white; font-size: 1.3em;"></i>
+              </button>
+              <button class="card__shop__action">
+                <i class="bi bi-bag-heart-fill" style="color:white; font-size: 1.3em;"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="product-card">
+            <img src="https://i.hizliresim.com/bpypj5c.png" alt="" />
+            <h2 class="card__title">None</h2>
+            <span class="card__description">Her vuruşta %50 ihtimalle topu %5 hızlandır.</span>
+            <div class="card__shop">
+              <span class="card__shop__price">15P₩</span>
+              <button class="card__shop__action" style="margin-right:5px">
+                <i class="bi bi-backpack-fill" style="color:white; font-size: 1.3em;"></i>
+              </button>
+              <button class="card__shop__action">
+                <i class="bi bi-bag-heart-fill" style="color:white; font-size: 1.3em;"></i>
+              </button>
+            </div>
+          </div>
+          
+        </div>
+    </div>
+</div>
+{% endblock app %}

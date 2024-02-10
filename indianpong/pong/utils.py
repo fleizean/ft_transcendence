@@ -3,16 +3,12 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login
 import asyncio
 import os
-import uuid
+from django.utils.crypto import get_random_string
 
-""" class FilePath(object):
-    def __init__(self, path):
-        self.path = path
-
-    def __call__(self, instance, filename):
-        ext = filename.split('.')[-1]
-        filename = "%s.%s" % (uuid.uuid4(), ext)
-        return os.path.join(self.path, filename) """
+def get_upload_to(instance, filename):
+    ext = filename.split('.')[-1]
+    filename = "%s_%s.%s" % (instance.username, get_random_string(length=7), ext)
+    return filename
 
 def pass2fa(request, user_obj):
 	if user_obj.has_2fa:

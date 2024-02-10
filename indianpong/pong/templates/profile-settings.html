@@ -95,6 +95,47 @@
 
                 <!-- Change Password Section -->
                 <section id="changePassword">
+                    {% if profile.is_42student %}
+                    
+                    <label class="small mb-1" style="font-weight:bold;">                                
+                        Since you are logged in with 42, your password setting feature is disabled.
+                    </label>
+                    <div class="mb-3 position-relative">
+                        <label class="small mb-1" for="id_old_password">Current Password</label>
+                        <div class="input-group">
+                            <input class="form-control" name="old_password" id="id_old_password" type="password" disabled>
+                            <button class="btn btn-outline-secondary" type="button"
+                                onclick="togglePasswordVisibility('currentPassword')">
+                                <i class="bi bi-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="mb-3 position-relative">
+                        <label class="small mb-1" for="id_new_password1">New Password</label>
+                        <div class="input-group">
+                            <input class="form-control" id="id_new_password1" name="new_password1" type="password" disabled>
+                            <button class="btn btn-outline-secondary" type="button"
+                                onclick="togglePasswordVisibility('newPassword')" disabled>
+                                <i class="bi bi-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="mb-3 position-relative">
+                        <label class="small mb-1" for="id_new_password2">Confirm New Password</label>
+                        <div class="input-group">
+                            <input class="form-control" id="id_new_password2" name="new_password2" type="password" disabled>
+                            <button class="btn btn-outline-secondary" type="button"
+                                onclick="togglePasswordVisibility('confirmNewPassword')" disabled>
+                                <i class="bi bi-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <button type="submit" name="password_form" class="btn btn-primary" disabled><i class="bi bi-lock-fill"></i> Change
+                        Password</button>
+                    {% else %}
                     <!-- Your code for changing password goes here -->
                     <form id="password_form" name="password_form" enctype="multipart/form-data" method="post">
                         {% csrf_token %}
@@ -134,6 +175,7 @@
                         <button type="submit" name="password_form" class="btn btn-primary"><i class="bi bi-lock-fill"></i> Change
                             Password</button>
                     </form>
+                    {% endif %}
                 </section>
 
                 <section id="addSocial">
@@ -189,25 +231,24 @@
                 <section id="closeAccount">
                     <form id="delete_account_form" name="delete_account_form" enctype="multipart/form-data" method="post">
                         {% csrf_token %}
-                        <div class="mb-3 position-relative">
-                            <label class="small mb-1" for="id_password">
-                                Enter your password to delete your account:
-                            </label>
-                            <div class="input-group">
-                                <input class="form-control" id="id_password" type="password" name="password" required>
-                                <button class="btn btn-outline-danger" type="button"
-                                    onclick="togglePasswordVisibility('passwordToDeleteAccount')">
-                                    <i class="bi bi-eye"></i>
-                                </button>
-                            </div>
-                        </div>
-                        <p>
-                            Hello, we're sorry to see you leave the IndianPong community, but we respect your decision.
-                            After clicking
-                            the 'Delete Account' button, you will be separated from us, so please think carefully, as
-                            there will be no turning back. Anyway, see you around!
-                        </p>
-                        <button type="button" name="delete_account_form" class="btn btn-danger">
+                        {% if not profile.is_42student %}
+                            <p style="font-weight:500; word-wrap: break-word;">
+                                Hello, we're sorry to see you leave the IndianPong community, but we respect your decision.
+                                After clicking
+                                the 'Delete Account' button, you will be separated from us, so please think carefully, as
+                                there will be no turning back. Anyway, see you around!
+                            </p>
+                            {{ delete_account_form.as_p }}
+                        {% else %}
+                            <p style="font-weight:bold;">
+                                Hello, we're sorry to see you leave the IndianPong community, but we respect your decision.
+                                After clicking
+                                the 'Delete Account' button, you will be separated from us, so please think carefully, as
+                                there will be no turning back. Anyway, see you around!
+                            </p>
+                            
+                        {% endif %}
+                        <button type="submit" name="delete_account_form" class="btn btn-danger">
                             <i class="bi bi-trash-fill"></i> Delete Account
                         </button>
                     </form>
