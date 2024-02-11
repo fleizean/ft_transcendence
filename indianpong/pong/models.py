@@ -25,7 +25,6 @@ class StoreItem(models.Model):
     image_url = models.TextField()
     description = models.TextField()
     price = models.IntegerField()
-    whatis = models.CharField(max_length=100, blank=True, null=True)
     is_bought = models.BooleanField(default=False)
     is_status = models.BooleanField(default=False)
 
@@ -57,6 +56,7 @@ class UserProfile(AbstractUser):
 class UserItem(models.Model):
     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     item = models.ForeignKey(StoreItem, on_delete=models.CASCADE)
+    whatis = models.CharField(max_length=100, blank=True, null=True)
     is_equipped = models.BooleanField(default=False)
 
 class VerifyToken(models.Model):

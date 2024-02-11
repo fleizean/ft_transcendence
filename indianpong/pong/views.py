@@ -48,7 +48,7 @@ from django.utils.http import urlsafe_base64_decode
 import urllib.parse
 import urllib.request
 from urllib.parse import urlencode
-import secrets, json, re
+import json
 from django.core.files import File
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
@@ -57,11 +57,10 @@ from django.contrib.auth import get_user_model
 from django.db.models import Q
 from django.contrib.auth import update_session_auth_hash
 from django.urls import reverse
-
+from django.views.decorators.csrf import csrf_exempt
 
 
 ### Homepage and Error Page ###
-
 
 @never_cache
 def index(request):
@@ -169,39 +168,37 @@ def auth_callback(request):
             
             if UserProfile.objects.filter(email=user_data["email"]).exists():
                 user = UserProfile.objects.get(email=user_data["email"])
-                login(request, user)
-                return redirect("dashboard")
-
-            user, created = UserProfile.objects.get_or_create(username=user_data["login"])
-            if not created:
-                user = UserProfile.objects.create(username=user_data["login"] + "42")
             else:
-                # Update user profile
-                user.set_unusable_password()
-                user.displayname = user_data.get("displayname", "")
-                user.email = user_data.get("email", "")
-                user.is_verified = True
-                user.is_42student = True
-                image_url = (
-                    user_data.get("image", {}).get("versions", {}).get("medium", "")
-                )
-                if image_url:
-                    image_name, response = urllib.request.urlretrieve(image_url)
-                    file = File(open(image_name, "rb"))
-                    user.avatar.save(f"{file.name}.jpg", file, save=True)
-                    file.close() 
-                user.save()
+                user, created = UserProfile.objects.get_or_create(username=user_data["login"])
+                if not created:
+                    user = UserProfile.objects.create(username=user_data["login"] + "42")
+                else:
+                    # Update user profile
+                    user.set_unusable_password()
+                    user.displayname = user_data.get("displayname", "")
+                    user.email = user_data.get("email", "")
+                    user.is_verified = True
+                    user.is_42student = True
+                    image_url = (
+                        user_data.get("image", {}).get("versions", {}).get("medium", "")
+                    )
+                    if image_url:
+                        image_name, response = urllib.request.urlretrieve(image_url)
+                        file = File(open(image_name, "rb"))
+                        user.avatar.save(f"{file.name}.jpg", file, save=True)
+                        file.close() 
+                    user.save()
 
-                # Store the access token in the OAuthToken model
-                oauth_token = OAuthToken.objects.create(
-                    user=user,
-                    access_token=access_token,
-                    refresh_token=refresh_token,
-                    expires_in=expires_in,
-                    created_at=created_at,
-                    secret_valid_until=secret_valid_until,
-                )
-                oauth_token.save()
+                    # Store the access token in the OAuthToken model
+                    oauth_token = OAuthToken.objects.create(
+                        user=user,
+                        access_token=access_token,
+                        refresh_token=refresh_token,
+                        expires_in=expires_in,
+                        created_at=created_at,
+                        secret_valid_until=secret_valid_until,
+                    )
+                    oauth_token.save()
 
             # Log in the user
             login(request, user)
@@ -465,21 +462,18 @@ def store(request, username):
     store_items = StoreItem.objects.all()
     return render(request, "store.html" , {"store_items": store_items, "profile": profile})
 
-
+@csrf_exempt
 @login_required(login_url="login")
 def search(request):
     if request.method == "POST":
         search_query = request.POST.get("search_query", "")
         if len(search_query) >= 3:
-            email_regex = r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b"
-            if re.fullmatch(email_regex, search_query):
                 results = UserProfile.objects.filter(
                     Q(username__icontains=search_query)
+                    | Q(displayname__icontains=search_query)
                     | Q(email__icontains=search_query)
                 )
-            else:
-                results = UserProfile.objects.filter(username__icontains=search_query)
-            return render(request, "search.html", {"results": results})
+        return render(request, "search.html", {"results": results})     
     return render(request, "search.html")
 
 
@@ -489,12 +483,12 @@ def game(request):
 
 @login_required(login_url="login")
 def play_ai(request):
-    user_item = UserItem.objects.filter(user=request.user).first()
-
-    if user_item and user_item.item:
-        ainametag = user_item.item.whatis if user_item.item.whatis else "AI"
-
-    print("test: " + user_item.item.name)
+    user_item = UserItem.objects.filter(
+                    user=request.user,
+                    item__name="My Beatiful AI"
+                ).first()
+    
+    ainametag = user_item.whatis and user_item.whatis or "AI"
     return render(request, "play-ai.html", {"ainametag": ainametag})
 
 

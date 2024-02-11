@@ -39,32 +39,18 @@ class StoreAdmin(admin.ModelAdmin):
     
 @admin.register(UserItem)
 class UserItemAdmin(admin.ModelAdmin):
-    list_display = ('user', 'get_item_name', 'get_item_whatis', 'is_equipped')
+    list_display = ('user', 'get_item_name', 'whatis', 'is_equipped')
     list_filter = ('is_equipped',)
     search_fields = ('user__username', 'item__name')
-    fields = ('user', 'item', 'is_equipped')  # Add this line
+    fields = ('user', 'item', 'whatis', 'is_equipped')  # Add this line
+
+    def __str__(self):
+        return self.get_item_name(self)
 
     def get_item_name(self, obj):
         return obj.item.name
-    def get_item_whatis(self, obj):
-        return obj.item.whatis
+   
     get_item_name.short_description = 'Item Name'
-    get_item_whatis.short_description = 'What Is'
-
-class UserItemAdmin(admin.ModelAdmin):
-    list_display = ('user', 'get_item_name', 'is_equipped')
-    list_filter = ('is_equipped',)
-    search_fields = ('user__username', 'item__name')
-
-    def get_item_name(self, obj):
-        return obj.item.name
-    get_item_name.short_description = 'Item Name'
-
-    def formfield_for_foreignkey(self, db_field, request, **kwargs):
-        if db_field.name == "item":
-            kwargs["queryset"] = StoreItem.objects.all()
-            return ModelChoiceField(queryset=StoreItem.objects.all())
-        return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
 @admin.register(Social)
 class SocialAdmin(admin.ModelAdmin):
