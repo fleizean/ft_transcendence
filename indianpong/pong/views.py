@@ -35,6 +35,7 @@ from .models import (
     JWTToken,
     Tournament,
     TournamentMatch,
+    UserItem,
     StoreItem,
     OAuthToken,
     Room,
@@ -488,7 +489,13 @@ def game(request):
 
 @login_required(login_url="login")
 def play_ai(request):
-    return render(request, "play-ai.html")
+    user_item = UserItem.objects.filter(user=request.user).first()
+
+    if user_item and user_item.item:
+        ainametag = user_item.item.whatis if user_item.item.whatis else "AI"
+
+    print("test: " + user_item.item.name)
+    return render(request, "play-ai.html", {"ainametag": ainametag})
 
 
 @never_cache

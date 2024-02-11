@@ -25,8 +25,9 @@
 }
 
 .store-list {
+  margin-top: 0.5em;
   min-height: 100vh;
-  gap: 20px;
+  gap: 10px;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -84,7 +85,7 @@
 
 .product-card {
   height: 300px;
-  width: 200px;
+  width: 220px;
   background: #FFF;
   border-radius: 20px;
   padding: 10px;
@@ -96,27 +97,30 @@
   transition: transform 0.3s, background 0.3s;
 }
 
+.product-card:nth-child(n+6) {
+  margin-top: -6em; /* veya istediğiniz değeri belirleyin */
+}
+
 .product-card:hover {
   transform: scale(1.09);
 }
 
 .product-card img {
-  width: 180px;
-  height: 140px;
+  width: 200px;
+  height: 150px;
   border-radius: 14px;
   object-fit: cover;
 }
 
 .card__title {
   color: #000;
-  margin-top: 16px;
+  margin-top: 13px;
   font-size: 15px;
   font-weight: 400;
   transition: color 0.3s;
 }
 
 .card__description {
-  margin-top: 5px;
   display: block;
   font-size: 15px;
   opacity: 0.6;
@@ -153,6 +157,7 @@
   height: 35px;
   width: 35px;
   outline: none;
+  margin-left: 2px;
   border: none;
   background: linear-gradient(221deg, #343138, #322e5e 60%);
   border-radius: 12px;
@@ -160,7 +165,51 @@
   margin-top: auto;
 }
 
+.card__shop__action-set {
+  height: 35px;
+  width: 35px;
+  outline: none;
+  margin-right: 2px;
+  border: none;
+  background: linear-gradient(221deg, #aaff43, #50c914 60%);
+  border-radius: 12px;
+  cursor: pointer;
+  margin-top: auto;
+}
+
+
+.card__shop__action:hover {
+  background: linear-gradient(221deg, #4136f1, #8743ff 60%);
+}
+
+.card__shop__action-set:hover {
+  background: linear-gradient(221deg, #82bf38, #3c9510 60%);
+}
+
+.card__shop__action-close:hover {
+  background: linear-gradient(221deg, #2e2b2b, #322eb4 60%);
+}
+
 .card__shop__action span {
   color: #fff;
   font-size: 26px;
+}
+
+.store-info {
+  visibility: hidden;
+  position: absolute;
+  right:20;
+  margin-top: -20px;
+}
+
+.tooltiptext {
+    width: auto;
+    background-color: #8743ff;
+    color: #fff;
+    text-align: center;
+    height: auto;
+    padding: 10px;
+    font-size: 10px;
+    border-radius: 6px;
+    transition: opacity 0.3s;
 }

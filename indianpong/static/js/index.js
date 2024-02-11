@@ -102,16 +102,6 @@ function togglePasswordVisibility(inputId) {
     }
 }
 
-document.addEventListener('DOMContentLoaded', function () {
-    document.querySelector(".navbar-toggler").addEventListener("click", function () {
-        var navbarNav = document.getElementById("navbarNav");
-        if (navbarNav.classList.contains("show")) {
-            navbarNav.classList.remove("show");
-        } else {
-            navbarNav.classList.add("show");
-        }
-    });
-});
 
 document.addEventListener('DOMContentLoaded', function () {
     document.querySelector(".burger-menu").addEventListener("click", function () {
@@ -124,16 +114,6 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
-document.addEventListener('DOMContentLoaded', function () {
-    document.getElementById('profileNavbar').querySelector(".navbar-toggler").addEventListener("click", function () {
-        var profileNavLinks = document.getElementById('profileNavLinks');
-        if (profileNavLinks.classList.contains("show")) {
-            profileNavLinks.classList.remove("show");
-        } else {
-            profileNavLinks.classList.add("show");
-        }
-    });
-});
 
 
 var canvas = document.getElementById("myCanvas");

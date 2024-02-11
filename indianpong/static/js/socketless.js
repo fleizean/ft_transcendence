@@ -7,6 +7,19 @@ canvas.height = 600;
 //document.body.appendChild(canvas);
 
 const username = document.querySelector('.container-top').dataset.username;
+const ainame = document.querySelector('.container-top').dataset.ainame;
+
+/* Cordinates of the canvas */
+var textWidth1 = ctx.measureText(username + ": " + score1).width;
+var textWidth2 = ctx.measureText(ainame + ": " + score2).width;
+
+var usernameX = 10;
+var usernameY = 20;
+
+// ainame metni sağ üst köşede
+var ainameX = canvas.width - textWidth2 - 10;
+var ainameY = 20;
+
 
 // Paddle objects
 var paddleWidth = 10;
@@ -80,7 +93,7 @@ function update() {
         if (score1 == MAX_SCORE) {
             alert(username + " wins!");
         } else {
-            alert("AI wins!");
+            alert(ainame + " wins!");
         }
         score1 = 0;
         score2 = 0;
@@ -135,8 +148,8 @@ function render() {
     ctx.closePath();
 
     ctx.font = "14px Roboto";
-    ctx.fillText(username + ": " + score1, 40, 20);
-    ctx.fillText("AI: " + score2, canvas.width - 70, 20);
+    ctx.fillText(username + ": " + score1, usernameX, usernameY);
+    ctx.fillText(ainame + ": " + score2, ainameX, ainameY);
 }
 
 // The main game loop

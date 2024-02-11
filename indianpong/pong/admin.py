@@ -1,6 +1,8 @@
 from django.contrib import admin
 from .models import OAuthToken, Social, UserItem, StoreItem, UserProfile, Tournament, Room, Message
 from django.utils.html import format_html
+from django.forms import ModelChoiceField
+
 
 @admin.register(UserProfile)
 class UserProfileAdmin(admin.ModelAdmin):
@@ -32,11 +34,37 @@ class StoreAdmin(admin.ModelAdmin):
     list_display = ('name', 'image_url', 'description', 'price', 'is_bought', 'is_status')
     search_fields = ('name', 'description')
 
+    def __str__(self):
+        return self.name
+    
 @admin.register(UserItem)
 class UserItemAdmin(admin.ModelAdmin):
-    list_display = ('user', 'item', 'is_equipped')
+    list_display = ('user', 'get_item_name', 'get_item_whatis', 'is_equipped')
     list_filter = ('is_equipped',)
     search_fields = ('user__username', 'item__name')
+    fields = ('user', 'item', 'is_equipped')  # Add this line
+
+    def get_item_name(self, obj):
+        return obj.item.name
+    def get_item_whatis(self, obj):
+        return obj.item.whatis
+    get_item_name.short_description = 'Item Name'
+    get_item_whatis.short_description = 'What Is'
+
+class UserItemAdmin(admin.ModelAdmin):
+    list_display = ('user', 'get_item_name', 'is_equipped')
+    list_filter = ('is_equipped',)
+    search_fields = ('user__username', 'item__name')
+
+    def get_item_name(self, obj):
+        return obj.item.name
+    get_item_name.short_description = 'Item Name'
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == "item":
+            kwargs["queryset"] = StoreItem.objects.all()
+            return ModelChoiceField(queryset=StoreItem.objects.all())
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
 @admin.register(Social)
 class SocialAdmin(admin.ModelAdmin):
