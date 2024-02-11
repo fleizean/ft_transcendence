@@ -24,7 +24,7 @@ var ainameY = 20;
 // Paddle objects
 var paddleWidth = 10;
 var paddleHeight = 100;
-var paddleSpeed = 20;
+var paddleSpeed = 14;
 var paddleY = (canvas.height - paddleHeight) / 2;
 var paddle1 = {x: 0, y: paddleY, width: paddleWidth, height: paddleHeight, dy: paddleSpeed};
 var paddle2 = {x: canvas.width - paddleWidth, y: paddleY, width: paddleWidth, height: paddleHeight, dy: paddleSpeed};
@@ -43,6 +43,11 @@ const MAX_SCORE = 10;
 var isPaused = false;
 let upPressed = false;
 let downPressed = false;
+let upPressedAI = false;
+let downPressedAI = false;
+// Add a new variable for AI's target position
+let moveThreshold = 5;
+let targetY = paddle2.y;
 
 // Update the ball and paddle positions
 function update() {
@@ -56,20 +61,20 @@ function update() {
     if (ball.y + ball.radius > paddle1.y && ball.y - ball.radius < paddle1.y + paddle1.height && ball.dx < 0) {
         if (ball.x - ball.radius < paddle1.x + paddle1.width) {
             ball.dx *= -1;
-            // Check if the ball hit the top or bottom 20% of the paddle
-            if (ball.y < paddle1.y + 0.2 * paddle1.height || ball.y > paddle1.y + 0.8 * paddle1.height) {
-                ball.speed *= 1.2; // Increase speed by 20%
-                paddleSpeed *= 1.2;
+            // Check if the ball hit the top or bottom 10% of the paddle
+            if (ball.y < paddle1.y + 0.1 * paddle1.height || ball.y > paddle1.y + 0.9 * paddle1.height) {
+                ball.speed *= 1.1; // Increase speed by 10%
+                paddleSpeed *= 1.1;
             }
         }
     }
     if (ball.y + ball.radius > paddle2.y && ball.y - ball.radius < paddle2.y + paddle2.height && ball.dx > 0) {
         if (ball.x + ball.radius > paddle2.x) {
             ball.dx *= -1;
-            // Check if the ball hit the top or bottom 20% of the paddle
-            if (ball.y < paddle2.y + 0.2 * paddle2.height || ball.y > paddle2.y + 0.8 * paddle2.height) {
-                ball.speed *= 1.2; // Increase speed by 50%
-                paddleSpeed *= 1.2;
+            // Check if the ball hit the top or bottom 10% of the paddle
+            if (ball.y < paddle2.y + 0.1 * paddle2.height || ball.y > paddle2.y + 0.9 * paddle2.height) {
+                ball.speed *= 1.1; // Increase speed by 10%
+                paddleSpeed *= 1.1;
             }
         }
     }
@@ -104,6 +109,13 @@ function update() {
         paddle1.y -= paddle1.dy;
     } else if (downPressed && paddle1.y < canvas.height - paddle1.height) {
         paddle1.y += paddle1.dy;
+    }
+
+    // Move the AI paddle towards the target position
+    if (targetY < paddle2.y - moveThreshold && paddle2.y > 0) {
+        paddle2.y -= paddle2.dy;
+    } else if (targetY > paddle2.y + moveThreshold && paddle2.y < canvas.height - paddle2.height) {
+        paddle2.y += paddle2.dy;
     }
 
     // Prevent the paddles from moving off the canvas
@@ -177,7 +189,7 @@ function resetBall() {
         ball.x = canvas.width / 2;
         ball.y = canvas.height / 2;
         ball.speed = 4;
-        paddleSpeed = 50;
+        paddleSpeed = 14;
         ball.dx = -ball.dx;
         ball.dy = -ball.dy;
         isPaused = false; // Unpause the game
@@ -257,7 +269,7 @@ setInterval(() => {
 }, 100); */
 
 // Ai Player
-let reactionDelay = 150; // Delay in milliseconds
+let reactionDelay = 300; // Delay in milliseconds
 let lastBallPosition = { x: ball.x, y: ball.y };
 let ballDirection = { x: 0, y: 0 };
 let predictedY = paddle2.y;
@@ -272,17 +284,32 @@ setInterval(() => {
     predictedY = ball.y + ballDirection.y * timeToReachPaddle;
 
     // Clamp prediction within canvas
-    predictedY = Math.max(0, Math.min(600, predictedY));
+    predictedY = Math.max(0, Math.min(canvas.height, predictedY));
 
     // Update last ball position
     lastBallPosition = { x: ball.x, y: ball.y };
+
+    // Update AI paddle movement variables based on predicted position
+    upPressedAI = predictedY < paddle2.y;
+    downPressedAI = predictedY > paddle2.y;
+
+    targetY = predictedY;
 }, reactionDelay);
 
-setInterval(() => {
+/* setInterval(() => {
+    // Move the AI paddle
+    if (upPressedAI && paddle2.y > 0) {
+        paddle2.y -= paddle2.dy;
+    } else if (downPressedAI && paddle2.y < canvas.height - paddle2.height) {
+        paddle2.y += paddle2.dy;
+    }
+}, 100); */
+
+/* setInterval(() => {
     // Move the paddle smoothly towards the predicted position
     if (predictedY < paddle2.y) {
         paddle2.y -= paddle2.dy;
     } else if (predictedY > paddle2.y) {
         paddle2.y += paddle2.dy;
     }
-}, reactionDelay);
+}, reactionDelay); */

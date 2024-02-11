@@ -35,6 +35,12 @@ class UserProfileForm(UserCreationForm):
             raise forms.ValidationError('Use 42 login')
         return email
     
+    def clean_username(self):
+        username = self.cleaned_data.get("username")
+        if not username.isascii():
+            raise forms.ValidationError("Username cannot contain non-ASCII characters.")
+        return username
+
 class SocialForm(forms.ModelForm):
     stackoverflow = forms.CharField(label='Stackoverflow', widget=forms.TextInput(attrs={'class': 'form-control'}), required=False)
     twitter = forms.CharField(label='Twitter', widget=forms.TextInput(attrs={'class': 'form-control'}), required=False)
@@ -46,7 +52,8 @@ class SocialForm(forms.ModelForm):
         fields = ['stackoverflow', 'twitter', 'instagram', 'github']
 
 class DeleteAccountForm(forms.Form):
-    password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control'}), help_text="Enter your password to confirm account deletion.")
+    #password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control'}), help_text="Enter your password to confirm account deletion.")
+    email = forms.EmailField(label='Email', widget=forms.EmailInput(attrs={'class': 'form-control'}), help_text="Enter your email to confirm account deletion.")
 
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user')
@@ -54,10 +61,9 @@ class DeleteAccountForm(forms.Form):
 
     def clean(self):
         cleaned_data = super().clean()
-        password = cleaned_data.get('password')
-        if not self.user.is_42student:
-            if not self.user.check_password(password):
-                raise forms.ValidationError("Password does not match")
+        email = cleaned_data.get('email')
+        if not self.user.email == email:
+            raise forms.ValidationError("Email does not match")
         return cleaned_data
 
 class AuthenticationUserForm(AuthenticationForm):
@@ -83,24 +89,6 @@ class ProfileAvatarForm(forms.ModelForm):
     class Meta:
         model = UserProfile
         fields = ['avatar']
-
-""" class UpdateProfileForm(forms.ModelForm):
-    username = forms.CharField(label='Username', widget=forms.TextInput(attrs={'class': 'input'}))
-    displayname = forms.CharField(label='Displayname', widget=forms.TextInput(attrs={'class': 'input'}))
-    email = forms.EmailField(label='Email', widget=forms.EmailInput(attrs={'class': 'input'}))
-    avatar = forms.ImageField(required=False ,label='Avatar', widget=forms.FileInput(attrs={'class': 'input'}))
-    class Meta:
-        model = UserProfile
-        fields = ['username', 'displayname', 'email', 'avatar'] """
-
-""" class UpdateSocialProfileForm(UserChangeForm):
-    stackoverflow = forms.CharField(label='Stackoverflow', widget=forms.TextInput(attrs={'class': 'input'}))
-    github = forms.CharField(label='Github', widget=forms.TextInput(attrs={'class': 'input'}))
-    linkedin = forms.CharField(label='Linkedin', widget=forms.TextInput(attrs={'class': 'input'}))
-    twitter = forms.CharField(label='Twitter', widget=forms.TextInput(attrs={'class': 'input'}))
-    class Meta:
-        model = UserProfile
-        fields = ['stackoverflow', 'github', 'linkedin', 'twitter'] """
 
 class PasswordChangeUserForm(PasswordChangeForm):
     old_password = forms.CharField(label='Old Password', widget=forms.PasswordInput(attrs={'class': 'form-control'}))

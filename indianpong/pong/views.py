@@ -7,6 +7,7 @@ from django.contrib import messages
 from django.http import HttpResponseBadRequest
 from django.http import HttpResponseRedirect
 
+
 from .forms import (
     BlockUserForm,
     ChatMessageForm,
@@ -41,7 +42,7 @@ from .models import (
     Room,
     Message,
 )
-from .utils import pass2fa
+from .utils import delete_from_media, pass2fa
 from os import environ
 from datetime import datetime, timedelta
 from django.utils.http import urlsafe_base64_decode
@@ -283,7 +284,6 @@ def pong_game_find(request):
 
 
 ### Profile Settings ###
-@never_cache
 @login_required(login_url="login")
 def profile_settings(request, username):
     if request.user.username != username:
@@ -301,9 +301,7 @@ def profile_settings(request, username):
             if avatar_form.is_valid():
                 # Delete old avatar file from MEDIA_ROOT
                 if profile.avatar:
-                    old_avatar_path = profile.avatar.path
-                    if os.path.isfile(old_avatar_path):
-                        os.remove(old_avatar_path)
+                    delete_from_media(profile.avatar.path)
                 profile.avatar = avatar_form.cleaned_data["avatar"]
                 profile.save()
                 messages.success(request, "Avatar updated successfully.")
@@ -329,6 +327,8 @@ def profile_settings(request, username):
                 return redirect(reverse('profile_settings', args=[username]) + '#addSocial')
         elif "delete_account_form" in request.POST:
             if delete_account_form.is_valid():
+                if profile.avatar:
+                    delete_from_media(profile.avatar.path)
                 profile.delete()
                 return redirect('logout')
     else:
@@ -467,13 +467,14 @@ def store(request, username):
 def search(request):
     if request.method == "POST":
         search_query = request.POST.get("search_query", "")
-        if len(search_query) >= 3:
-                results = UserProfile.objects.filter(
-                    Q(username__icontains=search_query)
-                    | Q(displayname__icontains=search_query)
-                    | Q(email__icontains=search_query)
+        if search_query:
+            search_query_email = search_query.split("@")[0]
+            results = UserProfile.objects.filter(
+                Q(username__icontains=search_query)
+                | Q(displayname__icontains=search_query)
+                | Q(email__icontains=search_query_email)
                 )
-        return render(request, "search.html", {"results": results})     
+            return render(request, "search.html", {"results": results})     
     return render(request, "search.html")
 
 
@@ -485,10 +486,9 @@ def game(request):
 def play_ai(request):
     user_item = UserItem.objects.filter(
                     user=request.user,
-                    item__name="My Beatiful AI"
+                    item__name="My Beautiful AI"
                 ).first()
-    
-    ainametag = user_item.whatis and user_item.whatis or "AI"
+    ainametag = user_item and user_item.whatis or "AI"
     return render(request, "play-ai.html", {"ainametag": ainametag})
 
 

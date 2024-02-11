@@ -136,5 +136,37 @@
               }
               
           });
+
+
+function showToast(content, status, iconClass) {
+    const liveToast = document.getElementById('liveToast');
+    var toastContent = document.querySelector('#liveToast .fw-semibold');
+    var toastIcon = document.querySelector('.toast-body .i-class i');
+
+    toastIcon.className = iconClass;
+    liveToast.classList.remove('text-bg-danger'); 
+    liveToast.className = 'toast'; 
+    liveToast.classList.add(status);
+
+    toastContent.textContent = content;
+    const toast = new bootstrap.Toast(liveToast);
+    toast.show();
+    setTimeout(function() {
+        toast.hide();
+    }, 8000);
+}
+
+const fileInput = document.getElementById('id_avatar');
+fileInput.addEventListener('change', function(event) {
+
+  var file = this.files[0];
+    if (file.size > 2.6 * 1024 * 1024) { // 1MB
+        showToast("Photo must be under 2.6MB!", "text-bg-danger", "bi bi-image");
+        this.value = '';
+    }
+    else {
+        showToast("Photo added!", "text-bg-success", "bi bi-image");
+    }
+});
 </script>
 {% endblock %}

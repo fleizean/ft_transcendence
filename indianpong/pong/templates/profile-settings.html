@@ -76,11 +76,12 @@
 
                             <!-- Email textbox -->
                             <div class="mb-3">
-                                <label class="small mb-1" for="id_email">Email</label>
+                                <label class="small mb-1" for="id_email">Email</label> 
                                 <input class="form-control" id="id_email" name="email" maxlength="320" value="{{profile.email}}" required
-                                    placeholder="{{profile.email}}" type="email">
+                                    placeholder="{{profile.email}}" type="email" {% if profile.is_42student %} readonly style="background-color:#e9ecef" {% endif %}>
+                                {% if profile.is_42student %} <p style="color:red; font-style: italic;">Since you are logged in with 42, your email setting feature is disabled.</p> {% endif %}
                             </div>
-
+                            
                             <!-- Displayname textbox -->
                             <div class="mb-3">                           
                                     <label class="small mb-1" for="id_displayname">Displayname</label>
@@ -95,56 +96,16 @@
 
                 <!-- Change Password Section -->
                 <section id="changePassword">
-                    {% if profile.is_42student %}
-                    
-                    <label class="small mb-1" style="font-weight:bold;">                                
-                        Since you are logged in with 42, your password setting feature is disabled.
-                    </label>
-                    <div class="mb-3 position-relative">
-                        <label class="small mb-1" for="id_old_password">Current Password</label>
-                        <div class="input-group">
-                            <input class="form-control" name="old_password" id="id_old_password" type="password" disabled>
-                            <button class="btn btn-outline-secondary" type="button"
-                                onclick="togglePasswordVisibility('currentPassword')">
-                                <i class="bi bi-eye"></i>
-                            </button>
-                        </div>
-                    </div>
-
-                    <div class="mb-3 position-relative">
-                        <label class="small mb-1" for="id_new_password1">New Password</label>
-                        <div class="input-group">
-                            <input class="form-control" id="id_new_password1" name="new_password1" type="password" disabled>
-                            <button class="btn btn-outline-secondary" type="button"
-                                onclick="togglePasswordVisibility('newPassword')" disabled>
-                                <i class="bi bi-eye"></i>
-                            </button>
-                        </div>
-                    </div>
-
-                    <div class="mb-3 position-relative">
-                        <label class="small mb-1" for="id_new_password2">Confirm New Password</label>
-                        <div class="input-group">
-                            <input class="form-control" id="id_new_password2" name="new_password2" type="password" disabled>
-                            <button class="btn btn-outline-secondary" type="button"
-                                onclick="togglePasswordVisibility('confirmNewPassword')" disabled>
-                                <i class="bi bi-eye"></i>
-                            </button>
-                        </div>
-                    </div>
-
-                    <button type="submit" name="password_form" class="btn btn-primary" disabled><i class="bi bi-lock-fill"></i> Change
-                        Password</button>
-                    {% else %}
                     <!-- Your code for changing password goes here -->
                     <form id="password_form" name="password_form" enctype="multipart/form-data" method="post">
                         {% csrf_token %}
                         <div class="mb-3 position-relative">
                             <label class="small mb-1" for="id_old_password">Current Password</label>
                             <div class="input-group">
-                                <input class="form-control" name="old_password" id="id_old_password" type="password" required>
+                                <input class="form-control" name="old_password" id="id_old_password" type="password" autocomplete="off" required {% if profile.is_42student %} readonly style="background-color: #e9ecef"  {% endif %}>
+                                
                                 <button class="btn btn-outline-secondary" type="button"
-                                    onclick="togglePasswordVisibility('currentPassword')">
+                                    onclick="togglePasswordVisibility('currentPassword')" {% if profile.is_42student %} readonly {% endif %}>
                                     <i class="bi bi-eye"></i>
                                 </button>
                             </div>
@@ -153,9 +114,9 @@
                         <div class="mb-3 position-relative">
                             <label class="small mb-1" for="id_new_password1">New Password</label>
                             <div class="input-group">
-                                <input class="form-control" id="id_new_password1" name="new_password1" type="password" required>
+                                <input class="form-control" id="id_new_password1" name="new_password1" type="password" autocomplete="off" required {% if profile.is_42student %} readonly style="background-color: #e9ecef"  {% endif %}>
                                 <button class="btn btn-outline-secondary" type="button"
-                                    onclick="togglePasswordVisibility('newPassword')">
+                                    onclick="togglePasswordVisibility('newPassword')" {% if profile.is_42student %} readonly {% endif %}>
                                     <i class="bi bi-eye"></i>
                                 </button>
                             </div>
@@ -164,18 +125,19 @@
                         <div class="mb-3 position-relative">
                             <label class="small mb-1" for="id_new_password2">Confirm New Password</label>
                             <div class="input-group">
-                                <input class="form-control" id="id_new_password2" name="new_password2" type="password" required>
+                                <input class="form-control" id="id_new_password2" name="new_password2" type="password" autocomplete="off" required {% if profile.is_42student %} readonly style="background-color: #e9ecef"  {% endif %}>
                                 <button class="btn btn-outline-secondary" type="button"
-                                    onclick="togglePasswordVisibility('confirmNewPassword')">
+                                    onclick="togglePasswordVisibility('confirmNewPassword')" {% if profile.is_42student %} readonly {% endif %}>
                                     <i class="bi bi-eye"></i>
                                 </button>
                             </div>
                         </div>
-
+                        {% if profile.is_42student %} <label class="small mb-1" style="color:red; font-style: italic;">                                
+                        Since you are logged in with 42, your password setting feature is disabled.
+                        </label> <br> {% endif %}
                         <button type="submit" name="password_form" class="btn btn-primary"><i class="bi bi-lock-fill"></i> Change
                             Password</button>
                     </form>
-                    {% endif %}
                 </section>
 
                 <section id="addSocial">
@@ -231,23 +193,7 @@
                 <section id="closeAccount">
                     <form id="delete_account_form" name="delete_account_form" enctype="multipart/form-data" method="post">
                         {% csrf_token %}
-                        {% if not profile.is_42student %}
-                            <p style="font-weight:500; word-wrap: break-word;">
-                                Hello, we're sorry to see you leave the IndianPong community, but we respect your decision.
-                                After clicking
-                                the 'Delete Account' button, you will be separated from us, so please think carefully, as
-                                there will be no turning back. Anyway, see you around!
-                            </p>
-                            {{ delete_account_form.as_p }}
-                        {% else %}
-                            <p style="font-weight:bold;">
-                                Hello, we're sorry to see you leave the IndianPong community, but we respect your decision.
-                                After clicking
-                                the 'Delete Account' button, you will be separated from us, so please think carefully, as
-                                there will be no turning back. Anyway, see you around!
-                            </p>
-                            
-                        {% endif %}
+                        {{ delete_account_form.as_p }}
                         <button type="submit" name="delete_account_form" class="btn btn-danger">
                             <i class="bi bi-trash-fill"></i> Delete Account
                         </button>
@@ -301,6 +247,19 @@
                 </section>
             </div>
         </div>
+    <div class="toast-container position-fixed bottom-0 end-0 p-6" style="margin-right: 20px; margin-bottom: 20px">
+      <div class="toast text-bg-danger" id="liveToast" role="alert">
+          <div class="toast-body">
+              <div class="d-flex gap-4">
+                  <span class="i-class"><i class="bi bi-image"></i></span>
+                  <div class="d-flex flex-grow-1 align-items-center">
+                      <span class="fw-semibold"></span>
+                      <span class="toast-close" data-bs-dismiss="toast"><i class="bi bi-x-circle-fill"></i></span>
+                  </div>
+              </div>
+          </div>
+      </div>
+    </div>
     </div>
 </div>
 <script>
@@ -335,19 +294,44 @@ window.onload = function() {
     displaySection(currentFragment);
 };
 
+function showToast(content, status, iconClass) {
+    const liveToast = document.getElementById('liveToast');
+    var toastContent = document.querySelector('#liveToast .fw-semibold');
+    var toastIcon = document.querySelector('.toast-body .i-class i');
+
+    toastIcon.className = iconClass;
+    liveToast.classList.remove('text-bg-danger'); 
+    liveToast.className = 'toast'; 
+    liveToast.classList.add(status);
+
+    toastContent.textContent = content;
+    const toast = new bootstrap.Toast(liveToast);
+    toast.show();
+    setTimeout(function() {
+        toast.hide();
+    }, 8000);
+}
+
 const fileInput = document.getElementById('id_avatar');
 fileInput.addEventListener('change', function(event) {
-    const form = document.getElementById('avatar_form');
-    
-    // Form alanına form_name değerini ekleyelim
-    const hiddenInput = document.createElement('input');
-    hiddenInput.type = 'hidden';
-    hiddenInput.name = 'avatar_form'; // Bu, form_name değeridir
-    hiddenInput.value = 'avatar_form';
-    form.appendChild(hiddenInput);
-    
-    // Formu submit et
-    form.submit();
+    var file = this.files[0];
+    if (file.size > 2.6 * 1024 * 1024) { // 1MB
+        showToast("Photo must be under 2.6MB!", "text-bg-danger", "bi bi-image");
+    }
+    else {
+        const form = document.getElementById('avatar_form');
+        
+        // Form alanına form_name değerini ekleyelim
+        const hiddenInput = document.createElement('input');
+        hiddenInput.type = 'hidden';
+        hiddenInput.name = 'avatar_form'; // Bu, form_name değeridir
+        hiddenInput.value = 'avatar_form';
+        showToast("Changing the photo!", "text-bg-success", "bi bi-image")
+        form.appendChild(hiddenInput);
+        
+        // Formu submit et
+        form.submit();
+    }
 });
 
 </script>

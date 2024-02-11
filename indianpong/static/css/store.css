@@ -27,7 +27,6 @@
 .store-list {
   margin-top: 0.5em;
   min-height: 100vh;
-  gap: 10px;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -89,16 +88,14 @@
   background: #FFF;
   border-radius: 20px;
   padding: 10px;
+  margin-right: 10px;
+  margin-bottom: 10px;
   font-family: sans-serif;
   display: flex;
   color: #000;
   flex-direction: column;
   align-items: flex-start;
   transition: transform 0.3s, background 0.3s;
-}
-
-.product-card:nth-child(n+6) {
-  margin-top: -6em; /* veya istediğiniz değeri belirleyin */
 }
 
 .product-card:hover {

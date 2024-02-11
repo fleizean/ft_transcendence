@@ -48,14 +48,12 @@
 .card-containers {
   display: flex;
   flex-wrap: wrap; /* Kartların yan yana sığması için */
-  gap: 20px; /* Kartlar arasındaki boşluk */
 }
 
 .profile-card {
   display: flex;
   flex-direction: column;
   align-items: center;
-  
   max-width: 300px;
   width: 100%;
   background: #fff;
@@ -63,8 +61,6 @@
   padding: 25px;
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
   position: relative;
-  margin-left: 10px;
-  margin-right: 10px;
 }
 
 .profile-card::before {

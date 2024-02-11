@@ -13,7 +13,7 @@
         <!-- Arama kutusu ve butonu -->
         <form action="{% url 'search' %}" method="POST">
             <div class="search-container">
-                <input type="text" name="search_query" placeholder="Email or Username Search..." class="search-input" autocomplete="off" data-lpignore="true">
+                <input type="text" name="search_query" placeholder="Email or Username or Displayname Search..." class="search-input" autocomplete="off" data-lpignore="true">
                 <button class="search-button" type="submit"><i class="bi bi-search"></i></button>
             </div>
         </form>
@@ -22,14 +22,13 @@
         <!-- Arama sonuçları -->
         {% if results %}
             {% for kullanici in results %}
-            
               <div class="card-containers">
                 <div class="profile-card">
                     <div class="image">
                         {% if kullanici.avatar %}
-                            <img src="{{kullanici.avatar.url}}" alt="" class="profile-img" />
+                            <a href="profile/{{kullanici.username}}"><img src="{{kullanici.avatar.url}}" alt="" class="profile-img" /></a>
                         {% else %}
-                            <img src="/static/assets/profile/profilephoto.jpeg" alt="" class="profile-img" />
+                            <a href="profile/{{kullanici.username}}"><img src="/static/assets/profile/profilephoto.jpeg" alt="" class="profile-img" /></a>
                         {% endif %}
                     </div>
                     <div class="text-data">
@@ -37,20 +36,20 @@
                       <span class="job">{{kullanici.displayname}}</span>
                     </div>
                     <div class="media-buttons">
-                      {% if kullanici.stackoverflow %}
-                        <a href="{{kullanici.stackoverflow}}" class="medialinks stackoverflow"><i class="bi bi-stack-overflow"></i></a>
+                      {% if kullanici.social.stackoverflow %}
+                        <a href="https://stackoverflow.com/users/{{kullanici.social.stackoverflow}}" target="_blank" class="medialinks stackoverflow"><i class="bi bi-stack-overflow"></i></a>
                       {% endif %}
-                      {% if kullanici.twitter %}
-                        <a href="{{kullanici.twitter}}" class="medialinks twitter"><i class="bi bi-twitter"></i></a>
+                      {% if kullanici.social.github %}
+                        <a href="https://github.com/{{kullanici.social.github}}" target="_blank" class="medialinks github"><i class="bi bi-github"></i></a>
                       {% endif %}
-                      {% if kullanici.github %}
-                        <a href="{{kullanici.github}}" class="medialinks github"><i class="bi bi-github"></i></a>
+                      {% if kullanici.social.twitter %}
+                        <a href="https://x.com/{{kullanici.social.twitter}}" target="_blank" class="medialinks twitter"><i class="bi bi-twitter"></i></a>
                       {% endif %}
-                      {% if kullanici.instagram %}
-                        <a href="{{kullanici.instagram}}" class="medialinks instagram"><i class="bi bi-instagram"></i></a>
+                      {% if kullanici.social.instagram %}
+                        <a href="https://www.instagram.com/{{kullanici.social.instagram}}" target="_blank" class="medialinks instagram"><i class="bi bi-instagram"></i></a>
                       {% endif %}
                     </div>
-                    {% if not kullanici.stackoverflow and not kullanici.twitter and not kullanici.github and not kullanici.instagram %}
+                    {% if not kullanici.social.stackoverflow and not kullanici.social.twitter and not kullanici.social.github and not kullanici.social.instagram %}
                       <div class="buttons" style="margin-top: 60px !important;">
                         <button class="button-follow">Follow</button>
                         <button class="button-message">Message</button>

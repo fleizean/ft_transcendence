@@ -34,12 +34,13 @@ class UserProfile(AbstractUser):
     email = models.EmailField(unique=True, max_length=254)
     avatar = models.ImageField(upload_to=get_upload_to, null=True, blank=True)
     friends = models.ManyToManyField('self', symmetrical=False, blank=True)
-    social = models.OneToOneField('Social', on_delete=models.CASCADE, null=True, blank=True)
+    social = models.OneToOneField('Social', on_delete=models.SET_NULL, null=True, blank=True)
     #channel_name = models.CharField(max_length=100, blank=True, null=True)
     wins = models.IntegerField(default=0)
     losses = models.IntegerField(default=0)
     is_verified = models.BooleanField(default=False)
     is_42student = models.BooleanField(default=False)
+    store_items = models.ManyToManyField(StoreItem, through='UserItem', blank=True)
     pong_wallet = models.IntegerField(blank=True, null=True, default=0)
 
 
