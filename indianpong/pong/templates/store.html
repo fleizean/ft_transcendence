@@ -10,97 +10,76 @@
   {% include "_nav.html" %}
   <div class="container-top">
     <div class="store-card">
-      <div class="modal fade" id="setPropertyModal" tabindex="-1" aria-labelledby="setPropertyModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="setPropertyModalLabel">Özelliği Ayarla</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-              <!-- Buraya özelliklerin ayarlanacağı form elemanlarını ekleyebilirsiniz -->
-              <!-- Örneğin: -->
-              <label for="propertyName">Özellik Adı:</label>
-              <input type="text" id="propertyName" name="propertyName">
-              <!-- Diğer gerekli alanlar buraya gelebilir -->
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
-              <button type="button" class="btn btn-primary">Kaydet</button>
-            </div>
-          </div>
-        </div>
-      </div>
+      
        <div class="top-store">
         <div class="store-left">
           <h3>{{username}} / Store</h3>
         </div>
         <div class="store-mid">
           <div class="category-field">
-            <h5><a href="?category_name=All">#All</a></h5>
+            <h5 class="category-text"><a href="?category_name=All">#All</a></h5>
           </div>
           <div class="category-field">
-            <h5><a href="?category_name=Pong">#Pong</a></h5>
+            <h5 class="category-text"><a href="?category_name=Pong">#Pong</a></h5>
           </div>
           <div class="category-field">
-            <h5><a href="?category_name=RPS">#RPS</a></h5>
+            <h5 class="category-text"><a href="?category_name=RPS">#RPS</a></h5>
+          </div>
+        </div>
+        <div class="store-mid-right">
+          <div class="store-inventory-field">
+            <h5 class="inventory-text"><a href="/inventory/{{username}}"><i class="bi bi-backpack2-fill"></i></a></h5>
           </div>
         </div>
         <div class="top-store-card">
           <div class="store-right">
-           
                 <i class="bi bi-piggy-bank-fill flip-horizontal"></i> 
-                <span class="small-wallet-name">Wallet:</span>
-                <span class="wallet-amount">{{profile.pong_wallet}}P₩</span>
-               
-            
+                <div class="store-text-fields">
+                  <span class="small-wallet-name">Wallet:</span>
+                  <span class="wallet-amount">{{profile.indian_wallet}}N₩</span>
+                </div>
           </div>
         </div>
       </div>
       
       <div class="store-info">
-        <span class="tooltiptext">Oyun oynayarak <span style="font-weight: bold;">P₩</span> kazanabilirsin.</span>
+        <span class="tooltiptext">Oyun oynayarak <span style="font-weight: bold;">N₩</span> kazanabilirsin.</span>
       </div>
         <div class="store-list">
 
           
           {% for item in store_items %}
-            {% if item.is_status %}
+            {% if item.show_status %}
               <div class="product-card">
-                
                 <img src="{% static 'assets/stores/'|add:item.image_url %}" alt="" />
                 <h2 class="card__title">{{ item.name }}</h2>
-                <h4 class="card__category"><a href="?category_name={{item.category_name}}">#{{ item.category_name }}</a></h4>
+                <h4 {% if item.category_name == "Pong" %} class="card__category pong" {% elif item.category_name == "RPS" %} class="card__category rps" {% endif %}>
+                  <a href="?category_name={{item.category_name}}">#{{ item.category_name }}</a>
+                </h4>
                 <span class="card__description">{{item.description}}</span>
                 <div class="card__shop">
-                  <span class="card__shop__price">{{item.price}}P₩</span>
-                  {% if item.is_bought %}
-                  <button class="card__shop__action-set" onclick="openSetPropertyModal()">
-                    <i class="bi bi-gear-fill" style="color:white; font-size: 1.1em;"></i>
-                  </button>
-                    <button class="card__shop__action" onclick="showToast('{{item.name}} öğesini şu an kullanıma aldın', 'text-bg-success', 'bi bi-check-circle-fill')" >
-                      <i class="bi bi-backpack-fill" style="color:white; font-size: 1.1em;"></i>
-                    </button>
-                    <button class="card__shop__action-close" onclick="showToast('{{item.name}} öğesini zaten satın aldın', 'text-bg-danger', 'bi bi-info-square-fill')">
-                      <i class="bi bi-bag-heart-fill" style="color:white; font-size: 1.1em;"></i>
-                    </button>
-                    
-                  {% else %}
+                  <span class="card__shop__price">{{item.price}}N₩</span>
+                    <form id="store_item_form{{ item.id }}" method="POST">
+                      {% csrf_token %}
+                      <input type="hidden" name="name" value="{{ item.name }}">
+                      <input type="hidden" name="action" value="buy">
+                      <input type="hidden" name="whatis" value="none">
                       <button class="card__shop__action" 
-                          {% if item.price < profile.pong_wallet %}
-                              onclick="showToast('{{ item.name }} öğesini başarıyla satın aldın.', 'text-bg-success', 'bi bi-check-circle-fill')"
+                          {% if item.price <= profile.indian_wallet %}
+                              onclick="submitStoreItemForm('{{ item.name }}', '{{item.id}}')"
                           {% else %}
-                              onclick="showToast('{{ item.name}} öğesini satın almak için yeterli P₩`ın yok', 'text-bg-danger', 'bi bi-info-square-fill')"
+                              onclick="showToast('{{ item.name}} öğesini satın almak için yeterli N₩`ın yok', 'text-bg-danger', 'bi bi-info-square-fill')"
                           {% endif %}
                       >
+                          <i class="bi bi-bag-heart-fill" style="color:white; font-size: 1.1em;"></i>
+                      </button>
+                    </form>
                       <i class="bi bi-bag-heart-fill" style="color:white; font-size: 1.1em;"></i>
                     </button>
-                  {% endif %}
                 </div>
               </div>
             {% endif %}
-          {% endfor %}
-
+            {% endfor %}
 
           
         </div>
@@ -138,8 +117,15 @@ function showToast(content, status, iconClass) {
     }, 8000);
 }
 
+function submitStoreItemForm(itemName, formId) {
+    const form = document.getElementById('store_item_form' + formId);
+    showToast(`${itemName} öğesini başarıyla satın aldın!`, `text-bg-success`, `bi bi-shop`);
+    form.submit();
+}
+
+
 document.addEventListener('DOMContentLoaded', (event) => {
-  const storeInfos = document.getElementsByClassName('store-info'); // .store-info'ya erişim
+    const storeInfos = document.getElementsByClassName('store-info'); // .store-info'ya erişim
     const smallWalletNames = document.getElementsByClassName('small-wallet-name');
 
     for (let i = 0; i < smallWalletNames.length; i++) {
@@ -151,16 +137,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
             storeInfos[i].style.visibility = 'hidden';
         });
     }});
-
-    function openSetPropertyModal() {
-      var myModal = new bootstrap.Modal(document.getElementById('setPropertyModal'));
-      myModal.show();
-      // modal-backdrop öğesini kaldır
-      var modalBackdrop = document.querySelector('.modal-backdrop');
-      if (modalBackdrop) {
-        modalBackdrop.parentNode.removeChild(modalBackdrop);
-      }
-    }
     
 </script>
 {% endblock app %}

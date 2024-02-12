@@ -6,6 +6,7 @@ canvas.width = 800;
 canvas.height = 600;
 //document.body.appendChild(canvas);
 
+
 const username = document.querySelector('.container-top').dataset.username;
 const ainame = document.querySelector('.container-top').dataset.ainame;
 
@@ -62,8 +63,8 @@ function update() {
     if (ball.y + ball.radius > paddle1.y && ball.y - ball.radius < paddle1.y + paddle1.height && ball.dx < 0) {
         if (ball.x - ball.radius < paddle1.x + paddle1.width) {
             ball.dx *= -1;
-            // Check if the ball hit the top or bottom 10% of the paddle
-            if (ball.y < paddle1.y + 0.1 * paddle1.height || ball.y > paddle1.y + 0.9 * paddle1.height) {
+            // Check if the ball hit the top or bottom 20% of the paddle
+            if (ball.y < paddle1.y + 0.2 * paddle1.height || ball.y > paddle1.y + 0.8 * paddle1.height) {
                 ball.speed *= 1.2; // Increase speed by 20%
                 paddleSpeed *= 1.2;
             }
@@ -72,8 +73,8 @@ function update() {
     if (ball.y + ball.radius > paddle2.y && ball.y - ball.radius < paddle2.y + paddle2.height && ball.dx > 0) {
         if (ball.x + ball.radius > paddle2.x) {
             ball.dx *= -1;
-            // Check if the ball hit the top or bottom 10% of the paddle
-            if (ball.y < paddle2.y + 0.1 * paddle2.height || ball.y > paddle2.y + 0.9 * paddle2.height) {
+            // Check if the ball hit the top or bottom 20% of the paddle
+            if (ball.y < paddle2.y + 0.2 * paddle2.height || ball.y > paddle2.y + 0.8 * paddle2.height) {
                 ball.speed *= 1.2; // Increase speed by 20%
                 paddleSpeed *= 1.2;
             }
@@ -98,8 +99,10 @@ function update() {
     if (score1 == MAX_SCORE || score2 == MAX_SCORE) {
         if (score1 == MAX_SCORE) {
             alert(username + " wins!");
+            sendWinnerToBackend(username, ainame, score1, score2)
         } else {
             alert(ainame + " wins!");
+            sendWinnerToBackend(ainame, username, score2, score1)
         }
         score1 = 0;
         score2 = 0;
@@ -183,25 +186,22 @@ requestAnimationFrame = w.requestAnimationFrame || w.webkitRequestAnimationFrame
 // Let's play this game!
 main();
 
+
+
 // Reset the ball to the center
 function resetBall() {
-    isPaused = true; // Pause the game
     isScored = true;
+    isPaused = true;
     ball.speed = 5;
     paddleSpeed = 14;
     ball.dx = -ball.dx;
     ball.dy = -ball.dy;
-    setTimeout(function() {
+    setTimeout(() => {     
         ball.x = canvas.width / 2;
         ball.y = canvas.height / 2;
-        isPaused = false; // Unpause the game
-    }, 500); // Wait for 0.5 second
-
-    isPaused = true; // Pause the game
-    setTimeout(function() {
+        isPaused = false;
         isScored = false;
-        isPaused = false; // Unpause the game
-    }, 1000); // Wait for 1 seconds
+    }, 500);
 }
 
 // Control paddle1 with w, s keys
@@ -314,3 +314,36 @@ setInterval(() => {
         paddle2.y += paddle2.dy;
     }
 }, reactionDelay); */
+
+function sendWinnerToBackend(winner, loser, winnerscore, loserscore, current_time) {
+    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    var current_time = new Date();
+    const data = {
+        winner: winner,
+        loser: loser,
+        winnerscore: winnerscore,
+        loserscore: loserscore,
+        current_time: current_time
+    };
+
+    fetch('update_winner', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': csrfToken,
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log('Winner updated successfully:', data);
+    })
+    .catch(error => {
+        console.error('There was a problem updating the winner:', error);
+    });
+}

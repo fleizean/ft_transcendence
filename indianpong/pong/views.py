@@ -18,6 +18,7 @@ from .forms import (
     ProfileAvatarForm,
     SetPasswordUserForm,
     SocialForm,
+    StoreItemActionForm,
     UserProfileForm,
     UpdateUserProfileForm,
     TwoFactorAuthSetupForm,
@@ -55,10 +56,12 @@ from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.auth import get_user_model
+from django.http import JsonResponse
 from django.db.models import Q
 from django.contrib.auth import update_session_auth_hash
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
+import random
 
 
 ### Homepage and Error Page ###
@@ -69,7 +72,7 @@ def index(request):
         return redirect("dashboard")
     return render(request, "base.html")
 
-@login_required(login_url="login")
+@login_required()
 def aboutus(request):
     return render(request, "aboutus.html")
 
@@ -222,7 +225,7 @@ def login_view(request):
         if form.is_valid():
 
             user = form.get_user()
-            """  if not user.is_verified:
+            """  if not user.is_verified: #TODO confirm_login_allowed make this unnecessary?
                 messages.error(request, "Account not verified")
                 return redirect('login') """
 
@@ -241,7 +244,7 @@ def login_view(request):
 
 
 @never_cache
-@login_required(login_url="login")
+@login_required()
 def logout_view(request):
     logout(request)
     return redirect("login")
@@ -249,14 +252,14 @@ def logout_view(request):
 
 ### Profile ###
 
-""" @login_required(login_url="login")
+""" @login_required()
 def profile(request):
     user = request.user
     return render(request, 'profile.html', {'user': user}) """
 
 
 @never_cache
-@login_required(login_url="login")
+@login_required()
 def profile_view(request, username):
 
     # try:
@@ -271,20 +274,20 @@ def profile_view(request, username):
 
 ## Rps Game ##
 @never_cache
-@login_required(login_url="login")
+@login_required()
 def rps_game_find(request):
     return render(request, "rps-game-find.html")
 
 
 ## Pong Game ##
 @never_cache
-@login_required(login_url="login")
+@login_required()
 def pong_game_find(request):
     return render(request, "pong-game-find.html")
 
 
 ### Profile Settings ###
-@login_required(login_url="login")
+@login_required()
 def profile_settings(request, username):
     if request.user.username != username:
         return redirect(reverse('profile_settings', kwargs={'username': request.user.username}))
@@ -352,7 +355,7 @@ def profile_settings(request, username):
     )
 
 @never_cache
-@login_required(login_url="login")
+@login_required()
 def password_change(request):
     if request.method == "POST":
         form = PasswordChangeUserForm(request.user, request.POST)
@@ -413,7 +416,7 @@ def set_password(request, uidb64, token):
 
 
 """ @never_cache
-@login_required(login_url="login")
+@login_required()
 def password_reset_done(request, uidb64, token):
     if request.method == 'POST':
         form = TokenValidationForm(request.POST)
@@ -426,7 +429,7 @@ def password_reset_done(request, uidb64, token):
     return render(request, 'password_reset_done.html', {'form': form})
 
 @never_cache
-@login_required(login_url="login")
+@login_required()
 def set_password(request, uidb64, token):
     if request.method == 'POST':
         form = SetPasswordUserForm(request.user, request.POST)
@@ -443,32 +446,92 @@ def set_password(request, uidb64, token):
 
 
 @never_cache
-@login_required(login_url="login")
+@login_required()
 def dashboard(request):
     return render(request, "dashboard.html")
 
 
 @never_cache
-@login_required(login_url="login")
+@login_required()
 def rankings(request):
     return render(request, "rankings.html")
 
-@never_cache
-@login_required(login_url="login")
-def store(request, username):
+@login_required()
+def store(request, username): # store_view
     if request.user.username != username:
         return redirect(reverse('store', kwargs={'username': request.user.username})) 
     profile = get_object_or_404(UserProfile, username=username)
-    category_name = request.GET.get('category_name')
-    store_items = StoreItem.objects.all()
-    if category_name and category_name != "All":  
-        store_items = store_items.filter(category_name=category_name)
+    bought_items = UserItem.objects.filter(user=profile, is_bought=True).values_list('item', flat=True)
+    store_items = StoreItem.objects.exclude(id__in=bought_items)
+    if request.method == 'POST':
+        form = StoreItemActionForm(request.POST)
+        if form.is_valid():
+            name = form.cleaned_data['name']
+            action = form.cleaned_data['action']
+            whatis = form.cleaned_data['whatis']
+            if action == 'buy':
+                if UserItem.objects.filter(user=profile, item__name=name).exists():
+                    messages.error(request, "Bu öğeyi zaten satın aldınız.")
+                # Check if the user can afford the item, then create a new Purchase object
+                else:
+                    item = StoreItem.objects.get(name=name)
+                    if item.price <= profile.indian_wallet:
+                        profile.indian_wallet -= item.price
+                        user_item = UserItem.objects.create(user=profile, item=item, whatis=whatis, is_bought=True)
+                        profile.store_items.add(user_item.item)
+                        profile.save()
+                    else:
+                        messages.error(request, "You don't have enough Indian Wallet to buy this item.")
+            
     else:
-        store_items = store_items.all()
-    return render(request, "store.html" , {"store_items": store_items, "profile": profile})
+        # category areas
+        form = StoreItemActionForm()
+        category_name = request.GET.get('category_name')
+        if category_name and category_name != "All":  
+            store_items = store_items.filter(category_name=category_name)
+    return render(request, "store.html" , {"store_items": store_items, "profile": profile, "form": form})
+
+@never_cache
+@login_required
+def inventory(request, username):
+    if request.user.username != username:
+        return redirect(reverse('store', kwargs={'username': request.user.username})) 
+    profile = get_object_or_404(UserProfile, username=username)
+    inventory_items = UserItem.objects.filter(user=profile).all()
+    
+    if request.method == "POST":
+        form = StoreItemActionForm(request.POST)
+        if form.is_valid():
+            name = form.cleaned_data['name']
+            action = form.cleaned_data['action']
+            whatis = form.cleaned_data['whatis']
+            print(name + " " + action + " " + whatis)
+            if action == 'equip':
+                # Check if the user has the item
+                user_item = UserItem.objects.filter(user=profile, item__name=name).first()
+                # Set the user's item to equipped
+                if user_item:
+                    user_item.is_equipped ^= True
+                    user_item.save()
+            elif action == 'customize':
+                # Check if the user has the item
+                print(name + " " + action + " " + whatis)
+                user_item = UserItem.objects.filter(user=profile, item__name=name).first()
+                # Change user's equipped_item with the given name
+                if user_item:
+                    user_item.whatis = whatis
+                    user_item.save()
+    else:
+        # category areas
+        form = StoreItemActionForm()
+        category_name = request.GET.get('category_name')
+
+        if category_name and category_name != "All":  
+            inventory_items = UserItem.objects.filter(item__category_name=category_name, user=profile)
+    return render(request, "inventory.html", {"profile": profile, "inventory_items": inventory_items})
 
 @csrf_exempt
-@login_required(login_url="login")
+@login_required()
 def search(request):
     if request.method == "POST":
         search_query = request.POST.get("search_query", "")
@@ -483,11 +546,11 @@ def search(request):
     return render(request, "search.html")
 
 
-@login_required(login_url="login")
+@login_required()
 def game(request):
     return render(request, "game.html")
 
-@login_required(login_url="login")
+@login_required()
 def play_ai(request):
     user_item = UserItem.objects.filter(
                     user=request.user,
@@ -498,25 +561,25 @@ def play_ai(request):
 
 
 @never_cache
-@login_required(login_url="login")
+@login_required()
 def chat(request):
     users = UserProfile.objects.all().exclude(username=request.user)
     return render(request, "chat.html", {"users": users})
 
 
-@login_required(login_url="login")
+@login_required()
 def aboutus(request):
     return render(request, "aboutus.html")
 
 
-@login_required(login_url="login")
+@login_required()
 def friends(request, profile):
     profile = get_object_or_404(UserProfile, username=profile)
     friends = profile.friends.all()
     return render(request, "friends.html", {"friends": friends, "profile": profile})
 
 
-@login_required(login_url="login")
+@login_required()
 def match_history(request, profile):
     profile = get_object_or_404(UserProfile, username=profile)
 
@@ -524,7 +587,7 @@ def match_history(request, profile):
 
 
 ### New Chat ###
-@login_required(login_url="login")
+@login_required()
 def room(request, room_name):
     users = UserProfile.objects.all().exclude(username=request.user)
     room = Room.objects.get(id=room_name)
@@ -541,7 +604,7 @@ def room(request, room_name):
     )
 
 
-@login_required(login_url="login")
+@login_required()
 def start_chat(request, username):
     second_user = UserProfile.objects.get(username=username)
     try:
@@ -558,7 +621,7 @@ def start_chat(request, username):
 
 
 @never_cache
-@login_required(login_url="login")
+@login_required()
 def chat_room(request):
     messages_sent = ChatMessage.objects.filter(sender=request.user)
     messages_received = ChatMessage.objects.filter(receiver=request.user)
@@ -567,7 +630,7 @@ def chat_room(request):
 
 
 @never_cache
-@login_required(login_url="login")
+@login_required()
 def send_message(request, receiver_id):
     receiver = UserProfile.objects.get(id=receiver_id)
     if request.method == "POST":
@@ -586,7 +649,7 @@ def send_message(request, receiver_id):
 
 
 @never_cache
-@login_required(login_url="login")
+@login_required()
 def block_user(request):
     if request.method == "POST":
         form = BlockUserForm(request.POST)
@@ -608,7 +671,7 @@ def block_user(request):
 
 
 @never_cache
-@login_required(login_url="login")
+@login_required()
 def unblock_user(request, blocked_user_id):
     blocked_user = UserProfile.objects.get(id=blocked_user_id)
     BlockedUser.objects.filter(user=request.user, blocked_user=blocked_user).delete()
@@ -617,7 +680,7 @@ def unblock_user(request, blocked_user_id):
 
 
 @never_cache
-@login_required(login_url="login")
+@login_required()
 def invite_to_game(request, invited_user_id):
     invited_user = UserProfile.objects.get(id=invited_user_id)
     if request.method == "POST":
@@ -638,7 +701,7 @@ def invite_to_game(request, invited_user_id):
 
 
 @never_cache
-@login_required(login_url="login")
+@login_required()
 def game_warning(request, opponent_id):
     opponent = UserProfile.objects.get(id=opponent_id)
     GameWarning.objects.create(user=request.user, opponent=opponent)
@@ -650,7 +713,7 @@ def game_warning(request, opponent_id):
 
 
 @never_cache
-@login_required(login_url="login")
+@login_required()
 def create_tournament(request):
     if request.method == "POST":
         form = TournamentForm(request.POST)
@@ -666,7 +729,7 @@ def create_tournament(request):
 
 
 @never_cache
-@login_required(login_url="login")
+@login_required()
 def create_tournament_match(request):
     if request.method == "POST":
         form = TournamentMatchForm(request.POST)
@@ -686,7 +749,7 @@ def create_tournament_match(request):
 
 
 @never_cache
-@login_required(login_url="login")
+@login_required()
 def setup_two_factor_auth(request):
     if request.method == "POST":
         form = TwoFactorAuthSetupForm(request.POST, instance=request.user.twofactorauth)
@@ -701,7 +764,7 @@ def setup_two_factor_auth(request):
 
 
 @never_cache
-@login_required(login_url="login")
+@login_required()
 def generate_jwt_token(request):
     if request.method == "POST":
         form = JWTTokenForm(request.POST, instance=request.user.jwttoken)
@@ -712,3 +775,35 @@ def generate_jwt_token(request):
     else:
         form = JWTTokenForm(instance=request.user.jwttoken)
     return render(request, "generate_jwt_token.html", {"form": form})
+
+
+# Game logics #
+
+@csrf_exempt
+def update_winner(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        winner = data.get('winner')
+        loser = data.get('loser')
+        winnerscore = data.get('winnerscore')
+        loserscore = data.get('loserscore')
+        current_time = data.get('current_time')
+        if winner == request.user.username:
+            winner_profile = UserProfile.objects.get(username=request.user.username)
+            winner_profile.indian_wallet += random.randint(20, 35)
+            winner_profile.elo_point += random.randint(1, 10)
+            winner_profile.save()
+            return JsonResponse({'message': 'Winner updated successfully'})
+        else:
+            loser_profile = UserProfile.objects.get(username=request.user.username)
+            lose_wallet = random.randint(5, 10)
+            lose_elo = random.randint(1,6)
+            if lose_wallet < loser_profile.indian_wallet:
+                loser_profile.indian_wallet -= lose_wallet
+                loser_profile.save()
+            if lose_elo < loser_profile.elo_point:
+                loser_profile.elo_point -= lose_elo
+                loser_profile.save()
+            return JsonResponse({'message': 'Winner updated successfully'})
+
+    return render(request, '404.html', status=404)

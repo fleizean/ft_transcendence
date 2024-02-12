@@ -13,6 +13,6 @@
       <canvas id="pongCanvas" width="800" height="600"></canvas>
     </div>
   </div>
-  <script src="{% static "js/socketless.js" %}"></script>
- 
+  <script type=module src="{% static "js/socketless.js" %}"></script>
+  {% csrf_token %}
 {% endblock %}

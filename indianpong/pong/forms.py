@@ -28,6 +28,16 @@ class UserProfileForm(UserCreationForm):
         model = UserProfile
         fields = ['username', 'displayname', 'email', 'password1', 'password2']
 
+    """ def confirm_login_allowed(self, user):
+        if not user.is_verified:
+            raise forms.ValidationError(
+                mark_safe(
+                    "This account is not verified. <a href='{}'>Resend verification email</a>".format(
+                        reverse("password_reset")
+                    )
+                )
+            ) """
+
     def clean_email(self): #TODO not just 42kocaeli.com.tr
         email = self.cleaned_data.get('email')
 
@@ -40,6 +50,16 @@ class UserProfileForm(UserCreationForm):
         if not username.isascii():
             raise forms.ValidationError("Username cannot contain non-ASCII characters.")
         return username
+    
+class StoreItemActionForm(forms.Form):
+    ACTION_CHOICES = [
+        ('buy', 'Buy'),
+        ('equip', 'Equip'),
+        ('customize', 'Customize'),
+    ]
+    name = forms.CharField(max_length=200, required=False)
+    action = forms.ChoiceField(choices=ACTION_CHOICES)
+    whatis = forms.CharField(max_length=200, required=False)
 
 class SocialForm(forms.ModelForm):
     stackoverflow = forms.CharField(label='Stackoverflow', widget=forms.TextInput(attrs={'class': 'form-control'}), required=False)

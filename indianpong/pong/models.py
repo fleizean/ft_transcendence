@@ -21,13 +21,12 @@ class Social(models.Model):
     instagram = models.CharField(max_length=200, blank=True, null=True)
 
 class StoreItem(models.Model):
-    category_name = models.CharField(max_length=100, default="all")
+    category_name = models.CharField(max_length=100, default="")
     name = models.CharField(max_length=100)
     image_url = models.TextField()
     description = models.TextField()
     price = models.IntegerField()
-    is_bought = models.BooleanField(default=False)
-    is_status = models.BooleanField(default=False)
+    show_status = models.BooleanField(default=False) # store'da görünebilir mi?
 
 class UserProfile(AbstractUser):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -42,7 +41,8 @@ class UserProfile(AbstractUser):
     is_verified = models.BooleanField(default=False)
     is_42student = models.BooleanField(default=False)
     store_items = models.ManyToManyField(StoreItem, through='UserItem', blank=True)
-    pong_wallet = models.IntegerField(blank=True, null=True, default=0)
+    indian_wallet = models.IntegerField(blank=True, null=True, default=0, validators=[MinValueValidator(0), MaxValueValidator(9999)])
+    elo_point = models.IntegerField(blank=True, null=True, default=0, validators=[MinValueValidator(0), MaxValueValidator(99999)])
 
 
     def __str__(self) -> str:
@@ -54,12 +54,13 @@ class UserProfile(AbstractUser):
             return mark_safe('<img src="%s" width="50" height="50" />' % (self.avatar.url))
         else:
             return mark_safe('<img src="/static/assets/profile/profilephoto.jpeg" width="50" height="50" />')
-        
+
 class UserItem(models.Model):
     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     item = models.ForeignKey(StoreItem, on_delete=models.CASCADE)
-    whatis = models.CharField(max_length=100, blank=True, null=True)
-    is_equipped = models.BooleanField(default=False)
+    is_bought = models.BooleanField(default=False) # satın alındı mı?
+    is_equipped = models.BooleanField(default=False) # kullanıma alındı mı veya inventorye eklendi mi?
+    whatis = models.CharField(max_length=100, blank=True, null=True) # ai name or colors
 
 class VerifyToken(models.Model):
     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
