@@ -21,6 +21,7 @@ class Social(models.Model):
     instagram = models.CharField(max_length=200, blank=True, null=True)
 
 class StoreItem(models.Model):
+    category_name = models.CharField(max_length=100, default="all")
     name = models.CharField(max_length=100)
     image_url = models.TextField()
     description = models.TextField()

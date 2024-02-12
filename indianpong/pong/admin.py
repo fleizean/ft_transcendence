@@ -31,12 +31,12 @@ class UserProfileAdmin(admin.ModelAdmin):
 
 @admin.register(StoreItem)
 class StoreAdmin(admin.ModelAdmin):
-    list_display = ('name', 'image_url', 'description', 'price', 'is_bought', 'is_status')
+    list_display = ('category_name', 'name', 'image_url', 'description', 'price', 'is_bought', 'is_status')
     search_fields = ('name', 'description')
 
     def __str__(self):
         return self.name
-    
+
 @admin.register(UserItem)
 class UserItemAdmin(admin.ModelAdmin):
     list_display = ('user', 'get_item_name', 'whatis', 'is_equipped')

@@ -459,7 +459,12 @@ def store(request, username):
     if request.user.username != username:
         return redirect(reverse('store', kwargs={'username': request.user.username})) 
     profile = get_object_or_404(UserProfile, username=username)
+    category_name = request.GET.get('category_name')
     store_items = StoreItem.objects.all()
+    if category_name and category_name != "All":  
+        store_items = store_items.filter(category_name=category_name)
+    else:
+        store_items = store_items.all()
     return render(request, "store.html" , {"store_items": store_items, "profile": profile})
 
 @csrf_exempt

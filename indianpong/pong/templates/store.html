@@ -35,6 +35,17 @@
         <div class="store-left">
           <h3>{{username}} / Store</h3>
         </div>
+        <div class="store-mid">
+          <div class="category-field">
+            <h5><a href="?category_name=All">#All</a></h5>
+          </div>
+          <div class="category-field">
+            <h5><a href="?category_name=Pong">#Pong</a></h5>
+          </div>
+          <div class="category-field">
+            <h5><a href="?category_name=RPS">#RPS</a></h5>
+          </div>
+        </div>
         <div class="top-store-card">
           <div class="store-right">
            
@@ -59,6 +70,7 @@
                 
                 <img src="{% static 'assets/stores/'|add:item.image_url %}" alt="" />
                 <h2 class="card__title">{{ item.name }}</h2>
+                <h4 class="card__category"><a href="?category_name={{item.category_name}}">#{{ item.category_name }}</a></h4>
                 <span class="card__description">{{item.description}}</span>
                 <div class="card__shop">
                   <span class="card__shop__price">{{item.price}}P₩</span>
