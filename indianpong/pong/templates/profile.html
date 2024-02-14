@@ -92,51 +92,41 @@
                                     <th>Opponent</th>
                                     <th>Result</th>
                                     <th>Score</th>
-                                    <th>Date</th>
+                                    <th>Duration</th>
                             </thead>
                             <tbody>
-                                {% for match in history_page_obj %}
+                                {% for game in history_page_obj %}
                                     <tr>
-                                        <td class="mhistory-username">{{match.username}}</td>
-                                        {% if match.winner == match.username %}
-                                            <td class="won">Won</th>
+                                        {% if profile.username == game.player1.username %}
+                                            <td class="mhistory-username">{{ game.player2.username }}</td>
                                         {% else %}
-                                            <td class="lost">Lost</th>
+                                            <td class="mhistory-username">{{ game.player1.username }}</td>
                                         {% endif %}
-                                        <td>{{match.score}}</th>
-                                        <td>{{match.date}}</td>
-                                    </tr>
+                                        {% if profile.username == game.player1.username %}
+                                            {% if game.winner.username == game.player1.username %}
+                                                <td class="won">Win</td>
+                                            {% else %}
+                                                <td class="lose">Lost</td>
+                                            {% endif %}
+                                        {% else %}
+                                            {% if game.winner.username == game.player2.username %}
+                                                <td class="won">Win</td>
+                                            {% else %}
+                                                <td class="lose">Lost</td>
+                                            {% endif %}
+                                        {% endif %}
+                                        <td>
+                                            {% if profile.username == game.player1.username %}
+                                                {{ game.player1_score }} - {{ game.player2_score }}
+                                            {% else %}
+                                                {{ game.player2_score }} - {{ game.player1_score }}
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {{ game.formatted_game_duration }}
+                                        </tr>
                                 {% endfor %}
-                                <tr>
-                                    <td class="mhistory-username">{{match.username}}</td>
-                                    <td class="won">Won</th>
-                                    <td>{{match.score}}</th>
-                                    <td>{{match.date}}</td>
-                                </tr>
-                                <tr>
-                                    <td class="mhistory-username">{{match.username}}</td>
-                                    <td class="won">Won</th>
-                                    <td>{{match.score}}</th>
-                                    <td>{{match.date}}</td>
-                                </tr>
-                                <tr>
-                                    <td class="mhistory-username">{{match.username}}</td>
-                                    <td class="won">Won</th>
-                                    <td>{{match.score}}</th>
-                                    <td>{{match.date}}</td>
-                                </tr>
-                                <tr>
-                                    <td class="mhistory-username">{{match.username}}</td>
-                                    <td class="won">Won</th>
-                                    <td>{{match.score}}</th>
-                                    <td>{{match.date}}</td>
-                                </tr>
-                                <tr>
-                                    <td class="mhistory-username">{{match.username}}</td>
-                                    <td class="won">Won</th>
-                                    <td>{{match.score}}</th>
-                                    <td>{{match.date}}</td>
-                                </tr>
+                                
                             </tbody>
                         </table>
                         <nav aria-label="Page navigation example">

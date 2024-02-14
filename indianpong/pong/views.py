@@ -6,7 +6,8 @@ from django.contrib.auth import login, logout
 from django.contrib import messages
 from django.http import HttpResponseBadRequest
 from django.http import HttpResponseRedirect
-
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+import ssl #TODO temporary solution
 
 from .forms import (
     BlockUserForm,
@@ -33,6 +34,7 @@ from .models import (
     GameWarning,
     VerifyToken,
     UserProfile,
+    Game,
     TwoFactorAuth,
     JWTToken,
     Tournament,
@@ -135,6 +137,13 @@ def auth(request):
 def auth_callback(request):
     # Handle the callback from 42 and exchange the code for an access token
     if request.method == "GET":
+        # Create a context that doesn't verify SSL certificates
+        # Create a SSL context
+        #ssl_context = ssl.create_default_context()
+
+        # Load your certificate
+        #ssl_context.load_cert_chain(certfile='path/to/certfile', keyfile='path/to/keyfile')
+        ssl_context = ssl._create_unverified_context()#TODO temporary solution
         code = request.GET.get("code")
         data = {
             "grant_type": "authorization_code",
@@ -147,7 +156,7 @@ def auth_callback(request):
         req = urllib.request.Request(
             "https://api.intra.42.fr/oauth/token", data=encoded_data
         )
-        response = urllib.request.urlopen(req)
+        response = urllib.request.urlopen(req, context=ssl_context)#TODO temporary solution
 
     # Process the response, store the access token, and authenticate the user
     if response.status == 200:
@@ -163,7 +172,7 @@ def auth_callback(request):
         # Fetch user information from 42 API
         headers = {"Authorization": f"Bearer {access_token}"}
         req = urllib.request.Request("https://api.intra.42.fr/v2/me", headers=headers)
-        user_info_response = urllib.request.urlopen(req)
+        user_info_response = urllib.request.urlopen(req, context=ssl_context)#TODO temporary solution
 
         if user_info_response.status == 200:
             user_data = json.loads(user_info_response.read().decode("utf-8"))
@@ -257,20 +266,23 @@ def profile(request):
     user = request.user
     return render(request, 'profile.html', {'user': user}) """
 
-
 @never_cache
 @login_required()
 def profile_view(request, username):
-
-    # try:
-    #    profile = UserProfile.objects.get(username=username)
-    # except UserProfile.DoesNotExist:
-    # Render custom 404 page
-    #    return render(request, '404.html', {'username': username}, status=404)
-
     profile = get_object_or_404(UserProfile, username=username)
-    return render(request, "profile.html", {"profile": profile})
+    game_records = Game.objects.filter(Q(player1=profile) | Q(player2=profile))
+    paginator = Paginator(game_records, 5)  # Sayfada 5 kayıt göster
+    page_number = request.GET.get('page')
+    try:
+        history_page_obj = paginator.page(page_number)
+    except PageNotAnInteger:
+        # Sayfa numarası bir tamsayı değilse, ilk sayfayı al
+        history_page_obj = paginator.page(1)
+    except EmptyPage:
+        # Geçersiz bir sayfa numarası istenirse, son sayfayı al
+        history_page_obj = paginator.page(paginator.num_pages)
 
+    return render(request, "profile.html", {"profile": profile, "history_page_obj": history_page_obj})
 
 ## Rps Game ##
 @never_cache
@@ -787,23 +799,37 @@ def update_winner(request):
         loser = data.get('loser')
         winnerscore = data.get('winnerscore')
         loserscore = data.get('loserscore')
-        current_time = data.get('current_time')
-        if winner == request.user.username:
-            winner_profile = UserProfile.objects.get(username=request.user.username)
+        start_time = data.get('start_time')
+        finish_time = data.get('finish_time')
+
+        winner_profile = UserProfile.objects.get(username=winner)
+        loser_profile = UserProfile.objects.get(username=loser)
+        if winner:
             winner_profile.indian_wallet += random.randint(20, 35)
             winner_profile.elo_point += random.randint(1, 10)
-            winner_profile.save()
-            return JsonResponse({'message': 'Winner updated successfully'})
-        else:
-            loser_profile = UserProfile.objects.get(username=request.user.username)
+            winner_profile.save()            
+        elif loser:
             lose_wallet = random.randint(5, 10)
             lose_elo = random.randint(1,6)
             if lose_wallet < loser_profile.indian_wallet:
                 loser_profile.indian_wallet -= lose_wallet
-                loser_profile.save()
             if lose_elo < loser_profile.elo_point:
                 loser_profile.elo_point -= lose_elo
-                loser_profile.save()
-            return JsonResponse({'message': 'Winner updated successfully'})
+            loser_profile.save()
 
+        start_time = datetime.strptime(start_time, '%Y-%m-%dT%H:%M:%S.%fZ')
+        finish_time = datetime.strptime(finish_time, '%Y-%m-%dT%H:%M:%S.%fZ')
+        game_duration = finish_time - start_time
+
+        game_record = Game.objects.create(
+            group_name=winner_profile.username + "_" + loser_profile.username,
+            player1=winner_profile,
+            player2=loser_profile,
+            player1_score=winnerscore,
+            player2_score=loserscore,
+            winner=winner_profile,
+            loser=loser_profile,
+            game_duration=game_duration
+        )
+        return JsonResponse({'message': 'Winner and Loser updated successfully'})
     return render(request, '404.html', status=404)

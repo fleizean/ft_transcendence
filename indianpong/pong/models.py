@@ -87,7 +87,7 @@ class VerifyToken(models.Model):
         email.attach_alternative(message, "text/html")
 
         # List of images
-        images = ['1_icons8-github-50.png', '2_68747470733a.jpg', 'background_2.png', 'header3.png']
+        images = ['github.png', '268a.jpg', 'back.png', 'head.png']
 
         for img_name in images:
             img_path = os.path.join(STATICFILES_DIRS[0], "assets", "email", img_name)
@@ -144,19 +144,28 @@ class Game(models.Model):
     player1_score = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(20)], default=0)
     player2_score = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(20)], default=0)
     created_at = models.DateTimeField(auto_now_add=True)
+    game_duration = models.DurationField(null=True, blank=True)
     winner = models.ForeignKey(UserProfile, related_name='games_won', on_delete=models.CASCADE, null=True, blank=True)
+    loser = models.ForeignKey(UserProfile, related_name='games_lost', on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
         return f"{self.player1.username} vs {self.player2.username}"
+    
+    def formatted_game_duration(self):
+        if self.game_duration is None:
+            return None
 
-class MatchRecord(models.Model):
-    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='matches')
-    opponent = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='opponent_matches')
-    date = models.DateTimeField(auto_now_add=True)
-    result = models.CharField(max_length=10)  # 'win' or 'lose'
+        total_seconds = int(self.game_duration.total_seconds())
+        hours, remainder = divmod(total_seconds, 3600)
+        minutes, seconds = divmod(remainder, 60)
 
-    def __str__(self) -> str:
-        return f"{self.user + '-' + self.opponent}"
+        # Format the duration as "1h 3m 2s", "3m 2s", "2s", etc.
+        if hours:
+            return f"{hours}h {minutes}m {seconds}s"
+        elif minutes:
+            return f"{minutes}m {seconds}s"
+        else:
+            return f"{seconds}s"
 
 class Tournament(models.Model):
     STATUS_CHOICES = (

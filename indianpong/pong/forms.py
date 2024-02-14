@@ -1,7 +1,6 @@
 from datetime import timedelta
 from email.mime.image import MIMEImage
 import os
-import re
 from django.core.mail import EmailMultiAlternatives
 from django.core.mail import send_mail
 from django import forms
@@ -154,7 +153,7 @@ class PasswordResetUserForm(PasswordResetForm):
         email.attach_alternative(message, "text/html")
 
         # List of images
-        images = ['1_icons8-github-50.png', '2_68747470733a.jpg', 'background_2.png', 'header3.png']
+        images = ['github.png', '268a.jpg', 'back.png', 'head.png']
 
         for img_name in images:
             img_path = os.path.join(STATICFILES_DIRS[0], "assets", "email", img_name)

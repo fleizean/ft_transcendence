@@ -16,7 +16,7 @@ var textWidth2 = ctx.measureText(ainame + ": " + score2).width;
 
 var usernameX = 10;
 var usernameY = 20;
-
+var start_time;
 // ainame metni sağ üst köşede
 var ainameX = canvas.width - textWidth2 - 10;
 var ainameY = 20;
@@ -99,13 +99,14 @@ function update() {
     if (score1 == MAX_SCORE || score2 == MAX_SCORE) {
         if (score1 == MAX_SCORE) {
             alert(username + " wins!");
-            sendWinnerToBackend(username, ainame, score1, score2)
+            sendWinnerToBackend(username, "IndianAI", score1, score2, start_time)
         } else {
             alert(ainame + " wins!");
-            sendWinnerToBackend(ainame, username, score2, score1)
+            sendWinnerToBackend("IndianAI", username, score2, score1, start_time)
         }
         score1 = 0;
         score2 = 0;
+        start_time = null;
     }
 
     // Move the paddles
@@ -170,7 +171,8 @@ function render() {
 
 // The main game loop
 var main = function () {
-    
+    if (!start_time)
+        start_time = new Date();
     // Request to do this again ASAP
     if (!isPaused) {
         update();
@@ -315,15 +317,16 @@ setInterval(() => {
     }
 }, reactionDelay); */
 
-function sendWinnerToBackend(winner, loser, winnerscore, loserscore, current_time) {
+function sendWinnerToBackend(winner, loser, winnerscore, loserscore, start_time) {
     const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-    var current_time = new Date();
+    var finish_time = new Date();
     const data = {
         winner: winner,
         loser: loser,
         winnerscore: winnerscore,
         loserscore: loserscore,
-        current_time: current_time
+        start_time: start_time,
+        finish_time: finish_time
     };
 
     fetch('update_winner', {

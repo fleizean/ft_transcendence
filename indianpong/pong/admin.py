@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib import admin
-from .models import OAuthToken, Social, UserItem, StoreItem, UserProfile, Tournament, Room, Message
+from .models import OAuthToken, Social, UserItem, StoreItem, UserProfile, Tournament, Room, Message, Game
 from django.utils.html import format_html
 from django.forms import ModelChoiceField
 
@@ -68,7 +68,14 @@ class SocialAdmin(admin.ModelAdmin):
     get_user.short_description = 'User'
 
     search_fields = ('userprofile__username', 'stackoverflow', 'github', 'twitter', 'instagram')
-    
+
+
+@admin.register(Game)
+class GameAdmin(admin.ModelAdmin):
+    list_display = ('group_name', 'player1', 'player2', 'player1_score', 'player2_score', 'created_at', 'game_duration', 'winner', 'loser')
+    list_filter = ('player1', 'player2', 'winner', 'loser')
+    search_fields = ('player1__username', 'player2__username', 'group_name')
+
 @admin.register(Tournament)
 class TournamentAdmin(admin.ModelAdmin):
     list_display = ('name', 'start_date')
