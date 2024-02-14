@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib import admin
-from .models import OAuthToken, Social, UserItem, StoreItem, UserProfile, Tournament, Room, Message, Game
+from .models import OAuthToken, Social, UserItem, StoreItem, UserProfile, Tournament, Room, Message, Game, UserGameStats
 from django.utils.html import format_html
 from django.forms import ModelChoiceField
 
@@ -16,7 +16,7 @@ class UserProfileAdmin(admin.ModelAdmin):
         fieldsets (tuple): A tuple of fieldsets to be displayed in the admin edit view.
     """
 
-    list_display = ('username', 'email', 'displayname', 'avatar_thumbnail', 'wins', 'losses')
+    list_display = ('username', 'email', 'displayname', 'avatar_thumbnail')
     search_fields = ('username', 'email', 'displayname')
     fieldsets = (
     ('User Information', {'fields': ('username', 'password', 'displayname', 'email', 'avatar', 'friends', 'is_42student', 'elo_point', 'indian_wallet')}),
@@ -58,6 +58,11 @@ class UserItemAdmin(admin.ModelAdmin):
         return obj.item.name
    
     get_item_name.short_description = 'Item Name'
+
+@admin.register(UserGameStats)
+class UserGameStatsAdmin(admin.ModelAdmin):
+    list_display = ('user', 'total_games_pong', 'total_win_pong', 'total_lose_pong', 'total_win_streak_pong', 'total_win_rate_pong', 'total_lose_streak_pong', 'total_avg_game_duration', 'total_avg_points_won', 'total_avg_points_lost')
+    search_fields = ('user', 'total_win_pong',)
 
 @admin.register(Social)
 class SocialAdmin(admin.ModelAdmin):

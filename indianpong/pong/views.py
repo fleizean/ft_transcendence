@@ -37,6 +37,7 @@ from .models import (
     Game,
     TwoFactorAuth,
     JWTToken,
+    UserGameStats,
     Tournament,
     TournamentMatch,
     UserItem,
@@ -270,6 +271,7 @@ def profile(request):
 @login_required()
 def profile_view(request, username):
     profile = get_object_or_404(UserProfile, username=username)
+    game_stats = get_object_or_404(UserGameStats, user=profile)
     game_records = Game.objects.filter(Q(player1=profile) | Q(player2=profile))
     paginator = Paginator(game_records, 5)  # Sayfada 5 kayıt göster
     page_number = request.GET.get('page')
@@ -282,7 +284,7 @@ def profile_view(request, username):
         # Geçersiz bir sayfa numarası istenirse, son sayfayı al
         history_page_obj = paginator.page(paginator.num_pages)
 
-    return render(request, "profile.html", {"profile": profile, "history_page_obj": history_page_obj})
+    return render(request, "profile.html", {"profile": profile, "history_page_obj": history_page_obj, "game_stats": game_stats})
 
 ## Rps Game ##
 @never_cache
@@ -460,7 +462,9 @@ def set_password(request, uidb64, token):
 @never_cache
 @login_required()
 def dashboard(request):
-    return render(request, "dashboard.html")
+    profile = get_object_or_404(UserProfile, username=request.user.username)
+    game_stats = get_object_or_404(UserGameStats, user=profile)
+    return render(request, "dashboard.html", {"profile": profile, "game_stats": game_stats})
 
 
 @never_cache
@@ -804,6 +808,7 @@ def update_winner(request):
 
         winner_profile = UserProfile.objects.get(username=winner)
         loser_profile = UserProfile.objects.get(username=loser)
+       
         if winner:
             winner_profile.indian_wallet += random.randint(20, 35)
             winner_profile.elo_point += random.randint(1, 10)
@@ -821,6 +826,8 @@ def update_winner(request):
         finish_time = datetime.strptime(finish_time, '%Y-%m-%dT%H:%M:%S.%fZ')
         game_duration = finish_time - start_time
 
+        
+
         game_record = Game.objects.create(
             group_name=winner_profile.username + "_" + loser_profile.username,
             player1=winner_profile,
@@ -831,5 +838,45 @@ def update_winner(request):
             loser=loser_profile,
             game_duration=game_duration
         )
+        winner_profile.game_stats, _ = UserGameStats.objects.get_or_create(user=winner_profile)
+        loser_profile.game_stats, _ = UserGameStats.objects.get_or_create(user=loser_profile)
+
+        # Game Stats #
+
+        # Winner #
+        winner_profile.game_stats.total_games_pong += 1
+        
+        winner_profile.game_stats.total_win_pong += 1
+        winner_profile.game_stats.total_win_rate_pong = winner_profile.game_stats.total_win_pong / winner_profile.game_stats.total_games_pong
+        winner_profile.game_stats.total_win_streak_pong += 1
+        winner_profile.game_stats.total_lose_streak_pong = 0
+
+        # Kazananın ortalama puan kazanma ve kaybetme sayılarını güncelle
+        winner_profile.game_stats.total_avg_points_won = (winner_profile.game_stats.total_avg_points_won * (winner_profile.game_stats.total_win_pong - 1) + winnerscore) / winner_profile.game_stats.total_win_pong
+        winner_profile.game_stats.total_avg_points_lost = (winner_profile.game_stats.total_avg_points_lost * (winner_profile.game_stats.total_win_pong - 1) + loserscore) / winner_profile.game_stats.total_win_pong
+        total_game_duration_seconds = winner_profile.game_stats.total_avg_game_duration.total_seconds() * (winner_profile.game_stats.total_games_pong - 1)
+        total_game_duration_seconds += game_duration.total_seconds()
+        avg_game_duration_seconds = total_game_duration_seconds / winner_profile.game_stats.total_games_pong
+        winner_profile.game_stats.total_avg_game_duration = timedelta(seconds=avg_game_duration_seconds)
+        winner_profile.game_stats.save()
+
+        # Loser #
+        loser_profile.game_stats.total_games_pong += 1
+
+        loser_profile.game_stats.total_lose_pong += 1
+        loser_profile.game_stats.total_win_rate_pong = loser_profile.game_stats.total_win_pong / loser_profile.game_stats.total_games_pong
+        loser_profile.game_stats.total_win_streak_pong = 0
+        loser_profile.game_stats.total_lose_streak_pong += 1
+
+        # Kaybedenin ortalama puan kazanma ve kaybetme sayılarını güncelle
+        loser_profile.game_stats.total_avg_points_won = (loser_profile.game_stats.total_avg_points_won * (loser_profile.game_stats.total_lose_pong - 1) + loserscore) / loser_profile.game_stats.total_lose_pong
+        loser_profile.game_stats.total_avg_points_lost = (loser_profile.game_stats.total_avg_points_lost * (loser_profile.game_stats.total_lose_pong - 1) + winnerscore) / loser_profile.game_stats.total_lose_pong
+        loser_total_game_duration_seconds = loser_profile.game_stats.total_avg_game_duration.total_seconds() * (loser_profile.game_stats.total_games_pong - 1)
+        loser_total_game_duration_seconds += game_duration.total_seconds()
+        loser_avg_game_duration_seconds = loser_total_game_duration_seconds / loser_profile.game_stats.total_games_pong
+        loser_profile.game_stats.total_avg_game_duration = timedelta(seconds=loser_avg_game_duration_seconds)
+        loser_profile.game_stats.save()
+
+        ##############
         return JsonResponse({'message': 'Winner and Loser updated successfully'})
     return render(request, '404.html', status=404)

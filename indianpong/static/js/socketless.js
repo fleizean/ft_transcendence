@@ -38,7 +38,7 @@ var ball = {x: canvas.width / 2, y: canvas.height / 2, radius: 10, speed: 5, dx:
 var score1 = 0;
 var score2 = 0;
 
-const MAX_SCORE = 10;
+const MAX_SCORE = 5;
 
 // Add a new variable to track if the game is paused
 let isScored = false;
@@ -118,9 +118,9 @@ function update() {
 
     // Move the AI paddle towards the target position
     if (targetY < paddle2.y - moveThreshold && paddle2.y > 0 && !isScored) {
-        paddle2.y -= paddle2.dy;
+        //paddle2.y -= paddle2.dy;
     } else if (targetY > paddle2.y + moveThreshold && paddle2.y < canvas.height - paddle2.height && !isScored) {
-        paddle2.y += paddle2.dy;
+        //paddle2.y += paddle2.dy;
     }
 
     // Prevent the paddles from moving off the canvas

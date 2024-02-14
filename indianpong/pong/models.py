@@ -11,8 +11,7 @@ from .utils import get_upload_to
 from indianpong.settings import EMAIL_HOST_USER, STATICFILES_DIRS
 from django.utils import timezone
 import uuid
-
-
+from datetime import timedelta
 
 class Social(models.Model):
     stackoverflow = models.CharField(max_length=200, blank=True, null=True)
@@ -36,8 +35,6 @@ class UserProfile(AbstractUser):
     friends = models.ManyToManyField('self', symmetrical=False, blank=True)
     social = models.OneToOneField('Social', on_delete=models.SET_NULL, null=True, blank=True)
     #channel_name = models.CharField(max_length=100, blank=True, null=True)
-    wins = models.IntegerField(default=0)
-    losses = models.IntegerField(default=0)
     is_verified = models.BooleanField(default=False)
     is_42student = models.BooleanField(default=False)
     store_items = models.ManyToManyField(StoreItem, through='UserItem', blank=True)
@@ -61,6 +58,41 @@ class UserItem(models.Model):
     is_bought = models.BooleanField(default=False) # satın alındı mı?
     is_equipped = models.BooleanField(default=False) # kullanıma alındı mı veya inventorye eklendi mi?
     whatis = models.CharField(max_length=100, blank=True, null=True) # ai name or colors
+
+class UserGameStats(models.Model):
+    user = models.OneToOneField(UserProfile, on_delete=models.CASCADE)
+    total_games_pong = models.IntegerField(default=0)
+    total_win_pong = models.IntegerField(default=0)
+    total_lose_pong = models.IntegerField(default=0)
+    total_win_streak_pong = models.IntegerField(default=0)
+    total_lose_streak_pong = models.IntegerField(default=0)
+    total_win_rate_pong = models.FloatField(default=0.0)
+    total_avg_game_duration = models.DurationField(default=timedelta(0), null=True, blank=True)
+    total_avg_points_won = models.FloatField(default=0.0)
+    total_avg_points_lost = models.FloatField(default=0.0)
+
+    def formatted_game_duration(self):
+        if self.total_avg_game_duration is None:
+            return None
+
+        total_seconds = int(self.total_avg_game_duration.total_seconds())
+        hours, remainder = divmod(total_seconds, 3600)
+        minutes, seconds = divmod(remainder, 60)
+
+        # Format the duration as "1h 3m 2s", "3m 2s", "2s", etc.
+        if hours:
+            return f"{hours}h {minutes}m {seconds}s"
+        elif minutes:
+            return f"{minutes}m {seconds}s"
+        else:
+            return f"{seconds}s"
+
+    def formatted_win_rate(self):
+        # Win rate'i yüzde cinsinden hesapla ve float olarak döndür
+        win_rate_percentage = self.total_win_rate_pong * 100
+
+        # Win rate'i string olarak formatla
+        return f"{win_rate_percentage:.2f}%"
 
 class VerifyToken(models.Model):
     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
@@ -135,6 +167,7 @@ class GameWarning(models.Model):
 
     def __str__(self):
         return f"{self.user.username} sent a game warning to {self.opponent.username}"
+
 
 class Game(models.Model):
 

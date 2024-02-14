@@ -36,11 +36,12 @@
 
 .stats .bi-dice-1-fill { color: #ff5733; } /* Oyunlar oynandığında */
 .stats .bi-trophy-fill { color: #ffd700; } /* Kazanıldığında */
-.stats .bi-emoji-frown-fill { color: #4169e1; } /* Kaybedildiğinde */
-.stats .bi-award-fill { color: #4caf50; } /* Kazanma oranı %50'den büyük olduğunda */
+.stats .bi-emoji-frown-fill { color: #ff1100; } /* Kaybedildiğinde */
+.stats .bi-award-fill { color: #00b907; } /* Kazanma oranı %50'den büyük olduğunda */
 .stats .bi-bucket-fill { color: #f44336; } /* Kaybetme oranı %50'den büyük olduğunda */
 .stats .bi-clock-fill { color: #00bcd4; } /* Ortalama oyun süresi */
-  
+.stats .bi-emoji-wink-fill { color:#3fb067 }
+
 .stats-result-p {
     /* Add your styles for stats-result-p here */
     font-size: 14px;
