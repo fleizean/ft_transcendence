@@ -71,7 +71,6 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'pong.context_processors.userinfo',
             ],
         },
     },
@@ -103,7 +102,6 @@ DATABASES = {
 } """
 
 AUTH_USER_MODEL = "pong.UserProfile"
-LOGIN_URL = "login"
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
@@ -129,7 +127,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'Europe/Istanbul'
+TIME_ZONE = 'UTC'
 
 USE_I18N = True
 
@@ -151,16 +149,3 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
-
-EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
-EMAIL_FILE_PATH = BASE_DIR / 'sent_emails'
-EMAIL_HOST_USER = 'indianpong@gmail.com'
-
-""" EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_HOST_USER = environ.get("EMAIL_HOST_USER", default="indianpong@gmail.com")
-EMAIL_HOST_PASSWORD = environ.get("EMAIL_HOST_PASSWORD", default="hxog cqpq jltp xjhi")
-DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
-EMAIL_USE_TLS = True
-EMAIL_USE_SSL = False """

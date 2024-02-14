@@ -1,0 +1,16 @@
+
+{% load static %}
+
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Chat Room</title>
+    <script src="{% static 'js/websocket.js' %}"></script>
+    <script src="{% static 'js/chat_interface.js' %}"></script>
+</head>
+<body>
+    <textarea id="chat-log" cols="50" rows="10"></textarea><br>
+    <input id="chat-message-input" type="text" autocomplete="off" />
+    <button id="send-message-button">Send</button>
+</body>
+</html>
