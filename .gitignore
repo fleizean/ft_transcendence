@@ -23,6 +23,8 @@ media
 # Node modules
 node_modules/
 
+.vscode/
+
 # C extensions
 *.so
 
