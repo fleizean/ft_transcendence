@@ -23,14 +23,14 @@
                         <th>Pong Point (PP)</th>
                 </thead>
                 <tbody>
-                    {% for rank in rank_page_obj %}
+                    {% for user in users_page_obj %}
                         <tr>
-                            <td class="rank-number">{{rank.rank}}</td>
-                            <td class="rank-username">{{rank.username}}</th>
-                            <td class="wins">{{rank.wins}}</th>
-                            <td class="losses">{{lrank.osses}}</td>
-                            <td class="win-rate">{{rank.win_rate}}</td>
-                            <td class="pong-point">{{rank.pong_point}}</td>
+                            <td class="rank-number">{{user.rank}}</td>
+                            <td class="rank-username">{{user.username}}</th>
+                            <td class="wins">{{user.game_stats.total_win_pong}}</th>
+                            <td class="losses">{{user.game_stats.total_lose_pong}}</td>
+                            <td class="win-rate">{{user.game_stats.formatted_win_rate}}</td>
+                            <td class="pong-point">{{user.elo_point}}</td>
                         </tr>
                     {% endfor %}
 
@@ -38,18 +38,18 @@
             </table>
             <nav aria-label="Page navigation example">
                 <ul class="pagination">
-                    <li class="page-item {% if rank_page_obj.has_previous %}disabled{% endif %}">
-                        <a class="page-link" href="{% if rank_page_obj.has_previous %}?page={{ rank_page_obj.previous_page_number }}{% endif %}" aria-label="Previous">
+                    <li class="page-item {% if users_page_obj.has_previous %}disabled{% endif %}">
+                        <a class="page-link" href="{% if users_page_obj.has_previous %}?page={{ users_page_obj.previous_page_number }}{% endif %}" aria-label="Previous">
                             <span aria-hidden="true">&laquo;</span>
                         </a>
                     </li>
-                    {% for page_num in rank_page_obj.paginator.page_range %}
-                        <li class="page-item {% if page_num == rank_page_obj.number %}active{% endif %}">
+                    {% for page_num in users_page_obj.paginator.page_range %}
+                        <li class="page-item {% if page_num == users_page_obj.number %}active{% endif %}">
                             <a class="page-link" href="?page={{ page_num }}">{{ page_num }}</a>
                         </li>
                     {% endfor %}
-                    <li class="page-item {% if rank_page_obj.has_next %}disabled{% endif %}">
-                        <a class="page-link" href="{% if rank_page_obj.has_next %}?page={{ rank_page_obj.next_page_number }}{% endif %}" aria-label="Next">
+                    <li class="page-item {% if users_page_obj.has_next %}disabled{% endif %}">
+                        <a class="page-link" href="{% if users_page_obj.has_next %}?page={{ users_page_obj.next_page_number }}{% endif %}" aria-label="Next">
                             <span aria-hidden="true">&raquo;</span>
                         </a>
                     </li>

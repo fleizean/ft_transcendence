@@ -271,8 +271,7 @@ def profile(request):
 @login_required()
 def profile_view(request, username):
     profile = get_object_or_404(UserProfile, username=username)
-    #game_stats = get_object_or_404(UserGameStat, user=profile)
-    game_records = Game.objects.filter(Q(player1=profile) | Q(player2=profile))
+    game_records = Game.objects.filter(Q(player1=profile) | Q(player2=profile)).order_by('-created_at')
     paginator = Paginator(game_records, 5)  # Sayfada 5 kayıt göster
     page_number = request.GET.get('page')
     try:
@@ -469,7 +468,23 @@ def dashboard(request):
 @never_cache
 @login_required()
 def rankings(request):
-    return render(request, "rankings.html")
+    users_by_elo = UserProfile.objects.all().order_by('-elo_point')
+    paginator  = Paginator(users_by_elo, 10)
+    page_number = request.GET.get('page')
+    try:
+        users_page_obj = paginator.page(page_number)
+    except PageNotAnInteger:
+        users_page_obj = paginator.page(1)
+    except EmptyPage:
+        users_page_obj = paginator.page(paginator.num_pages)
+    
+    # Add rank attribute to each user in the page
+    start_rank = users_page_obj.start_index()
+    for user in users_page_obj:
+        user.rank = start_rank
+        start_rank += 1
+        
+    return render(request, "rankings.html", {"users_page_obj": users_page_obj})
 
 @login_required()
 def store(request, username): # store_view

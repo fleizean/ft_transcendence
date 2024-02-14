@@ -118,9 +118,9 @@ function update() {
 
     // Move the AI paddle towards the target position
     if (targetY < paddle2.y - moveThreshold && paddle2.y > 0 && !isScored) {
-        //paddle2.y -= paddle2.dy;
+        paddle2.y -= paddle2.dy;
     } else if (targetY > paddle2.y + moveThreshold && paddle2.y < canvas.height - paddle2.height && !isScored) {
-        //paddle2.y += paddle2.dy;
+        paddle2.y += paddle2.dy;
     }
 
     // Prevent the paddles from moving off the canvas

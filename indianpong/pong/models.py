@@ -92,7 +92,7 @@ class UserGameStat(models.Model):
         win_rate_percentage = self.total_win_rate_pong * 100
 
         # Win rate'i string olarak formatla
-        return f"{win_rate_percentage:.2f}%"
+        return f"%{win_rate_percentage:.1f}"
 
 class VerifyToken(models.Model):
     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
