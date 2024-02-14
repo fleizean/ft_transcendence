@@ -37,7 +37,7 @@ from .models import (
     Game,
     TwoFactorAuth,
     JWTToken,
-    UserGameStats,
+    UserGameStat,
     Tournament,
     TournamentMatch,
     UserItem,
@@ -249,7 +249,7 @@ def login_view(request):
     return render(
         request,
         "login.html",
-        {"form": form, "valid": valid, "toast_message": toast_message},
+        {"form": form, "valid": valid, "toast_message": toast_message}
     )
 
 
@@ -271,7 +271,7 @@ def profile(request):
 @login_required()
 def profile_view(request, username):
     profile = get_object_or_404(UserProfile, username=username)
-    game_stats = get_object_or_404(UserGameStats, user=profile)
+    #game_stats = get_object_or_404(UserGameStat, user=profile)
     game_records = Game.objects.filter(Q(player1=profile) | Q(player2=profile))
     paginator = Paginator(game_records, 5)  # Sayfada 5 kayıt göster
     page_number = request.GET.get('page')
@@ -284,7 +284,7 @@ def profile_view(request, username):
         # Geçersiz bir sayfa numarası istenirse, son sayfayı al
         history_page_obj = paginator.page(paginator.num_pages)
 
-    return render(request, "profile.html", {"profile": profile, "history_page_obj": history_page_obj, "game_stats": game_stats})
+    return render(request, "profile.html", {"profile": profile, "history_page_obj": history_page_obj})
 
 ## Rps Game ##
 @never_cache
@@ -463,8 +463,7 @@ def set_password(request, uidb64, token):
 @login_required()
 def dashboard(request):
     profile = get_object_or_404(UserProfile, username=request.user.username)
-    game_stats = get_object_or_404(UserGameStats, user=profile)
-    return render(request, "dashboard.html", {"profile": profile, "game_stats": game_stats})
+    return render(request, "dashboard.html", {"profile": profile})
 
 
 @never_cache
@@ -806,8 +805,8 @@ def update_winner(request):
         start_time = data.get('start_time')
         finish_time = data.get('finish_time')
 
-        winner_profile = UserProfile.objects.get(username=winner)
-        loser_profile = UserProfile.objects.get(username=loser)
+        winner_profile = get_object_or_404(UserProfile, username=winner)
+        loser_profile = get_object_or_404(UserProfile, username=loser)
        
         if winner:
             winner_profile.indian_wallet += random.randint(20, 35)
@@ -838,9 +837,13 @@ def update_winner(request):
             loser=loser_profile,
             game_duration=game_duration
         )
-        winner_profile.game_stats, _ = UserGameStats.objects.get_or_create(user=winner_profile)
-        loser_profile.game_stats, _ = UserGameStats.objects.get_or_create(user=loser_profile)
 
+        if winner_profile.game_stats is None:
+            winner_profile.game_stats = UserGameStat.objects.create()
+            winner_profile.save()
+        if loser_profile.game_stats is None:
+            loser_profile.game_stats = UserGameStat.objects.create()
+            loser_profile.save()
         # Game Stats #
 
         # Winner #

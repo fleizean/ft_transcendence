@@ -28,7 +28,7 @@ class StoreItem(models.Model):
     show_status = models.BooleanField(default=False) # store'da görünebilir mi?
 
 class UserProfile(AbstractUser):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    #id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     displayname = models.CharField(max_length=100, blank=True, null=True)
     email = models.EmailField(unique=True, max_length=254)
     avatar = models.ImageField(upload_to=get_upload_to, null=True, blank=True)
@@ -38,6 +38,7 @@ class UserProfile(AbstractUser):
     is_verified = models.BooleanField(default=False)
     is_42student = models.BooleanField(default=False)
     store_items = models.ManyToManyField(StoreItem, through='UserItem', blank=True)
+    game_stats = models.OneToOneField('UserGameStat', on_delete=models.SET_NULL, null=True, blank=True)
     indian_wallet = models.IntegerField(blank=True, null=True, default=0, validators=[MinValueValidator(0), MaxValueValidator(9999)])
     elo_point = models.IntegerField(blank=True, null=True, default=0, validators=[MinValueValidator(0), MaxValueValidator(99999)])
 
@@ -59,8 +60,7 @@ class UserItem(models.Model):
     is_equipped = models.BooleanField(default=False) # kullanıma alındı mı veya inventorye eklendi mi?
     whatis = models.CharField(max_length=100, blank=True, null=True) # ai name or colors
 
-class UserGameStats(models.Model):
-    user = models.OneToOneField(UserProfile, on_delete=models.CASCADE)
+class UserGameStat(models.Model):
     total_games_pong = models.IntegerField(default=0)
     total_win_pong = models.IntegerField(default=0)
     total_lose_pong = models.IntegerField(default=0)

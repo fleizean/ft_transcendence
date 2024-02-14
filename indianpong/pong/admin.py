@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib import admin
-from .models import OAuthToken, Social, UserItem, StoreItem, UserProfile, Tournament, Room, Message, Game, UserGameStats
+from .models import OAuthToken, Social, UserItem, StoreItem, UserProfile, Tournament, Room, Message, Game, UserGameStat
 from django.utils.html import format_html
 from django.forms import ModelChoiceField
 
@@ -19,11 +19,10 @@ class UserProfileAdmin(admin.ModelAdmin):
     list_display = ('username', 'email', 'displayname', 'avatar_thumbnail')
     search_fields = ('username', 'email', 'displayname')
     fieldsets = (
-    ('User Information', {'fields': ('username', 'password', 'displayname', 'email', 'avatar', 'friends', 'is_42student', 'elo_point', 'indian_wallet')}),
+    ('User Information', {'fields': ('username', 'password', 'displayname', 'email', 'avatar', 'friends', 'elo_point', 'indian_wallet')}),
     ('Dates', {'fields': ('date_joined', 'last_login')}),
-    ('Roles', {'fields': ('is_staff', 'is_active', 'is_superuser', 'is_verified')}),
+    ('Roles', {'fields': ('is_staff', 'is_active', 'is_superuser', 'is_verified', 'is_42student')}),
     ('Permissions', {'fields': ('groups', 'user_permissions')}),
-    ('Stats', {'fields': ('wins', 'losses')}),
     )
 
     def avatar_thumbnail(self, obj):
@@ -59,10 +58,14 @@ class UserItemAdmin(admin.ModelAdmin):
    
     get_item_name.short_description = 'Item Name'
 
-@admin.register(UserGameStats)
-class UserGameStatsAdmin(admin.ModelAdmin):
-    list_display = ('user', 'total_games_pong', 'total_win_pong', 'total_lose_pong', 'total_win_streak_pong', 'total_win_rate_pong', 'total_lose_streak_pong', 'total_avg_game_duration', 'total_avg_points_won', 'total_avg_points_lost')
-    search_fields = ('user', 'total_win_pong',)
+@admin.register(UserGameStat)
+class UserGameStatAdmin(admin.ModelAdmin):
+    list_display = ('get_user', 'total_games_pong', 'total_win_pong', 'total_lose_pong', 'total_win_streak_pong', 'total_win_rate_pong', 'total_lose_streak_pong', 'total_avg_game_duration', 'total_avg_points_won', 'total_avg_points_lost')
+    search_fields = ('userprofile__username', 'total_win_pong',)
+
+    def get_user(self, obj):
+        return obj.userprofile
+    get_user.short_description = 'User'
 
 @admin.register(Social)
 class SocialAdmin(admin.ModelAdmin):

@@ -180,31 +180,31 @@
                             <div class="stats-info">
                                 <div class="stats">
                                     <p class="stats-p"><i class="bi bi-dice-1-fill"></i> Games Played:</p>
-                                    <p class="stats-result-p">{% if game_stats.total_games_pong %} {{game_stats.total_games_pong}} {% else %} 0 {% endif %}</p>
+                                    <p class="stats-result-p">{% if profile.game_stats.total_games_pong %} {{profile.game_stats.total_games_pong}} {% else %} 0 {% endif %}</p>
                                 </div>
                                 <div class="stats">
                                     <p class="stats-p"><i class="bi bi-trophy-fill"></i> Wins:</p>
-                                    <p class="stats-result-p">{% if game_stats.total_win_pong %} {{game_stats.total_win_pong}} {% else %} 0 {% endif %}</p>
+                                    <p class="stats-result-p">{% if profile.game_stats.total_win_pong %} {{profile.game_stats.total_win_pong}} {% else %} 0 {% endif %}</p>
                                 </div>
                                 <div class="stats">
                                     <p class="stats-p"><i class="bi bi-emoji-frown-fill"></i> Loses:</p>
-                                    <p class="stats-result-p">{% if game_stats.total_lose_pong %} {{game_stats.total_lose_pong}} {% else %} 0 {% endif %}</p>
+                                    <p class="stats-result-p">{% if profile.game_stats.total_lose_pong %} {{profile.game_stats.total_lose_pong}} {% else %} 0 {% endif %}</p>
                                 </div>
                                 <div class="stats">
                                     <p class="stats-p"><i class="bi bi-award-fill"></i> Win Rate:</p>
-                                    <p class="stats-result-p">{% if game_stats.formatted_win_rate %} {{game_stats.formatted_win_rate}} {% else %} 0 {% endif %}</p>
+                                    <p class="stats-result-p">{% if profile.game_stats.formatted_win_rate %} {{profile.game_stats.formatted_win_rate}} {% else %} 0 {% endif %}</p>
                                 </div>
                                 <div class="stats">
                                     <p class="stats-p"><i class="bi bi-emoji-wink-fill"></i> Win Streak:</p>
-                                    <p class="stats-result-p">{% if game_stats.total_win_streak_pong %} {{game_stats.total_win_streak_pong}} {% else %} 0 {% endif %}</p>
+                                    <p class="stats-result-p">{% if profile.game_stats.total_win_streak_pong %} {{profile.game_stats.total_win_streak_pong}} {% else %} 0 {% endif %}</p>
                                 </div>
                                 <div class="stats">
                                     <p class="stats-p"><i class="bi bi-bucket-fill"></i> Lose Streak:</p>
-                                    <p class="stats-result-p">{% if game_stats.total_lose_streak_pong %} {{game_stats.total_lose_streak_pong}} {% else %} 0 {% endif %}</p>
+                                    <p class="stats-result-p">{% if profile.game_stats.total_lose_streak_pong %} {{profile.game_stats.total_lose_streak_pong}} {% else %} 0 {% endif %}</p>
                                 </div>
                                 <div class="stats">
                                     <p class="stats-p"><i class="bi bi-clock-fill"></i> Average Game Duration:</p>
-                                    <p class="stats-result-p">{% if game_stats.formatted_game_duration %} {{game_stats.formatted_game_duration}} {% else %} 0 {% endif %}</p>
+                                    <p class="stats-result-p">{% if profile.game_stats.formatted_game_duration %} {{profile.game_stats.formatted_game_duration}} {% else %} 0 {% endif %}</p>
                                 </div>
                             </div>
                         </div>

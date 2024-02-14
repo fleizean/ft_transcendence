@@ -27,7 +27,7 @@
             <div class="card-block">
               <h6 class="m-b-20">Games Played</h6>
               <h2 class="text-right">
-                <i class="bi bi-dice-1-fill"></i><span>{% if game_stats.total_games_pong %} {{ game_stats.total_games_pong }} {% else %} 0 {% endif %}</span>
+                <i class="bi bi-dice-1-fill"></i><span>{% if profile.game_stats.total_games_pong %} {{ profile.game_stats.total_games_pong }} {% else %} 0 {% endif %}</span>
               </h2>
             </div>
           </div>
@@ -38,7 +38,7 @@
             <div class="card-block">
               <h6 class="m-b-20">Win Count</h6>
               <h2 class="text-right">
-                <i class="bi bi-trophy-fill"></i><span>{% if game_stats.total_win_pong %} {{ game_stats.total_win_pong }} {% else %} 0 {% endif %}</span>
+                <i class="bi bi-trophy-fill"></i><span>{% if profile.game_stats.total_win_pong %} {{ profile.game_stats.total_win_pong }} {% else %} 0 {% endif %}</span>
               </h2>
             </div>
           </div>
@@ -49,7 +49,7 @@
             <div class="card-block">
               <h6 class="m-b-20">Win Streak</h6>
               <h2 class="text-right">
-                <i class="bi bi-emoji-wink-fill"></i><span>{% if game_stats.total_win_streak_pong %} {{ game_stats.total_win_streak_pong }} {% else %} 0 {% endif %}</span>
+                <i class="bi bi-emoji-wink-fill"></i><span>{% if profile.game_stats.total_win_streak_pong %} {{ profile.game_stats.total_win_streak_pong }} {% else %} 0 {% endif %}</span>
               </h2>
             </div>
           </div>
@@ -60,7 +60,7 @@
             <div class="card-block">
               <h6 class="m-b-20">Lose Streak</h6>
               <h2 class="text-right">
-                <i class="bi bi-emoji-frown-fill"></i><span> {% if game_stats.total_lose_streak_pong %} {{ game_stats.total_lose_streak_pong }} {% else %} 0 {% endif %} </span>
+                <i class="bi bi-emoji-frown-fill"></i><span> {% if profile.game_stats.total_lose_streak_pong %} {{ profile.game_stats.total_lose_streak_pong }} {% else %} 0 {% endif %} </span>
               </h2>
             </div>
           </div>
@@ -71,7 +71,7 @@
             <div class="card-block">
               <h6 class="m-b-20">Win Rate %</h6>
               <h2 class="text-right">
-                <i class="bi bi-award-fill"></i><span> {% if game_stats.formatted_win_rate %} {{ game_stats.formatted_win_rate }} {% else %} 0 {% endif %}</span>
+                <i class="bi bi-award-fill"></i><span> {% if profile.game_stats.formatted_win_rate %} {{ profile.game_stats.formatted_win_rate }} {% else %} 0 {% endif %}</span>
               </h2>
             </div>
           </div>
@@ -83,7 +83,7 @@
               <h6 class="m-b-20">Average Game Duration</h6>
               <h2 class="text-right">
                 <i class="bi bi-clock-fill"></i>
-                <span class="big">{% if game_stats.formatted_game_duration %} {{ game_stats.formatted_game_duration }} {% else %} 0 {% endif %}</span> 
+                <span class="big">{% if profile.game_stats.formatted_game_duration %} {{ profile.game_stats.formatted_game_duration }} {% else %} 0 {% endif %}</span> 
               </h2>
             </div>
           </div>
@@ -94,7 +94,7 @@
             <div class="card-block">
               <h6 class="m-b-20">Average Points Won</h6>
               <h2 class="text-right">
-                <i class="bi bi-star-fill"></i><span>{% if game_stats.total_avg_points_won %} {{ game_stats.total_avg_points_won }} {% else %} 0 {% endif %}</span>
+                <i class="bi bi-star-fill"></i><span>{% if profile.game_stats.total_avg_points_won %} {{ profile.game_stats.total_avg_points_won }} {% else %} 0 {% endif %}</span>
               </h2>
             </div>
           </div>
@@ -105,7 +105,7 @@
             <div class="card-block">
               <h6 class="m-b-20">Average Points Lost</h6>
               <h2 class="text-right">
-                <i class="bi bi-bucket-fill"></i><span> {% if game_stats.total_avg_points_lost %} {{ game_stats.total_avg_points_lost }} {% else %} 0 {% endif %}</span>
+                <i class="bi bi-bucket-fill"></i><span> {% if profile.game_stats.total_avg_points_lost %} {{ profile.game_stats.total_avg_points_lost }} {% else %} 0 {% endif %}</span>
               </h2>
             </div>
           </div>
