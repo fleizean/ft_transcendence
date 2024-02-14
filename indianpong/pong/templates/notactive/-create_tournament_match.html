@@ -1,0 +1,14 @@
+<!-- create_tournament_match.html -->
+
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Create Tournament Match</h2>
+    <form method="post" class="mt-3">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Create Match</button>
+    </form>
+</div>
+{% endblock %}

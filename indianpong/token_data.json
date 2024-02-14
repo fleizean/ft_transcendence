@@ -1,9 +1,0 @@
-{
-  "access_token": "109b7812368ef5970a4dad7d9afbe424e633106710d8777ac6aaf09e292f7373",
-  "token_type": "bearer",
-  "expires_in": 6342,
-  "refresh_token": "3012a22e544942a243ac3e5163fa0aa8f0b1133c2dbb0c1a5b780b529ab4f493",
-  "scope": "public",
-  "created_at": 1707325408,
-  "secret_valid_until": 1707980410
-}

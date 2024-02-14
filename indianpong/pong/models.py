@@ -1,47 +1,16 @@
-from email.mime.image import MIMEImage
-import os
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.utils.html import mark_safe
-from django.core.mail import send_mail
-from django.template.loader import render_to_string
-from django.core.mail import EmailMultiAlternatives
-from .utils import get_upload_to
-from indianpong.settings import EMAIL_HOST_USER, STATICFILES_DIRS
-from django.utils import timezone
 import uuid
-from datetime import timedelta
-
-class Social(models.Model):
-    stackoverflow = models.CharField(max_length=200, blank=True, null=True)
-    github = models.CharField(max_length=200, blank=True, null=True)
-    twitter = models.CharField(max_length=200, blank=True, null=True)
-    instagram = models.CharField(max_length=200, blank=True, null=True)
-
-class StoreItem(models.Model):
-    category_name = models.CharField(max_length=100, default="")
-    name = models.CharField(max_length=100)
-    image_url = models.TextField()
-    description = models.TextField()
-    price = models.IntegerField()
-    show_status = models.BooleanField(default=False) # store'da görünebilir mi?
 
 class UserProfile(AbstractUser):
-    #id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     displayname = models.CharField(max_length=100, blank=True, null=True)
-    email = models.EmailField(unique=True, max_length=254)
-    avatar = models.ImageField(upload_to=get_upload_to, null=True, blank=True)
-    friends = models.ManyToManyField('self', symmetrical=False, blank=True)
-    social = models.OneToOneField('Social', on_delete=models.SET_NULL, null=True, blank=True)
+    avatar = models.ImageField(upload_to='avatars/', null=True, blank=True)
+    friends = models.ManyToManyField('self', symmetrical=False)
     #channel_name = models.CharField(max_length=100, blank=True, null=True)
-    is_verified = models.BooleanField(default=False)
-    is_42student = models.BooleanField(default=False)
-    store_items = models.ManyToManyField(StoreItem, through='UserItem', blank=True)
-    game_stats = models.OneToOneField('UserGameStat', on_delete=models.SET_NULL, null=True, blank=True)
-    indian_wallet = models.IntegerField(blank=True, null=True, default=0, validators=[MinValueValidator(0), MaxValueValidator(9999)])
-    elo_point = models.IntegerField(blank=True, null=True, default=0, validators=[MinValueValidator(0), MaxValueValidator(99999)])
-
+    wins = models.IntegerField(default=0)
+    losses = models.IntegerField(default=0)
 
     def __str__(self) -> str:
         return f"{self.username}"
@@ -51,124 +20,29 @@ class UserProfile(AbstractUser):
         if self.avatar:
             return mark_safe('<img src="%s" width="50" height="50" />' % (self.avatar.url))
         else:
-            return mark_safe('<img src="/static/assets/profile/profilephoto.jpeg" width="50" height="50" />')
-
-class UserItem(models.Model):
-    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
-    item = models.ForeignKey(StoreItem, on_delete=models.CASCADE)
-    is_bought = models.BooleanField(default=False) # satın alındı mı?
-    is_equipped = models.BooleanField(default=False) # kullanıma alındı mı veya inventorye eklendi mi?
-    whatis = models.CharField(max_length=100, blank=True, null=True) # ai name or colors
-
-class UserGameStat(models.Model):
-    total_games_pong = models.IntegerField(default=0)
-    total_win_pong = models.IntegerField(default=0)
-    total_lose_pong = models.IntegerField(default=0)
-    total_win_streak_pong = models.IntegerField(default=0)
-    total_lose_streak_pong = models.IntegerField(default=0)
-    total_win_rate_pong = models.FloatField(default=0.0)
-    total_avg_game_duration = models.DurationField(default=timedelta(0), null=True, blank=True)
-    total_avg_points_won = models.FloatField(default=0.0)
-    total_avg_points_lost = models.FloatField(default=0.0)
-
-    def formatted_game_duration(self):
-        if self.total_avg_game_duration is None:
-            return None
-
-        total_seconds = int(self.total_avg_game_duration.total_seconds())
-        hours, remainder = divmod(total_seconds, 3600)
-        minutes, seconds = divmod(remainder, 60)
-
-        # Format the duration as "1h 3m 2s", "3m 2s", "2s", etc.
-        if hours:
-            return f"{hours}h {minutes}m {seconds}s"
-        elif minutes:
-            return f"{minutes}m {seconds}s"
-        else:
-            return f"{seconds}s"
-
-    def formatted_win_rate(self):
-        # Win rate'i yüzde cinsinden hesapla ve float olarak döndür
-        win_rate_percentage = self.total_win_rate_pong * 100
-
-        # Win rate'i string olarak formatla
-        return f"%{win_rate_percentage:.1f}"
-
-class VerifyToken(models.Model):
-    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
-    token = models.CharField(max_length=255)
-    created_at = models.DateTimeField(default=timezone.now)
-
-    def send_verification_email(self, request, user):
-        token = VerifyToken.objects.get(user=user)
-        mail_subject = 'Activate your account.'
-        message = render_to_string('activate_account_email.html', {
-            'user': user,
-            'domain': request.META['HTTP_HOST'],
-            'token': token.token,
-        })
-
-        email = EmailMultiAlternatives(
-            subject=mail_subject,
-            body=message,  # this is the simple text version
-            from_email=EMAIL_HOST_USER,
-            to=[user.email]
-        )
-
-        # Add the HTML version. This could be the same as the body if your email is only HTML.
-        email.attach_alternative(message, "text/html")
-
-        # List of images
-        images = ['github.png', '268a.jpg', 'back.png', 'head.png']
-
-        for img_name in images:
-            img_path = os.path.join(STATICFILES_DIRS[0], "assets", "email", img_name)
-
-            # Open the image file in binary mode
-            with open(img_path, 'rb') as f:
-                image_data = f.read()
-
-            # Create a MIMEImage
-            img = MIMEImage(image_data)
-
-            # Add a 'Content-ID' header. The angle brackets are important.
-            img.add_header('Content-ID', f'<{img_name}>')
-
-            # Attach the image to the email
-            email.attach(img)
-
-        # Send the email
-        email.send(fail_silently=True)
-        #send_mail(mail_subject, message, EMAIL_HOST_USER, [user.email], fail_silently=True, html_message=message)
-
-class ChatMessage(models.Model):
-    sender = models.ForeignKey(UserProfile, related_name='sent_messages', on_delete=models.CASCADE)
-    receiver = models.ForeignKey(UserProfile, related_name='received_messages', on_delete=models.CASCADE)
-    content = models.TextField()
-    timestamp = models.DateTimeField(auto_now_add=True)
+            return mark_safe('<img src="/static/assets/profile/default_avatar.jpeg" width="50" height="50" />')
 
 class BlockedUser(models.Model):
     user = models.ForeignKey(UserProfile, related_name='blocking_users', on_delete=models.CASCADE)
     blocked_user = models.ForeignKey(UserProfile, related_name='blocked_by_users', on_delete=models.CASCADE)
-
-class GameInvitation(models.Model):
-    inviting_user = models.ForeignKey(UserProfile, related_name='invitations_sent', on_delete=models.CASCADE)
-    invited_user = models.ForeignKey(UserProfile, related_name='invitations_received', on_delete=models.CASCADE)
-    message = models.TextField()
-    created_at = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return f"{self.inviting_user.username} invited {self.invited_user.username} to play Pong"
     
-class GameWarning(models.Model):
-    user = models.ForeignKey(UserProfile, related_name='warnings_sent', on_delete=models.CASCADE)
-    opponent = models.ForeignKey(UserProfile, related_name='warnings_received', on_delete=models.CASCADE)
-    created_at = models.DateTimeField(auto_now_add=True)
+#------------------------------------------------------------#
+    
+class Room(models.Model):
+    id = models.UUIDField(primary_key = True, default = uuid.uuid4)
+    first_user = models.ForeignKey(UserProfile, related_name = "room_first", on_delete = models.CASCADE, null = True)
+    second_user = models.ForeignKey(UserProfile, related_name = "room_second", on_delete = models.CASCADE, null = True)
 
-    def __str__(self):
-        return f"{self.user.username} sent a game warning to {self.opponent.username}"
 
+class Message(models.Model):
+    user = models.ForeignKey(UserProfile, related_name = "message_user", on_delete = models.CASCADE)
+    room = models.ForeignKey(Room, related_name = "message_room", on_delete = models.CASCADE)
+    content = models.TextField(verbose_name = "Text Content")
+    created_date = models.DateTimeField(auto_now_add = True)
 
+    def get_short_date(self):
+        return str(self.created_date.strftime("%H:%M"))
+    
 class Game(models.Model):
 
     group_name = models.CharField(max_length=100)
@@ -177,28 +51,19 @@ class Game(models.Model):
     player1_score = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(20)], default=0)
     player2_score = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(20)], default=0)
     created_at = models.DateTimeField(auto_now_add=True)
-    game_duration = models.DurationField(null=True, blank=True)
     winner = models.ForeignKey(UserProfile, related_name='games_won', on_delete=models.CASCADE, null=True, blank=True)
-    loser = models.ForeignKey(UserProfile, related_name='games_lost', on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
         return f"{self.player1.username} vs {self.player2.username}"
     
-    def formatted_game_duration(self):
-        if self.game_duration is None:
-            return None
+class MatchRecord(models.Model):
+    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='matches')
+    opponent = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='opponent_matches')
+    date = models.DateTimeField(auto_now_add=True)
+    result = models.CharField(max_length=10)  # 'win' or 'lose'
 
-        total_seconds = int(self.game_duration.total_seconds())
-        hours, remainder = divmod(total_seconds, 3600)
-        minutes, seconds = divmod(remainder, 60)
-
-        # Format the duration as "1h 3m 2s", "3m 2s", "2s", etc.
-        if hours:
-            return f"{hours}h {minutes}m {seconds}s"
-        elif minutes:
-            return f"{minutes}m {seconds}s"
-        else:
-            return f"{seconds}s"
+    def __str__(self) -> str:
+        return f"{self.user + '-' + self.opponent}"
 
 class Tournament(models.Model):
     STATUS_CHOICES = (
@@ -226,11 +91,36 @@ class OAuthToken(models.Model):
     user = models.OneToOneField(UserProfile, on_delete=models.CASCADE)
     access_token = models.CharField(max_length=255)
     refresh_token = models.CharField(max_length=255)
-    expires_in = models.IntegerField(null=True, blank=True)
-    created_at = models.IntegerField(null=True, blank=True)
-    secret_valid_until = models.IntegerField(null=True, blank=True)
+    expires_at = models.DateTimeField(default=None ,null=True, blank=True)
+    
+""" class ChatMessage(models.Model):
+    sender = models.ForeignKey(UserProfile, related_name='sent_messages', on_delete=models.CASCADE)
+    receiver = models.ForeignKey(UserProfile, related_name='received_messages', on_delete=models.CASCADE)
+    content = models.TextField()
+    timestamp = models.DateTimeField(auto_now_add=True) """
 
-class TwoFactorAuth(models.Model):
+""" class GameInvitation(models.Model):
+    inviting_user = models.ForeignKey(UserProfile, related_name='invitations_sent', on_delete=models.CASCADE)
+    invited_user = models.ForeignKey(UserProfile, related_name='invitations_received', on_delete=models.CASCADE)
+    message = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.inviting_user.username} invited {self.invited_user.username} to play Pong" """
+    
+""" class GameWarning(models.Model):
+    user = models.ForeignKey(UserProfile, related_name='warnings_sent', on_delete=models.CASCADE)
+    opponent = models.ForeignKey(UserProfile, related_name='warnings_received', on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.user.username} sent a game warning to {self.opponent.username}" """
+
+
+
+
+
+""" class TwoFactorAuth(models.Model):
     user = models.OneToOneField(UserProfile, on_delete=models.CASCADE)
     secret_key = models.CharField(max_length=16)  # Store the secret key securely
     is_enabled = models.BooleanField(default=False)
@@ -239,21 +129,5 @@ class JWTToken(models.Model):
     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     token = models.CharField(max_length=255)
     expires_at = models.DateTimeField()
+ """
 
-
-#------------------------------------------------------------#
-    
-class Room(models.Model):
-    id = models.UUIDField(primary_key = True, default = uuid.uuid4)
-    first_user = models.ForeignKey(UserProfile, related_name = "room_first", on_delete = models.CASCADE, null = True)
-    second_user = models.ForeignKey(UserProfile, related_name = "room_second", on_delete = models.CASCADE, null = True)
-
-
-class Message(models.Model):
-    user = models.ForeignKey(UserProfile, related_name = "message_user", on_delete = models.CASCADE)
-    room = models.ForeignKey(Room, related_name = "message_room", on_delete = models.CASCADE)
-    content = models.TextField(verbose_name = "Text Content")
-    created_date = models.DateTimeField(auto_now_add = True)
-
-    def get_short_date(self):
-        return str(self.created_date.strftime("%H:%M"))

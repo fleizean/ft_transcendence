@@ -1,0 +1,14 @@
+<!-- setup_two_factor_auth.html -->
+
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Set Up Two-Factor Authentication</h2>
+    <form method="post" class="mt-3">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Set Up 2FA</button>
+    </form>
+</div>
+{% endblock %}

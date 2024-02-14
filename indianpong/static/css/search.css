@@ -1,15 +1,6 @@
-.search-card {
-  background-color: rgba(241, 241, 251, 0.3) !important;
-  backdrop-filter: blur(3px); /* Arka planı 10 piksel bulanıklaştır */
-  padding: 20px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  border-radius: 8px;
-  max-width: 1300px;
-  width: 100%;
-  height: auto; /* Yüksekliği otomatik ayarla */
-  max-height: auto;
-  margin: 0 auto; /* Ortalamak için */
-}
+* Search Area */
+
+
 
 .search-container {
   display: flex;
@@ -26,219 +17,126 @@
 
 .search-button {
   border: 2px solid black;
-  background-color: white;  
+  background-color: transparent;
   cursor: pointer;
-  padding: 9px;
+  padding: 5px;
   margin-left: 1px; /* İkon ile arama alanı arasında bir boşluk bırakmak için */
 }
 
 .search-button:hover {
-  background-color: #ff9900;
+  background-color: green;
   color: white;
 }
 
-
 .card-container-wrapper {
   display: flex;
-  justify-content: center; /* Kartları ortalamak için */
-  flex-wrap: wrap; /* Kartların yan yana sığması */
-  gap: 20px; /* Kartlar arasındaki boşluk */
+  justify-content: center;
 }
 
-.card-containers {
-  display: flex;
-  flex-wrap: wrap; /* Kartların yan yana sığması için */
-}
-
-.profile-card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  max-width: 300px;
-  width: 100%;
-  background: #fff;
-  border-radius: 24px;
-  padding: 25px;
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+.card-container {
+  background: linear-gradient(to bottom, #0177EC, #000f1e);
+  border-radius: 5px;
+  box-shadow: 0px 10px 20px -10px rgba(0, 0, 0, 0.75);
+  color: #B3B8CD;
+  padding-top: 30px;
+  justify-content: center;
   position: relative;
-}
-
-.profile-card::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 36%;
-  width: 100%;
-  border-radius: 24px 24px 0 0;
-  background-color: #4070f4;
-}
-
-.image {
-  z-index: 2;  
-  justify-content: center;
-  align-items: center;
-  height: 150px;
-  width: 150px;
-  border-radius: 50%;
-  background-color: #4070f4;
-  padding: 3px;
-  margin-bottom: 10px;
-}
-
-.image .profile-img {
-  z-index: 2;
-  height: 100%;
-  width: 100%;
-  object-fit: cover;
-  border-radius: 50%;
-  border: 3px solid #fff;
-}
-
-.image .profile-img:hover {
-  border: 3px solid #ff8d01;
-  transform: scale(1.05); /* Fotoğrafın boyutunu büyüt */
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
-}
-
-.profile-card .text-data {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  color: #333;
-}
-
-.text-data .name {
-  font-size: 22px;
-  font-weight: 500;
-}
-
-.text-data .job {
-  font-size: 15px;
-  font-weight: 400;
-}
-
-.profile-card .media-buttons {
-  display: flex;
-  align-items: center;
-  margin-top: 15px;
-}
-
-.media-buttons .medialinks {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #fff;
-  font-size: 18px;
-  height: 34px;
-  width: 34px;
-  border-radius: 50%;
-  margin: 0 8px;
-  background-color: #4070f4;
-  text-decoration: none;
-}
-
-.medialinks.stackoverflow {
-  background-color: #F6A663;
-}
-
-.medialinks.twitterx {
-  background-color: #000000;
-}
-
-.medialinks.github {
-  background-color: #2dba4e;
-}
-
-.medialinks.instagram {
-  background-color: #C13584;
-
-}
-
-
-.medialinks.stackoverflow:hover {
-  background-color: #ff8000;
-}
-
-.medialinks.twitterx:hover {
-  background-color: #1DA1F2;
-}
-
-.medialinks.github:hover {
-  background-color: #00ff3c;
-}
-
-.medialinks.instagram:hover {
-  background-color: #ff0090;
-}
-
-
-
-.profile-card .buttons {
-  display: flex;
-  align-items: center;
+  width: 350px;
+  max-width: 100%;
+  text-align: center;
   margin-top: 25px;
+  margin-right: 20px;
 }
 
-.buttons .button-message {
-  color: #fff;
-  font-size: 14px;
-  font-weight: 400;
-  border: none;
-  border-radius: 24px;
-  margin: 0 10px;
-  padding: 8px 24px;
-  background-color: #4070f4;
-  cursor: pointer;
+.card-container .pro {
+	color: #210027;
+	background-color: #FEBB0B;
+	border-radius: 3px;
+	font-size: 14px;
+	font-weight: bold;
+	padding: 3px 7px;
+	position: absolute;
+	top: 30px;
+	left: 30px;
+}
+
+.go-profile {
+  position: relative;
+  display: inline-block;
+}
+
+.go-profile:hover .round {
+  box-shadow: 0 0 30px rgba(255, 153, 0, 0.8);
+  border-radius: 50%;
+}
+
+.card-container .round {
+	border: 1px solid #ff9900;
+	border-radius: 50%;
+	padding: 7px;
   transition: all 0.3s ease;
 }
 
-.buttons .button-follow {
-  color: #fff;
-  font-size: 14px;
-  font-weight: 400;
-  border: none;
-  border-radius: 24px;
-  margin: 0 10px;
-  padding: 8px 24px;
-  background-color: #ff006a;
-  cursor: pointer;
-  transition: all 0.3s ease;
+button.primary {
+	background-color: #ff9900;
+	border: 1px solid #ff9900;
+	border-radius: 3px;
+	color: #231E39;
+	font-family: Montserrat, sans-serif;
+	font-weight: 500;
+	padding: 10px 25px;
 }
 
-.buttons .button-follow:hover {
-  background-color: #d50f62;
+button.primary:hover {
+  box-shadow: 0 0.5em 0.5em -0.4em var(--hover);
+  transform: translateY(-0.25em);
 }
 
-.buttons .button-message:hover {
-  background-color: #0e4bf1;
+
+button.primary.ghost {
+	background-color: transparent;
+	color: #ff9900;
 }
 
-.buttons .button-follow,
-.buttons .button-message {
-  flex: 1; /* Butonların esnekliğini sağlar */
-  margin: 0 5px;
+button.primary.ghost:hover {
+  box-shadow: 0 0.5em 0.5em -0.4em var(--hover);
+  transform: translateY(-0.25em);
 }
 
-.profile-card .analytics {
-  display: flex;
-  align-items: center;
-  margin-top: 25px;
+
+
+.skills {
+	background-color: #1a001f;
+	text-align: left;
+	padding: 15px;
+	margin-top: 30px;
 }
 
-.analytics .data {
-  display: flex;
-  align-items: center;
-  color: #333;
-  padding: 0 20px;
-  border-right: 2px solid #e7e7e7;
+.skills ul {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
 }
 
-.data i {
-  font-size: 18px;
-  margin-right: 6px;
+.skills ul li {
+	border: 1px solid #2D2747;
+	border-radius: 2px;
+	display: inline-block;
+	font-size: 12px;
+	margin: 0 7px 7px 0;
+	padding: 7px;
 }
 
-.data:last-child {
-  border-right: none;
+h3 {
+	margin: 10px 0;
+}
+
+h6 {
+	margin: 5px 0;
+	text-transform: uppercase;
+}
+
+p {
+	font-size: 14px;
+	line-height: 21px;
 }
