@@ -1,5 +1,6 @@
 python manage.py makemigrations
 python manage.py migrate
+python manage.py loaddata store_data
 python manage.py createsuperuser \
         --noinput \
         --username $DJANGO_SUPERUSER_USERNAME \
