@@ -67,15 +67,15 @@
   </details>
   
   <details>
-      <summary> <b> Introduce an AI Opponent. ⌛</b></summary>
+      <summary> <b> Introduce an AI Opponent. ✅</b></summary>
       In this major module, the objective is to incorporate an AI player into   the game. Notably, the use of the <b>A* algorithm</b> is not permitted for  this task. Key features and goals include:
           <ul>
           <li>✅ Develop an AI opponent  that provides a challenging and engaging gameplay experience for   users. </li>
-          <li>✅ The AI must replicate   human behavior, meaning that in your AI implementation, you must  simulate keyboard input. The constraint here is that the AI can only   refresh its view of the game once per second, requiring it to   anticipate bounces and other actions. </li>
+          <li>⌛ The AI must replicate   human behavior, meaning that in your AI implementation, you must  simulate keyboard input. The constraint here is that the AI can only   refresh its view of the game once per second, requiring it to   anticipate bounces and other actions. </li>
           <i>The AI must utilize power-ups if you have chosen to implement the  Game customization options module.</i>
-          <li>⌛ Implement AI logic and  decision-making processes that enable the AI player to make  intelligent and strategic moves. </li>
+          <li>✅ Implement AI logic and  decision-making processes that enable the AI player to make  intelligent and strategic moves. </li>
           <li>✅ Explore alternative   algorithms and techniques to create an effective AI player without  relying on A*. </li>
-          <li>⌛ Ensure that the AI adapts to  different gameplay scenarios and user interactions. </li>
+          <li>✅ Ensure that the AI adapts to  different gameplay scenarios and user interactions. </li>
           </br>
           <b>This major module aims to enhance the game by introducing an AI   opponent that adds excitement and competitiveness without relying on  the A* algorithm.</b>
           </ul>
@@ -108,24 +108,24 @@
   </details>
   
   <details>
-      <summary> <b> Game Customization Options. ❓</b></summary>
+      <summary> <b> Game Customization Options. ⌛</b></summary>
       In this minor module, the goal is to provide customization options for all  available games on the platform. Key features and objectives include:
           <ul>
-          <li>❓ Offer customization features,   such as power-ups, attacks, or different maps, that enhance the   gameplay experience. </li>
-          <li>❓ Allow users to choose a default   version of the game with basic features if they prefer a simpler  experience. </li>
-          <li>❓ Ensure that customization   options are available and applicable to all games offered on the  platform. </li>
-          <li>❓ Implement user-friendly settings  menus or interfaces for adjusting game parameters. </li>
-          <li>❓ Maintain consistency in   customization features across all games to provide a unified user   experience. </li>
+          <li>⌛ Offer customization features,   such as power-ups, attacks, or different maps, that enhance the   gameplay experience. </li>
+          <li>⌛ Allow users to choose a default   version of the game with basic features if they prefer a simpler  experience. </li>
+          <li>⌛ Ensure that customization   options are available and applicable to all games offered on the  platform. </li>
+          <li>⌛ Implement user-friendly settings  menus or interfaces for adjusting game parameters. </li>
+          <li>⌛ Maintain consistency in   customization features across all games to provide a unified user   experience. </li>
           </ul>
           This module aims to give users the flexibility to tailor their gaming   experience across all available games by providing a variety of   customization options while also offering a default version for those   who prefer a straightforward gameplay experience.
   </details>
   
   <details>
-      <summary> <b> Support on all devices. ⌛</b></summary>
+      <summary> <b> Support on all devices. ❌</b></summary>
       In this module, the main focus is to ensure that your website works   seamlessly on all types of devices. Key features and objectives include:
           <ul>
-          <li>⌛ Make sure the website is  responsive, adapting to different screen sizes and orientations,   ensuring a consistent user experience on desktops, laptops, tablets,  and smartphones. </li>
-          <li>⌛ Ensure that users can easily  navigate and interact with the website using different input methods,  such as touchscreens, keyboards, and mice, depending on the device   they are using. </li>
+          <li>✅ Make sure the website is  responsive, adapting to different screen sizes and orientations,   ensuring a consistent user experience on desktops, laptops, tablets,  and smartphones. </li>
+          <li>❌ Ensure that users can easily  navigate and interact with the website using different input methods,  such as touchscreens, keyboards, and mice, depending on the device   they are using. </li>
           </ul>
           This module aims to provide a consistent and user-friendly experience   on all devices, maximizing accessibility and user satisfaction.
   </details>

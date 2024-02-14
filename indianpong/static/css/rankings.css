@@ -1,0 +1,79 @@
+/* Rankings */
+
+.rankings-card-header {
+  margin-left: 1.8em;
+}
+
+.rankings-header {
+  color:white !important;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 1.2em;
+  font-weight: 600;
+}
+
+.rankings {
+  font-family: 'Open Sans', sans-serif;
+  margin: 1em auto; /* Merkezlemek için margin kullanıyoruz */
+  margin-top: -0.5em;
+  max-width: 1200px;
+  text-align: center;
+  width: 100%; /* Make the table take up 100% of the container */
+}
+
+.rankings nav {
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px; /* İhtiyaca göre ayarlayabilirsiniz */
+}
+
+.card-rankings-table {
+  background: #012B39;
+  border-radius: 0.25em;
+  border-collapse: collapse;
+  overflow-x: auto;
+  margin: 1em auto; /* "card" elemanının genişliğine göre ortalamak için */
+  max-width: 1300px; /* "card" elemanıyla aynı max-width değeri */
+  width: 100%;
+}
+
+.card-rankings-table th {
+  border-bottom: 1px solid #364043;
+  color: #46c9f1;
+  font-size: 0.85em;
+  font-weight: 600;
+  padding: 0.5em 1em;
+}
+
+.card-rankings-table thead {
+  background-color: #061d24;
+}
+
+.card-rankings-table td {
+  color: #fff;
+  padding: 0.65em 1em;
+}
+
+.card-rankings-table .rank-number {
+  font-weight: 400;
+}
+
+.card-rankings-table .rank-username {
+  font-weight: 400;
+}
+
+.card-rankings-table .pong-point {
+  color: #5bb9e2;
+}
+
+
+.card-rankings-table tr .wins {
+  color: green;
+  font-weight: 200;
+}
+
+.card-rankings-table tr .losses {
+  color: red;
+  font-weight: 200;
+}
