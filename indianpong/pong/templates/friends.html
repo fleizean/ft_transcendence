@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+
+{% block title %}{{profile.username}} Friends{% endblock %}
+
+{% block app %}
+    {% include "_nav.html" %}
+<div class="container-top">
+    <!-- "Edit Profile" ve "Match History" Navbar -->
+    <div class="row mt-4" style="margin-bottom:5px">
+        <div class="col">
+            <nav class="navbar navbar-expand-lg navbar-light bg-light rounded">
+                <!-- Navbar Marka -->
+                <!-- Navbar Toggle Butonu -->
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <!-- Navbar Menü -->
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url "profile" username=profile.username %}"><i class="bi bi-person"></i>Profile</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url "match_history" profile=profile.username %}"><i class="bi bi-easel-fill"></i>Match History</a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    </div>
+</div>
+<div class="card-friends-list">
+    <div class="friend-list-card-header">
+        <h3 class="friend-list-header">{{profile.username}} / Friends List</h3>
+    </div>
+    <div class="friends-list">
+        <div class="row">
+            {% for friend in friends_page_obj %}
+                <div class="col-md-6 col-xl-3">
+                    <div class="card friends">
+                        <div class="card-body">
+                            <div class="media align-items-center">
+                                <span style="background-image: url('{{ friend.avatar }}')" class="avatar avatar-xl mr-3"></span>
+                                <div class="media-body overflow-hidden">
+                                    <h5 class="card-text mb-0">{{ friend.username }}</h5>
+                                    <p class="card-text text-uppercase text-muted">{{ friend.displayname }}</p>
+                                    <p class="card-text">
+                                        {{ friend.email }}
+                                    </p>                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+            <!-- Sayfalar arasında gezinme bağlantıları -->
+            </div>
+            <nav aria-label="Page navigation example">
+                <ul class="pagination">
+                    <li class="page-item {% if friends_page_obj.has_previous %}disabled{% endif %}">
+                        <a class="page-link" href="{% if friends_page_obj.has_previous %}?page={{ friends_page_obj.previous_page_number }}{% endif %}" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    {% for page_num in friends_page_obj.paginator.page_range %}
+                        <li class="page-item {% if page_num == friends_page_obj.number %}active{% endif %}">
+                            <a class="page-link" href="?page={{ page_num }}">{{ page_num }}</a>
+                        </li>
+                    {% endfor %}
+                    <li class="page-item {% if friends_page_obj.has_next %}disabled{% endif %}">
+                        <a class="page-link" href="{% if friends_page_obj.has_next %}?page={{ friends_page_obj.next_page_number }}{% endif %}" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>        
+        </div>
+    </div>
+</div>
+{% endblock %}
