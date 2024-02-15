@@ -2,7 +2,7 @@ import json
 from channels.generic.websocket import AsyncWebsocketConsumer
 from channels.db import database_sync_to_async
 from pong.utils import AsyncLockedDict
-from .models import Game, Tournament, MatchRecord, UserProfile, Room, Message #Match, Score, chat
+from .models import Game, Tournament, UserProfile, Room, Message #Match, Score, chat
 from pong.game import *
 
 USER_CHANNEL_NAME = AsyncLockedDict() # key: username, value: channel_name
@@ -13,6 +13,7 @@ class PongConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         # Get the user from the scope
         self.user = self.scope["user"]
+        self.room_group_name = None
         # Check if the user is authenticated
         if self.user.is_anonymous:
             # Reject the connection
@@ -59,6 +60,9 @@ class PongConsumer(AsyncWebsocketConsumer):
         await USER_STATUS.delete(self.user.username) 
         # Remove the user from the 'online' group
         await self.channel_layer.group_discard("online", self.channel_name)
+        if self.room_group_name != None:
+            # Leave room group
+            await self.channel_layer.group_discard(self.room_group_name, self.channel_name)
         # Send a message to the group with the user's username
         await self.channel_layer.group_send(
             "online",
@@ -72,7 +76,35 @@ class PongConsumer(AsyncWebsocketConsumer):
         # Receive a message from the client
         data = json.loads(text_data)
         action = data["action"]
-        if action == "invite": #* Validated
+
+        ### CHAT ###
+        if action == "room":
+            room_name = data["room_name"]
+            self.room_name = room_name
+            self.room_group_name = "chat_%s" % room_name
+
+            # Join room group
+            await self.channel_layer.group_add(self.room_group_name, self.channel_name)
+
+        elif action == "message":
+            user = data["user"]
+            message = data["message"]
+            # Create Message Object
+            room = await Room.objects.aget(room_name=self.room_name)
+            user = await UserProfile.objects.aget(username = user)
+            msg = await Message.objects.acreate(content=message, user=user, room=room)
+            # Send message to room group
+            await self.channel_layer.group_send(
+                self.room_group_name, 
+                {
+                    "type": "chat.message", 
+                    "message": message,
+                    "user": user.username,
+                    "created_date": msg.get_short_date(),
+                }
+            )
+        ### GAME ###
+        elif action == "invite": #* Validated
             # Invite another user to play a game
             invited = data["invited"]
             # Check if the opponent exists #TODO remove these when you implement button invite
@@ -108,20 +140,9 @@ class PongConsumer(AsyncWebsocketConsumer):
             group_name = data["group_name"]
             accepted = data["accepted"]
             accepter = data["accepter"]
-            # Create a new game instance and save it to the database
-            game = await self.create_game(group_name, accepted, accepter)
-            # Create a new game instance and save it to the cache
-            await GAMES.set(game.id, PongGame(accepted, accepter))
-            # Send a message to the game group with the game id and the players' usernames
-            await self.channel_layer.group_send(
-                game.group_name,
-                {
-                    "type": "game.accept",
-                    "game_id": game.id,
-                    "accepter": accepter,
-                    "accepted": accepted
-                }
-            )
+
+            await self.accept_handler(group_name, accepted, accepter)
+
         elif action == "decline": #? Needs validation
             # Decline an invitation to play a game
             group_name = data["group_name"]
@@ -171,33 +192,11 @@ class PongConsumer(AsyncWebsocketConsumer):
             game_id = data["game_id"]
             left = data["left"]
             opponent = data["opponent"]
-            # Get scores
-            game = await GAMES.get(game_id) 
-            left_score = game.getScore(left) # blocking?
-            opponent_score = MAX_SCORE # set max score automaticaly
-            # Record the game
-            await self.record_game(game_id, left_score, opponent_score, opponent)
-            # Send a message to the game group with the game id and the opponent's username
-            await self.channel_layer.group_send(
-                game.group_name,
-                {
-                    "type": "game.leave",
-                    "game_id": game_id,
-                    "left_score": left_score,
-                    "opponent_score": opponent_score,
-                    "winner": opponent,
-                }
-            )
-            # Discard both from the game group
-            standing_channel_name = await USER_CHANNEL_NAME.get(opponent)
-            await self.channel_layer.group_discard(game.group_name, self.channel_name)
-            await self.channel_layer.group_discard(game.group_name, standing_channel_name)
-            # Update the game status to 'ended' or delete it
-            await GAMES.delete(game_id)
+            await self.leave_handler(game_id, left, opponent)
+
         elif action == "ball": #? Needs validation
-            # Make a move in a game # TODO this should be in server side not client side?
-            # Interval should be 16 ms so every 16 ms
-            # we should send a message to the clients with the ball coordinates
+            # Make a move in a game and get the ball coordinates
+            # we send a message to the clients with the ball coordinates
             game_id = data["game_id"]
             # Move and Get ball coordinates
             game = await GAMES.get(game_id) #? When games status is ended, game_id is deleted from GAMES cache
@@ -217,25 +216,8 @@ class PongConsumer(AsyncWebsocketConsumer):
                         }
                     )
                 elif (game.status == Status.ENDED):
-                    # Get scores
-                    player1_score = game.player1.score
-                    player2_score = game.player2.score
-                    winner = player1_score > player2_score and game.player1.username or game.player2.username
-                    # Set the game winner, scores and save it to the database
-                    await self.record_game(game_id, player1_score, player2_score, winner)
-                    # Send a message to the game group with the game id and the winner's username
-                    await self.channel_layer.group_send(
-                        game.group_name,
-                        {
-                            "type": "game.end",
-                            "game_id": game_id,
-                            "player1_score": player1_score, #? maybe redundant
-                            "player2_score": player2_score,
-                            "winner": winner,
-                        }
-                    )
-                    # Set the game status to 'ended' or delete it
-                    await GAMES.delete(game_id)
+                    await self.end_handler(game_id, game)
+
         elif action == "paddle": #? Needs validation
             # Make a move in a game
             game_id = data["game_id"]
@@ -254,14 +236,15 @@ class PongConsumer(AsyncWebsocketConsumer):
                         "player": self.user.username,
                     }
                 )
-    '''
+        ### TOURNAMENT
+
         elif action == "create":
             # Create a new tournament
             name = data["name"]
             #start_date = data["start_date"]
             #end_date = data["end_date"]
             # Create a new tournament instance with the given details and save it to the database
-            tournament = await self.create_tournament(name)
+            tournament = await Tournament.objects.acreate(name)
             # Send a message to the 'online' group with the tournament id and the tournament details
             await self.channel_layer.group_send(
                 "online",
@@ -277,10 +260,10 @@ class PongConsumer(AsyncWebsocketConsumer):
             # Join a tournament
             tournament_id = data["tournament_id"]
             # Get the tournament instance from the database
-            tournament = await self.get_tournament(tournament_id)
+            tournament = await Tournament.objects.aget(id = tournament_id)
             # Add the user to the tournament players and save it to the database
-            tournament.participants.add(self.user)
-            await self.save_tournament(tournament)
+            tournament.standings.add(self.user)
+            await tournament.asave()
             # Send a message to the 'online' group with the tournament id and the user's username
             await self.channel_layer.group_send(
                 "online",
@@ -294,10 +277,10 @@ class PongConsumer(AsyncWebsocketConsumer):
             # Leave a tournament
             tournament_id = data["tournament_id"]
             # Get the tournament instance from the database
-            tournament = await self.get_tournament(tournament_id)
+            tournament = await Tournament.objects.aget(id = tournament_id)
             # Remove the user from the tournament players and save it to the database
-            tournament.participants.remove(self.user)
-            await self.save_tournament(tournament)
+            tournament.standings.remove(self.user)
+            await tournament.asave()
             # Send a message to the 'online' group with the tournament id and the user's username
             await self.channel_layer.group_send(
                 "online",
@@ -307,13 +290,13 @@ class PongConsumer(AsyncWebsocketConsumer):
                     "username": self.user.username,
                 }
             )
-        elif action == "cancel":
+        elif action == "cancel": # TODO Only the tournament creator can cancel the tournament
             # Cancel a tournament
             tournament_id = data["tournament_id"]
             # Get the tournament instance from the database
-            tournament = await self.get_tournament(tournament_id)
+            tournament = await Tournament.objects.aget(id = tournament_id)
             # Delete the tournament instance from the database
-            await tournament.delete()
+            await tournament.adelete()
             # Send a message to the 'online' group with the tournament id
             await self.channel_layer.group_send(
                 "online",
@@ -322,18 +305,20 @@ class PongConsumer(AsyncWebsocketConsumer):
                     "tournament_id": tournament.id,
                 }
             )
-        elif action == "start":
+        elif action == "start": # TODO Only the tournament creator can start the tournament
             # Start a tournament
             tournament_id = data["tournament_id"]
             # Get the tournament instance from the database
-            tournament = await self.get_tournament(tournament_id)
+            tournament = await Tournament.objects.aget(id = tournament_id)
             # Update the tournament status to 'started' and save it to the database
             tournament.status = "started"
-            await self.save_tournament(tournament)
+            await tournament.asave()
             # Create the first round of matches and save them to the database
             matches = await self.create_matches(tournament)
             # Send a message to the 'online' group with the tournament id and the matches details
-            await self.channel_layer.group_send(
+            for match in matches:
+                await self.accept_handler(match.group_name, match.player1.username, match.player2.username, tournament_id)
+            """             await self.channel_layer.group_send(
                 "online",
                 {
                     "type": "tournament.start",
@@ -347,21 +332,22 @@ class PongConsumer(AsyncWebsocketConsumer):
                         for match in matches
                     ],
                 }
-            )
-        elif action == "finish":
+            ) """
+            """         elif action == "finish":  # TODO move logic to end_handler
             # Finish a match in a tournament
             tournament_id = data["tournament_id"]
             match_id = data["match_id"]
             winner = data["winner"]
             # Get the match instance from the database
-            match = await self.get_match(match_id)
+            match = await GAMES.get(match_id)
             # Update the match status to 'finished' and save it to the database
-            match.status = "finished"
-            await self.save_match(match)
-            # Update the tournament standings with the match result and save it to the database
-            tournament = await self.get_tournament(tournament_id)
-            tournament.standings[winner] += 1
-            await self.save_tournament(tournament)
+            match.status = Status.ENDED
+            await Game.objects.asave(id = match_id)
+            # Remove loser from the standings and save it to the database
+            tournament = await Tournament.objects.aget(id = tournament_id)
+            loser =  match.player1.username == winner and match.player2.username or match.player1.username
+            loser = await UserProfile.objects.aget(username = loser)
+            tournament.standings.remove(loser)
             # Send a message to the 'online' group with the match id and the winner's username
             await self.channel_layer.group_send(
                 "online",
@@ -370,31 +356,33 @@ class PongConsumer(AsyncWebsocketConsumer):
                     "match_id": match.id,
                     "winner": winner,
                 }
-            )
-        elif action == "next":
+            ) """
+        elif action == "next": # TODO Somehow check if all players finished their matches
             # Start the next round of matches in a tournament
             tournament_id = data["tournament_id"]
             # Get the tournament instance from the database
-            tournament = await self.get_tournament(tournament_id)
+            tournament = await Tournament.objects.aget(id = tournament_id)
             # Check if the tournament is over
-            if len(tournament.standings) == 1:
+            if await tournament.standings.acount() == 1:
                 # Update the tournament status to 'ended' and save it to the database
                 tournament.status = "ended"
-                await self.save_tournament(tournament)
+                await tournament.asave()
                 # Send a message to the 'online' group with the tournament id and the winner's username
                 await self.channel_layer.group_send(
                     "online",
                     {
                         "type": "tournament.end",
                         "tournament_id": tournament.id,
-                        "winner": list(tournament.standings.keys())[0],
+                        "winner": tournament.standings.username, #? Is this correct?
                     }
                 )
             else:
                 # Create the next round of matches and save them to the database
                 matches = await self.create_matches(tournament)
                 # Send a message to the 'online' group with the tournament id and the matches details
-                await self.channel_layer.group_send(
+                for match in matches:
+                    await self.accept_handler(match.group_name, match.player1.username, match.player2.username, tournament_id)
+                """                 await self.channel_layer.group_send(
                     "online",
                     {
                         "type": "tournament.next",
@@ -408,18 +396,115 @@ class PongConsumer(AsyncWebsocketConsumer):
                             for match in matches
                         ],
                     }
-                )
-    '''
+                ) """
+
+    # Handler methods for indivual or tournament games
+    async def accept_handler(self, group_name, accepted, accepter, tournament_id=None):
+        # Create a new game instance and save it to the database
+        game = await self.create_game(group_name, accepted, accepter, tournament_id)
+        # Create a new game instance and save it to the cache
+        await GAMES.set(game.id, PongGame(accepted, accepter, tournament_id))
+        if tournament_id != None:
+            await self.channel_layer.group_send(
+                "online",
+                {
+                    "type": "tournament.match",
+                    "tournament_id": tournament_id,
+                    "match_id": game.id,
+                    "player1": game.player1.username,
+                    "player2": game.player2.username,
+
+                }
+            )
+        # Send a message to the game group with the game id and the players' usernames
+        await self.channel_layer.group_send(
+            game.group_name,
+            {
+                "type": "game.accept",
+                "game_id": game.id,
+                "accepter": accepter,
+                "accepted": accepted
+            }
+        )
+
+    async def leave_handler(self, game_id, left, opponent):
+        # Get scores
+        game = await GAMES.get(game_id) 
+        left_score = game.getScore(left) # blocking?
+        opponent_score = MAX_SCORE # set max score automaticaly
+        # Record the game
+        await self.record_game(game_id, left_score, opponent_score, opponent)
+        # Send a message to the game group with the game id and the opponent's username
+        if game.tournament_id != None:
+            await self.channel_layer.group_send(
+                "online",
+                {
+                    "type": "tournament.match.leave",
+                    "tournament_id": game.tournament_id,
+                    "match_id": game_id,
+                    "left_score": left_score,
+                    "opponent_score": opponent_score,
+                    "winner": opponent,
+                }
+            )
+        await self.channel_layer.group_send(
+            game.group_name,
+            {
+                "type": "game.leave",
+                "game_id": game_id,
+                "left_score": left_score,
+                "opponent_score": opponent_score,
+                "winner": opponent,
+            }
+        )
+        # Discard both from the game group
+        standing_channel_name = await USER_CHANNEL_NAME.get(opponent)
+        await self.channel_layer.group_discard(game.group_name, self.channel_name)
+        await self.channel_layer.group_discard(game.group_name, standing_channel_name)
+        # Update the game status to 'ended' or delete it
+        await GAMES.delete(game_id)
+
+    async def end_handler(self, game_id, game):
+        # Get scores
+        player1_score = game.player1.score
+        player2_score = game.player2.score
+        winner = player1_score > player2_score and game.player1.username or game.player2.username
+        # Set the game winner, scores and save it to the database
+        await self.record_game(game_id, player1_score, player2_score, winner)
+        # Send a message to the game group with the game id and the winner's username
+        if game.tournament_id != None:
+            # Remove loser from the standings and save it to the database #TODO
+            await self.channel_layer.group_send(
+                "online",
+                {
+                    "type": "tournament.match.end",
+                    "tournament_id": game.tournament_id,
+                    "match_id": game_id,
+                    "player1_score": player1_score,
+                    "player2_score": player2_score,
+                    "winner": winner,
+                }
+            )
+        await self.channel_layer.group_send(
+            game.group_name,
+            {
+                "type": "game.end",
+                "game_id": game_id,
+                "player1_score": player1_score, #? maybe redundant
+                "player2_score": player2_score,
+                "winner": winner,
+            }
+        )
+        # delete game from cache
+        await GAMES.delete(game_id)
+
     # Helper methods to interact with the database
-    @database_sync_to_async
-    def get_online_users_list(self):
-        return [user.username for user in UserProfile.objects.filter(online=True)]
-    
-    async def create_game(self, group_name, player1, player2):
+    async def create_game(self, group_name, player1, player2, tournament_id=None):
         # Create a new game instance with the given players and an group_name
         accepted = await UserProfile.objects.aget(username=player1)
         accepter = await UserProfile.objects.aget(username=player2)
-        game = await Game.objects.acreate(group_name=group_name, player1=accepted, player2=accepter)
+        tournament = await Tournament.objects.aget(id=tournament_id) if tournament_id != None else None            
+        game = await Game.objects.acreate(group_name=group_name, player1=accepted, player2=accepter, tournament=tournament)
         return game
 
     async def record_game(self, game_id, player1_score, player2_score, winner):
@@ -454,50 +539,20 @@ class PongConsumer(AsyncWebsocketConsumer):
         return answer
     
     
-        
-    '''
-    @database_sync_to_async
-    def create_tournament(self, name):
-        # Create a new tournament instance with the given name and an empty standings
-        # start_date in models.py is auto_now_add=True maybe we shouldn't pass it here
-        tournament = Tournament.objects.create(id=uuid4(), name=name, status="open", start_date=datetime.now(), standings={})
-        return tournament
-    
-    @database_sync_to_async
-    def get_tournament(self, tournament_id):
-        # Get the tournament instance with the given id
-        tournament = Tournament.objects.get(id=tournament_id)
-        return tournament
-    
-    @database_sync_to_async
-    def save_tournament(self, tournament):
-        # Save the tournament instance to the database
-        tournament.save()
-
     @database_sync_to_async
     def create_matches(self, tournament):
         # Create the next round of matches for the tournament
         # This is a simplified logic that assumes the number of players is a power of two
-        # and that the players are ordered by their standings
-        players = list(tournament.participants.all())
+        players = list(tournament.standings.all())
+        random.shuffle(players)
         matches = []
         for i in range(0, len(players), 2):
             # Create a new match instance with the pair of players and the tournament
-            match = Match.objects.create(player1=players[i], player2=players[i+1], tournament=tournament)
+            match = Game.objects.create(player1=players[i], player2=players[i+1], tournament=tournament)
             matches.append(match)
         return matches
 
-    @database_sync_to_async
-    def get_match(self, match_id):
-        # Get the match instance with the given id
-        match = Match.objects.get(id=match_id)
-        return match
 
-    @database_sync_to_async
-    def save_match(self, match):
-        # Save the match instance to the database
-        match.save()
-'''
     # Handler methods for different types of messages
     async def user_online(self, event):
         # Handle a message that a user is online
@@ -518,7 +573,19 @@ class PongConsumer(AsyncWebsocketConsumer):
         await self.send(text_data=json.dumps({
             "type": "user.offline",
             "username": username,
-            #"users": users,
+        }))
+
+    # Receive message from room group
+    async def chat_message(self, event):
+        message = event["message"]
+        user = event["user"]
+        created_date = event["created_date"]
+        # Send message to WebSocket
+        await self.send(text_data=json.dumps({
+            "type": "chat.message",
+            "message": message,
+            "user": user,
+            "created_date": created_date,
         }))
 
     async def game_invite(self, event):
@@ -689,48 +756,3 @@ class PongConsumer(AsyncWebsocketConsumer):
             "winner": winner,
         }))
 '''
-
-
-class ChatConsumer(AsyncWebsocketConsumer):
-    async def connect(self):
-        self.room_name = self.scope["url_route"]["kwargs"]["room_name"]
-        self.room_group_name = "chat_%s" % self.room_name
-        
-        # Join room group
-        await self.channel_layer.group_add(self.room_group_name, self.channel_name)
-
-        await self.accept()
-
-    async def disconnect(self, close_code):
-        # Leave room group
-        await self.channel_layer.group_discard(self.room_group_name, self.channel_name)
-
-    # Receive message from WebSocket
-    async def receive(self, text_data):
-        text_data_json = json.loads(text_data)
-        message = text_data_json["message"]
-
-        user = await UserProfile.objects.aget(username = text_data_json["user"])
-        m = await Message.objects.acreate(content=message, user=user, room_id=self.room_name) #? Room object isn't created yet
-        # Send message to room group
-        await self.channel_layer.group_send(
-            self.room_group_name, 
-            {
-                "type": "chat_message", 
-                "message": message,
-                "user": user.username,
-                "created_date": m.get_short_date(), #? blocking?
-            }
-        )
-
-    # Receive message from room group
-    async def chat_message(self, event):
-        message = event["message"]
-        user = event["user"]
-        created_date = event["created_date"]
-        # Send message to WebSocket
-        await self.send(text_data=json.dumps({
-            "message": message,
-            "user": user,
-            "created_date": created_date,
-        }))

@@ -2,6 +2,17 @@ import base64, hashlib, os
 from django.shortcuts import render, redirect
 from django.contrib.auth import login
 import asyncio
+import os
+from django.utils.crypto import get_random_string
+
+def delete_from_media(path):
+    if os.path.isfile(path):
+        os.remove(path)
+
+def get_upload_to(instance, filename):
+    ext = filename.split('.')[-1]
+    filename = "%s_%s.%s" % (instance.username, get_random_string(length=7), ext)
+    return filename
 
 def pass2fa(request, user_obj):
 	if user_obj.has_2fa:

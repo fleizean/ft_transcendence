@@ -47,9 +47,10 @@ class Player:
 
 # Game class have one Ball and two Players objects
 class PongGame:
-    def __init__(self, player1, player2):
+    def __init__(self, player1, player2, tournament_id=None):
         self.status = Status.ACCEPTED
         self.group_name = player1 + "-" + player2
+        self.tournament_id = tournament_id
         self.ball = Ball()
         self.player1 = Player(player1)
         self.player2 = Player(player2)

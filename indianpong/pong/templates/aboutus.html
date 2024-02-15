@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+
+{% block title %}About Us{% endblock title %}
+
+{% block stylesheet %}<link rel="stylesheet" href="../../../static/css/aboutus.css">{% endblock stylesheet %}
+
+{% load static %}
+
+{% block app %}
+    {% include '_nav.html' %} 
+    <div class="card">
+        <div class="row">
+           {% comment %}  <p class="col col-12"  style="color: white; font-size: 20px; text-align: center;">Hindistanlı yazılımcılar, kod yazma konusunda sadece naan ekmeği kadar hızlılar ve işte bu yüzden dünyanın her yerinden şirketler onlara 'Bu fiyatlarla, kodda biraz baharat olsa ne olurdu?' diye sormak istiyor!</p> {% endcomment %}
+        </div>
+        <div class="profiles">
+            <div class="profile_card c4">
+                <div class="profile_card__inner">
+                    <div class="profile_card__front">
+                        <img src="https://i.hizliresim.com/mu0ink4.jpg" alt="Avatar" class="profile-img">
+                        <div class="profile_card__detail">
+                            <br>
+                            <p class="profile__title">Samet Çiftçi</p>
+                        </div>
+                    </div>
+                    <div class="profile_links">
+                        <div><a href="https://github.com/temasictfic/" target="_blank"><i class="bi bi-github"></i></a></div>
+                        <div><a href="" target="_blank"><i class="bi bi-linkedin"></i></a></div>
+                        <div><a href="https://profile.intra.42.fr/users/sciftci" target="_blank"><img src="{% static 'assets/42.svg' %}" alt="Avatar" class="profile-img"></a></div>
+                    </div>
+                </div>
+            </div>
+            <div class="profile_card c4">
+                <div class="profile_card__inner">
+                    <div class="profile_card__front">
+                        <img src="https://i.hizliresim.com/ij9ktl2.jpeg" alt="Avatar" class="profile-img">
+                        <div class="profile_card__detail">
+                            <p class="profile__title">Furkan Yurtseven</p>
+                        </div>
+                    </div>
+                    <div class="profile_links">
+                        <div><a href="https://github.com/fyurtsev/" target="_blank"><i class="bi bi-github"></i></a></div>
+                        <div><a href="https://www.linkedin.com/in/furkanyurtseven/" target="_blank"><i class="bi bi-linkedin"></i></a></div>
+                        <div><a href="https://profile.intra.42.fr/users/fyurtsev" target="_blank"><img src="{% static 'assets/42.svg' %}" alt="Avatar" class="profile-img"></a></div>
+                    </div>
+                </div>
+            </div>
+            <div class="profile_card c4">
+                <div class="profile_card__inner">
+                    <div class="profile_card__front">
+                        <img src="https://avatars.githubusercontent.com/u/96894640?v=4" alt="Avatar" class="profile-img">
+                        <div class="profile_card__detail">
+                            <p class="profile__title">Yunus Emre Aktaş</p>
+                        </div>
+                    </div>
+                    <div class="profile_links">
+                        <div><a href="https://github.com/yeaktas/" target="_blank"><i class="bi bi-github"></i></a></div>
+                        <div><a href="https://www.linkedin.com/in/yeaktas/" target="_blank"><i class="bi bi-linkedin"></i></a></div>
+                        <div><a href="https://profile.intra.42.fr/users/yaktas" target="_blank"><img src="{% static 'assets/42.svg' %}" alt="Avatar" class="profile-img"></a></div>
+                    </div>
+                </div>
+            </div>
+            <div class="profile_card c4">
+                <div class="profile_card__inner">
+                    <div class="profile_card__front">
+                        <img src="https://avatars.githubusercontent.com/u/66090171?v=4" alt="Avatar" class="profile-img">
+                        <div class="profile_card__detail">
+                            <br>
+                            <p class="profile__title">Enes Yağız</p>
+                        </div>
+                    </div>
+                    <div class="profile_links">
+                        <div><a href="https://github.com/fleizean/" target="_blank"><i class="bi bi-github"></i></a></div>
+                        <div><a href="https://www.linkedin.com/in/fleizean/" target="_blank"><i class="bi bi-linkedin"></i></a></div>
+                        <div><a href="https://profile.intra.42.fr/users/eyagiz" target="_blank"><img src="{% static 'assets/42.svg' %}" alt="Avatar" class="profile-img"></a></div>
+                    </div>
+                </div>
+            </div>
+            <div class="profile_card c4">
+                <div class="profile_card__inner">
+                    <div class="profile_card__front">
+                        <img src="{% static 'assets/profile/profilephoto.jpeg' %}" alt="Avatar" class="profile-img">
+                        <div class="profile_card__detail">
+                            <br>
+                            <p class="profile__title">A. Can Taşkın</p>
+
+                        </div>
+                    </div>
+                    <div class="profile_links">
+                        <div><a href="https://github.com/cantaskin/" target="_blank"><i class="bi bi-github"></i></a></div>
+                        <div><a href="https://www.linkedin.com/in/a-can-ta%C5%9Fk%C4%B1n-823882190/" target="_blank"><i class="bi bi-linkedin"></i></a></div>
+                        <div><a href="https://profile.intra.42.fr/users/ataskin" target="_blank"><img src="{% static 'assets/42.svg' %}" alt="Avatar" class="profile-img"></a></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+{% endblock app %}

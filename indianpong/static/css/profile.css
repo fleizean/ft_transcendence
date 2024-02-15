@@ -1,114 +1,73 @@
+
+
+
 /* Profile Page */
 
 .nav-item {
     margin-left: 5px;
     margin-right: 5px;
-  }
-  
-  .navbar-nav.ml-auto .nav-item:hover,
-  .navbar-nav.ml-auto .nav-item:hover > .nav-link {
-      background-color: #5c5be5;
-      box-shadow: 0px 15px 11px -6px #7a7a7d;
-      color: #fff; /* İsterseniz metin rengini de ayarlayabilirsiniz */
-  }
+}
 
-/* Edit Profile */
-
-.navbar-nav {
-    padding-top: 20px; /* Add space at the top */
-  }
-  
-  /* Edit Profile Form styles */
-  
-  #changePassword {
-    display: none; /* Hide sections by default */
-  }
-  
-  #addSocial {
-    display: none; /* Hide sections by default */
-  }
-  
-  #closeAccount {
-    display: none; /* Hide sections by default */
-  }
-  
-  .navbar-nav .nav-item .nav-link:hover {
+.navbar-nav.ml-auto .nav-item:hover,
+.navbar-nav.ml-auto .nav-item:hover > .nav-link {
     background-color: #5c5be5;
     box-shadow: 0px 15px 11px -6px #7a7a7d;
-    color: #fff; /* İsterseniz metin rengini de ayarlayabilirsiniz */}
+    color: #fff; /* İsterseniz metin rengini de ayarlayabilirsiniz */
+}
   
-  #editProfileForm {
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-  }
+
   
-  
-  .pro-profile {
-      color: #fff;
-      background: url('../assets/backgrounds/leader-bg.png');
-      border-radius: 3px;
-      font-size: 16px;
-      font-weight: bold;
-      padding: 2px 5px;
-    text-align: center;
-  }
-  
-  
-  #editProfileForm .form-group {
-    margin-bottom: 15px;
-  }
-  
-  .profile-pic-container {
-    position: relative;
-    text-align: center;
-    margin-bottom: 2em;
-  }
-  
-  .profile-pic-label {
-    cursor: pointer;
-    position: relative;
-    display: inline-block;
-  }
-  
-  .profile-pic {
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
-    object-fit: cover;
-  }
-  
-  .change-image-overlay {
+.stats-info {
+    margin-top: 10px;
+}
+
+.stats {
+    /* Add your styles for stats here */
+    margin-bottom: -2px;
+}
+
+.stats-p {
+    /* Add your styles for stats-p here */
+    font-size: 14px;
+    color: #000000;   
+    font-weight: 500; 
+    text-align: left;
+}
+
+.stats .bi-dice-1-fill { color: #ff5733; } /* Oyunlar oynandığında */
+.stats .bi-trophy-fill { color: #ffd700; } /* Kazanıldığında */
+.stats .bi-emoji-frown-fill { color: #ff1100; } /* Kaybedildiğinde */
+.stats .bi-award-fill { color: #00b907; } /* Kazanma oranı %50'den büyük olduğunda */
+.stats .bi-bucket-fill { color: #f44336; } /* Kaybetme oranı %50'den büyük olduğunda */
+.stats .bi-clock-fill { color: #00bcd4; } /* Ortalama oyun süresi */
+.stats .bi-emoji-wink-fill { color:#3fb067 }
+
+.stats-result-p {
+    /* Add your styles for stats-result-p here */
+    font-size: 14px;
+    color: #000000;
+    font-weight: 700; 
+    right: 0;
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    border-radius: 50%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    opacity: 0;
-    transition: opacity 0.3s;
-  }
+    margin-right: 2.5em;
+}
   
-  .change-image-overlay span {
-    color: white;
-    font-size: 16px;
-    font-weight: bold;
-  }
+.stats-p, .stats-result-p {
+    display: inline-block;
+}
   
-  .change-image-text {
-    vertical-align: middle;
-  }
+.profile-slashed-info {
+    font-size: 10px;
+}
   
-  .profile-pic-label:hover .change-image-overlay {
-    opacity: 1;
-  }
   
-  .file-input {
-    display: none;
-  }
+  
+  
+  
+  
+  
+  
+  
+  
+  
   

@@ -1,67 +1,90 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 
 {% block title %}Search{% endblock title %}
 
+{% load static %}
+
+{% block stylesheet %}<link rel="stylesheet" href="../../../static/css/search.css">{% endblock stylesheet %}
+
 {% block app %}
   {% include "_nav.html" %}
-
-  <div class="container-top">
-    <div class="card">
+<div class="container-top">
+    <div class="search-card">
         <!-- Arama kutusu ve butonu -->
-        <div class="search-container">
-            <input type="text" placeholder="Email or Nickname Search..." class="search-input">
-            <button class="search-button"><i class="bi bi-search"></i></button>
-        </div>
-        <div class="card-container-wrapper">
-          <div class="card-container">
-              <span class="pro">1ST</span>
-            <a href="#" class="go-profile"><img class="round" src="https://randomuser.me/api/portraits/women/79.jpg" alt="user" /></a>              	
-            <h3>Ricky Park</h3>
-              <h6>New York</h6>
-              <p>User interface designer and <br/> front-end developer</p>
-              <div class="buttons">
-                  <button class="primary">Message</button>
-                  <button class="primary ghost">Add Friends</button>
-              </div>
-              <div class="skills">
-                  <h6>Skills</h6>
-                  <ul>
-                      <li>UI / UX</li>
-                      <li>Front End Development</li>
-                      <li>HTML</li>
-                      <li>CSS</li>
-                      <li>JavaScript</li>
-                      <li>React</li>
-                      <li>Node</li>
-                  </ul>
-              </div>
-          </div>
-          <div class="card-container">
-              <span class="pro">2ST</span>
-              <a href="#" class="go-profile"><img class="round" src="https://randomuser.me/api/portraits/women/79.jpg" alt="user" /></a>
-              <h3>Ricky Park</h3>
-              <h6>New York</h6>
-              <p>User interface designer and <br/> front-end developer</p>
-              <div class="buttons">
+        <form action="{% url 'search' %}" method="POST">
+            <div class="search-container">
+                <input type="text" name="search_query" placeholder="Email or Username or Displayname Search..." class="search-input" autocomplete="off" data-lpignore="true">
+                <button class="search-button" type="submit"><i class="bi bi-search"></i></button>
+            </div>
+        </form>
 
-                  <button class="primary">Message</button>
-                  <button class="primary ghost">Add Friends</button>
+        <div class="card-container-wrapper">
+        <!-- Arama sonuçları -->
+        {% if results %}
+            {% for kullanici in results %}
+              <div class="card-containers">
+                <div class="profile-card">
+                    <div class="image">
+                        {% if kullanici.avatar %}
+                            <a href="profile/{{kullanici.username}}"><img src="{{kullanici.avatar.url}}" alt="" class="profile-img" /></a>
+                        {% else %}
+                            <a href="profile/{{kullanici.username}}"><img src="/static/assets/profile/profilephoto.jpeg" alt="" class="profile-img" /></a>
+                        {% endif %}
+                    </div>
+                    <div class="text-data">
+                      <span class="name">{{kullanici.username}}</span>
+                      <span class="job">{{kullanici.displayname}}</span>
+                    </div>
+                    <div class="media-buttons">
+                      {% if kullanici.social.stackoverflow %}
+                        <a href="https://stackoverflow.com/users/{{kullanici.social.stackoverflow}}" target="_blank" class="medialinks stackoverflow"><i class="bi bi-stack-overflow"></i></a>
+                      {% endif %}
+                      {% if kullanici.social.github %}
+                        <a href="https://github.com/{{kullanici.social.github}}" target="_blank" class="medialinks github"><i class="bi bi-github"></i></a>
+                      {% endif %}
+                      {% if kullanici.social.twitter %}
+                        <a href="https://x.com/{{kullanici.social.twitter}}" target="_blank" class="medialinks twitter"><i class="bi bi-twitter"></i></a>
+                      {% endif %}
+                      {% if kullanici.social.instagram %}
+                        <a href="https://www.instagram.com/{{kullanici.social.instagram}}" target="_blank" class="medialinks instagram"><i class="bi bi-instagram"></i></a>
+                      {% endif %}
+                    </div>
+                    {% if not kullanici.social.stackoverflow and not kullanici.social.twitter and not kullanici.social.github and not kullanici.social.instagram %}
+                      <div class="buttons" style="margin-top: 60px !important;">
+                        <button class="button-follow">Follow</button>
+                        <button class="button-message">Message</button>
+                      </div>
+                    {% else %}
+                      <div class="buttons">
+                        <button class="button-follow">Follow</button>
+                        <button class="button-message">Message</button>
+                      </div>
+                    {% endif %}
+                  
+                      <div class="analytics">
+                        <div class="data">
+                          <i class="bi bi-dice-1-fill" style="color: #FF5733;"></i>
+                          <span class="number">50</span>
+                        </div>
+                        <div class="data">
+                          <i class="bi bi-trophy-fill" style="color: #FFD601;"></i>
+                          <span class="number">50</span>
+                        </div>
+                        <div class="data">
+                          <i class="bi bi-award-fill" style="color: #4CAF4F;"></i>
+                          <span class="number">100%</span>
+                        </div>
+                      </div>
+                   
+                </div>
               </div>
-              <div class="skills">
-                  <h6>Skills</h6>
-                  <ul>
-                      <li>UI / UX</li>
-                      <li>Front End Development</li>
-                      <li>HTML</li>
-                      <li>CSS</li>
-                      <li>JavaScript</li>
-                      <li>React</li>
-                      <li>Node</li>
-                  </ul>
-              </div>
-          </div>
-        </div>
+            {% endfor %}
+        {% else %}
+            <p style="color:orange; font-weight:bold; text-align: center;">No results found.</p>
+        {% endif %}
       </div>
+        </div>
     </div>
-  </div>
-  {% endblock app %}
+</div>
+</div>
+{% endblock app %}
