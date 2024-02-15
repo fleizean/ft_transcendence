@@ -1,122 +1,82 @@
 [
     {
-        "model": "pong.storeitem",
-        "pk": 1,
-        "fields": {
-            "category_name": "Pong",
-            "name": "My Beautiful Paddle",
-            "image_url": "mybeatifulpaddle.webp",
-            "description": "Change Paddle color, it only affects you.",
-            "price": 50,
-            "show_status": true
-        }
+        "category_name": "Pong",
+        "name": "My Beautiful Paddle",
+        "image_url": "mybeatifulpaddle.webp",
+        "description": "Change Paddle color, it only affects you.",
+        "price": 50,
+        "show_status": true
     },
     {
-        "model": "pong.storeitem",
-        "pk": 2,
-        "fields": {
-            "category_name": "Pong",
-            "name": "My Playground",
-            "image_url": "colorpick.webp",
-            "description": "Change the playground color, it only affects you.",
-            "price": 25,
-            "show_status": true
-        }
+        "category_name": "Pong",
+        "name": "My Playground",
+        "image_url": "colorpick.webp",
+        "description": "Change the playground color, it only affects you.",
+        "price": 25,
+        "show_status": true
     },
     {
-        "model": "pong.storeitem",
-        "pk": 3,
-        "fields": {
-            "category_name": "Pong",
-            "name": "My Beautiful AI",
-            "image_url": "ai-nametag.webp",
-            "description": "How about giving your ai a name?",
-            "price": 50,
-            "show_status": true
-        }
+        "category_name": "Pong",
+        "name": "My Beautiful AI",
+        "image_url": "ai-nametag.webp",
+        "description": "How about giving your ai a name?",
+        "price": 50,
+        "show_status": true
     },
     {
-        "model": "pong.storeitem",
-        "pk": 4,
-        "fields": {
-            "category_name": "Pong",
-            "name": "Giant-Man",
-            "image_url": "giantman.webp",
-            "description": "With this feature, you can increase the paddle size by %5.",
-            "price": 300,
-            "show_status": true
-        }
+        "category_name": "Pong",
+        "name": "Giant-Man",
+        "image_url": "giantman.webp",
+        "description": "With this feature, you can increase the paddle size by %5.",
+        "price": 300,
+        "show_status": true
     },
     {
-        "model": "pong.storeitem",
-        "pk": 5,
-        "fields": {
-            "category_name": "Pong",
-            "name": "Like a Cheater",
-            "image_url": "cheater.webp",
-            "description": "Steal one point from your opponent once.",
-            "price": 225,
-            "show_status": true
-        }
+        "category_name": "Pong",
+        "name": "Like a Cheater",
+        "image_url": "cheater.webp",
+        "description": "Steal one point from your opponent once.",
+        "price": 225,
+        "show_status": true
     },
     {
-        "model": "pong.storeitem",
-        "pk": 6,
-        "fields": {
-            "category_name": "Pong",
-            "name": "Fast and Furious",
-            "image_url": "fast-and-furious.webp",
-            "description": "When used, ball speed increase five times.",
-            "price": 175,
-            "show_status": true
-        }
+        "category_name": "Pong",
+        "name": "Fast and Furious",
+        "image_url": "fast-and-furious.webp",
+        "description": "When used, ball speed increase five times.",
+        "price": 175,
+        "show_status": true
     },
     {
-        "model": "pong.storeitem",
-        "pk": 7,
-        "fields": {
-            "category_name": "Pong",
-            "name": "Rage of Fire",
-            "image_url": "fireball.webp",
-            "description": "%50 chance to speed up to the ball by %5 with each shot.",
-            "price": 75,
-            "show_status": true
-        }
+        "category_name": "Pong",
+        "name": "Rage of Fire",
+        "image_url": "fireball.webp",
+        "description": "%50 chance to speed up to the ball by %5 with each shot.",
+        "price": 75,
+        "show_status": true
     },
     {
-        "model": "pong.storeitem",
-        "pk": 8,
-        "fields": {
-            "category_name": "Pong",
-            "name": "Frozen Ball",
-            "image_url": "versus-time.webp",
-            "description": "Slow down the ball for five second just once.",
-            "price": 100,
-            "show_status": true
-        }
+        "category_name": "Pong",
+        "name": "Frozen Ball",
+        "image_url": "versus-time.webp",
+        "description": "Slow down the ball for five second just once.",
+        "price": 100,
+        "show_status": true
     },
     {
-        "model": "pong.storeitem",
-        "pk": 9,
-        "fields": {
-            "category_name": "RPS",
-            "name": "God Things",
-            "image_url": "godofthings-rps.webp",
-            "description": "For once, win that round no matter what comes.",
-            "price": 150,
-            "show_status": true
-        }
+        "category_name": "RPS",
+        "name": "God Things",
+        "image_url": "godofthings-rps.webp",
+        "description": "For once, win that round no matter what comes.",
+        "price": 150,
+        "show_status": true
     },
     {
-        "model": "pong.storeitem",
-        "pk": 10,
-        "fields": {
-            "category_name": "RPS",
-            "name": "Cheater",
-            "image_url": "cheater-rps.webp",
-            "description": "Rob your opponent of points.",
-            "price": 200,
-            "show_status": true
-        }
+        "category_name": "RPS",
+        "name": "Cheater",
+        "image_url": "cheater-rps.webp",
+        "description": "Rob your opponent of points.",
+        "price": 200,
+        "show_status": true
     }
 ]

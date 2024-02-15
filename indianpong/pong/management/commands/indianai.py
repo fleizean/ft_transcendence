@@ -1,5 +1,6 @@
 from django.core.management.base import BaseCommand
-from pong.models import UserProfile
+from pong.models import UserProfile, StoreItem
+import json
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
@@ -12,3 +13,11 @@ class Command(BaseCommand):
            user.indian_wallet = 1000
            user.elo_point = 1000
            user.save()
+        with open('store_data.json') as f:
+            data = json.load(f)
+
+        for item_data in data:
+            StoreItem.objects.create(**item_data)
+
+        self.stdout.write(self.style.SUCCESS('Store data loaded successfully.'))
+  
