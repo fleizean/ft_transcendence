@@ -18,7 +18,8 @@ class Status(Enum):
     ACCEPTED = 0
     WAITING = 1
     STARTED = 2
-    ENDED = 3
+    PAUSED = 3
+    ENDED = 4
 
 
 class Ball:
@@ -101,6 +102,15 @@ class PongGame:
         self.ball.dy = random.choice([-1, 1])
         if self.player1.score >= MAX_SCORE or self.player2.score >= MAX_SCORE:
             self.status = Status.ENDED
+
+    def pauseGame(self):
+        self.status = Status.PAUSED
+
+    def otherPlayer(self, username):
+        if username == self.player1.username:
+            return self.player2.username
+        else:
+            return self.player1.username
 
     def getScore(self, username):
         if username == self.player1.username:
