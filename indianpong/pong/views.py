@@ -468,7 +468,7 @@ def dashboard(request):
 @never_cache
 @login_required()
 def rankings(request):
-    users_by_elo = UserProfile.objects.all().order_by('-elo_point')
+    users_by_elo = UserProfile.objects.all().order_by('-game_stats__total_win_rate_pong')
     paginator  = Paginator(users_by_elo, 10)
     page_number = request.GET.get('page')
     try:
