@@ -14,4 +14,3 @@ python3 manage.py makemigrations
 python3 manage.py migrate
 python3 manage.py superuser
 python3 manage.py indianai
-python3 manage.py loaddata store_data
