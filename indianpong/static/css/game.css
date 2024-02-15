@@ -1,0 +1,121 @@
+/* Game */
+
+.ai-btn {
+    margin-top: 0.5em;
+  }
+  
+  .opponent-btn {
+    margin-top: 1em;
+    margin-bottom: 0.5em;
+  }
+  
+  .pong-game-text {
+    text-align: center;
+  }
+  
+  .custom-text {
+    text-align: center;
+    top: 50%;
+    left: 50%;
+    margin-bottom: 2em;
+  }
+  
+  .ponggamebtn {
+    font-size: 36px;
+    font-family: 'Rajdhani', sans-serif;
+    text-align: center;
+    line-height: 85px;
+    color: #fff;
+    margin: 0 auto;
+    width: 350px;
+    height: 85px;
+    background: linear-gradient(#1d7751, #0e382c);
+    border: 3px #25793b solid; 
+    border-radius: 5px;
+    text-shadow: 0 0 20px rgba(255,255,255,0.3);
+    transition: .1s;
+    transform: scale(1);
+    cursor: pointer;
+    box-shadow: 0 0 50px rgba(0,117,9,0.5);
+    overflow: hidden;
+  }
+  
+  .ponggamebtn:hover {
+    text-shadow: 0 0 20px rgba(255,255,255,0.5);
+    transform: scale(1.05);
+  }
+  
+  .ponggamebtn:active {
+    background: linear-gradient(#1f8258, #114435);
+    text-shadow: 0 0 20px rgba(255,255,255,0.5);
+    transform: scale(1);
+    box-shadow: 0 0 75px rgba(43,137,68,0.5);
+  }
+  
+  .ponggamebtn:after {
+    content: "";
+    position: relative;
+    top: -120px;
+    left: -90px;
+    display: block;
+    width: 35px;
+    height: 150px;
+    background: rgba(255, 255, 255, 0.5);
+    transform: rotate(35deg);
+    transition: none;
+  }
+  
+  .ponggamebtn:hover:after {
+    left: 400px;
+    transition: .3s ease-in-out;
+  }
+  
+  .ponggamebtn-ai {
+    font-size: 36px;
+    font-family: 'Rajdhani', sans-serif;
+    text-align: center;
+    line-height: 85px;
+    color: #fff;
+    margin: 0 auto;
+    width: 350px;
+    height: 85px;
+    background: linear-gradient(#1d6d77, #0e2e38);
+    border: 3px #2195a4 solid; 
+    border-radius: 5px;
+    text-shadow: 0 0 20px rgba(255,255,255,0.3);
+    transition: .1s;
+    transform: scale(1);
+    cursor: pointer;
+    box-shadow: 0 0 50px rgba(0,117,9,0.5);
+    overflow: hidden;
+  }
+  
+  .ponggamebtn-ai:hover {
+    text-shadow: 0 0 20px rgba(255,255,255,0.5);
+    transform: scale(1.05);
+  }
+  
+  .ponggamebtn-ai:active {
+    background: linear-gradient(#1f8258, #114435);
+    text-shadow: 0 0 20px rgba(255,255,255,0.5);
+    transform: scale(1);
+    box-shadow: 0 0 75px rgba(43,137,68,0.5);
+  }
+  
+  .ponggamebtn-ai:after {
+    content: "";
+    position: relative;
+    top: -120px;
+    left: -90px;
+    display: block;
+    width: 35px;
+    height: 150px;
+    background: rgba(255, 255, 255, 0.5);
+    transform: rotate(35deg);
+    transition: none;
+  }
+  
+  .ponggamebtn-ai:hover:after {
+    left: 400px;
+    transition: .3s ease-in-out;
+  }

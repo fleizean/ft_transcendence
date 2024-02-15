@@ -1,0 +1,151 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  Chat
+{% endblock %}
+
+{% block app %}
+  <link rel="stylesheet" href="../../static/css/chat.css" />
+  {% include "_nav.html" %}
+
+  <div class="container-top">
+    <div class="card">
+      <section class="chat-section">
+        <div class="chat-container">
+          <!-- start: Sidebar -->
+          <aside class="chat-sidebar">
+            <a href="#" class="chat-sidebar-logo"><i class="bi bi-discord"></i></a>
+            <ul class="chat-sidebar-menu">
+              <li class="active">
+                <a href="#" data-title="DM"><i class="bi bi-chat-square-fill"></i></a>
+              </li>
+              <li>
+                <a href="#" data-title="Room"><i class="bi bi-chat-square-quote-fill"></i></a>
+              </li>
+              <li>
+                <a href="#" data-title="Settings"><i class="bi bi-gear-fill"></i></a>
+              </li>
+              <li class="chat-sidebar-profile">
+                <button type="button" class="chat-sidebar-profile-toggle"><i class="bi bi-person-circle" style="font-size: 24px; color: #059669;"></i></button>
+                <ul class="chat-sidebar-profile-dropdown">
+                  <li>
+                    <a href="#"><i class="bi bi-person-fill"></i> Profile</a>
+                  </li>
+                  <li>
+                    <a href="#"><i class="bi bi-box-arrow-left"></i> Logout</a>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </aside>
+          <!-- end: Sidebar -->
+          <!-- start: Content -->
+          <div class="chat-content">
+            <!-- start: Content side -->
+            <div class="content-sidebar">
+              <div class="content-sidebar-title">Chats</div>
+              <form action="" class="content-sidebar-form">
+                <input type="search" class="content-sidebar-input" placeholder="Search..." />
+                <button type="submit" class="content-sidebar-submit"><i class="bi bi-search"></i></button>
+              </form>
+              <div class="content-messages">
+                <ul class="content-messages-list">
+                  <li class="content-message-title">
+                    <span>Recently</span>
+                  </li>
+                  {% for user in  users %}
+                      <li>
+                        <a href="{% url 'start_chat' user %}" data-link>
+                          <img class="content-message-image" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8cGVvcGxlfGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60" alt="" />
+                          <span class="content-message-info">
+                            <span class="content-message-name">{{ user }}</span>
+                          </span>
+{% comment %}                           <span class="content-message-more">
+                            <span class="content-message-unread">5</span>
+                            <span class="content-message-time">12:30</span>
+                          </span> {% endcomment %}
+                        </a>
+                      </li>
+                  {% endfor %}
+              </div>
+            </div>
+            <div class="conversation active" id="conversation-1">
+              <div class="conversation-top">
+                <button type="button" class="conversation-back"><i class="bi bi-arrow-left-circle-fill"></i></button>
+                <div class="conversation-user">
+                  <img class="conversation-user-image" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8cGVvcGxlfGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60" alt="" />
+                    <div id="userNameOnChat" class="conversation-user-name" data-username="{{ room.first_user|default:'' }}" data-seconduser="{{ room.second_user|default:'' }}" >
+                      {% if room.first_user == request.user %}
+                          {{ room.second_user }}
+                          {% else %}
+                              {{ room.first_user}}
+                      {% endif %}
+                  </div>
+                </div>
+                <div class="conversation-buttons">
+                  <button type="button"><i class="bi bi-person-add"></i></button>
+                  <button type="button"><i class="bi bi-controller" id="inviteButton"></i></button>
+           
+                  <button type="button" id="block"><i class="bi bi-ban"></i></button>
+                </div>
+              </div>
+              <div class="conversation-main" id="conversation">
+                <ul class="conversation-wrapper">
+                  <div class="coversation-divider">
+                    <span>Today</span>
+                  </div>
+                  {% for message in messages %}
+                    {% if request.user == message.user %} 
+                    <li class="conversation-item me">
+                    <div class="conversation-item-content">
+                      <div class="conversation-item-wrapper">
+                        <div class="conversation-item-box">
+                        </div>
+                      </div>
+                      <div class="conversation-item-wrapper">
+                        <div class="conversation-item-box">
+                          <div class="conversation-item-text">
+                            {{ message.content }}
+                            <div class="conversation-item-time">{{ message.get_short_date }}</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    </li>
+                      {% else %}
+                        <li class="conversation-item">
+                          <div class="conversation-item-content">
+                            <div class="conversation-item-wrapper">
+                              <div class="conversation-item-box">
+                                <div class="conversation-item-text">
+                                  {{ message.content }}
+                                  <div class="conversation-item-time">{{ message.get_short_date }}</div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </li>
+                    {% endif %}
+                  {% endfor %}
+                </ul>
+              </div>
+              <div class="conversation-form">
+                <button type="button" class="conversation-form-button"><i class="bi bi-emoji-laughing-fill"></i></button>
+                <div class="conversation-form-group">
+                  <textarea class="conversation-form-input" rows="1" id="comment" placeholder="Type here..."></textarea>
+                  <button type="button" class="conversation-form-record" id="send"><i class="bi bi-send-fill"></i></button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- end: Content -->
+        </div>
+        {{ room_name|json_script:"room-name" }}
+        {{ request.user.username|json_script:"user" }}
+        
+
+        <script src="../../static/js/chat.js"></script>
+      </section>
+    </div>
+  </div>
+{% endblock %}

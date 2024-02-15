@@ -1,0 +1,59 @@
+{% load static %}
+
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="{% static "assets/favicon.ico" %}" type="image/x-icon">
+    <title>Socket Actions</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-beta1/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        canvas {
+            display: block;
+            margin: 20px auto;
+            border: 1px solid #000;
+        }
+        #OnlineUsers {
+            position: fixed;
+            right: 0;
+            max-height: 100vh;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-8">
+                <canvas id="pongCanvas" width="800" height="600"></canvas>
+            </div>
+            <div class="col-4">
+                <div id="OnlineUsers" class="list-group">
+                    <!-- This is a placeholder. Actual users will be added dynamically with JavaScript -->
+{% comment %}                     <div class="list-group-item">
+                        <span class="badge bg-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Online">•</span>
+                        User1
+                        <button class="btn btn-primary btn-sm float-end" onclick="invite('User1')">Invite</button>
+                    </div> {% endcomment %}
+                </div>
+            </div>
+        </div>
+        <div id="gameInvitationModal" class="modal">
+            <div class="modal-content">
+                <button id="acceptButton" class="btn btn-success">Accept</button>
+                <button id="declineButton" class="btn btn-danger">Decline</button>
+            </div>
+        </div>
+        <div id="startModal" class="modal">
+            <div class="modal-content">
+                <input type="text" id="voteCount" class="form-control">
+                <button id="startButton" class="btn btn-primary">Vote</button>
+            </div>
+        </div>
+        <p id="invitationMessage" class="alert alert-info mt-3" role="alert"></p>
+    </div>
+    <script src="{% static "js/sockpong.js" %}"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-beta1/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
