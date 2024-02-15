@@ -1,0 +1,72 @@
+
+
+
+/* Profile Page */
+
+.nav-item {
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.navbar-nav.ml-auto .nav-item:hover,
+.navbar-nav.ml-auto .nav-item:hover > .nav-link {
+    background-color: #5c5be5;
+    box-shadow: 0px 15px 11px -6px #7a7a7d;
+    color: #fff; /* İsterseniz metin rengini de ayarlayabilirsiniz */
+}
+  
+
+  
+.stats-info {
+    margin-top: 10px;
+}
+
+.stats {
+    /* Add your styles for stats here */
+    margin-bottom: -2px;
+}
+
+.stats-p {
+    /* Add your styles for stats-p here */
+    font-size: 14px;
+    color: #000000;   
+    font-weight: 500; 
+    text-align: left;
+}
+
+.stats .bi-dice-1-fill { color: #ff5733; } /* Oyunlar oynandığında */
+.stats .bi-trophy-fill { color: #ffd700; } /* Kazanıldığında */
+.stats .bi-emoji-frown-fill { color: #4169e1; } /* Kaybedildiğinde */
+.stats .bi-award-fill { color: #4caf50; } /* Kazanma oranı %50'den büyük olduğunda */
+.stats .bi-bucket-fill { color: #f44336; } /* Kaybetme oranı %50'den büyük olduğunda */
+.stats .bi-clock-fill { color: #00bcd4; } /* Ortalama oyun süresi */
+  
+.stats-result-p {
+    /* Add your styles for stats-result-p here */
+    font-size: 14px;
+    color: #000000;
+    font-weight: 700; 
+    right: 0;
+    position: absolute;
+    margin-right: 2.5em;
+}
+  
+.stats-p, .stats-result-p {
+    display: inline-block;
+}
+  
+.profile-slashed-info {
+    font-size: 10px;
+}
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  

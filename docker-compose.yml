@@ -1,0 +1,12 @@
+version: "3.9"
+
+services:
+
+  indianpong:
+    image: aktas/indianpong:latest
+    build:
+      context: ./indianpong
+    container_name: indianpong
+    restart: always
+    ports:
+      - 8000:8000
