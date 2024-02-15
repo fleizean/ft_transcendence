@@ -23,6 +23,8 @@ media
 # Node modules
 node_modules/
 
+.vscode/
+
 # C extensions
 *.so
 
@@ -175,3 +177,4 @@ cython_debug/
 #.idea/
 
 # End of https://www.toptal.com/developers/gitignore/api/django
+
