@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 # Delete all files except "__init__.cpython-310.pyc" in all "__pycache__" directories
 find . -path '*/__pycache__/*' ! -name '__init__.cpython-310.pyc' -type f -delete
