@@ -9,6 +9,9 @@ find . -path '*/migrations/*' ! -name '__init__.py' -type f -delete
 # Delete db.sqlite3
 rm -f db.sqlite3
 
+# Delete all files in "media" directory
+rm -rf media/*
+
 # Execute Django management commands
 python3 manage.py makemigrations
 python3 manage.py migrate
