@@ -12,5 +12,4 @@ rm -f db.sqlite3
 # Execute Django management commands
 python3 manage.py makemigrations
 python3 manage.py migrate
-python3 manage.py superuser
-python3 manage.py indianai
+python3 manage.py initdata
