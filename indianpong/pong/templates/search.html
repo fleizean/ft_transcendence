@@ -57,7 +57,7 @@
                       {% else %}
                         <button data-username="{{ kullanici.username }}" class="button-follow">Follow</button>
                       {% endif %}
-                        <button class="button-message">Message</button>
+                      <a href="/start_chat/{{kullanici.username}}"> <button class="button-message">Message</button></a>
                       </div>
                     {% else %}
                       <div class="buttons">
@@ -66,7 +66,7 @@
                       {% else %}
                         <button data-username="{{ kullanici.username }}" class="button-follow">Follow</button>
                       {% endif %}
-                        <button class="button-message">Message</button>
+                      <a href="/start_chat/{{kullanici.username}}"> <button class="button-message">Message</button></a>
                       </div>
                     {% endif %}
                   
