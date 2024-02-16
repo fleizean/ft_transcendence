@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 # Delete all files except "__init__.cpython-310.pyc" in all "__pycache__" directories
 find . -path '*/__pycache__/*' ! -name '__init__.cpython-310.pyc' -type f -delete
@@ -9,9 +9,11 @@ find . -path '*/migrations/*' ! -name '__init__.py' -type f -delete
 # Delete db.sqlite3
 rm -f db.sqlite3
 
+# Delete all files in "media" directory
+rm -rf media/*
+
 # Execute Django management commands
 python3 manage.py makemigrations
 python3 manage.py migrate
-python3 manage.py superuser
-python3 manage.py indianai
-python3 manage.py loaddata store_data
+python3 manage.py initdata
+#python3 manage.py populate

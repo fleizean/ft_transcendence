@@ -38,7 +38,7 @@ var ball = {x: canvas.width / 2, y: canvas.height / 2, radius: 10, speed: 5, dx:
 var score1 = 0;
 var score2 = 0;
 
-const MAX_SCORE = 5;
+const MAX_SCORE = 3;
 
 // Add a new variable to track if the game is paused
 let isScored = false;
@@ -272,7 +272,7 @@ setInterval(() => {
 }, 100); */
 
 // Ai Player
-let reactionDelay = 1000 / ball.speed; // Delay in milliseconds
+let reactionDelay = 5000 / ball.speed; // Delay in milliseconds
 let lastBallPosition = { x: ball.x, y: ball.y };
 let ballDirection = { x: 0, y: 0 };
 let predictedY = paddle2.y;

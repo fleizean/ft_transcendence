@@ -12,11 +12,11 @@ RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
 #run pip install --root-user-action=ignore
 COPY . .
-COPY ./start.sh .
-RUN chmod +x /ft_transcendence/start.sh
+COPY ./renewdb.sh .
+RUN chmod +x /ft_transcendence/renewdb.sh
 ###
 EXPOSE 8000
 
-ENTRYPOINT ["sh", "/ft_transcendence/start.sh"]
+ENTRYPOINT ["sh", "/ft_transcendence/renewdb.sh"]
 
 CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
