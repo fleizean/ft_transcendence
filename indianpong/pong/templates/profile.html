@@ -30,8 +30,12 @@
                     {% endif %}
                     <div class="d-flex justify-content-center mb-2" style="margin-top: 30px;">
                         {% if request.user.username != profile.username %}
-                            <button type="button" class="btn btn-danger"><i class="bi bi-heart-fill"></i> Follow</button>
-                            <button type="button" class="unfollow-btn" style="display:none"><i class="bi bi-heartbreak-fill"></i> Unfollow</button>
+                            {% csrf_token %}
+                            {% if is_friend %}
+                                <button data-username="{{ profile.username }}" class="unfollow-btn" ><i class="bi bi-heartbreak-fill"></i>Unfollow</button>
+                            {% else %}
+                                <button data-username="{{ profile.username }}" class="btn btn-danger"><i class="bi bi-heart-fill"></i>Follow</button>
+                            {% endif %}
                         {% endif %}
                     </div>
                 </div>
@@ -214,4 +218,35 @@
         </div>
     </div>
 </div>
+<script>
+    const followButtons = document.querySelectorAll(".btn, .unfollow-btn");
+    followButtons.forEach((button) => {
+        button.addEventListener('click', (e) => {
+            const username = e.target.getAttribute('data-username');
+            const action = e.target.classList.contains('unfollow-btn') ? 'unfollow' : 'follow';
+            fetch(`/follow_unfollow/${username}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+                },
+                body: JSON.stringify({ action: action })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data['status'] === 'ok') {
+                    if (action === 'follow') {
+                      e.target.innerHTML = '<i class="bi bi-heartbreak-fill"></i>Unfollow';
+                      e.target.classList.add('unfollow-btn');
+                      e.target.classList.remove('btn', 'btn-danger');
+                    } else {
+                      e.target.innerHTML = '<i class="bi bi-heart-fill"></i>Follow';
+                      e.target.classList.remove('unfollow-btn');
+                      e.target.classList.add('btn', 'btn-danger');
+                    }
+                  }
+            });
+        });
+    });
+</script>
 {% endblock %}

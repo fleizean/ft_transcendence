@@ -12,6 +12,7 @@
     <div class="search-card">
         <!-- Arama kutusu ve butonu -->
         <form action="{% url 'search' %}" method="POST">
+            {% csrf_token %}
             <div class="search-container">
                 <input type="text" name="search_query" placeholder="Email or Username or Displayname Search..." class="search-input" autocomplete="off" data-lpignore="true">
                 <button class="search-button" type="submit"><i class="bi bi-search"></i></button>
@@ -51,12 +52,20 @@
                     </div>
                     {% if not kullanici.social.stackoverflow and not kullanici.social.twitter and not kullanici.social.github and not kullanici.social.instagram %}
                       <div class="buttons" style="margin-top: 60px !important;">
-                        <button class="button-follow">Follow</button>
+                        {% if kullanici.is_friend %}
+                        <button data-username="{{ kullanici.username }}" class="button-follow">Unfollow</button>
+                      {% else %}
+                        <button data-username="{{ kullanici.username }}" class="button-follow">Follow</button>
+                      {% endif %}
                         <button class="button-message">Message</button>
                       </div>
                     {% else %}
                       <div class="buttons">
-                        <button class="button-follow">Follow</button>
+                        {% if kullanici.is_friend %}
+                        <button data-username="{{ kullanici.username }}" class="button-follow">Unfollow</button>
+                      {% else %}
+                        <button data-username="{{ kullanici.username }}" class="button-follow">Follow</button>
+                      {% endif %}
                         <button class="button-message">Message</button>
                       </div>
                     {% endif %}
@@ -87,4 +96,27 @@
     </div>
 </div>
 </div>
+<script>
+  const followButtons = document.querySelectorAll(".button-follow");
+  followButtons.forEach((button) => {
+    button.addEventListener('click', (e) => {
+      const username = e.target.getAttribute('data-username');
+      const action = e.target.innerHTML.trim().toLowerCase();
+      fetch(`/follow_unfollow/${username}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+        },
+        body: JSON.stringify({ action: action })
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data['status'] === 'ok') {
+          e.target.innerHTML = action === 'follow' ? 'Unfollow' : 'Follow';
+        }
+      });
+    });
+  });
+</script>
 {% endblock app %}

@@ -1,10 +1,11 @@
 import os
+from django.forms import model_to_dict
 from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.cache import never_cache
 from django.contrib.auth import login, logout
 from django.contrib import messages
-from django.http import HttpResponseBadRequest
+from django.http import HttpResponse, HttpResponseBadRequest
 from django.http import HttpResponseRedirect
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 import ssl #TODO temporary solution
@@ -274,6 +275,7 @@ def profile_view(request, username):
     game_records = Game.objects.filter(Q(player1=profile) | Q(player2=profile)).order_by('-created_at')
     paginator = Paginator(game_records, 5)  # Sayfada 5 kayıt göster
     page_number = request.GET.get('page')
+    is_friend = request.user.friends.filter(id=profile.id).exists()
     try:
         history_page_obj = paginator.page(page_number)
     except PageNotAnInteger:
@@ -282,8 +284,7 @@ def profile_view(request, username):
     except EmptyPage:
         # Geçersiz bir sayfa numarası istenirse, son sayfayı al
         history_page_obj = paginator.page(paginator.num_pages)
-
-    return render(request, "profile.html", {"profile": profile, "history_page_obj": history_page_obj})
+    return render(request, "profile.html", {"profile": profile, "history_page_obj": history_page_obj, "is_friend": is_friend})
 
 ## Rps Game ##
 @never_cache
@@ -535,7 +536,6 @@ def inventory(request, username):
             name = form.cleaned_data['name']
             action = form.cleaned_data['action']
             whatis = form.cleaned_data['whatis']
-            print(name + " " + action + " " + whatis)
             if action == 'equip':
                 # Check if the user has the item
                 user_item = UserItem.objects.filter(user=profile, item__name=name).first()
@@ -545,7 +545,6 @@ def inventory(request, username):
                     user_item.save()
             elif action == 'customize':
                 # Check if the user has the item
-                print(name + " " + action + " " + whatis)
                 user_item = UserItem.objects.filter(user=profile, item__name=name).first()
                 # Change user's equipped_item with the given name
                 if user_item:
@@ -560,7 +559,7 @@ def inventory(request, username):
             inventory_items = UserItem.objects.filter(item__category_name=category_name, user=profile)
     return render(request, "inventory.html", {"profile": profile, "inventory_items": inventory_items})
 
-@csrf_exempt
+
 @login_required()
 def search(request):
     if request.method == "POST":
@@ -571,9 +570,31 @@ def search(request):
                 Q(username__icontains=search_query)
                 | Q(displayname__icontains=search_query)
                 | Q(email__icontains=search_query_email)
-                )
-            return render(request, "search.html", {"results": results})     
+                ).exclude(username=request.user.username)
+            results_list = []
+            for result in results:
+                # Create a dictionary with the data of the result
+                result_dict = model_to_dict(result)
+                # Add 'is_friend' key to the dictionary
+                result_dict['is_friend'] = request.user.friends.filter(id=result.id).exists()
+                # Append the dictionary to the list
+                results_list.append(result_dict)
+            return render(request, "search.html", {"results": results_list})  
     return render(request, "search.html")
+
+
+@login_required()
+def follow_unfollow(request, username):
+    profile = get_object_or_404(UserProfile, username=username)
+    data = json.loads(request.body)
+    action = data.get("action", "")
+    if action == "follow":
+        request.user.friends.add(profile)
+    elif action == "unfollow":
+        request.user.friends.remove(profile)
+    else:
+        return JsonResponse({'status': 'error', 'message': 'Invalid action'})
+    return JsonResponse({'status': 'ok'})
 
 
 @login_required()
