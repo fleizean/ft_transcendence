@@ -87,11 +87,30 @@
                    
                 </div>
               </div>
-            {% endfor %}
-        {% else %}
-            <p style="color:orange; font-weight:bold; text-align: center;">No results found.</p>
-        {% endif %}
-      </div>
+              {% endfor %}
+              {% else %}
+              <p style="color:orange; font-weight:bold; text-align: center;">No results found.</p>
+              {% endif %}
+            </div>
+            <nav aria-label="Page navigation example " class="mt-4">
+              <ul class="pagination justify-content-center">
+                <li class="page-item {% if not results.has_previous %}disabled{% endif %}">
+                  <a class="page-link" href="{% if results.has_previous %}?page={{ results.previous_page_number }}{% endif %}" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                  </a>
+                </li>
+                {% for page_num in results.paginator.page_range %}
+                  <li class="page-item {% if page_num == results.number %}active{% endif %}">
+                    <a class="page-link" href="?page={{ page_num }}">{{ page_num }}</a>
+                  </li>
+                {% endfor %}
+                <li class="page-item {% if not results.has_next %}disabled{% endif %}">
+                  <a class="page-link" href="{% if results.has_next %}?page={{ results.next_page_number }}{% endif %}" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                  </a>
+                </li>
+              </ul>
+            </nav> 
         </div>
     </div>
 </div>

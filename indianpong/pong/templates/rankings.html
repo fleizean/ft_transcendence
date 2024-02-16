@@ -36,25 +36,25 @@
 
                 </tbody>
             </table>
-            <nav aria-label="Page navigation example">
-                <ul class="pagination">
-                    <li class="page-item {% if users_page_obj.has_previous %}disabled{% endif %}">
-                        <a class="page-link" href="{% if users_page_obj.has_previous %}?page={{ users_page_obj.previous_page_number }}{% endif %}" aria-label="Previous">
-                            <span aria-hidden="true">&laquo;</span>
-                        </a>
+            <nav aria-label="Page navigation example " class="mt-4">
+                <ul class="pagination justify-content-center">
+                  <li class="page-item {% if not users_page_obj.has_previous %}disabled{% endif %}">
+                    <a class="page-link" href="{% if users_page_obj.has_previous %}?page={{ users_page_obj.previous_page_number }}{% endif %}" aria-label="Previous">
+                      <span aria-hidden="true">&laquo;</span>
+                    </a>
+                  </li>
+                  {% for page_num in users_page_obj.paginator.page_range %}
+                    <li class="page-item {% if page_num == users_page_obj.number %}active{% endif %}">
+                      <a class="page-link" href="?page={{ page_num }}">{{ page_num }}</a>
                     </li>
-                    {% for page_num in users_page_obj.paginator.page_range %}
-                        <li class="page-item {% if page_num == users_page_obj.number %}active{% endif %}">
-                            <a class="page-link" href="?page={{ page_num }}">{{ page_num }}</a>
-                        </li>
-                    {% endfor %}
-                    <li class="page-item {% if users_page_obj.has_next %}disabled{% endif %}">
-                        <a class="page-link" href="{% if users_page_obj.has_next %}?page={{ users_page_obj.next_page_number }}{% endif %}" aria-label="Next">
-                            <span aria-hidden="true">&raquo;</span>
-                        </a>
-                    </li>
+                  {% endfor %}
+                  <li class="page-item {% if not users_page_obj.has_next %}disabled{% endif %}">
+                    <a class="page-link" href="{% if users_page_obj.has_next %}?page={{ users_page_obj.next_page_number }}{% endif %}" aria-label="Next">
+                      <span aria-hidden="true">&raquo;</span>
+                    </a>
+                  </li>
                 </ul>
-            </nav>  
+              </nav> 
         </div>
     </div>
 </div>

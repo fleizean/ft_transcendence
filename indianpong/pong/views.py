@@ -8,7 +8,7 @@ from django.contrib import messages
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.http import HttpResponseRedirect
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-import ssl #TODO temporary solution
+import ssl  # TODO temporary solution
 
 from .forms import (
     BlockUserForm,
@@ -70,11 +70,13 @@ import random
 
 ### Homepage and Error Page ###
 
+
 @never_cache
 def index(request):
     if request.user.is_authenticated:
         return redirect("dashboard")
     return render(request, "base.html")
+
 
 @login_required()
 def aboutus(request):
@@ -141,11 +143,11 @@ def auth_callback(request):
     if request.method == "GET":
         # Create a context that doesn't verify SSL certificates
         # Create a SSL context
-        #ssl_context = ssl.create_default_context()
+        # ssl_context = ssl.create_default_context()
 
         # Load your certificate
-        #ssl_context.load_cert_chain(certfile='path/to/certfile', keyfile='path/to/keyfile')
-        ssl_context = ssl._create_unverified_context()#TODO temporary solution
+        # ssl_context.load_cert_chain(certfile='path/to/certfile', keyfile='path/to/keyfile')
+        ssl_context = ssl._create_unverified_context()  # TODO temporary solution
         code = request.GET.get("code")
         data = {
             "grant_type": "authorization_code",
@@ -158,7 +160,9 @@ def auth_callback(request):
         req = urllib.request.Request(
             "https://api.intra.42.fr/oauth/token", data=encoded_data
         )
-        response = urllib.request.urlopen(req, context=ssl_context)#TODO temporary solution
+        response = urllib.request.urlopen(
+            req, context=ssl_context
+        )  # TODO temporary solution
 
     # Process the response, store the access token, and authenticate the user
     if response.status == 200:
@@ -174,19 +178,25 @@ def auth_callback(request):
         # Fetch user information from 42 API
         headers = {"Authorization": f"Bearer {access_token}"}
         req = urllib.request.Request("https://api.intra.42.fr/v2/me", headers=headers)
-        user_info_response = urllib.request.urlopen(req, context=ssl_context)#TODO temporary solution
+        user_info_response = urllib.request.urlopen(
+            req, context=ssl_context
+        )  # TODO temporary solution
 
         if user_info_response.status == 200:
             user_data = json.loads(user_info_response.read().decode("utf-8"))
             """with open('user_data.json', 'w') as file:
                 json.dump(user_data, file) """
-            
+
             if UserProfile.objects.filter(email=user_data["email"]).exists():
                 user = UserProfile.objects.get(email=user_data["email"])
             else:
-                user, created = UserProfile.objects.get_or_create(username=user_data["login"])
+                user, created = UserProfile.objects.get_or_create(
+                    username=user_data["login"]
+                )
                 if not created:
-                    user = UserProfile.objects.create(username=user_data["login"] + "42")
+                    user = UserProfile.objects.create(
+                        username=user_data["login"] + "42"
+                    )
                 else:
                     # Update user profile
                     user.set_unusable_password()
@@ -201,7 +211,7 @@ def auth_callback(request):
                         image_name, response = urllib.request.urlretrieve(image_url)
                         file = File(open(image_name, "rb"))
                         user.avatar.save(f"{file.name}.jpg", file, save=True)
-                        file.close() 
+                        file.close()
                     user.save()
 
                     # Store the access token in the OAuthToken model
@@ -250,7 +260,7 @@ def login_view(request):
     return render(
         request,
         "login.html",
-        {"form": form, "valid": valid, "toast_message": toast_message}
+        {"form": form, "valid": valid, "toast_message": toast_message},
     )
 
 
@@ -268,13 +278,16 @@ def profile(request):
     user = request.user
     return render(request, 'profile.html', {'user': user}) """
 
+
 @never_cache
 @login_required()
 def profile_view(request, username):
     profile = get_object_or_404(UserProfile, username=username)
-    game_records = Game.objects.filter(Q(player1=profile) | Q(player2=profile)).order_by('-created_at')
+    game_records = Game.objects.filter(
+        Q(player1=profile) | Q(player2=profile)
+    ).order_by("-created_at")
     paginator = Paginator(game_records, 5)  # Sayfada 5 kayıt göster
-    page_number = request.GET.get('page')
+    page_number = request.GET.get("page")
     is_friend = request.user.friends.filter(id=profile.id).exists()
     try:
         history_page_obj = paginator.page(page_number)
@@ -284,7 +297,16 @@ def profile_view(request, username):
     except EmptyPage:
         # Geçersiz bir sayfa numarası istenirse, son sayfayı al
         history_page_obj = paginator.page(paginator.num_pages)
-    return render(request, "profile.html", {"profile": profile, "history_page_obj": history_page_obj, "is_friend": is_friend})
+    return render(
+        request,
+        "profile.html",
+        {
+            "profile": profile,
+            "history_page_obj": history_page_obj,
+            "is_friend": is_friend,
+        },
+    )
+
 
 ## Rps Game ##
 @never_cache
@@ -304,12 +326,14 @@ def pong_game_find(request):
 @login_required()
 def profile_settings(request, username):
     if request.user.username != username:
-        return redirect(reverse('profile_settings', kwargs={'username': request.user.username}))
+        return redirect(
+            reverse("profile_settings", kwargs={"username": request.user.username})
+        )
     profile = get_object_or_404(UserProfile, username=username)
-    avatar_form = ProfileAvatarForm(request.POST or None, request.FILES or None, instance=request.user)
-    profile_form = UpdateUserProfileForm(
-        request.POST or None, instance=request.user
+    avatar_form = ProfileAvatarForm(
+        request.POST or None, request.FILES or None, instance=request.user
     )
+    profile_form = UpdateUserProfileForm(request.POST or None, instance=request.user)
     password_form = PasswordChangeUserForm(request.user, request.POST or None)
     social_form = SocialForm(request.POST or None, instance=request.user.social)
     delete_account_form = DeleteAccountForm(request.POST or None, user=request.user)
@@ -322,32 +346,40 @@ def profile_settings(request, username):
                 profile.avatar = avatar_form.cleaned_data["avatar"]
                 profile.save()
                 messages.success(request, "Avatar updated successfully.")
-                return redirect(reverse('profile_settings', args=[username]) + '#editProfile')
+                return redirect(
+                    reverse("profile_settings", args=[username]) + "#editProfile"
+                )
         elif "profile_form" in request.POST:
             if profile_form.is_valid():
                 profile_form.save()
                 messages.success(request, "Profile updated successfully.")
-                return redirect(reverse('profile_settings', args=[username]) + '#editProfile')
+                return redirect(
+                    reverse("profile_settings", args=[username]) + "#editProfile"
+                )
         elif "password_form" in request.POST:
             if password_form.is_valid():
                 profile.set_password(password_form.cleaned_data["new_password1"])
                 profile.save()
                 update_session_auth_hash(request, profile)  # Important!
                 messages.success(request, "Your password was successfully updated!")
-                return redirect(reverse('profile_settings', args=[username]) + '#changePassword')
+                return redirect(
+                    reverse("profile_settings", args=[username]) + "#changePassword"
+                )
         elif "social_form" in request.POST:
             if social_form.is_valid():
                 social = social_form.save()
                 profile.social = social
                 profile.save()
                 messages.success(request, "Socials updated successfully.")
-                return redirect(reverse('profile_settings', args=[username]) + '#addSocial')
+                return redirect(
+                    reverse("profile_settings", args=[username]) + "#addSocial"
+                )
         elif "delete_account_form" in request.POST:
             if delete_account_form.is_valid():
                 if profile.avatar:
                     delete_from_media(profile.avatar.path)
                 profile.delete()
-                return redirect('logout')
+                return redirect("logout")
     else:
         avatar_form = ProfileAvatarForm(instance=request.user)
         profile_form = UpdateUserProfileForm(instance=request.user)
@@ -367,6 +399,7 @@ def profile_settings(request, username):
             "delete_account_form": delete_account_form,
         },
     )
+
 
 @never_cache
 @login_required()
@@ -469,38 +502,43 @@ def dashboard(request):
 @never_cache
 @login_required()
 def rankings(request):
-    users_by_elo = UserProfile.objects.all().order_by('-game_stats__total_win_rate_pong')
-    paginator  = Paginator(users_by_elo, 10)
-    page_number = request.GET.get('page')
+    users_by_elo = UserProfile.objects.filter(
+        game_stats__total_win_rate_pong__isnull=False
+    ).order_by("-game_stats__total_win_rate_pong")
+    paginator = Paginator(users_by_elo, 10)
+    page_number = request.GET.get("page")
     try:
         users_page_obj = paginator.page(page_number)
     except PageNotAnInteger:
         users_page_obj = paginator.page(1)
     except EmptyPage:
         users_page_obj = paginator.page(paginator.num_pages)
-    
+
     # Add rank attribute to each user in the page
     start_rank = users_page_obj.start_index()
     for user in users_page_obj:
         user.rank = start_rank
         start_rank += 1
-        
+
     return render(request, "rankings.html", {"users_page_obj": users_page_obj})
 
+
 @login_required()
-def store(request, username): # store_view
+def store(request, username):  # store_view
     if request.user.username != username:
-        return redirect(reverse('store', kwargs={'username': request.user.username})) 
+        return redirect(reverse("store", kwargs={"username": request.user.username}))
     profile = get_object_or_404(UserProfile, username=username)
-    bought_items = UserItem.objects.filter(user=profile, is_bought=True).values_list('item', flat=True)
+    bought_items = UserItem.objects.filter(user=profile, is_bought=True).values_list(
+        "item", flat=True
+    )
     store_items = StoreItem.objects.exclude(id__in=bought_items)
-    if request.method == 'POST':
+    if request.method == "POST":
         form = StoreItemActionForm(request.POST)
         if form.is_valid():
-            name = form.cleaned_data['name']
-            action = form.cleaned_data['action']
-            whatis = form.cleaned_data['whatis']
-            if action == 'buy':
+            name = form.cleaned_data["name"]
+            action = form.cleaned_data["action"]
+            whatis = form.cleaned_data["whatis"]
+            if action == "buy":
                 if UserItem.objects.filter(user=profile, item__name=name).exists():
                     messages.error(request, "Bu öğeyi zaten satın aldınız.")
                 # Check if the user can afford the item, then create a new Purchase object
@@ -508,44 +546,58 @@ def store(request, username): # store_view
                     item = StoreItem.objects.get(name=name)
                     if item.price <= profile.indian_wallet:
                         profile.indian_wallet -= item.price
-                        user_item = UserItem.objects.create(user=profile, item=item, whatis=whatis, is_bought=True)
+                        user_item = UserItem.objects.create(
+                            user=profile, item=item, whatis=whatis, is_bought=True
+                        )
                         profile.store_items.add(user_item.item)
                         profile.save()
                     else:
-                        messages.error(request, "You don't have enough Indian Wallet to buy this item.")
-            
+                        messages.error(
+                            request,
+                            "You don't have enough Indian Wallet to buy this item.",
+                        )
+
     else:
         # category areas
         form = StoreItemActionForm()
-        category_name = request.GET.get('category_name')
-        if category_name and category_name != "All":  
+        category_name = request.GET.get("category_name")
+        if category_name and category_name != "All":
             store_items = store_items.filter(category_name=category_name)
-    return render(request, "store.html" , {"store_items": store_items, "profile": profile, "form": form})
+    return render(
+        request,
+        "store.html",
+        {"store_items": store_items, "profile": profile, "form": form},
+    )
+
 
 @never_cache
 @login_required
 def inventory(request, username):
     if request.user.username != username:
-        return redirect(reverse('store', kwargs={'username': request.user.username})) 
+        return redirect(reverse("store", kwargs={"username": request.user.username}))
     profile = get_object_or_404(UserProfile, username=username)
     inventory_items = UserItem.objects.filter(user=profile).all()
-    
+
     if request.method == "POST":
         form = StoreItemActionForm(request.POST)
         if form.is_valid():
-            name = form.cleaned_data['name']
-            action = form.cleaned_data['action']
-            whatis = form.cleaned_data['whatis']
-            if action == 'equip':
+            name = form.cleaned_data["name"]
+            action = form.cleaned_data["action"]
+            whatis = form.cleaned_data["whatis"]
+            if action == "equip":
                 # Check if the user has the item
-                user_item = UserItem.objects.filter(user=profile, item__name=name).first()
+                user_item = UserItem.objects.filter(
+                    user=profile, item__name=name
+                ).first()
                 # Set the user's item to equipped
                 if user_item:
                     user_item.is_equipped ^= True
                     user_item.save()
-            elif action == 'customize':
+            elif action == "customize":
                 # Check if the user has the item
-                user_item = UserItem.objects.filter(user=profile, item__name=name).first()
+                user_item = UserItem.objects.filter(
+                    user=profile, item__name=name
+                ).first()
                 # Change user's equipped_item with the given name
                 if user_item:
                     user_item.whatis = whatis
@@ -553,34 +605,73 @@ def inventory(request, username):
     else:
         # category areas
         form = StoreItemActionForm()
-        category_name = request.GET.get('category_name')
+        category_name = request.GET.get("category_name")
 
-        if category_name and category_name != "All":  
-            inventory_items = UserItem.objects.filter(item__category_name=category_name, user=profile)
-    return render(request, "inventory.html", {"profile": profile, "inventory_items": inventory_items})
+        if category_name and category_name != "All":
+            inventory_items = UserItem.objects.filter(
+                item__category_name=category_name, user=profile
+            )
+    return render(
+        request,
+        "inventory.html",
+        {"profile": profile, "inventory_items": inventory_items},
+    )
 
 
 @login_required()
 def search(request):
     if request.method == "POST":
         search_query = request.POST.get("search_query", "")
-        if search_query:
-            search_query_email = search_query.split("@")[0]
-            results = UserProfile.objects.filter(
-                Q(username__icontains=search_query)
-                | Q(displayname__icontains=search_query)
-                | Q(email__icontains=search_query_email)
-                ).exclude(username=request.user.username)
-            results_list = []
-            for result in results:
-                # Create a dictionary with the data of the result
-                result_dict = model_to_dict(result)
-                # Add 'is_friend' key to the dictionary
-                result_dict['is_friend'] = request.user.friends.filter(id=result.id).exists()
-                # Append the dictionary to the list
-                results_list.append(result_dict)
-            return render(request, "search.html", {"results": results_list})  
+        request.session["search_query"] = search_query
+    else:
+        search_query = request.session.get("search_query", "")
+
+    if search_query:
+        search_query_email = search_query.split("@")[0]
+        results = UserProfile.objects.filter(
+            Q(username__icontains=search_query)
+            | Q(displayname__icontains=search_query)
+            | Q(email__icontains=search_query_email)
+        ).exclude(username=request.user.username)
+        results_list = []
+        for result in results:
+            # Create a dictionary with the data of the result
+            result_dict = model_to_dict(result)
+            # Add 'is_friend' key to the dictionary
+            result_dict["is_friend"] = request.user.friends.filter(
+                id=result.id
+            ).exists()
+            # Append the dictionary to the list
+            results_list.append(result_dict)
+        results = Paginator(results_list, 8)
+        page_number = request.GET.get("page")
+        try:
+            results = results.page(page_number)
+        except PageNotAnInteger:
+            # If page number is not an integer, deliver the first page
+            results = results.page(1)
+        except EmptyPage:
+            # If page number is out of range, deliver the last page
+            results = results.page(results.num_pages)
+        return render(request, "search.html", {"results": results})
     return render(request, "search.html")
+
+
+@login_required()
+def friends(request, profile):
+    profile = get_object_or_404(UserProfile, username=profile)
+    friends = profile.friends.all().exclude(username=profile)
+    friends = Paginator(friends, 8)
+    page_number = request.GET.get("page")
+    try:
+        friends = friends.page(page_number)
+    except PageNotAnInteger:
+        # Sayfa numarası bir tamsayı değilse, ilk sayfayı al
+        friends = friends.page(1)
+    except EmptyPage:
+        # Geçersiz bir sayfa numarası istenirse, son sayfayı al
+        friends = friends.page(friends.num_pages)
+    return render(request, "friends.html", {"friends": friends, "profile": profile})
 
 
 @login_required()
@@ -593,20 +684,20 @@ def follow_unfollow(request, username):
     elif action == "unfollow":
         request.user.friends.remove(profile)
     else:
-        return JsonResponse({'status': 'error', 'message': 'Invalid action'})
-    return JsonResponse({'status': 'ok'})
+        return JsonResponse({"status": "error", "message": "Invalid action"})
+    return JsonResponse({"status": "ok"})
 
 
 @login_required()
 def game(request):
     return render(request, "game.html")
 
+
 @login_required()
 def play_ai(request):
     user_item = UserItem.objects.filter(
-                    user=request.user,
-                    item__name="My Beautiful AI"
-                ).first()
+        user=request.user, item__name="My Beautiful AI"
+    ).first()
     ainametag = user_item and user_item.whatis or "AI"
     return render(request, "play-ai.html", {"ainametag": ainametag})
 
@@ -621,13 +712,6 @@ def chat(request):
 @login_required()
 def aboutus(request):
     return render(request, "aboutus.html")
-
-
-@login_required()
-def friends(request, profile):
-    profile = get_object_or_404(UserProfile, username=profile)
-    friends = profile.friends.all()
-    return render(request, "friends.html", {"friends": friends, "profile": profile})
 
 
 @login_required()
@@ -830,38 +914,37 @@ def generate_jwt_token(request):
 
 # Game logics #
 
+
 @csrf_exempt
 def update_winner(request):
-    if request.method == 'POST':
+    if request.method == "POST":
         data = json.loads(request.body)
-        winner = data.get('winner')
-        loser = data.get('loser')
-        winnerscore = data.get('winnerscore')
-        loserscore = data.get('loserscore')
-        start_time = data.get('start_time')
-        finish_time = data.get('finish_time')
+        winner = data.get("winner")
+        loser = data.get("loser")
+        winnerscore = data.get("winnerscore")
+        loserscore = data.get("loserscore")
+        start_time = data.get("start_time")
+        finish_time = data.get("finish_time")
 
         winner_profile = get_object_or_404(UserProfile, username=winner)
         loser_profile = get_object_or_404(UserProfile, username=loser)
-       
+
         if winner:
             winner_profile.indian_wallet += random.randint(20, 35)
             winner_profile.elo_point += random.randint(1, 10)
-            winner_profile.save()            
+            winner_profile.save()
         elif loser:
             lose_wallet = random.randint(5, 10)
-            lose_elo = random.randint(1,6)
+            lose_elo = random.randint(1, 6)
             if lose_wallet < loser_profile.indian_wallet:
                 loser_profile.indian_wallet -= lose_wallet
             if lose_elo < loser_profile.elo_point:
                 loser_profile.elo_point -= lose_elo
             loser_profile.save()
 
-        start_time = datetime.strptime(start_time, '%Y-%m-%dT%H:%M:%S.%fZ')
-        finish_time = datetime.strptime(finish_time, '%Y-%m-%dT%H:%M:%S.%fZ')
+        start_time = datetime.strptime(start_time, "%Y-%m-%dT%H:%M:%S.%fZ")
+        finish_time = datetime.strptime(finish_time, "%Y-%m-%dT%H:%M:%S.%fZ")
         game_duration = finish_time - start_time
-
-        
 
         game_record = Game.objects.create(
             group_name=winner_profile.username + "_" + loser_profile.username,
@@ -871,7 +954,7 @@ def update_winner(request):
             player2_score=loserscore,
             winner=winner_profile,
             loser=loser_profile,
-            game_duration=game_duration
+            game_duration=game_duration,
         )
 
         if winner_profile.game_stats is None:
@@ -884,38 +967,75 @@ def update_winner(request):
 
         # Winner #
         winner_profile.game_stats.total_games_pong += 1
-        
+
         winner_profile.game_stats.total_win_pong += 1
-        winner_profile.game_stats.total_win_rate_pong = winner_profile.game_stats.total_win_pong / winner_profile.game_stats.total_games_pong
+        winner_profile.game_stats.total_win_rate_pong = (
+            winner_profile.game_stats.total_win_pong
+            / winner_profile.game_stats.total_games_pong
+        )
         winner_profile.game_stats.total_win_streak_pong += 1
         winner_profile.game_stats.total_lose_streak_pong = 0
 
         # Kazananın ortalama puan kazanma ve kaybetme sayılarını güncelle
-        winner_profile.game_stats.total_avg_points_won = (winner_profile.game_stats.total_avg_points_won * (winner_profile.game_stats.total_win_pong - 1) + winnerscore) / winner_profile.game_stats.total_win_pong
-        winner_profile.game_stats.total_avg_points_lost = (winner_profile.game_stats.total_avg_points_lost * (winner_profile.game_stats.total_win_pong - 1) + loserscore) / winner_profile.game_stats.total_win_pong
-        total_game_duration_seconds = winner_profile.game_stats.total_avg_game_duration.total_seconds() * (winner_profile.game_stats.total_games_pong - 1)
+        winner_profile.game_stats.total_avg_points_won = (
+            winner_profile.game_stats.total_avg_points_won
+            * (winner_profile.game_stats.total_win_pong - 1)
+            + winnerscore
+        ) / winner_profile.game_stats.total_win_pong
+        winner_profile.game_stats.total_avg_points_lost = (
+            winner_profile.game_stats.total_avg_points_lost
+            * (winner_profile.game_stats.total_win_pong - 1)
+            + loserscore
+        ) / winner_profile.game_stats.total_win_pong
+        total_game_duration_seconds = (
+            winner_profile.game_stats.total_avg_game_duration.total_seconds()
+            * (winner_profile.game_stats.total_games_pong - 1)
+        )
         total_game_duration_seconds += game_duration.total_seconds()
-        avg_game_duration_seconds = total_game_duration_seconds / winner_profile.game_stats.total_games_pong
-        winner_profile.game_stats.total_avg_game_duration = timedelta(seconds=avg_game_duration_seconds)
+        avg_game_duration_seconds = (
+            total_game_duration_seconds / winner_profile.game_stats.total_games_pong
+        )
+        winner_profile.game_stats.total_avg_game_duration = timedelta(
+            seconds=avg_game_duration_seconds
+        )
         winner_profile.game_stats.save()
 
         # Loser #
         loser_profile.game_stats.total_games_pong += 1
 
         loser_profile.game_stats.total_lose_pong += 1
-        loser_profile.game_stats.total_win_rate_pong = loser_profile.game_stats.total_win_pong / loser_profile.game_stats.total_games_pong
+        loser_profile.game_stats.total_win_rate_pong = (
+            loser_profile.game_stats.total_win_pong
+            / loser_profile.game_stats.total_games_pong
+        )
         loser_profile.game_stats.total_win_streak_pong = 0
         loser_profile.game_stats.total_lose_streak_pong += 1
 
         # Kaybedenin ortalama puan kazanma ve kaybetme sayılarını güncelle
-        loser_profile.game_stats.total_avg_points_won = (loser_profile.game_stats.total_avg_points_won * (loser_profile.game_stats.total_lose_pong - 1) + loserscore) / loser_profile.game_stats.total_lose_pong
-        loser_profile.game_stats.total_avg_points_lost = (loser_profile.game_stats.total_avg_points_lost * (loser_profile.game_stats.total_lose_pong - 1) + winnerscore) / loser_profile.game_stats.total_lose_pong
-        loser_total_game_duration_seconds = loser_profile.game_stats.total_avg_game_duration.total_seconds() * (loser_profile.game_stats.total_games_pong - 1)
+        loser_profile.game_stats.total_avg_points_won = (
+            loser_profile.game_stats.total_avg_points_won
+            * (loser_profile.game_stats.total_lose_pong - 1)
+            + loserscore
+        ) / loser_profile.game_stats.total_lose_pong
+        loser_profile.game_stats.total_avg_points_lost = (
+            loser_profile.game_stats.total_avg_points_lost
+            * (loser_profile.game_stats.total_lose_pong - 1)
+            + winnerscore
+        ) / loser_profile.game_stats.total_lose_pong
+        loser_total_game_duration_seconds = (
+            loser_profile.game_stats.total_avg_game_duration.total_seconds()
+            * (loser_profile.game_stats.total_games_pong - 1)
+        )
         loser_total_game_duration_seconds += game_duration.total_seconds()
-        loser_avg_game_duration_seconds = loser_total_game_duration_seconds / loser_profile.game_stats.total_games_pong
-        loser_profile.game_stats.total_avg_game_duration = timedelta(seconds=loser_avg_game_duration_seconds)
+        loser_avg_game_duration_seconds = (
+            loser_total_game_duration_seconds
+            / loser_profile.game_stats.total_games_pong
+        )
+        loser_profile.game_stats.total_avg_game_duration = timedelta(
+            seconds=loser_avg_game_duration_seconds
+        )
         loser_profile.game_stats.save()
 
         ##############
-        return JsonResponse({'message': 'Winner and Loser updated successfully'})
-    return render(request, '404.html', status=404)
+        return JsonResponse({"message": "Winner and Loser updated successfully"})
+    return render(request, "404.html", status=404)

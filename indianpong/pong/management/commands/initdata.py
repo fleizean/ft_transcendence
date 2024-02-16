@@ -31,4 +31,3 @@ class Command(BaseCommand):
             StoreItem.objects.create(**item_data)
 
         self.stdout.write(self.style.SUCCESS('Store data loaded successfully.'))
-  
