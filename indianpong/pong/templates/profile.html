@@ -38,9 +38,9 @@
                         {% if request.user.username != profile.username %}
                             {% csrf_token %}
                             {% if is_friend %}
-                                <button data-username="{{ profile.username }}" class="unfollow-btn" ><i class="bi bi-heartbreak-fill"></i>Unfollow</button>
+                                <button data-username="{{ profile.username }}" class="unfollow-btn" ><i class="bi bi-heartbreak-fill"></i> Unfollow</button>
                             {% else %}
-                                <button data-username="{{ profile.username }}" class="btn btn-danger"><i class="bi bi-heart-fill"></i>Follow</button>
+                                <button data-username="{{ profile.username }}" class="btn btn-danger"><i class="bi bi-heart-fill"></i> Follow</button>
                             {% endif %}
                         {% endif %}
                     </div>

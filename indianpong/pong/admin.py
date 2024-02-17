@@ -60,7 +60,7 @@ class UserItemAdmin(admin.ModelAdmin):
 
 @admin.register(UserGameStat)
 class UserGameStatAdmin(admin.ModelAdmin):
-    list_display = ('get_user', 'total_games_pong', 'total_win_pong', 'total_lose_pong', 'total_win_streak_pong', 'total_win_rate_pong', 'total_lose_streak_pong', 'total_avg_game_duration', 'total_avg_points_won', 'total_avg_points_lost')
+    list_display = ('get_user', 'total_games_pong', 'total_win_pong', 'total_lose_pong', 'total_win_streak_pong', 'total_win_rate_pong', 'total_lose_streak_pong', 'total_avg_game_duration_pong', 'total_avg_points_won_pong', 'total_avg_points_lost_pong')
     search_fields = ('userprofile__username', 'total_win_pong',)
 
     def get_user(self, obj):

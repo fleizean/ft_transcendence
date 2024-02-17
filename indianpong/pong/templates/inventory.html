@@ -178,11 +178,11 @@ function saveProperty() {
 }
 
 function submitStoreItemForm(itemName, formId) {
-    const form = document.getElementById('store_item_form' + formId);
+    const form = document.getElementById('store_item_form' + itemName);
     showToast(`${itemName} öğesini başarıyla kuşandın!`, `text-bg-success`, `bi bi-check-circle-fill`);
-    setTimeout(function() {
-        form.submit();
-    }, 6000); // 3 saniye bekleyerek formu submit et
+    
+    form.submit();
+    
 }
 
 document.addEventListener('DOMContentLoaded', (event) => {

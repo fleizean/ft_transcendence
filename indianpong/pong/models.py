@@ -68,15 +68,15 @@ class UserGameStat(models.Model):
     total_win_streak_pong = models.IntegerField(default=0)
     total_lose_streak_pong = models.IntegerField(default=0)
     total_win_rate_pong = models.FloatField(default=0.0)
-    total_avg_game_duration = models.DurationField(default=timedelta(0), null=True, blank=True)
-    total_avg_points_won = models.FloatField(default=0.0)
-    total_avg_points_lost = models.FloatField(default=0.0)
+    total_avg_game_duration_pong = models.DurationField(default=timedelta(0), null=True, blank=True)
+    total_avg_points_won_pong = models.FloatField(default=0.0)
+    total_avg_points_lost_pong = models.FloatField(default=0.0)
 
     def formatted_game_duration(self):
-        if self.total_avg_game_duration is None:
+        if self.total_avg_game_duration_pong is None:
             return None
 
-        total_seconds = int(self.total_avg_game_duration.total_seconds())
+        total_seconds = int(self.total_avg_game_duration_pong.total_seconds())
         hours, remainder = divmod(total_seconds, 3600)
         minutes, seconds = divmod(remainder, 60)
 
@@ -96,10 +96,10 @@ class UserGameStat(models.Model):
         return f"%{win_rate_percentage:.1f}"
 
     def formatted_avg_points_lost(self):
-        return "{:.2f}".format(self.total_avg_points_lost)
+        return "{:.2f}".format(self.total_avg_points_lost_pong)
 
     def formatted_avg_points_won(self):
-        return "{:.2f}".format(self.total_avg_points_won)
+        return "{:.2f}".format(self.total_avg_points_won_pong)
 
 class VerifyToken(models.Model):
     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
