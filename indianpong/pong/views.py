@@ -291,7 +291,8 @@ def profile_view(request, username):
     is_friend = request.user.friends.filter(id=profile.id).exists()
     if profile.game_stats is not None and profile.game_stats.total_win_rate_pong is not None:
         profile.rank = UserProfile.objects.filter(
-            game_stats__total_win_rate_pong__isnull=False
+            game_stats__total_win_rate_pong__isnull=False,
+            username__ne='indianAI'  # Exclude user with the username 'indianAI'
         ).order_by("-game_stats__total_win_rate_pong").filter(
             game_stats__total_win_rate_pong__gt=profile.game_stats.total_win_rate_pong
         ).count() + 1
