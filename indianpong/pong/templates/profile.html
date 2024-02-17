@@ -14,7 +14,13 @@
             <!-- Profil Kartı -->
             <div class="card mb-4" style="background-color:white !important">
                 <!-- Profil Kartı içeriği -->
-                <span class="pro-profile"><i class="bi bi-award-fill"></i> 1ST IN RANKINGS</span>
+                {% if profile.is_indianai %}
+                    <span class="pro-profile"><i class="bi bi-robot"></i> I'M JUST ROBOT</span>
+                {% elif profile.rank is not None %}
+                    <span class="pro-profile"><i class="bi bi-award-fill"></i> {{ profile.rank }} IN RANKINGS</span>
+                {% else %}
+                    <span class="pro-profile"><i class="bi bi-exclamation-diamond-fill"></i> NO RANKING</span>
+                {% endif %}
                 <div class="card-body text-center">
                     <!-- Avatar -->
                     {% if not profile.avatar %}

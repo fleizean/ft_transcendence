@@ -21,7 +21,7 @@ class UserProfileAdmin(admin.ModelAdmin):
     fieldsets = (
     ('User Information', {'fields': ('username', 'password', 'displayname', 'email', 'avatar', 'friends', 'elo_point', 'indian_wallet')}),
     ('Dates', {'fields': ('date_joined', 'last_login')}),
-    ('Roles', {'fields': ('is_staff', 'is_active', 'is_superuser', 'is_verified', 'is_42student')}),
+    ('Roles', {'fields': ('is_staff', 'is_active', 'is_superuser', 'is_verified', 'is_42student', 'is_indianai')}),
     ('Permissions', {'fields': ('groups', 'user_permissions')}),
     )
 

@@ -64,7 +64,7 @@
                       <input type="hidden" name="name" value="{{ item.name }}">
                       <input type="hidden" name="action" value="buy">
                       <input type="hidden" name="whatis" value="none">
-                      <button class="card__shop__action" 
+                      <button type="button" class="card__shop__action" 
                           {% if item.price <= profile.indian_wallet %}
                               onclick="submitStoreItemForm('{{ item.name }}', '{{item.id}}')"
                           {% else %}
@@ -110,11 +110,12 @@ function showToast(content, status, iconClass) {
     liveToast.classList.add(status);
 
     toastContent.textContent = content;
+    console.log(content + " " + status + " " + iconClass)
     const toast = new bootstrap.Toast(liveToast);
     toast.show();
     setTimeout(function() {
-        toast.hide();
-    }, 8000);
+      toast.hide();
+    }, 8000);  // 10 saniye bekleyin
 }
 
 function submitStoreItemForm(itemName, formId) {

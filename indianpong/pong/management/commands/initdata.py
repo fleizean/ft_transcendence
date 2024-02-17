@@ -20,6 +20,7 @@ class Command(BaseCommand):
            file.close() 
            user.is_verified = True
            user.indian_wallet = 1000
+           user.is_indianai = True
            user.elo_point = 1000
            user.save()
            self.stdout.write(self.style.SUCCESS('IndianAI created successfully.'))  

@@ -6,9 +6,12 @@ canvas.width = 800;
 canvas.height = 600;
 //document.body.appendChild(canvas);
 
+const canvasContainer = document.querySelector('.ai-game');
 
 const username = document.querySelector('.container-top').dataset.username;
 const ainame = document.querySelector('.container-top').dataset.ainame;
+const paddleColor = document.querySelector('.container-top').dataset.paddlecolor;
+const playgroundColor = document.querySelector('.container-top').dataset.playgroundcolor;
 
 /* Cordinates of the canvas */
 var textWidth1 = ctx.measureText(username + ": " + score1).width;
@@ -138,6 +141,12 @@ function update() {
 
 // Draw everything
 function render() {
+    if (playgroundColor != "default" && playgroundColor != paddleColor) {
+        canvas.style.background = playgroundColor; // Kırmızı renk kodu
+    } else {
+        canvas.style.background = "#FFFFFF"; // Beyaz renk kodu veya başka bir renk kodu
+    }
+
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     // Draw the middle dotted line
@@ -155,7 +164,10 @@ function render() {
     ctx.strokeStyle = "#0095DD";
     ctx.stroke();
 
-    ctx.fillStyle = "#0095DD";
+    if (paddleColor != "default" && playgroundColor != paddleColor)
+        ctx.fillStyle = paddleColor;
+    else
+        ctx.fillStyle = "#0095DD";
     ctx.fillRect(paddle1.x, paddle1.y, paddle1.width, paddle1.height);
     ctx.fillRect(paddle2.x, paddle2.y, paddle2.width, paddle2.height);
 

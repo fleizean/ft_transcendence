@@ -37,6 +37,7 @@ class UserProfile(AbstractUser):
     #channel_name = models.CharField(max_length=100, blank=True, null=True)
     is_verified = models.BooleanField(default=False)
     is_42student = models.BooleanField(default=False)
+    is_indianai = models.BooleanField(default=False)
     store_items = models.ManyToManyField(StoreItem, through='UserItem', blank=True)
     game_stats = models.OneToOneField('UserGameStat', on_delete=models.SET_NULL, null=True, blank=True)
     indian_wallet = models.IntegerField(blank=True, null=True, default=0, validators=[MinValueValidator(0), MaxValueValidator(9999)])
@@ -93,6 +94,12 @@ class UserGameStat(models.Model):
 
         # Win rate'i string olarak formatla
         return f"%{win_rate_percentage:.1f}"
+
+    def formatted_avg_points_lost(self):
+        return "{:.2f}".format(self.total_avg_points_lost)
+
+    def formatted_avg_points_won(self):
+        return "{:.2f}".format(self.total_avg_points_won)
 
 class VerifyToken(models.Model):
     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
