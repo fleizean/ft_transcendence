@@ -14,7 +14,7 @@
         <div class="chat-container">
           <!-- start: Sidebar -->
           <aside class="chat-sidebar">
-            <a href="#" class="chat-sidebar-logo"><i class="bi bi-discord"></i></a>
+            {% comment %} <a href="#" class="chat-sidebar-logo"><i class="bi bi-discord"></i></a> {% endcomment %}
             <ul class="chat-sidebar-menu">
               <li class="active">
                 <a href="#" data-title="DM"><i class="bi bi-chat-square-fill"></i></a>
@@ -22,11 +22,11 @@
               <li>
                 <a href="#" data-title="Room"><i class="bi bi-chat-square-quote-fill"></i></a>
               </li>
-              <li>
+              {% comment %} <li>
                 <a href="#" data-title="Settings"><i class="bi bi-gear-fill"></i></a>
-              </li>
+              </li> {% endcomment %}
               <li class="chat-sidebar-profile">
-                <button type="button" class="chat-sidebar-profile-toggle"><i class="bi bi-person-circle" style="font-size: 24px; color: #059669;"></i></button>
+                {% comment %} <button type="button" class="chat-sidebar-profile-toggle"><i class="bi bi-person-circle" style="font-size: 24px; color: #059669;"></i></button> {% endcomment %}
                 <ul class="chat-sidebar-profile-dropdown">
                   <li>
                     <a href="#"><i class="bi bi-person-fill"></i> Profile</a>
@@ -44,10 +44,10 @@
             <!-- start: Content side -->
             <div class="content-sidebar">
               <div class="content-sidebar-title">Chats</div>
-              <form action="" class="content-sidebar-form">
+{% comment %}               <form action="" class="content-sidebar-form">
                 <input type="search" class="content-sidebar-input" placeholder="Search..." />
                 <button type="submit" class="content-sidebar-submit"><i class="bi bi-search"></i></button>
-              </form>
+              </form> {% endcomment %}
               <div class="content-messages">
                 <ul class="content-messages-list">
                   <li class="content-message-title">
@@ -56,7 +56,7 @@
                   {% for user in  users %}
                       <li>
                         <a href="{% url 'start_chat' user %}" data-link>
-                          <img class="content-message-image" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8cGVvcGxlfGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60" alt="" />
+                          <img class="content-message-image" src="{% if user.avatar %}{{ user.avatar.url }}{% else %}/static/assets/profile/profilephoto.jpeg{% endif %}" alt="" />
                           <span class="content-message-info">
                             <span class="content-message-name">{{ user }}</span>
                           </span>
@@ -73,7 +73,7 @@
               <div class="conversation-top">
                 <button type="button" class="conversation-back"><i class="bi bi-arrow-left-circle-fill"></i></button>
                 <div class="conversation-user">
-                  <img class="conversation-user-image" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8cGVvcGxlfGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60" alt="" />
+                  <img class="content-message-image" src="{% if user.avatar %}{{ user.avatar.url }}{% else %}/static/assets/profile/profilephoto.jpeg{% endif %}" alt="" />
                     <div id="userNameOnChat" class="conversation-user-name" data-username="{{ room.first_user|default:'' }}" data-seconduser="{{ room.second_user|default:'' }}" >
                       {% if room.first_user == request.user %}
                           {{ room.second_user }}
