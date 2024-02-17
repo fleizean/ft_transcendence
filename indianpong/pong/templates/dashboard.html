@@ -94,7 +94,7 @@
             <div class="card-block">
               <h6 class="m-b-20">Average Points Won</h6>
               <h2 class="text-right">
-                <i class="bi bi-star-fill"></i><span>{% if profile.game_stats.total_avg_points_won %} {{ profile.game_stats.total_avg_points_won }} {% else %} 0 {% endif %}</span>
+                <i class="bi bi-star-fill"></i><span>{% if profile.game_stats.formatted_avg_points_won %} {{ profile.game_stats.formatted_avg_points_won }} {% else %} 0 {% endif %}</span>
               </h2>
             </div>
           </div>
@@ -105,7 +105,7 @@
             <div class="card-block">
               <h6 class="m-b-20">Average Points Lost</h6>
               <h2 class="text-right">
-                <i class="bi bi-bucket-fill"></i><span> {% if profile.game_stats.total_avg_points_lost %} {{ profile.game_stats.total_avg_points_lost }} {% else %} 0 {% endif %}</span>
+                <i class="bi bi-bucket-fill"></i><span> {% if profile.game_stats.formatted_avg_points_lost %} {{ profile.game_stats.formatted_avg_points_lost }} {% else %} 0 {% endif %}</span>
               </h2>
             </div>
           </div>

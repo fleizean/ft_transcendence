@@ -47,32 +47,32 @@
       </div>
         <div class="inventory-list">
 
-          
-                {% for item in inventory_items %}         
-                <div class="modal fade" id="setPropertyModal" tabindex="-1" aria-labelledby="setPropertyModalLabel" aria-hidden="true">
-                  <div class="modal-dialog">
-                      <div class="modal-content">
-                        <form id="store_item_form{{ item.id }}" method="POST">
-                          {% csrf_token %}
-                          <div class="modal-header">
-                              <h5 class="modal-title" id="setPropertyModalLabel">Özelliği Ayarla</h5>
-                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                          </div>
-                          <div class="modal-body" id="modalBody">         
-                              <input type="hidden" id="itemNameInput" name="name">
-                              <input type="hidden" name="action" value="customize">                 
-                              <div id="propertyContent">
-                                  <!-- Dinamik olarak içerik buraya eklenecek -->
-                              </div>
-                          </div>
-                          <div class="modal-footer">
-                              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
-                              <button type="button" class="btn btn-primary" onclick="saveProperty(`{{item.id}}`)">Kaydet</button>
-                          </div>
+          <div class="modal fade" id="setPropertyModal" tabindex="-1" aria-labelledby="setPropertyModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                  <form id="store_item_form{{ item.id }}" method="POST">
+                    {% csrf_token %}
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="setPropertyModalLabel">Özelliği Ayarla</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body" id="modalBody">         
+                        <input type="hidden" id="itemNameInput" name="name">
+                        <input type="hidden" name="action" value="customize">                 
+                        <div id="propertyContent">
+                            <!-- Dinamik olarak içerik buraya eklenecek -->
                         </div>
-                    </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
+                        <button type="button" class="btn btn-primary" onclick="saveProperty(`{{item.id}}`)">Kaydet</button>
+                    </div>
                   </div>
-              </div>
+              </form>
+            </div>
+        </div>
+                {% for item in inventory_items %}         
+                
               <div class="product-card">
                 <img src="{% static 'assets/stores/'|add:item.item.image_url %}" alt="" />
                 <h2 class="card__title">{{ item.item.name }}</h2>
@@ -93,7 +93,7 @@
                       <input type="hidden" name="name" value="{{ item.item.name }}">
                       <input type="hidden" name="action" value="equip">
                       <input type="hidden" name="whatis" value="none">
-                      <button class="card__shop__action-gear" onclick="submitStoreItemForm('{{ item.item.name }}', '{{item.id}}')" >
+                      <button type="button" class="card__shop__action-gear" onclick="submitStoreItemForm('{{ item.item.name }}', '{{item.id}}')" >
                         <i class="bi bi-backpack-fill" style="color:white; font-size: 1.1em;"></i>
                       </button>
                     </form>
@@ -139,49 +139,50 @@ function showToast(content, status, iconClass) {
     }, 8000);
 }
 
-function openSetPropertyModal(itemName) {
-        document.getElementById('itemNameInput').value = itemName;
-        // Özelliklere göre modal içeriğini güncelle
-        var propertyContent = document.getElementById('propertyContent');
-        if (itemName === "My Playground" || itemName === "My Beautiful Paddle") {
-            propertyContent.innerHTML = `
-                <label for="color">Choose Color:</label>
-                <input type="color" id="color" name="whatis">
-            `;
-        } else {
-            propertyContent.innerHTML = `
-                <label for="propertyName">AI Name:</label>
-                <input type="text" id="propertyName" name="whatis">
-            `;
-        }
-        document.getElementById('setPropertyModal').classList.add('show');
-        document.getElementById('setPropertyModal').style.display = 'block';
-        document.body.classList.add('modal-open');
+function openSetPropertyModal(itemName, itemId) {
+    document.getElementById('itemNameInput').value = itemName;
+    
+    var propertyContent = document.getElementById('propertyContent');
+    if (itemName === "My Playground" || itemName === "My Beautiful Paddle") {
+        propertyContent.innerHTML = `
+            <label for="color">Choose Color:</label>
+            <input type="color" id="color" name="whatis">
+        `;
+    } else {
+        propertyContent.innerHTML = `
+            <label for="propertyName">AI Name:</label>
+            <input type="text" id="propertyName" name="whatis">
+        `;
     }
 
-    function saveProperty(itemid) {
-        
-        var itemName = document.getElementById('itemNameInput').value;
-        var whatis = '';
-        // Renk seçme alanından veya metin girişinden değeri al
-        if (itemName === "My Playground" || itemName === "My Beautiful Paddle") {
-            whatis = document.getElementById('color').value;
-        } else {
-            whatis = document.getElementById('propertyName').value;
-        }
-        console.log("Item Name:", itemName);
-        console.log("Property Value:", whatis);
-        showToast(`${itemName} öğesini başarıyla özelleştirdin!`, `text-bg-success`, `bi bi-shop`);
-        const form = document.getElementById('store_item_form' + itemid);
-        form.submit();
+    var modal = new bootstrap.Modal(document.getElementById('setPropertyModal'), { backdrop: false, keyboard: false });
+modal.show();
+
+}
+
+function saveProperty() {
+    var itemName = document.getElementById('itemNameInput').value;
+    var whatis = '';
+
+    if (itemName === "My Playground" || itemName === "My Beautiful Paddle") {
+        whatis = document.getElementById('color').value;
+    } else {
+        whatis = document.getElementById('propertyName').value;
     }
+
+    console.log("Item Name:", itemName);
+    console.log("Property Value:", whatis);
+    showToast(`${itemName} öğesini başarıyla özelleştirdin!`, `text-bg-success`, `bi bi-shop`);
+    const form = document.getElementById('store_item_form');
+    form.submit();
+}
 
 function submitStoreItemForm(itemName, formId) {
-    const form = document.getElementById('store_item_form' + formId);
+    const form = document.getElementById('store_item_form' + itemName);
     showToast(`${itemName} öğesini başarıyla kuşandın!`, `text-bg-success`, `bi bi-check-circle-fill`);
-    setTimeout(function() {
-        form.submit();
-    }, 6000); // 3 saniye bekleyerek formu submit et
+    
+    form.submit();
+    
 }
 
 document.addEventListener('DOMContentLoaded', (event) => {

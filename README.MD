@@ -16,8 +16,8 @@
           <li>✅ Users can update their  information. </li>
           <li>✅ Users can upload an   avatar, with a default option if none is provided. </li>
           <li>⌛ Users can add others as friends   and view their online status. </li>
-          <li>⌛ User profiles display stats,  such as wins and losses. </li>
-          <li>⌛ Each user has a <b>Match  History</b> including 1v1 games, dates, and relevant
+          <li>✅ User profiles display stats,  such as wins and losses. </li>
+          <li>✅ Each user has a <b>Match  History</b> including 1v1 games, dates, and relevant
           details, accessible to logged-in users.</li>
           </ul>
   </details>
@@ -58,16 +58,16 @@
       <summary> <b> Live Chat. ⌛</b></summary>
       You have to create a chat for your users in this module:
           <ul>
-          <li>✅ The user should be able   to send <b>direct messages</b> to other users. </li>
+          <li>⌛ The user should be able   to send <b>direct messages</b> to other users. </li>
           <li>⌛ The user should be able to block  other users. This way, they will see no more messages from the account   they blocked. </li>
           <li>⌛ The user should be able to  invite other users to play a Pong game through the chat interface. </li>
           <li>⌛ The tournament system should be   able to warn users expected for the next game. </li>
-          <li>✅ The user should be able   to access other players profiles through the chat interface. </li>
+          <li>⌛ The user should be able   to access other players profiles through the chat interface. </li>
           </ul>
   </details>
   
   <details>
-      <summary> <b> Introduce an AI Opponent. ✅</b></summary>
+      <summary> <b> Introduce an AI Opponent. ⌛</b></summary>
       In this major module, the objective is to incorporate an AI player into   the game. Notably, the use of the <b>A* algorithm</b> is not permitted for  this task. Key features and goals include:
           <ul>
           <li>✅ Develop an AI opponent  that provides a challenging and engaging gameplay experience for   users. </li>

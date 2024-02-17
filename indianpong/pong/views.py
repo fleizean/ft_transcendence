@@ -289,6 +289,16 @@ def profile_view(request, username):
     paginator = Paginator(game_records, 5)  # Sayfada 5 kayıt göster
     page_number = request.GET.get("page")
     is_friend = request.user.friends.filter(id=profile.id).exists()
+    if profile.game_stats is not None and profile.game_stats.total_win_rate_pong is not None:
+        profile.rank = UserProfile.objects.filter(
+    Q(game_stats__total_win_rate_pong__isnull=False),
+    ~Q(username='IndianAI')  # Exclude user with the username 'indianAI'
+    ).order_by("-game_stats__total_win_rate_pong").filter(
+        game_stats__total_win_rate_pong__gt=profile.game_stats.total_win_rate_pong
+    ).count() + 1
+    else:
+        profile.rank = None
+
     try:
         history_page_obj = paginator.page(page_number)
     except PageNotAnInteger:
@@ -504,7 +514,8 @@ def dashboard(request):
 def rankings(request):
     users_by_elo = UserProfile.objects.filter(
         game_stats__total_win_rate_pong__isnull=False
-    ).order_by("-game_stats__total_win_rate_pong")
+    ).exclude(username='IndianAI').order_by("-game_stats__total_win_rate_pong")
+    
     paginator = Paginator(users_by_elo, 10)
     page_number = request.GET.get("page")
     try:
@@ -693,13 +704,34 @@ def game(request):
     return render(request, "game.html")
 
 
-@login_required()
 def play_ai(request):
-    user_item = UserItem.objects.filter(
+    ai_item = UserItem.objects.filter(
         user=request.user, item__name="My Beautiful AI"
     ).first()
-    ainametag = user_item and user_item.whatis or "AI"
-    return render(request, "play-ai.html", {"ainametag": ainametag})
+    paddle_item = UserItem.objects.filter(
+        user=request.user, item__name="My Beautiful Paddle"
+    ).first()
+    playground_item = UserItem.objects.filter(
+        user=request.user, item__name="My Playground"
+    ).first()
+
+    # Kontrol edilecek durumlar
+    if ai_item:
+        ainametag = ai_item.whatis if ai_item.is_equipped else "AI"
+    else:
+        ainametag = "AI"
+
+    if paddle_item:
+        paddlecolor = paddle_item.whatis if paddle_item.is_equipped else "default"
+    else:
+        paddlecolor = "default"
+
+    if playground_item:
+        playgroundcolor = playground_item.whatis if playground_item.is_equipped else "default"
+    else:
+        playgroundcolor = "default"
+
+    return render(request, "play-ai.html", {"ainametag": ainametag, "paddlecolor": paddlecolor, "playgroundcolor": playgroundcolor})
 
 
 @never_cache
@@ -717,7 +749,7 @@ def aboutus(request):
 @login_required()
 def match_history(request, profile):
     profile = get_object_or_404(UserProfile, username=profile)
-
+    
     return render(request, "match-history.html", {"profile": profile})
 
 
@@ -930,14 +962,12 @@ def update_winner(request):
         loser_profile = get_object_or_404(UserProfile, username=loser)
 
         if winner:
-            winner_profile.indian_wallet += random.randint(20, 35)
+            winner_profile.indian_wallet += random.randint(200, 300)
             winner_profile.elo_point += random.randint(1, 10)
             winner_profile.save()
         elif loser:
-            lose_wallet = random.randint(5, 10)
-            lose_elo = random.randint(1, 6)
-            if lose_wallet < loser_profile.indian_wallet:
-                loser_profile.indian_wallet -= lose_wallet
+            loser_profile.indian_wallet += random.randint(100, 200)
+            lose_elo -= random.randint(1, 6)
             if lose_elo < loser_profile.elo_point:
                 loser_profile.elo_point -= lose_elo
             loser_profile.save()
@@ -977,25 +1007,25 @@ def update_winner(request):
         winner_profile.game_stats.total_lose_streak_pong = 0
 
         # Kazananın ortalama puan kazanma ve kaybetme sayılarını güncelle
-        winner_profile.game_stats.total_avg_points_won = (
-            winner_profile.game_stats.total_avg_points_won
+        winner_profile.game_stats.total_avg_points_won_pong = (
+            winner_profile.game_stats.total_avg_points_won_pong
             * (winner_profile.game_stats.total_win_pong - 1)
             + winnerscore
         ) / winner_profile.game_stats.total_win_pong
-        winner_profile.game_stats.total_avg_points_lost = (
-            winner_profile.game_stats.total_avg_points_lost
+        winner_profile.game_stats.total_avg_points_lost_pong = (
+            winner_profile.game_stats.total_avg_points_lost_pong
             * (winner_profile.game_stats.total_win_pong - 1)
             + loserscore
         ) / winner_profile.game_stats.total_win_pong
         total_game_duration_seconds = (
-            winner_profile.game_stats.total_avg_game_duration.total_seconds()
+            winner_profile.game_stats.total_avg_game_duration_pong.total_seconds()
             * (winner_profile.game_stats.total_games_pong - 1)
         )
         total_game_duration_seconds += game_duration.total_seconds()
         avg_game_duration_seconds = (
             total_game_duration_seconds / winner_profile.game_stats.total_games_pong
         )
-        winner_profile.game_stats.total_avg_game_duration = timedelta(
+        winner_profile.game_stats.total_avg_game_duration_pong = timedelta(
             seconds=avg_game_duration_seconds
         )
         winner_profile.game_stats.save()
@@ -1012,18 +1042,18 @@ def update_winner(request):
         loser_profile.game_stats.total_lose_streak_pong += 1
 
         # Kaybedenin ortalama puan kazanma ve kaybetme sayılarını güncelle
-        loser_profile.game_stats.total_avg_points_won = (
-            loser_profile.game_stats.total_avg_points_won
+        loser_profile.game_stats.total_avg_points_won_pong = (
+            loser_profile.game_stats.total_avg_points_won_pong
             * (loser_profile.game_stats.total_lose_pong - 1)
             + loserscore
         ) / loser_profile.game_stats.total_lose_pong
-        loser_profile.game_stats.total_avg_points_lost = (
-            loser_profile.game_stats.total_avg_points_lost
+        loser_profile.game_stats.total_avg_points_lost_pong = (
+            loser_profile.game_stats.total_avg_points_lost_pong
             * (loser_profile.game_stats.total_lose_pong - 1)
             + winnerscore
         ) / loser_profile.game_stats.total_lose_pong
         loser_total_game_duration_seconds = (
-            loser_profile.game_stats.total_avg_game_duration.total_seconds()
+            loser_profile.game_stats.total_avg_game_duration_pong.total_seconds()
             * (loser_profile.game_stats.total_games_pong - 1)
         )
         loser_total_game_duration_seconds += game_duration.total_seconds()
@@ -1031,7 +1061,7 @@ def update_winner(request):
             loser_total_game_duration_seconds
             / loser_profile.game_stats.total_games_pong
         )
-        loser_profile.game_stats.total_avg_game_duration = timedelta(
+        loser_profile.game_stats.total_avg_game_duration_pong = timedelta(
             seconds=loser_avg_game_duration_seconds
         )
         loser_profile.game_stats.save()
