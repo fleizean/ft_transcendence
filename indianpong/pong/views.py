@@ -513,7 +513,8 @@ def dashboard(request):
 def rankings(request):
     users_by_elo = UserProfile.objects.filter(
         game_stats__total_win_rate_pong__isnull=False
-    ).order_by("-game_stats__total_win_rate_pong")
+    ).exclude(username='IndianAI').order_by("-game_stats__total_win_rate_pong")
+    
     paginator = Paginator(users_by_elo, 10)
     page_number = request.GET.get("page")
     try:
