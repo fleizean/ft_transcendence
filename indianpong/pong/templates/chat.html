@@ -53,7 +53,7 @@
                   <li class="content-message-title">
                     <span>Recently</span>
                   </li>
-                  {% for user in  users %}
+                  {% for user in users %}
                       <li>
                         <a href="{% url 'start_chat' user %}" data-link>
                           <img class="content-message-image" src="{% if user.avatar %}{{ user.avatar.url }}{% else %}/static/assets/profile/profilephoto.jpeg{% endif %}" alt="" />

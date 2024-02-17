@@ -747,7 +747,7 @@ def aboutus(request):
 @login_required()
 def match_history(request, profile):
     profile = get_object_or_404(UserProfile, username=profile)
-
+    
     return render(request, "match-history.html", {"profile": profile})
 
 

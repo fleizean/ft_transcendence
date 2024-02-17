@@ -18,9 +18,9 @@
                 <div class="profile-card">
                     <div class="image">
                         {% if friend.avatar %}
-                            <a href="profile/{{friend.username}}"><img src="{{friend.avatar.url}}" alt="" class="profile-img" /></a>
+                            <a href="/profile/{{friend.username}}"><img src="{{friend.avatar.url}}" alt="" class="profile-img" /></a>
                         {% else %}
-                            <a href="profile/{{friend.username}}"><img src="/static/assets/profile/profilephoto.jpeg" alt="" class="profile-img" /></a>
+                            <a href="/profile/{{friend.username}}"><img src="/static/assets/profile/profilephoto.jpeg" alt="" class="profile-img" /></a>
                         {% endif %}
                     </div>
                     <div class="text-data">
@@ -43,7 +43,7 @@
                     </div>
                     {% if not friend.social.stackoverflow and not friend.social.twitter and not friend.social.github and not friend.social.instagram %}
                       <div class="buttons" style="margin-top: 60px !important;">
-                        <button class="button-message">Message</button>
+                        <button class="button-message">Message</button> 
                       </div>
                     {% else %}
                       <div class="buttons">

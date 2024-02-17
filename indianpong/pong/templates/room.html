@@ -53,7 +53,7 @@
                   <li class="content-message-title">
                     <span>Recently</span>
                   </li>
-                  {% for user in  users %}
+                  {% for user in users %}
                       <li>
                         <a href="{% url 'start_chat' user %}" data-link>
                           <img class="content-message-image" src="{% if user.avatar %}{{ user.avatar.url }}{% else %}/static/assets/profile/profilephoto.jpeg{% endif %}" alt="" />
@@ -73,7 +73,7 @@
               <div class="conversation-top">
                 <button type="button" class="conversation-back"><i class="bi bi-arrow-left-circle-fill"></i></button>
                 <div class="conversation-user">
-                  <img class="content-message-image" src="{% if user.avatar %}{{ user.avatar.url }}{% else %}/static/assets/profile/profilephoto.jpeg{% endif %}" alt="" />
+                  <img class="content-message-image" src="{% if room.first_user == request.user %} {% if room.second_user.avatar %} {{room.second_user.avatar.url}} {% else %} /static/assets/profile/profilephoto.jpeg {% endif %} {% else %} {% if room.first_user.avatar %} {{room.first_user.avatar.url}} {% else %} /static/assets/profile/profilephoto.jpeg {% endif %} {% endif %}" alt="" />
                     <div id="userNameOnChat" class="conversation-user-name" data-username="{{ room.first_user|default:'' }}" data-seconduser="{{ room.second_user|default:'' }}" >
                       {% if room.first_user == request.user %}
                           {{ room.second_user }}
