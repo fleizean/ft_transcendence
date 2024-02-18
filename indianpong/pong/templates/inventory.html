@@ -173,7 +173,7 @@ function saveProperty(itemId) {
     const form = document.getElementById('store_item_form' + itemId);
     setTimeout(function () {
       form.submit();
-    }, 3000);
+    }, 500);
 }
 
 function submitStoreItemForm(itemName) {
@@ -185,7 +185,7 @@ function submitStoreItemForm(itemName) {
     setTimeout(function () {
         // Formu gerçekleştir
         form.submit();
-    }, 3000); // Örnekte 2 saniye ertelemeyi belirtiyoruz, ihtiyaca göre ayarlayabilirsiniz.
+    }, 500); // Örnekte 2 saniye ertelemeyi belirtiyoruz, ihtiyaca göre ayarlayabilirsiniz.
 }
 
 document.addEventListener('DOMContentLoaded', (event) => {

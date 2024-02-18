@@ -48,7 +48,6 @@ var paddleY = (canvas.height - paddleHeight) / 2;
 var paddle1 = {x: 0, y: paddleY, width: paddleWidth, height: abilities_paddleHeight, dy: paddleSpeed};
 var paddle2 = {x: canvas.width - paddleWidth, y: paddleY, width: paddleWidth, height: paddleHeight, dy: paddleSpeed};
 
-
 // Ball object
 var ball = {x: canvas.width / 2, y: canvas.height / 2, radius: 10, speed: 5, dx: 1, dy: 1};
 
@@ -78,8 +77,12 @@ function update() {
     ball.y += ball.speed * ball.dy;
 
     // Check for collisions with paddles
-    if (ball.y + ball.radius > paddle1.y && ball.y - ball.radius < paddle1.y + paddle1.height && ball.dx < 0) {
+    if (ball.y + ball.radius > paddle1.y && ball.y - ball.radius < paddle1.y + paddle1.height && ball.dx < 0) {       
         if (ball.x - ball.radius < paddle1.x + paddle1.width) {
+            if (rageofFire) {
+                ball.speed += 1;
+                console.log(rageofFire + " " + ball.speed)
+            }
             ball.dx *= -1;
             // Check if the ball hit the top or bottom 20% of the paddle
             if (ball.y < paddle1.y + 0.2 * paddle1.height || ball.y > paddle1.y + 0.8 * paddle1.height) {
@@ -296,12 +299,33 @@ function resetBall() {
     }, 500);
 }
 
+var likeaCheaterCount = 0;
+var fastandFuriousCount = 0;
+var frozenBallCount = 0;
 // Control paddle1 with w, s keys
 document.addEventListener("keydown", function(event) {
     if (event.key === "w" || event.key === "W" || event.key === "ArrowUp") {
         upPressed = true;
     } else if (event.key === "s" || event.key === "S" || event.key === "ArrowDown") {
         downPressed = true;
+    }
+    else if (event.key === '1' && (likeaCheaterCount < 1 && likeaCheater)) {
+        score1++;
+        score2--;
+        likeaCheaterCount += 1;
+    }
+    else if (event.key === '2' && (fastandFuriousCount < 1 && fastandFurious)) {
+        ball.speed = 10;
+        paddleSpeed = 20;
+        fastandFuriousCount += 1;
+    }
+    else if (event.key === '3' && (frozenBallCount < 1 && frozenBall)) {
+        var nowBallSpeed = ball.speed;
+        ball.speed = 0;
+        frozenBallCount += 1;
+        setTimeout(function() {
+            ball.speed = nowBallSpeed; // Orjinal hız değerini buraya ekleyin
+        }, 2000);
     }
 });
 
@@ -312,6 +336,8 @@ document.addEventListener("keyup", function(event) {
         downPressed = false;
     }
 });
+
+
 
 /* // Ai Player
 let errorProbability = 0.05; // 5% chance to make a mistake
