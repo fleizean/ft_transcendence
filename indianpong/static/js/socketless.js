@@ -20,7 +20,12 @@ const likeaCheater = document.querySelector('.container-top').dataset.likeacheat
 const fastandFurious = document.querySelector('.container-top').dataset.fastandfurious;
 const rageofFire = document.querySelector('.container-top').dataset.rageoffire;
 const frozenBall = document.querySelector('.container-top').dataset.frozenball;
-console.log(giantMan, likeaCheater, fastandFurious, rageofFire, frozenBall);
+
+console.log(giantMan);
+console.log(likeaCheater);
+console.log(fastandFurious);
+console.log(rageofFire);
+console.log(frozenBall);
 
 /* Cordinates of the canvas */
 var textWidth1 = ctx.measureText(username + ": " + score1).width;
@@ -220,47 +225,6 @@ function render() {
     ctx.fillText(ainame + ": " + score2, ainameX, ainameY);
 }
 
-/* // Draw everything
-function render() {
-    if (playgroundColor != "default" && playgroundColor != paddleColor) {
-        canvas.style.background = playgroundColor; // Kırmızı renk kodu
-    } else {
-        canvas.style.background = "#FFFFFF"; // Beyaz renk kodu veya başka bir renk kodu
-    }
-
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    // Draw the middle dotted line
-    ctx.beginPath();
-    ctx.setLineDash([5, 15]);
-    ctx.moveTo(canvas.width / 2, 0);
-    ctx.lineTo(canvas.width / 2, canvas.height);
-    ctx.strokeStyle = "#0095DD";
-    ctx.stroke();
-
-    // Draw the middle dotted circle
-    ctx.beginPath();
-    ctx.arc(canvas.width / 2, canvas.height / 2, 50, 0, Math.PI * 2, false);
-    ctx.setLineDash([5, 15]);
-    ctx.strokeStyle = "#0095DD";
-    ctx.stroke();
-
-    if (paddleColor != "default" && playgroundColor != paddleColor)
-        ctx.fillStyle = paddleColor;
-    else
-        ctx.fillStyle = "#0095DD";
-    ctx.fillRect(paddle1.x, paddle1.y, paddle1.width, paddle1.height);
-    ctx.fillRect(paddle2.x, paddle2.y, paddle2.width, paddle2.height);
-
-    ctx.beginPath();
-    ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI*2, false);
-    ctx.fill();
-    ctx.closePath();
-
-    ctx.font = "16px Roboto";
-    ctx.fillText(username + ": " + score1, usernameX, usernameY);
-    ctx.fillText(ainame + ": " + score2, ainameX, ainameY);
-} */
 
 // The main game loop
 var main = function () {
@@ -302,13 +266,12 @@ function resetBall() {
 var likeaCheaterCount = 0;
 var fastandFuriousCount = 0;
 var frozenBallCount = 0;
-
-console.log('frozenBall değeri: ', frozenBall + " " + frozenBallCount);
 // Control paddle1 with w, s keys
 document.addEventListener("keydown", function(event) {
     if (event.key === "w" || event.key === "W" || event.key === "ArrowUp") {
         upPressed = true;
-    } else if (event.key === "s" || event.key === "S" || event.key === "ArrowDown") {
+    } 
+    else if (event.key === "s" || event.key === "S" || event.key === "ArrowDown") {
         downPressed = true;
     }
     else if (event.key === '1' && likeaCheaterCount < 1 && frozenBall == "true") {
@@ -340,55 +303,6 @@ document.addEventListener("keyup", function(event) {
 });
 
 
-
-/* // Ai Player
-let errorProbability = 0.05; // 5% chance to make a mistake
-
-setInterval(() => {
-    let shouldMoveUp = Math.random() < errorProbability ? true : false;
-    if (ball.y < paddle2.y && !shouldMoveUp) {
-        paddle2.y -= paddle2.dy;
-    } else if (ball.y > paddle2.y && !shouldMoveUp) {
-        paddle2.y += paddle2.dy;
-    } else {
-        // Occasionally move in the opposite direction
-        paddle2.y += shouldMoveUp ? -paddle2.dy : paddle2.dy;
-    }
-}, 100); */
-
-/* // Ai Player
-let errorProbability = 0.05; // 5% chance to make a mistake
-
-let lastBallPosition = { x: ball.x, y: ball.y };
-let ballDirection = { x: 0, y: 0 };
-
-setInterval(() => {
-    // Calculate ball direction
-    ballDirection.x = ball.x - lastBallPosition.x;
-    ballDirection.y = ball.y - lastBallPosition.y;
-
-    // Predict ball's y position when it reaches the paddle
-    let timeToReachPaddle = (paddle2.x - ball.x) / ballDirection.x;
-    let predictedY = ball.y + ballDirection.y * timeToReachPaddle;
-
-    // Clamp prediction within canvas
-    predictedY = Math.max(0, Math.min(600, predictedY));
-
-    // Decide whether to move up or down
-    let shouldMoveUp = Math.random() < errorProbability ? true : false;
-    if (predictedY < paddle2.y && !shouldMoveUp) {
-        paddle2.y -= paddle2.dy;
-    } else if (predictedY > paddle2.y && !shouldMoveUp) {
-        paddle2.y += paddle2.dy;
-    } else {
-        // Occasionally move in the opposite direction
-        paddle2.y += shouldMoveUp ? -paddle2.dy : paddle2.dy;
-    }
-
-    // Update last ball position
-    lastBallPosition = { x: ball.x, y: ball.y };
-}, 100); */
-
 // Ai Player
 let reactionDelay = 1000 / ball.speed; // Delay in milliseconds
 let lastBallPosition = { x: ball.x, y: ball.y };
@@ -417,23 +331,6 @@ setInterval(() => {
     targetY = predictedY - paddle2.height / 2;
 }, reactionDelay);
 
-/* setInterval(() => {
-    // Move the AI paddle
-    if (upPressedAI && paddle2.y > 0) {
-        paddle2.y -= paddle2.dy;
-    } else if (downPressedAI && paddle2.y < canvas.height - paddle2.height) {
-        paddle2.y += paddle2.dy;
-    }
-}, 100); */
-
-/* setInterval(() => {
-    // Move the paddle smoothly towards the predicted position
-    if (predictedY < paddle2.y) {
-        paddle2.y -= paddle2.dy;
-    } else if (predictedY > paddle2.y) {
-        paddle2.y += paddle2.dy;
-    }
-}, reactionDelay); */
 
 function sendWinnerToBackend(winner, loser, winnerscore, loserscore, start_time) {
     const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
