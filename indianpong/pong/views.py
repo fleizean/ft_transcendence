@@ -715,21 +715,11 @@ def play_ai(request):
         user=request.user, item__name="My Playground"
     ).first()
 
-    # Kontrol edilecek durumlar
-    if ai_item:
-        ainametag = ai_item.whatis if ai_item.is_equipped else "AI"
-    else:
-        ainametag = "AI"
+    ainametag = ai_item.whatis if ai_item and ai_item.is_equipped else "AI"
 
-    if paddle_item:
-        paddlecolor = paddle_item.whatis if paddle_item.is_equipped else "default"
-    else:
-        paddlecolor = "default"
+    paddlecolor = paddle_item.whatis if paddle_item and paddle_item.is_equipped else "default"
 
-    if playground_item:
-        playgroundcolor = playground_item.whatis if playground_item.is_equipped else "default"
-    else:
-        playgroundcolor = "default"
+    playgroundcolor = playground_item.whatis if playground_item and playground_item.is_equipped else "default"
 
     return render(request, "play-ai.html", {"ainametag": ainametag, "paddlecolor": paddlecolor, "playgroundcolor": playgroundcolor})
 

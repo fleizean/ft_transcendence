@@ -139,7 +139,76 @@ function update() {
     }
 }
 
-// Draw everything
+/// Draw everything
+function render() {
+    if (playgroundColor != "default" && playgroundColor != paddleColor) {
+        canvas.style.background = playgroundColor; // Kırmızı renk kodu
+    } else {
+        canvas.style.background = "lightgrey"; // Beyaz renk kodu veya başka bir renk kodu
+    }
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Create a radial gradient for the background
+    var gradient = ctx.createRadialGradient(canvas.width / 2, canvas.height / 2, 10, canvas.width / 2, canvas.height / 2, 300);
+    gradient.addColorStop(0, 'lightgrey');
+    gradient.addColorStop(1, 'darkgrey');
+    ctx.fillStyle = gradient;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    // Draw the middle dotted line
+    ctx.beginPath();
+    ctx.setLineDash([5, 15]);
+    ctx.moveTo(canvas.width / 2, 0);
+    ctx.lineTo(canvas.width / 2, canvas.height);
+    ctx.strokeStyle = "black";
+    ctx.stroke();
+
+    // Draw the middle dotted circle
+    ctx.beginPath();
+    ctx.arc(canvas.width / 2, canvas.height / 2, 50, 0, Math.PI * 2, false);
+    ctx.setLineDash([5, 15]);
+    ctx.stroke();
+
+    // Add shadow to the paddles
+    ctx.shadowColor = 'black';
+    ctx.shadowBlur = 10;
+    ctx.shadowOffsetX = 5;
+    ctx.shadowOffsetY = 5;
+    if (paddleColor != "default" && playgroundColor != paddleColor)
+        ctx.fillStyle = paddleColor;
+    else
+        ctx.fillStyle = "black";
+    ctx.fillRect(paddle1.x, paddle1.y, paddle1.width, paddle1.height);
+    // If paddle2 is on the right, draw the shadow to the left
+    ctx.shadowOffsetX = -5;
+    ctx.shadowOffsetY = 5;
+    ctx.fillRect(paddle2.x, paddle2.y, paddle2.width, paddle2.height);
+
+    // Add shiny effect to the ball
+    ctx.beginPath();
+    ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI*2, false);
+    var gradient = ctx.createRadialGradient(ball.x, ball.y, 0, ball.x, ball.y, ball.radius);
+    gradient.addColorStop(0, 'white');
+    gradient.addColorStop(0.1, 'gold');
+    gradient.addColorStop(1, 'darkorange');
+    ctx.fillStyle = gradient;
+    ctx.fill();
+    ctx.closePath();
+
+    // Reset shadow properties
+    ctx.shadowColor = 'transparent';
+    ctx.shadowBlur = 0;
+    ctx.shadowOffsetX = 0;
+    ctx.shadowOffsetY = 0;
+
+    ctx.font = "16px Roboto";
+    ctx.fillStyle = 'white';
+    ctx.fillText(username + ": " + score1, usernameX, usernameY);
+    ctx.fillText(ainame + ": " + score2, ainameX, ainameY);
+}
+
+/* // Draw everything
 function render() {
     if (playgroundColor != "default" && playgroundColor != paddleColor) {
         canvas.style.background = playgroundColor; // Kırmızı renk kodu
@@ -179,7 +248,7 @@ function render() {
     ctx.font = "16px Roboto";
     ctx.fillText(username + ": " + score1, usernameX, usernameY);
     ctx.fillText(ainame + ": " + score2, ainameX, ainameY);
-}
+} */
 
 // The main game loop
 var main = function () {
@@ -284,7 +353,7 @@ setInterval(() => {
 }, 100); */
 
 // Ai Player
-let reactionDelay = 5000 / ball.speed; // Delay in milliseconds
+let reactionDelay = 1000 / ball.speed; // Delay in milliseconds
 let lastBallPosition = { x: ball.x, y: ball.y };
 let ballDirection = { x: 0, y: 0 };
 let predictedY = paddle2.y;
