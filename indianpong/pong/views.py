@@ -704,6 +704,7 @@ def game(request):
     return render(request, "game.html")
 
 
+@login_required()
 def play_ai(request):
     ai_item = UserItem.objects.filter(
         user=request.user, item__name="My Beautiful AI"
