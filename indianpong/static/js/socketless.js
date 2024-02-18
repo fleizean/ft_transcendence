@@ -276,7 +276,9 @@ document.addEventListener("keydown", function(event) {
     }
     else if (event.key === '1' && likeaCheaterCount < 1 && likeaCheater == "true") {
         score1++;
-        score2--;
+        if (score2 > 0) {
+            score2--;
+        }
         frozenBallCount += 1;
     }
     else if (event.key === '2' && fastandFuriousCount < 1 && fastandFurious == "true") {
