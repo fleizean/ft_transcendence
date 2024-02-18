@@ -20,7 +20,7 @@ const likeaCheater = document.querySelector('.container-top').dataset.likeacheat
 const fastandFurious = document.querySelector('.container-top').dataset.fastandfurious;
 const rageofFire = document.querySelector('.container-top').dataset.rageoffire;
 const frozenBall = document.querySelector('.container-top').dataset.frozenball;
-
+console.log(giantMan, likeaCheater, fastandFurious, rageofFire, frozenBall);
 
 /* Cordinates of the canvas */
 var textWidth1 = ctx.measureText(username + ": " + score1).width;
@@ -35,7 +35,7 @@ var ainameY = 20;
 
 
 // Paddle objects
-if (giantMan) { // if giantMan abilities equiped
+if (giantMan == true) { // if giantMan abilities equiped
     var abilities_paddleHeight = 115;
 }
 else {
@@ -79,7 +79,7 @@ function update() {
     // Check for collisions with paddles
     if (ball.y + ball.radius > paddle1.y && ball.y - ball.radius < paddle1.y + paddle1.height && ball.dx < 0) {       
         if (ball.x - ball.radius < paddle1.x + paddle1.width) {
-            if (rageofFire) {
+            if (rageofFire == true) {
                 ball.speed += 1;
                 console.log(rageofFire + " " + ball.speed)
             }
@@ -299,9 +299,9 @@ function resetBall() {
     }, 500);
 }
 
-var likeaCheaterCount = 0;
-var fastandFuriousCount = 0;
-var frozenBallCount = 0;
+var likeaCheaterCount = false;
+var fastandFuriousCount = false;
+var frozenBallCount = false;
 // Control paddle1 with w, s keys
 document.addEventListener("keydown", function(event) {
     if (event.key === "w" || event.key === "W" || event.key === "ArrowUp") {
@@ -309,20 +309,20 @@ document.addEventListener("keydown", function(event) {
     } else if (event.key === "s" || event.key === "S" || event.key === "ArrowDown") {
         downPressed = true;
     }
-    else if (event.key === '1' && (likeaCheaterCount < 1 && likeaCheater)) {
+    else if (event.key === '1' && likeaCheaterCount == false && likeaCheater == true) {
         score1++;
         score2--;
-        likeaCheaterCount += 1;
+        likeaCheaterCount = true;
     }
-    else if (event.key === '2' && (fastandFuriousCount < 1 && fastandFurious)) {
+    else if (event.key === '2' && fastandFuriousCount == false && fastandFurious == true) {
         ball.speed = 10;
         paddleSpeed = 20;
-        fastandFuriousCount += 1;
+        fastandFuriousCount = true;
     }
-    else if (event.key === '3' && (frozenBallCount < 1 && frozenBall)) {
+    else if (event.key === '3' && frozenBallCount == false && frozenBall == true) {
         var nowBallSpeed = ball.speed;
         ball.speed = 0;
-        frozenBallCount += 1;
+        frozenBallCount = true;
         setTimeout(function() {
             ball.speed = nowBallSpeed; // Orjinal hız değerini buraya ekleyin
         }, 2000);
