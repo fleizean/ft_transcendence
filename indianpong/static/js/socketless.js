@@ -12,6 +12,7 @@ const username = document.querySelector('.container-top').dataset.username;
 const ainame = document.querySelector('.container-top').dataset.ainame;
 const paddleColor = document.querySelector('.container-top').dataset.paddlecolor;
 const playgroundColor = document.querySelector('.container-top').dataset.playgroundcolor;
+canvas.style.borderColor = playgroundColor; // Set the border color to the specified color
 
 // Pong Abilities
 const giantMan = document.querySelector('.container-top').dataset.giantman;
@@ -19,6 +20,7 @@ const likeaCheater = document.querySelector('.container-top').dataset.likeacheat
 const fastandFurious = document.querySelector('.container-top').dataset.fastandfurious;
 const rageofFire = document.querySelector('.container-top').dataset.rageoffire;
 const frozenBall = document.querySelector('.container-top').dataset.frozenball;
+
 
 /* Cordinates of the canvas */
 var textWidth1 = ctx.measureText(username + ": " + score1).width;
@@ -154,11 +156,6 @@ function update() {
 
 /// Draw everything
 function render() {
-    if (playgroundColor != "default" && playgroundColor != paddleColor) {
-        canvas.style.background = playgroundColor; // Kırmızı renk kodu
-    } else {
-        canvas.style.background = "lightgrey"; // Beyaz renk kodu veya başka bir renk kodu
-    }
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -188,10 +185,9 @@ function render() {
     ctx.shadowBlur = 10;
     ctx.shadowOffsetX = 5;
     ctx.shadowOffsetY = 5;
-    if (paddleColor != "default" && playgroundColor != paddleColor)
-        ctx.fillStyle = paddleColor;
-    else
-        ctx.fillStyle = "black";
+
+
+    ctx.fillStyle = paddleColor
     ctx.fillRect(paddle1.x, paddle1.y, paddle1.width, paddle1.height);
     // If paddle2 is on the right, draw the shadow to the left
     ctx.shadowOffsetX = -5;

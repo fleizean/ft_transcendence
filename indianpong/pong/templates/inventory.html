@@ -71,7 +71,7 @@
               </form>
             </div>
         </div>
-                {% for item in inventory_items %}         
+              {% for item in inventory_items %}         
                 
               <div class="product-card">
                 <img src="{% static 'assets/stores/'|add:item.item.image_url %}" alt="" />
@@ -84,7 +84,7 @@
                   <span class="card__shop__price">{{item.item.price}}N₩</span>
                   {% if item.is_bought %}
                     {% if item.item.name == "My Playground" or item.item.name == "My Beautiful AI" or item.item.name == "My Beautiful Paddle" %}
-                      <button class="card__shop__action-set" onclick="openSetPropertyModal(`{{item.item.name}}`)">
+                      <button class="card__shop__action-set" onclick="openSetPropertyModal(`{{item.item.name}}`, `{{item.whatis}}`)">
                         <i class="bi bi-gear-fill" style="color:white; font-size: 1.1em;"></i>
                       </button>
                     {% endif %}
@@ -93,7 +93,7 @@
                       <input type="hidden" name="name" value="{{ item.item.name }}">
                       <input type="hidden" name="action" value="equip">
                       <input type="hidden" name="whatis" value="none">
-                      <button type="button" class="card__shop__action-gear" onclick="submitStoreItemForm('{{ item.item.name }}', '{{item.id}}')" >
+                      <button type="button" class="card__shop__action-gear" onclick="submitStoreItemForm('{{ item.item.name }}')" >
                         <i class="bi bi-backpack-fill" style="color:white; font-size: 1.1em;"></i>
                       </button>
                     </form>
@@ -102,8 +102,6 @@
               </div>         
           {% endfor %}
 
-
-          
         </div>
     </div>
     <div class="toast-container position-fixed bottom-0 end-0 p-6" style="margin-right: 20px; margin-bottom: 20px">
@@ -122,45 +120,56 @@
 </div>
 <script>
 function showToast(content, status, iconClass) {
-    const liveToast = document.getElementById('liveToast');
-    var toastContent = document.querySelector('#liveToast .fw-semibold');
-    var toastIcon = document.querySelector('.toast-body .i-class i');
+  const liveToastOriginal = document.getElementById('liveToast');
+  const liveToast = liveToastOriginal.cloneNode(true); // Clone the toast element
 
-    toastIcon.className = iconClass;
-    liveToast.classList.remove('text-bg-danger'); 
-    liveToast.className = 'toast'; 
-    liveToast.classList.add(status);
+  var toastContent = liveToast.querySelector('.fw-semibold');
+  var toastIcon = liveToast.querySelector('.i-class i');
 
-    toastContent.textContent = content;
-    const toast = new bootstrap.Toast(liveToast);
-    toast.show();
-    setTimeout(function() {
-        toast.hide();
-    }, 8000);
+  toastIcon.className = iconClass;
+  liveToast.classList.remove('text-bg-danger'); 
+  liveToast.className = 'toast'; 
+  liveToast.classList.add(status);
+
+  toastContent.textContent = content;
+
+  const toast = new bootstrap.Toast(liveToast);
+  toast.show();
+
+  setTimeout(function() {
+    toast.hide();
+  }, 8000);
+
+  // Append the new toast to the body and remove it after it's hidden
+  document.body.appendChild(liveToast);
+  liveToast.addEventListener('hidden.bs.toast', function () {
+    document.body.removeChild(liveToast);
+  });
 }
 
-function openSetPropertyModal(itemName, itemId) {
+function openSetPropertyModal(itemName, itemWhatIs) {
     document.getElementById('itemNameInput').value = itemName;
-    
     var propertyContent = document.getElementById('propertyContent');
     if (itemName === "My Playground" || itemName === "My Beautiful Paddle") {
+        itemWhatIs = itemWhatIs || '#000000';
         propertyContent.innerHTML = `
             <label for="color">Choose Color:</label>
-            <input type="color" id="color" name="whatis">
+            <input type="color" id="color" name="whatis" value="${itemWhatIs}">
         `;
     } else {
+        itemWhatIs = itemWhatIs || 'IndianAI';
         propertyContent.innerHTML = `
             <label for="propertyName">AI Name:</label>
-            <input type="text" id="propertyName" name="whatis">
+            <input type="text" id="propertyName" name="whatis" value="${itemWhatIs}">
         `;
     }
 
     var modal = new bootstrap.Modal(document.getElementById('setPropertyModal'), { backdrop: false, keyboard: false });
-modal.show();
+    modal.show();
 
 }
 
-function saveProperty() {
+function saveProperty(itemId) {
     var itemName = document.getElementById('itemNameInput').value;
     var whatis = '';
 
@@ -173,11 +182,11 @@ function saveProperty() {
     console.log("Item Name:", itemName);
     console.log("Property Value:", whatis);
     showToast(`${itemName} öğesini başarıyla özelleştirdin!`, `text-bg-success`, `bi bi-shop`);
-    const form = document.getElementById('store_item_form');
+    const form = document.getElementById('store_item_form' + itemId);
     form.submit();
 }
 
-function submitStoreItemForm(itemName, formId) {
+function submitStoreItemForm(itemName) {
     const form = document.getElementById('store_item_form' + itemName);
     showToast(`${itemName} öğesini başarıyla kuşandın!`, `text-bg-success`, `bi bi-check-circle-fill`);
     
@@ -197,7 +206,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
         smallWalletNames[i].addEventListener('mouseout', () => {
             inventoryInfos[i].style.visibility = 'hidden';
         });
-    }});
+    }
+  });
     
 </script>
 {% endblock app %}

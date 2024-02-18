@@ -709,9 +709,9 @@ def play_ai(request):
     user_items = UserItem.objects.filter(user=request.user)
     
     # Just Customizations - PONG
-    ainametag = get_equipped_item_value(user_items, "My Beautiful AI", "AI")
-    paddlecolor = get_equipped_item_value(user_items, "My Beautiful Paddle", "default")
-    playgroundcolor = get_equipped_item_value(user_items, "My Playground", "default")
+    ainametag = get_equipped_item_value(user_items, "My Beautiful AI", "IndianAI")
+    paddlecolor = get_equipped_item_value(user_items, "My Beautiful Paddle", "black")
+    playgroundcolor = get_equipped_item_value(user_items, "My Playground", "lightgrey")
     
     # Just Abilities - PONG
     giantman = get_equipped_item_value(user_items, "Giant-Man", "None")
