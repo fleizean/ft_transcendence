@@ -274,7 +274,7 @@ document.addEventListener("keydown", function(event) {
     else if (event.key === "s" || event.key === "S" || event.key === "ArrowDown") {
         downPressed = true;
     }
-    else if (event.key === '1' && likeaCheaterCount < 1 && frozenBall == "true") {
+    else if (event.key === '1' && likeaCheaterCount < 1 && likeaCheater == "true") {
         score1++;
         score2--;
         frozenBallCount += 1;
