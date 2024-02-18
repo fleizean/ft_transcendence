@@ -119,9 +119,9 @@
     </div>
 </div>
 <script>
+
 function showToast(content, status, iconClass) {
-  const liveToastOriginal = document.getElementById('liveToast');
-  const liveToast = liveToastOriginal.cloneNode(true); // Clone the toast element
+  const liveToast = document.getElementById('liveToast');
 
   var toastContent = liveToast.querySelector('.fw-semibold');
   var toastIcon = liveToast.querySelector('.i-class i');
@@ -135,16 +135,6 @@ function showToast(content, status, iconClass) {
 
   const toast = new bootstrap.Toast(liveToast);
   toast.show();
-
-  setTimeout(function() {
-    toast.hide();
-  }, 8000);
-
-  // Append the new toast to the body and remove it after it's hidden
-  document.body.appendChild(liveToast);
-  liveToast.addEventListener('hidden.bs.toast', function () {
-    document.body.removeChild(liveToast);
-  });
 }
 
 function openSetPropertyModal(itemName, itemWhatIs) {
@@ -179,19 +169,23 @@ function saveProperty(itemId) {
         whatis = document.getElementById('propertyName').value;
     }
 
-    console.log("Item Name:", itemName);
-    console.log("Property Value:", whatis);
     showToast(`${itemName} öğesini başarıyla özelleştirdin!`, `text-bg-success`, `bi bi-shop`);
     const form = document.getElementById('store_item_form' + itemId);
-    form.submit();
+    setTimeout(function () {
+      form.submit();
+    }, 3000);
 }
 
 function submitStoreItemForm(itemName) {
     const form = document.getElementById('store_item_form' + itemName);
+
     showToast(`${itemName} öğesini başarıyla kuşandın!`, `text-bg-success`, `bi bi-check-circle-fill`);
-    
-    form.submit();
-    
+
+    // İstediğiniz zaman formu submit etmek için uygun bir zamanlayıcı kullanabilirsiniz
+    setTimeout(function () {
+        // Formu gerçekleştir
+        form.submit();
+    }, 3000); // Örnekte 2 saniye ertelemeyi belirtiyoruz, ihtiyaca göre ayarlayabilirsiniz.
 }
 
 document.addEventListener('DOMContentLoaded', (event) => {
