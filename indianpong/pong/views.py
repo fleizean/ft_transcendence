@@ -729,7 +729,7 @@ def get_equipped_item_value(user_items, item_name, default_item):
         return item.whatis if item else default_item
     else:
         item = user_items.filter(item__name=item_name, is_equipped=True).first()
-        return bool(item)
+        return "true" if item else "false"
 
 
 @never_cache

@@ -35,7 +35,7 @@ var ainameY = 20;
 
 
 // Paddle objects
-if (giantMan == true) { // if giantMan abilities equiped
+if (giantMan == "true") { // if giantMan abilities equiped
     var abilities_paddleHeight = 115;
 }
 else {
@@ -79,7 +79,7 @@ function update() {
     // Check for collisions with paddles
     if (ball.y + ball.radius > paddle1.y && ball.y - ball.radius < paddle1.y + paddle1.height && ball.dx < 0) {       
         if (ball.x - ball.radius < paddle1.x + paddle1.width) {
-            if (rageofFire == true) {
+            if (rageofFire == "true") {
                 ball.speed += 1;
                 console.log(rageofFire + " " + ball.speed)
             }
@@ -299,9 +299,11 @@ function resetBall() {
     }, 500);
 }
 
-var likeaCheaterCount = false;
-var fastandFuriousCount = false;
-var frozenBallCount = false;
+var likeaCheaterCount = 0;
+var fastandFuriousCount = 0;
+var frozenBallCount = 0;
+
+console.log('frozenBall değeri: ', frozenBall + " " + frozenBallCount);
 // Control paddle1 with w, s keys
 document.addEventListener("keydown", function(event) {
     if (event.key === "w" || event.key === "W" || event.key === "ArrowUp") {
@@ -309,20 +311,20 @@ document.addEventListener("keydown", function(event) {
     } else if (event.key === "s" || event.key === "S" || event.key === "ArrowDown") {
         downPressed = true;
     }
-    else if (event.key === '1' && likeaCheaterCount == false && likeaCheater == true) {
+    else if (event.key === '1' && likeaCheaterCount < 1 && frozenBall == "true") {
         score1++;
         score2--;
-        likeaCheaterCount = true;
+        frozenBallCount += 1;
     }
-    else if (event.key === '2' && fastandFuriousCount == false && fastandFurious == true) {
+    else if (event.key === '2' && fastandFuriousCount < 1 && fastandFurious == "true") {
         ball.speed = 10;
         paddleSpeed = 20;
-        fastandFuriousCount = true;
+        fastandFuriousCount += 1;
     }
-    else if (event.key === '3' && frozenBallCount == false && frozenBall == true) {
+    else if (event.key === '3' && frozenBallCount < 1 && frozenBall == "true") {
         var nowBallSpeed = ball.speed;
         ball.speed = 0;
-        frozenBallCount = true;
+        frozenBallCount += 1;
         setTimeout(function() {
             ball.speed = nowBallSpeed; // Orjinal hız değerini buraya ekleyin
         }, 2000);
