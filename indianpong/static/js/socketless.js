@@ -13,6 +13,13 @@ const ainame = document.querySelector('.container-top').dataset.ainame;
 const paddleColor = document.querySelector('.container-top').dataset.paddlecolor;
 const playgroundColor = document.querySelector('.container-top').dataset.playgroundcolor;
 
+// Pong Abilities
+const giantMan = document.querySelector('.container-top').dataset.giantman;
+const likeaCheater = document.querySelector('.container-top').dataset.likeacheater;
+const fastandFurious = document.querySelector('.container-top').dataset.fastandfurious;
+const rageofFire = document.querySelector('.container-top').dataset.rageoffire;
+const frozenBall = document.querySelector('.container-top').dataset.frozenball;
+
 /* Cordinates of the canvas */
 var textWidth1 = ctx.measureText(username + ": " + score1).width;
 var textWidth2 = ctx.measureText(ainame + ": " + score2).width;
@@ -26,11 +33,17 @@ var ainameY = 20;
 
 
 // Paddle objects
+if (giantMan) { // if giantMan abilities equiped
+    var abilities_paddleHeight = 115;
+}
+else {
+    var abilities_paddleHeight = 100;
+}
 var paddleWidth = 10;
 var paddleHeight = 100;
 var paddleSpeed = 15;
 var paddleY = (canvas.height - paddleHeight) / 2;
-var paddle1 = {x: 0, y: paddleY, width: paddleWidth, height: paddleHeight, dy: paddleSpeed};
+var paddle1 = {x: 0, y: paddleY, width: paddleWidth, height: abilities_paddleHeight, dy: paddleSpeed};
 var paddle2 = {x: canvas.width - paddleWidth, y: paddleY, width: paddleWidth, height: paddleHeight, dy: paddleSpeed};
 
 

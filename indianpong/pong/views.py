@@ -706,23 +706,30 @@ def game(request):
 
 @login_required()
 def play_ai(request):
-    ai_item = UserItem.objects.filter(
-        user=request.user, item__name="My Beautiful AI"
-    ).first()
-    paddle_item = UserItem.objects.filter(
-        user=request.user, item__name="My Beautiful Paddle"
-    ).first()
-    playground_item = UserItem.objects.filter(
-        user=request.user, item__name="My Playground"
-    ).first()
+    user_items = UserItem.objects.filter(user=request.user)
+    
+    # Just Customizations - PONG
+    ainametag = get_equipped_item_value(user_items, "My Beautiful AI", "AI")
+    paddlecolor = get_equipped_item_value(user_items, "My Beautiful Paddle", "default")
+    playgroundcolor = get_equipped_item_value(user_items, "My Playground", "default")
+    
+    # Just Abilities - PONG
+    giantman = get_equipped_item_value(user_items, "Giant-Man", "None")
+    likeacheater = get_equipped_item_value(user_items, "Like a Cheater", "None")
+    fastandfurious = get_equipped_item_value(user_items, "Fast and Furious", "None")
+    rageoffire = get_equipped_item_value(user_items, "Rage of Fire", "None")
+    frozenball = get_equipped_item_value(user_items, "Frozen Ball", "None")
 
-    ainametag = ai_item.whatis if ai_item and ai_item.is_equipped else "AI"
+    return render(request, "play-ai.html", {"ainametag": ainametag, "paddlecolor": paddlecolor, "playgroundcolor": playgroundcolor, "giantman": giantman, "likeacheater": likeacheater, "fastandfurious": fastandfurious, "rageoffire": rageoffire, "frozenball": frozenball})
 
-    paddlecolor = paddle_item.whatis if paddle_item and paddle_item.is_equipped else "default"
 
-    playgroundcolor = playground_item.whatis if playground_item and playground_item.is_equipped else "default"
-
-    return render(request, "play-ai.html", {"ainametag": ainametag, "paddlecolor": paddlecolor, "playgroundcolor": playgroundcolor})
+def get_equipped_item_value(user_items, item_name, default_item):
+    if (item_name == "My Playground" or item_name == "My Beautiful Paddle" or item_name == "My Beautiful AI"):
+        item = user_items.filter(item__name=item_name, is_equipped=True).first()
+        return item.whatis if item else default_item
+    else:
+        item = user_items.filter(item__name=item_name, is_equipped=True).first()
+        return bool(item)
 
 
 @never_cache
