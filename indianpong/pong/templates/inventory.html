@@ -73,13 +73,18 @@
         </div>
               {% for item in inventory_items %}         
                 
-              <div class="product-card">
+              <div class="product-card-inventory">
                 <img src="{% static 'assets/stores/'|add:item.item.image_url %}" alt="" />
                 <h2 class="card__title">{{ item.item.name }}</h2>
                 <h4 {% if item.item.category_name == "Pong" %} class="card__category pong" {% elif item.item.category_name == "RPS" %} class="card__category rps" {% endif %}>
                   <a href="?category_name={{item.item.category_name}}">#{{ item.item.category_name }}</a>
                 </h4>
                 <span class="card__description">{{item.item.description}}</span>
+                {% if item.item.name != "My Playground" and item.item.name != "My Beautiful AI" and item.item.name != "My Beautiful Paddle" and item.item.name != "Giant-Man" and item.item.name != "Rage of Fire" %}
+                  <span class="card__key-info"><span class="red">Use the <span style="font-weight: 500;">"{{item.item.keypress}}" </span> key to use this ability. And remember, you must equip this ability</span></span>
+                {% else %}
+                  <span class="card__key-info orange">There is no special keypad for this item, it is used automatically.</span>
+                {% endif %}
                 <div class="card__shop">
                   <span class="card__shop__price">{{item.item.price}}N₩</span>
                   {% if item.is_bought %}

@@ -21,12 +21,6 @@ const fastandFurious = document.querySelector('.container-top').dataset.fastandf
 const rageofFire = document.querySelector('.container-top').dataset.rageoffire;
 const frozenBall = document.querySelector('.container-top').dataset.frozenball;
 
-console.log(giantMan);
-console.log(likeaCheater);
-console.log(fastandFurious);
-console.log(rageofFire);
-console.log(frozenBall);
-
 /* Cordinates of the canvas */
 var textWidth1 = ctx.measureText(username + ": " + score1).width;
 var textWidth2 = ctx.measureText(ainame + ": " + score2).width;
@@ -51,7 +45,7 @@ var paddleHeight = 100;
 var paddleSpeed = 15;
 var paddleY = (canvas.height - paddleHeight) / 2;
 var paddle1 = {x: 0, y: paddleY, width: paddleWidth, height: abilities_paddleHeight, dy: paddleSpeed};
-var paddle2 = {x: canvas.width - paddleWidth, y: paddleY, width: paddleWidth, height: paddleHeight, dy: paddleSpeed};
+var paddle2 = {x: canvas.width - paddleWidth, y: paddleY, width: paddleWidth, height: abilities_paddleHeight, dy: paddleSpeed};
 
 // Ball object
 var ball = {x: canvas.width / 2, y: canvas.height / 2, radius: 10, speed: 5, dx: 1, dy: 1};
@@ -61,6 +55,11 @@ var score1 = 0;
 var score2 = 0;
 
 const MAX_SCORE = 3;
+
+// AI Abilities
+var likeaCheaterCount = 0;
+var fastandFuriousCount = 0;
+var frozenBallCount = 0;
 
 // Add a new variable to track if the game is paused
 let isScored = false;
@@ -85,8 +84,9 @@ function update() {
     if (ball.y + ball.radius > paddle1.y && ball.y - ball.radius < paddle1.y + paddle1.height && ball.dx < 0) {       
         if (ball.x - ball.radius < paddle1.x + paddle1.width) {
             if (rageofFire == "true") {
-                ball.speed += 1;
-                console.log(rageofFire + " " + ball.speed)
+                if (Math.random() <= 0.5) {
+                    ball.speed += 1;
+                }
             }
             ball.dx *= -1;
             // Check if the ball hit the top or bottom 20% of the paddle
@@ -98,6 +98,11 @@ function update() {
     }
     if (ball.y + ball.radius > paddle2.y && ball.y - ball.radius < paddle2.y + paddle2.height && ball.dx > 0) {
         if (ball.x + ball.radius > paddle2.x) {
+            if (rageofFire == "true") {
+                if (Math.random() <= 0.5) {
+                    ball.speed += 1;
+                }
+            }
             ball.dx *= -1;
             // Check if the ball hit the top or bottom 20% of the paddle
             if (ball.y < paddle2.y + 0.2 * paddle2.height || ball.y > paddle2.y + 0.8 * paddle2.height) {
@@ -235,6 +240,32 @@ var main = function () {
         update();
         render();
     }
+    if (frozenBall == "true" && aiFrozenBallCount < 1) {
+        // Kontrol edilecek koşul: Top köşeye gidiyorsa ve AI da ters köşede ise
+        if (ball.dx > 0 && ball.x > canvas.width / 2 && ball.y > canvas.height / 2) {
+            // AI'nın kendisi için kullanması için bir kontrol ekleyin
+            if (ball.x > paddle2.x + paddle2.width) {
+                frozenBallAbility();
+                aiFrozenBallCount += 1;
+            }
+        }
+    }
+    if (fastandFurious == "true" && aiFastandFuriousCount < 1) {
+        if (ball.dx > 0 && ball.x > canvas.width / 2 && ball.speed > 5) {
+            console.log("AI Fast and Furious yeteneğini kullandı ve değerleri şu şekilde: ", ball.speed);
+            fastandFuriousAbility();
+            aiFastandFuriousCount += 1;
+        }
+    }
+
+    if (likeaCheater == "true" && aiLikeaCheaterCount < 1) {
+        if (score2 < score1 || score1 === MAX_SCORE - 1 || score2 + 1 === MAX_SCORE) {
+            console.log("AI Like a Cheater yeteneğini kullandı ve değerleri şu şekilde: ", score1, score2);
+            likeaCheaterAbility(true);
+            aiLikeaCheaterCount += 1;
+        }
+    }
+
     requestAnimationFrame(main);
 };
 
@@ -263,9 +294,37 @@ function resetBall() {
     }, 500);
 }
 
-var likeaCheaterCount = 0;
-var fastandFuriousCount = 0;
-var frozenBallCount = 0;
+function frozenBallAbility() {
+    var nowBallSpeed = ball.speed;
+    var previousFillStyle = ctx.fillStyle;
+
+    ctx.fillStyle = 'blue';
+    ball.speed = 0;
+    setTimeout(function() {
+        ctx.fillStyle = previousFillStyle;
+        ball.speed = nowBallSpeed; // Orjinal hız değerini buraya ekleyin
+    }, 2000);
+}
+
+function likeaCheaterAbility(isAi) {
+    if (isAi) {
+        score2++;
+        if (score1 > 0) {
+            score1--;
+        }
+    }
+    else {
+        score1++;
+        if (score2 > 0) {
+            score2--;
+        }
+    }
+}
+
+function fastandFuriousAbility() {
+    ball.speed += 10;
+}
+
 // Control paddle1 with w, s keys
 document.addEventListener("keydown", function(event) {
     if (event.key === "w" || event.key === "W" || event.key === "ArrowUp") {
@@ -275,24 +334,16 @@ document.addEventListener("keydown", function(event) {
         downPressed = true;
     }
     else if (event.key === '1' && likeaCheaterCount < 1 && likeaCheater == "true") {
-        score1++;
-        if (score2 > 0) {
-            score2--;
-        }
-        frozenBallCount += 1;
+        likeaCheaterAbility();
+        likeaCheaterCount += 1;
     }
     else if (event.key === '2' && fastandFuriousCount < 1 && fastandFurious == "true") {
-        ball.speed = 10;
-        paddleSpeed = 20;
+        fastandFurious();
         fastandFuriousCount += 1;
     }
     else if (event.key === '3' && frozenBallCount < 1 && frozenBall == "true") {
-        var nowBallSpeed = ball.speed;
-        ball.speed = 0;
+        frozenBallAbility();
         frozenBallCount += 1;
-        setTimeout(function() {
-            ball.speed = nowBallSpeed; // Orjinal hız değerini buraya ekleyin
-        }, 2000);
     }
 });
 
@@ -310,6 +361,9 @@ let reactionDelay = 1000 / ball.speed; // Delay in milliseconds
 let lastBallPosition = { x: ball.x, y: ball.y };
 let ballDirection = { x: 0, y: 0 };
 let predictedY = paddle2.y;
+var aiFrozenBallCount = 0;
+var aiLikeaCheaterCount = 0;
+var aiFastandFuriousCount = 0;
 
 setInterval(() => {
     // Calculate ball direction
@@ -322,6 +376,7 @@ setInterval(() => {
 
     // Clamp prediction within canvas
     predictedY = Math.max(0, Math.min(canvas.height, predictedY));
+    
 
     // Update last ball position
     lastBallPosition = { x: ball.x, y: ball.y };

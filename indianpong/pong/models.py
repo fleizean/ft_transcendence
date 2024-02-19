@@ -25,6 +25,7 @@ class StoreItem(models.Model):
     image_url = models.TextField()
     description = models.TextField()
     price = models.IntegerField()
+    keypress = models.CharField(max_length=100, blank=True, null=True)
     show_status = models.BooleanField(default=False) # store'da görünebilir mi?
 
 class UserProfile(AbstractUser):

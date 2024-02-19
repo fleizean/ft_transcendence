@@ -5,6 +5,7 @@
         "image_url": "mybeatifulpaddle.webp",
         "description": "Change Paddle color, it only affects you.",
         "price": 50,
+        "keypress": "none",
         "show_status": true
     },
     {
@@ -13,6 +14,7 @@
         "image_url": "colorpick.webp",
         "description": "Change the playground color, it only affects you.",
         "price": 25,
+        "keypress": "none",
         "show_status": true
     },
     {
@@ -21,14 +23,16 @@
         "image_url": "ai-nametag.webp",
         "description": "How about giving your ai a name?",
         "price": 50,
+        "keypress": "none",
         "show_status": true
     },
     {
         "category_name": "Pong",
         "name": "Giant-Man",
         "image_url": "giantman.webp",
-        "description": "With this feature, you can increase the paddle size by %5.",
+        "description": "You can increase the paddle size by %15.",
         "price": 300,
+        "keypress": "none",
         "show_status": true
     },
     {
@@ -37,6 +41,7 @@
         "image_url": "cheater.webp",
         "description": "Steal one point from your opponent once.",
         "price": 225,
+        "keypress": "1",
         "show_status": true
     },
     {
@@ -45,6 +50,7 @@
         "image_url": "fast-and-furious.webp",
         "description": "When used, ball speed increase five times.",
         "price": 175,
+        "keypress": "2",
         "show_status": true
     },
     {
@@ -53,14 +59,16 @@
         "image_url": "fireball.webp",
         "description": "%50 chance to speed up to the ball by %5 with each shot.",
         "price": 75,
+        "keypress": "none",
         "show_status": true
     },
     {
         "category_name": "Pong",
         "name": "Frozen Ball",
         "image_url": "versus-time.webp",
-        "description": "Slow down the ball for five second just once.",
+        "description": "Slow down the ball for three second just once.",
         "price": 100,
+        "keypress": "3",
         "show_status": true
     },
     {
@@ -69,6 +77,7 @@
         "image_url": "godofthings-rps.webp",
         "description": "For once, win that round no matter what comes.",
         "price": 150,
+        "keypress": "1",
         "show_status": true
     },
     {
@@ -77,6 +86,7 @@
         "image_url": "cheater-rps.webp",
         "description": "Rob your opponent of points.",
         "price": 200,
+        "keypress": "2",
         "show_status": true
     }
 ]

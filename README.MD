@@ -67,11 +67,11 @@
   </details>
   
   <details>
-      <summary> <b> Introduce an AI Opponent. ⌛</b></summary>
+      <summary> <b> Introduce an AI Opponent. ✅</b></summary>
       In this major module, the objective is to incorporate an AI player into   the game. Notably, the use of the <b>A* algorithm</b> is not permitted for  this task. Key features and goals include:
           <ul>
           <li>✅ Develop an AI opponent  that provides a challenging and engaging gameplay experience for   users. </li>
-          <li>⌛ The AI must replicate   human behavior, meaning that in your AI implementation, you must  simulate keyboard input. The constraint here is that the AI can only   refresh its view of the game once per second, requiring it to   anticipate bounces and other actions. </li>
+          <li>✅ The AI must replicate   human behavior, meaning that in your AI implementation, you must  simulate keyboard input. The constraint here is that the AI can only   refresh its view of the game once per second, requiring it to   anticipate bounces and other actions. </li>
           <i>The AI must utilize power-ups if you have chosen to implement the  Game customization options module.</i>
           <li>✅ Implement AI logic and  decision-making processes that enable the AI player to make  intelligent and strategic moves. </li>
           <li>✅ Explore alternative   algorithms and techniques to create an effective AI player without  relying on A*. </li>
