@@ -39,6 +39,7 @@ class UserProfile(AbstractUser):
     is_verified = models.BooleanField(default=False)
     is_42student = models.BooleanField(default=False)
     is_indianai = models.BooleanField(default=False)
+    preffered_lang = models.CharField(max_length=100, blank=True, null=True)
     store_items = models.ManyToManyField(StoreItem, through='UserItem', blank=True)
     game_stats = models.OneToOneField('UserGameStat', on_delete=models.SET_NULL, null=True, blank=True)
     indian_wallet = models.IntegerField(blank=True, null=True, default=0, validators=[MinValueValidator(0), MaxValueValidator(9999)])

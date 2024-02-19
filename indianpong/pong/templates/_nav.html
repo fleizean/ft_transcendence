@@ -19,12 +19,24 @@
       <li><a href="/search" data-link><i class="bi bi-binoculars-fill"></i>Search</a></li>
       <li><a href="/about-us" data-link><i class="bi bi-person-raised-hand"></i>About Us</a></li> 
       <li class="notification-menu">
-      <div class="notification-icon">
-          <i class="bi bi-bell-fill"></i>
-          
+        <div class="notification-icon" style="margin-top: 5px; color: rgb(255, 140, 0);">
+          <i class="bi bi-flag-fill"></i>       
       </div>
       <div class="notification-submenu">
-      <a href="/test" data-link><i class="bi bi-person-fill"></i>Arda followed you!</a>
+        <a href="/test" data-link>
+          <img style="margin-right: 5px;" src="{% static "assets/flags/turkey.png" %}" alt="Türkçe">
+          <span style="margin-top: 3px;">Türkce</span>
+        </a>
+
+        <a href="/test" data-link>
+            <img style="margin-right: 5px;" src="{% static "assets/flags/english.png" %}" alt="English">
+            <span style="margin-top: 3px;">English</span>
+        </a>
+
+        <a href="/test" data-link>
+            <img style="margin-right: 5px;" src="{% static "assets/flags/portugal.png" %}" alt="Português">
+            <span style="margin-top: 3px;">Português</span>
+        </a>
       </div>
    </li>
       <li class="profile-menu"> 
