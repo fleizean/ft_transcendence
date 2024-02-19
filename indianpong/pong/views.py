@@ -238,7 +238,7 @@ def auth_callback(request):
 @never_cache
 def login_view(request):
     if request.user.is_authenticated:
-        return HttpResponseRedirect("dashboard?status=success")
+        return HttpResponseRedirect("dashboard")
     valid = True
     toast_message = ""
     if request.method == "POST":

@@ -29,10 +29,13 @@
                         <img src="{{ profile.avatar.url }}" alt="avatar" class="profile-image-circ" style="aspect-ratio: 1/1; object-fit: cover;">
                     {% endif %}
                     <!-- isim -->
-                    <h5 class="my-3">{{profile.username}}</h5>
+                    <h5 class="my-3" style="margin-bottom: 0 !important;">{{profile.username}}</h5>
+                    <h7 class="my-5" style="margin-top: -3em !important; margin-bottom: 10px !important;">{{profile.displayname}}</h7>
                     <!-- Meslek -->
-                    {% if profile.github %}
-                        <p class="text-muted mb-1" style="color: orange !important;margin-top: -15px;font-size: 15px; font-weight: 600;">Software Developer</p>
+                    {% if profile.social.github and not profile.is_42student %}
+                        <p class="text-muted mb-1" style="color: orange !important;margin-top: -5px;font-size: 15px; font-weight: 600;">Software Developer</p>
+                    {% elif profile.is_42student %}
+                        <p class="text-muted mb-1" style="color: #00ff1e !important;margin-top: -5px;font-size: 15px; font-weight: 600;">42 Kocaeli Student</p>
                     {% endif %}
                     <div class="d-flex justify-content-center mb-2" style="margin-top: 30px;">
                         {% if request.user.username != profile.username %}
@@ -170,10 +173,10 @@
                             <!-- Proje Durumu Başlığı -->
                             <p class="mb-4"><span class="text-primary font-italic me-1">{{profile.username}} </span>/ Rank</p>
                             <div class="rank-img">
-                                <img src="{% static "assets/ranks/challenger.png" %}" alt="Challenger Rank">
+                                <img src="{% static "assets/ranks/" %}{{ profile.get_rank_image }}" alt="Rank Image">
                             </div>
                             <div class="rank-info">
-                                <h4 class="rank-h4">Challenger</h4>
+                                <h4 class="rank-h4">{{profile.get_rank_name}}</h4>
                             </div>
                             <div class="rank-info">
                                 <h4 class="rank-h4">{{profile.elo_point}}EP</h4>

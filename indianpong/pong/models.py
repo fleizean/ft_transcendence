@@ -55,6 +55,55 @@ class UserProfile(AbstractUser):
         else:
             return mark_safe('<img src="/static/assets/profile/profilephoto.jpeg" width="50" height="50" />')
 
+    def get_rank_image(self):
+        if 1 <= self.elo_point <= 150:
+            return "iron.webp"
+        elif 150 < self.elo_point <= 200:
+            return "bronze.webp"
+        elif 200 < self.elo_point <= 250:
+            return "silver.webp"
+        elif 250 < self.elo_point <= 310:
+            return "gold.webp"
+        elif 310 < self.elo_point <= 360:
+            return "platinum.webp"
+        elif 360 < self.elo_point <= 420:
+            return "emerlad.webp"
+        elif 420 < self.elo_point <= 500:
+            return "diamond.webp"
+        elif 500 < self.elo_point <= 550:
+            return "master.webp"
+        elif 550 < self.elo_point <= 600:
+            return "grandmaster.webp"
+        elif 600 < self.elo_point:
+            return "challenger.webp"
+        else:
+            return "unranked.webp"
+    
+    def get_rank_name(self):
+        if 1 <= self.elo_point <= 150:
+            return "Iron"
+        elif 150 < self.elo_point <= 200:
+            return "Bronze"
+        elif 200 < self.elo_point <= 250:
+            return "Silver"
+        elif 250 < self.elo_point <= 310:
+            return "Gold"
+        elif 310 < self.elo_point <= 360:
+            return "Platinum"
+        elif 360 < self.elo_point <= 420:
+            return "Emerald"
+        elif 420 < self.elo_point <= 500:
+            return "Diamond"
+        elif 500 < self.elo_point <= 550:
+            return "Master"
+        elif 550 < self.elo_point <= 600:
+            return "Grandmaster"
+        elif 600 < self.elo_point:
+            return "Challenger"
+        else:
+            return "Unranked"
+
+
 class UserItem(models.Model):
     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     item = models.ForeignKey(StoreItem, on_delete=models.CASCADE)
