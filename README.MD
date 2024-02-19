@@ -143,15 +143,15 @@
   </details>
   
   <details>
-      <summary> <b> Multiple language supports. ❓</b></summary>
+      <summary> <b> Multiple language supports. ⌛</b></summary>
       In this minor module, the objective is to ensure that your website  supports multiple languages to cater to a diverse user base. Key features  and goals include:
           <ul>
-          <li>❓ Implement support for a minimum   of three languages on the website to accommodate a broad audience. </li>
-          <li>❓ Provide a language switcher or  selector that allows users to easily change the website’s language   based on their preferences. </li>
-          <li>❓ Translate essential website   content, such as navigation menus, headings, and key information, into  the supported languages. </li>
-          <li>❓ Ensure that users can navigate  and interact with the website seamlessly, regardless of the selected   language. </li>
-          <li>❓ Consider using language packs or  localization libraries to simplify the translation process and   maintain consistency across different languages. </li>
-          <li>❓ Allow users to set their  preferred language as a default choice for subsequent visits to the  website. </li>
+          <li>⌛ Implement support for a minimum   of three languages on the website to accommodate a broad audience. </li>
+          <li>⌛ Provide a language switcher or  selector that allows users to easily change the website’s language   based on their preferences. </li>
+          <li>⌛ Translate essential website   content, such as navigation menus, headings, and key information, into  the supported languages. </li>
+          <li>⌛ Ensure that users can navigate  and interact with the website seamlessly, regardless of the selected   language. </li>
+          <li>⌛ Consider using language packs or  localization libraries to simplify the translation process and   maintain consistency across different languages. </li>
+          <li>⌛ Allow users to set their  preferred language as a default choice for subsequent visits to the  website. </li>
           </ul>
           This minor module aims to enhance the accessibility and inclusivity of  your website by offering content in multiple languages, making it more   user-friendly for a diverse international audience.
   </details>
