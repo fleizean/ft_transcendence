@@ -245,11 +245,11 @@
             .then(data => {
                 if (data['status'] === 'ok') {
                     if (action === 'follow') {
-                      e.target.innerHTML = '<i class="bi bi-heartbreak-fill"></i>Unfollow';
+                      e.target.innerHTML = '<i class="bi bi-heartbreak-fill"></i> Unfollow';
                       e.target.classList.add('unfollow-btn');
                       e.target.classList.remove('btn', 'btn-danger');
                     } else {
-                      e.target.innerHTML = '<i class="bi bi-heart-fill"></i>Follow';
+                      e.target.innerHTML = '<i class="bi bi-heart-fill"></i> Follow';
                       e.target.classList.remove('unfollow-btn');
                       e.target.classList.add('btn', 'btn-danger');
                     }

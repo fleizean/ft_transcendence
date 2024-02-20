@@ -71,7 +71,7 @@
   height: 36%;
   width: 100%;
   border-radius: 24px 24px 0 0;
-  background-color: #4070f4;
+  background-color: #260f40;
 }
 
 .image {
@@ -201,13 +201,13 @@
   border-radius: 24px;
   margin: 0 10px;
   padding: 8px 24px;
-  background-color: #ff006a;
+  background-color: #dc3545;
   cursor: pointer;
   transition: all 0.3s ease;
 }
 
 .buttons .button-follow:hover {
-  background-color: #d50f62;
+  background-color: #b90618;
 }
 
 .buttons .button-message:hover {
