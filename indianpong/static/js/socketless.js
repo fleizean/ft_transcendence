@@ -12,6 +12,14 @@ const username = document.querySelector('.container-top').dataset.username;
 const ainame = document.querySelector('.container-top').dataset.ainame;
 const paddleColor = document.querySelector('.container-top').dataset.paddlecolor;
 const playgroundColor = document.querySelector('.container-top').dataset.playgroundcolor;
+canvas.style.borderColor = playgroundColor; // Set the border color to the specified color
+
+// Pong Abilities
+const giantMan = document.querySelector('.container-top').dataset.giantman;
+const likeaCheater = document.querySelector('.container-top').dataset.likeacheater;
+const fastandFurious = document.querySelector('.container-top').dataset.fastandfurious;
+const rageofFire = document.querySelector('.container-top').dataset.rageoffire;
+const frozenBall = document.querySelector('.container-top').dataset.frozenball;
 
 /* Cordinates of the canvas */
 var textWidth1 = ctx.measureText(username + ": " + score1).width;
@@ -26,13 +34,18 @@ var ainameY = 20;
 
 
 // Paddle objects
+if (giantMan == "true") { // if giantMan abilities equiped
+    var abilities_paddleHeight = 115;
+}
+else {
+    var abilities_paddleHeight = 100;
+}
 var paddleWidth = 10;
 var paddleHeight = 100;
 var paddleSpeed = 15;
 var paddleY = (canvas.height - paddleHeight) / 2;
-var paddle1 = {x: 0, y: paddleY, width: paddleWidth, height: paddleHeight, dy: paddleSpeed};
-var paddle2 = {x: canvas.width - paddleWidth, y: paddleY, width: paddleWidth, height: paddleHeight, dy: paddleSpeed};
-
+var paddle1 = {x: 0, y: paddleY, width: paddleWidth, height: abilities_paddleHeight, dy: paddleSpeed};
+var paddle2 = {x: canvas.width - paddleWidth, y: paddleY, width: paddleWidth, height: abilities_paddleHeight, dy: paddleSpeed};
 
 // Ball object
 var ball = {x: canvas.width / 2, y: canvas.height / 2, radius: 10, speed: 5, dx: 1, dy: 1};
@@ -42,6 +55,11 @@ var score1 = 0;
 var score2 = 0;
 
 const MAX_SCORE = 3;
+
+// AI Abilities
+var likeaCheaterCount = 0;
+var fastandFuriousCount = 0;
+var frozenBallCount = 0;
 
 // Add a new variable to track if the game is paused
 let isScored = false;
@@ -63,8 +81,13 @@ function update() {
     ball.y += ball.speed * ball.dy;
 
     // Check for collisions with paddles
-    if (ball.y + ball.radius > paddle1.y && ball.y - ball.radius < paddle1.y + paddle1.height && ball.dx < 0) {
+    if (ball.y + ball.radius > paddle1.y && ball.y - ball.radius < paddle1.y + paddle1.height && ball.dx < 0) {       
         if (ball.x - ball.radius < paddle1.x + paddle1.width) {
+            if (rageofFire == "true") {
+                if (Math.random() <= 0.5) {
+                    ball.speed += 1;
+                }
+            }
             ball.dx *= -1;
             // Check if the ball hit the top or bottom 20% of the paddle
             if (ball.y < paddle1.y + 0.2 * paddle1.height || ball.y > paddle1.y + 0.8 * paddle1.height) {
@@ -75,6 +98,11 @@ function update() {
     }
     if (ball.y + ball.radius > paddle2.y && ball.y - ball.radius < paddle2.y + paddle2.height && ball.dx > 0) {
         if (ball.x + ball.radius > paddle2.x) {
+            if (rageofFire == "true") {
+                if (Math.random() <= 0.5) {
+                    ball.speed += 1;
+                }
+            }
             ball.dx *= -1;
             // Check if the ball hit the top or bottom 20% of the paddle
             if (ball.y < paddle2.y + 0.2 * paddle2.height || ball.y > paddle2.y + 0.8 * paddle2.height) {
@@ -139,47 +167,69 @@ function update() {
     }
 }
 
-// Draw everything
+/// Draw everything
 function render() {
-    if (playgroundColor != "default" && playgroundColor != paddleColor) {
-        canvas.style.background = playgroundColor; // Kırmızı renk kodu
-    } else {
-        canvas.style.background = "#FFFFFF"; // Beyaz renk kodu veya başka bir renk kodu
-    }
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Create a radial gradient for the background
+    var gradient = ctx.createRadialGradient(canvas.width / 2, canvas.height / 2, 10, canvas.width / 2, canvas.height / 2, 300);
+    gradient.addColorStop(0, 'lightgrey');
+    gradient.addColorStop(1, 'darkgrey');
+    ctx.fillStyle = gradient;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     // Draw the middle dotted line
     ctx.beginPath();
     ctx.setLineDash([5, 15]);
     ctx.moveTo(canvas.width / 2, 0);
     ctx.lineTo(canvas.width / 2, canvas.height);
-    ctx.strokeStyle = "#0095DD";
+    ctx.strokeStyle = "black";
     ctx.stroke();
 
     // Draw the middle dotted circle
     ctx.beginPath();
     ctx.arc(canvas.width / 2, canvas.height / 2, 50, 0, Math.PI * 2, false);
     ctx.setLineDash([5, 15]);
-    ctx.strokeStyle = "#0095DD";
     ctx.stroke();
 
-    if (paddleColor != "default" && playgroundColor != paddleColor)
-        ctx.fillStyle = paddleColor;
-    else
-        ctx.fillStyle = "#0095DD";
+    // Add shadow to the paddles
+    ctx.shadowColor = 'black';
+    ctx.shadowBlur = 10;
+    ctx.shadowOffsetX = 5;
+    ctx.shadowOffsetY = 5;
+
+
+    ctx.fillStyle = paddleColor
     ctx.fillRect(paddle1.x, paddle1.y, paddle1.width, paddle1.height);
+    // If paddle2 is on the right, draw the shadow to the left
+    ctx.shadowOffsetX = -5;
+    ctx.shadowOffsetY = 5;
     ctx.fillRect(paddle2.x, paddle2.y, paddle2.width, paddle2.height);
 
+    // Add shiny effect to the ball
     ctx.beginPath();
     ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI*2, false);
+    var gradient = ctx.createRadialGradient(ball.x, ball.y, 0, ball.x, ball.y, ball.radius);
+    gradient.addColorStop(0, 'white');
+    gradient.addColorStop(0.1, 'gold');
+    gradient.addColorStop(1, 'darkorange');
+    ctx.fillStyle = gradient;
     ctx.fill();
     ctx.closePath();
 
+    // Reset shadow properties
+    ctx.shadowColor = 'transparent';
+    ctx.shadowBlur = 0;
+    ctx.shadowOffsetX = 0;
+    ctx.shadowOffsetY = 0;
+
     ctx.font = "16px Roboto";
+    ctx.fillStyle = 'white';
     ctx.fillText(username + ": " + score1, usernameX, usernameY);
     ctx.fillText(ainame + ": " + score2, ainameX, ainameY);
 }
+
 
 // The main game loop
 var main = function () {
@@ -190,6 +240,32 @@ var main = function () {
         update();
         render();
     }
+    if (frozenBall == "true" && aiFrozenBallCount < 1) {
+        // Kontrol edilecek koşul: Top köşeye gidiyorsa ve AI da ters köşede ise
+        if (ball.dx > 0 && ball.x > canvas.width / 2 && ball.y > canvas.height / 2) {
+            // AI'nın kendisi için kullanması için bir kontrol ekleyin
+            if (ball.x > paddle2.x + paddle2.width) {
+                frozenBallAbility();
+                aiFrozenBallCount += 1;
+            }
+        }
+    }
+    if (fastandFurious == "true" && aiFastandFuriousCount < 1) {
+        if (ball.dx > 0 && ball.x > canvas.width / 2 && ball.speed > 5) {
+            console.log("AI Fast and Furious yeteneğini kullandı ve değerleri şu şekilde: ", ball.speed);
+            fastandFuriousAbility();
+            aiFastandFuriousCount += 1;
+        }
+    }
+
+    if (likeaCheater == "true" && aiLikeaCheaterCount < 1) {
+        if (score2 < score1 || score1 === MAX_SCORE - 1 || score2 + 1 === MAX_SCORE) {
+            console.log("AI Like a Cheater yeteneğini kullandı ve değerleri şu şekilde: ", score1, score2);
+            likeaCheaterAbility(true);
+            aiLikeaCheaterCount += 1;
+        }
+    }
+
     requestAnimationFrame(main);
 };
 
@@ -218,12 +294,56 @@ function resetBall() {
     }, 500);
 }
 
+function frozenBallAbility() {
+    var nowBallSpeed = ball.speed;
+    var previousFillStyle = ctx.fillStyle;
+
+    ctx.fillStyle = 'blue';
+    ball.speed = 0;
+    setTimeout(function() {
+        ctx.fillStyle = previousFillStyle;
+        ball.speed = nowBallSpeed; // Orjinal hız değerini buraya ekleyin
+    }, 2000);
+}
+
+function likeaCheaterAbility(isAi) {
+    if (isAi) {
+        score2++;
+        if (score1 > 0) {
+            score1--;
+        }
+    }
+    else {
+        score1++;
+        if (score2 > 0) {
+            score2--;
+        }
+    }
+}
+
+function fastandFuriousAbility() {
+    ball.speed += 10;
+}
+
 // Control paddle1 with w, s keys
 document.addEventListener("keydown", function(event) {
     if (event.key === "w" || event.key === "W" || event.key === "ArrowUp") {
         upPressed = true;
-    } else if (event.key === "s" || event.key === "S" || event.key === "ArrowDown") {
+    } 
+    else if (event.key === "s" || event.key === "S" || event.key === "ArrowDown") {
         downPressed = true;
+    }
+    else if (event.key === '1' && likeaCheaterCount < 1 && likeaCheater == "true") {
+        likeaCheaterAbility();
+        likeaCheaterCount += 1;
+    }
+    else if (event.key === '2' && fastandFuriousCount < 1 && fastandFurious == "true") {
+        fastandFurious();
+        fastandFuriousCount += 1;
+    }
+    else if (event.key === '3' && frozenBallCount < 1 && frozenBall == "true") {
+        frozenBallAbility();
+        frozenBallCount += 1;
     }
 });
 
@@ -235,59 +355,15 @@ document.addEventListener("keyup", function(event) {
     }
 });
 
-/* // Ai Player
-let errorProbability = 0.05; // 5% chance to make a mistake
-
-setInterval(() => {
-    let shouldMoveUp = Math.random() < errorProbability ? true : false;
-    if (ball.y < paddle2.y && !shouldMoveUp) {
-        paddle2.y -= paddle2.dy;
-    } else if (ball.y > paddle2.y && !shouldMoveUp) {
-        paddle2.y += paddle2.dy;
-    } else {
-        // Occasionally move in the opposite direction
-        paddle2.y += shouldMoveUp ? -paddle2.dy : paddle2.dy;
-    }
-}, 100); */
-
-/* // Ai Player
-let errorProbability = 0.05; // 5% chance to make a mistake
-
-let lastBallPosition = { x: ball.x, y: ball.y };
-let ballDirection = { x: 0, y: 0 };
-
-setInterval(() => {
-    // Calculate ball direction
-    ballDirection.x = ball.x - lastBallPosition.x;
-    ballDirection.y = ball.y - lastBallPosition.y;
-
-    // Predict ball's y position when it reaches the paddle
-    let timeToReachPaddle = (paddle2.x - ball.x) / ballDirection.x;
-    let predictedY = ball.y + ballDirection.y * timeToReachPaddle;
-
-    // Clamp prediction within canvas
-    predictedY = Math.max(0, Math.min(600, predictedY));
-
-    // Decide whether to move up or down
-    let shouldMoveUp = Math.random() < errorProbability ? true : false;
-    if (predictedY < paddle2.y && !shouldMoveUp) {
-        paddle2.y -= paddle2.dy;
-    } else if (predictedY > paddle2.y && !shouldMoveUp) {
-        paddle2.y += paddle2.dy;
-    } else {
-        // Occasionally move in the opposite direction
-        paddle2.y += shouldMoveUp ? -paddle2.dy : paddle2.dy;
-    }
-
-    // Update last ball position
-    lastBallPosition = { x: ball.x, y: ball.y };
-}, 100); */
 
 // Ai Player
-let reactionDelay = 5000 / ball.speed; // Delay in milliseconds
+let reactionDelay = 1000 / ball.speed; // Delay in milliseconds
 let lastBallPosition = { x: ball.x, y: ball.y };
 let ballDirection = { x: 0, y: 0 };
 let predictedY = paddle2.y;
+var aiFrozenBallCount = 0;
+var aiLikeaCheaterCount = 0;
+var aiFastandFuriousCount = 0;
 
 setInterval(() => {
     // Calculate ball direction
@@ -300,6 +376,7 @@ setInterval(() => {
 
     // Clamp prediction within canvas
     predictedY = Math.max(0, Math.min(canvas.height, predictedY));
+    
 
     // Update last ball position
     lastBallPosition = { x: ball.x, y: ball.y };
@@ -311,23 +388,6 @@ setInterval(() => {
     targetY = predictedY - paddle2.height / 2;
 }, reactionDelay);
 
-/* setInterval(() => {
-    // Move the AI paddle
-    if (upPressedAI && paddle2.y > 0) {
-        paddle2.y -= paddle2.dy;
-    } else if (downPressedAI && paddle2.y < canvas.height - paddle2.height) {
-        paddle2.y += paddle2.dy;
-    }
-}, 100); */
-
-/* setInterval(() => {
-    // Move the paddle smoothly towards the predicted position
-    if (predictedY < paddle2.y) {
-        paddle2.y -= paddle2.dy;
-    } else if (predictedY > paddle2.y) {
-        paddle2.y += paddle2.dy;
-    }
-}, reactionDelay); */
 
 function sendWinnerToBackend(winner, loser, winnerscore, loserscore, start_time) {
     const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;

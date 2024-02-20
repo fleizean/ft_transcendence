@@ -31,7 +31,7 @@ class UserProfileAdmin(admin.ModelAdmin):
 
 @admin.register(StoreItem)
 class StoreAdmin(admin.ModelAdmin):
-    list_display = ('category_name', 'name', 'image_url', 'description', 'price', 'show_status')
+    list_display = ('category_name', 'name', 'image_url', 'description', 'price', 'keypress', 'show_status')
     search_fields = ('name', 'description')
 
     def __str__(self):

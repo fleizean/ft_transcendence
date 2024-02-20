@@ -4,6 +4,71 @@
     <img src="https://i.hizliresim.com/ctrhatw.png"/>
 </p>
 
+
+
+## Mandatory part
+
+<details>
+      <summary> <b> Minimal technical requirement ⌛</b></summary>
+          <ul>
+          <li>✅ The frontend should be developed using pure vanilla <b>Javascript.</b> </li>
+          <li>⌛ Your website must be a <b>single-page application.</b> The user should be able to use the
+<b>Back</b> and <b>Forward</b> buttons of the browser. </li>
+          <li>✅ Your website must be compatible with the latest stable up-to-date version of
+Google Chrome . </li>
+          <li>⌛ The user should encounter no unhandled errors and no warnings when browsing the
+website. </li>
+          <li>⌛ Everything must be launched with a single command line to run an autonomous
+container provided by Docker. Example : docker-compose up --build </li>
+          </ul>
+</details>
+
+<details>
+      <summary> <b> Game ⌛</b></summary>
+      The main purpose of this website is to play Pong versus other players.
+          <ul>
+          <li>⌛ Therefore, users must have the ability to participate in a live Pong game against
+another player directly on the website. Both players will use the same keyboard.
+The <b>Remote players module</b> can enhance this functionality with remote players.</li>
+          <li>⌛ A player must be able to play against another player, but it should also be possible
+to propose a <b>tournament.</b> This tournament will consist of multiple players who
+can take turns playing against each other. You have flexibility in how you implement
+the tournament, but it must clearly display who is playing against whom and the
+order of the players. </li>
+          <li>⌛ A <b>registration system</b> is required: at the start of a tournament, each player
+must input their alias name. The aliases will be reset when a new tournament
+begins. However, this requirement can be modified using the <b>Standard User
+Management module.</b> </li>
+          <li>⌛ There must be a <b>matchmaking system:</b> the tournament system organize the
+matchmaking of the participants, and announce the next fight. </li>
+          <li>⌛ All players must adhere to the same rules, which includes having identical paddle
+speed. This requirement also applies when using AI; the AI must exhibit the same
+speed as a regular player. </li>
+          <li>⌛ The game itself must be developed in accordance with the default frontend con-
+straints (as outlined above), or you may choose to utilize the <b>FrontEnd module</b>,
+or you have the option to override it with the <b>Graphics module.</b> While the visual
+aesthetics can vary, it must still capture the essence of the <b>original Pong</b> (1972). </li>
+          </ul>
+</details>
+
+<details>
+      <summary> <b> Security concerns ⌛</b></summary>
+          <ul>
+          <li>⌛ Any password stored in your database, if applicable, must be <b>hashed.</b> </li>
+          <li>⌛ Your website must be protected against <b>SQL injections/XSS.</b> </li>
+          <li>⌛ If you have a backend or any other features, it is mandatory to enable an HTTPS
+connection for all aspects (Utilize wss instead of ws...). </li>
+          <li>⌛ You must implement some form of validation for forms and any user input, either
+within the base page if no backend is used or on the server side if a backend is
+employed. </li>
+          </ul>
+          <b>Please make sure you use a strong password hashing algorithm.</b><br>
+<b>For obvious security reasons, any credentials, API keys, env
+variables etc... must be saved locally in a .env file and ignored by
+git. Publicly stored credentials will lead you directly to a failure
+of the project.</b>
+</details>
+
 ## Modules
 ### Major Modules
 
@@ -39,7 +104,7 @@
   </details>
   
   <details>
-      <summary> <b> Remote players ✅</b></summary>
+      <summary> <b> Remote players ⌛</b></summary>
       It is possible to have two distant players. Each player is located on a   separated
   computer, accessing the same website and playing the same Pong game. <br>
   💡 <i>Think about network issues, like unexpected disconnection or lag.
@@ -67,12 +132,12 @@
   </details>
   
   <details>
-      <summary> <b> Introduce an AI Opponent. ⌛</b></summary>
+      <summary> <b> Introduce an AI Opponent. ✅</b></summary>
       In this major module, the objective is to incorporate an AI player into   the game. Notably, the use of the <b>A* algorithm</b> is not permitted for  this task. Key features and goals include:
           <ul>
           <li>✅ Develop an AI opponent  that provides a challenging and engaging gameplay experience for   users. </li>
-          <li>⌛ The AI must replicate   human behavior, meaning that in your AI implementation, you must  simulate keyboard input. The constraint here is that the AI can only   refresh its view of the game once per second, requiring it to   anticipate bounces and other actions. </li>
-          <i>The AI must utilize power-ups if you have chosen to implement the  Game customization options module.</i>
+          <li>✅ The AI must replicate   human behavior, meaning that in your AI implementation, you must  simulate keyboard input. The constraint here is that the AI can only   refresh its view of the game once per second, requiring it to   anticipate bounces and other actions. </li>
+          <li>✅ The AI must utilize power-ups if you have chosen to implement the  Game customization options module.</li>
           <li>✅ Implement AI logic and  decision-making processes that enable the AI player to make  intelligent and strategic moves. </li>
           <li>✅ Explore alternative   algorithms and techniques to create an effective AI player without  relying on A*. </li>
           <li>✅ Ensure that the AI adapts to  different gameplay scenarios and user interactions. </li>
@@ -143,15 +208,15 @@
   </details>
   
   <details>
-      <summary> <b> Multiple language supports. ❓</b></summary>
+      <summary> <b> Multiple language supports. ⌛</b></summary>
       In this minor module, the objective is to ensure that your website  supports multiple languages to cater to a diverse user base. Key features  and goals include:
           <ul>
-          <li>❓ Implement support for a minimum   of three languages on the website to accommodate a broad audience. </li>
-          <li>❓ Provide a language switcher or  selector that allows users to easily change the website’s language   based on their preferences. </li>
-          <li>❓ Translate essential website   content, such as navigation menus, headings, and key information, into  the supported languages. </li>
-          <li>❓ Ensure that users can navigate  and interact with the website seamlessly, regardless of the selected   language. </li>
-          <li>❓ Consider using language packs or  localization libraries to simplify the translation process and   maintain consistency across different languages. </li>
-          <li>❓ Allow users to set their  preferred language as a default choice for subsequent visits to the  website. </li>
+          <li>⌛ Implement support for a minimum   of three languages on the website to accommodate a broad audience. </li>
+          <li>⌛ Provide a language switcher or  selector that allows users to easily change the website’s language   based on their preferences. </li>
+          <li>⌛ Translate essential website   content, such as navigation menus, headings, and key information, into  the supported languages. </li>
+          <li>⌛ Ensure that users can navigate  and interact with the website seamlessly, regardless of the selected   language. </li>
+          <li>⌛ Consider using language packs or  localization libraries to simplify the translation process and   maintain consistency across different languages. </li>
+          <li>⌛ Allow users to set their  preferred language as a default choice for subsequent visits to the  website. </li>
           </ul>
           This minor module aims to enhance the accessibility and inclusivity of  your website by offering content in multiple languages, making it more   user-friendly for a diverse international audience.
   </details>

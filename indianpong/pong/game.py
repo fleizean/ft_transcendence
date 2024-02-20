@@ -12,7 +12,7 @@ PADDLE_Y = (HEIGHT - PAD_HEIGHT) / 2
 BALL_RADIUS = 10
 BALL_SPEED = 1
 
-MAX_SCORE = 20
+MAX_SCORE = 10
 
 class Status(Enum):
     ACCEPTED = 0

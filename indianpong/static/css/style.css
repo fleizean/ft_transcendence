@@ -1605,6 +1605,7 @@ body {
   display: block;
   margin: 20px auto;
   z-index: 50;
-  background: #ff0000;
-  border: 1px solid #FFFF;
+  background: 'lightgrey';/* #ff0000; */
+  border: 8px solid #FFFFFF;
+  border-style: ridge;
 }

@@ -25,6 +25,7 @@ class StoreItem(models.Model):
     image_url = models.TextField()
     description = models.TextField()
     price = models.IntegerField()
+    keypress = models.CharField(max_length=100, blank=True, null=True)
     show_status = models.BooleanField(default=False) # store'da görünebilir mi?
 
 class UserProfile(AbstractUser):
@@ -54,6 +55,55 @@ class UserProfile(AbstractUser):
             return mark_safe('<img src="%s" width="50" height="50" />' % (self.avatar.url))
         else:
             return mark_safe('<img src="/static/assets/profile/profilephoto.jpeg" width="50" height="50" />')
+
+    def get_rank_image(self):
+        if 1 <= self.elo_point <= 150:
+            return "iron.webp"
+        elif 150 < self.elo_point <= 200:
+            return "bronze.webp"
+        elif 200 < self.elo_point <= 250:
+            return "silver.webp"
+        elif 250 < self.elo_point <= 310:
+            return "gold.webp"
+        elif 310 < self.elo_point <= 360:
+            return "platinum.webp"
+        elif 360 < self.elo_point <= 420:
+            return "emerlad.webp"
+        elif 420 < self.elo_point <= 500:
+            return "diamond.webp"
+        elif 500 < self.elo_point <= 550:
+            return "master.webp"
+        elif 550 < self.elo_point <= 600:
+            return "grandmaster.webp"
+        elif 600 < self.elo_point:
+            return "challenger.webp"
+        else:
+            return "unranked.webp"
+    
+    def get_rank_name(self):
+        if 1 <= self.elo_point <= 150:
+            return "Iron"
+        elif 150 < self.elo_point <= 200:
+            return "Bronze"
+        elif 200 < self.elo_point <= 250:
+            return "Silver"
+        elif 250 < self.elo_point <= 310:
+            return "Gold"
+        elif 310 < self.elo_point <= 360:
+            return "Platinum"
+        elif 360 < self.elo_point <= 420:
+            return "Emerald"
+        elif 420 < self.elo_point <= 500:
+            return "Diamond"
+        elif 500 < self.elo_point <= 550:
+            return "Master"
+        elif 550 < self.elo_point <= 600:
+            return "Grandmaster"
+        elif 600 < self.elo_point:
+            return "Challenger"
+        else:
+            return "Unranked"
+
 
 class UserItem(models.Model):
     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
@@ -182,8 +232,8 @@ class Game(models.Model):
     group_name = models.CharField(max_length=100)
     player1 = models.ForeignKey(UserProfile, related_name='games_as_player1', on_delete=models.CASCADE)
     player2 = models.ForeignKey(UserProfile, related_name='games_as_player2', on_delete=models.CASCADE)
-    player1_score = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(20)], default=0)
-    player2_score = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(20)], default=0)
+    player1_score = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(10)], default=0)
+    player2_score = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(10)], default=0)
     created_at = models.DateTimeField(auto_now_add=True)
     game_duration = models.DurationField(null=True, blank=True)
     winner = models.ForeignKey(UserProfile, related_name='games_won', on_delete=models.CASCADE, null=True, blank=True)

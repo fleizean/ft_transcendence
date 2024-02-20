@@ -15,8 +15,8 @@
       <li><a href="/pong-game-find" data-link><i class="bi bi-play-circle-fill"></i>Pong Game</a></li>
       <li><a href="/rps-game-find" data-link><i class="bi bi-scissors"></i>RPS Game</a></li>
       <li><a href="/rankings" data-link><i class="bi bi-bar-chart-fill"></i>Rankings</a></li>
-      <li><a href="/store/{{username}}" data-link><i class="bi bi-shop"></i>Store</a></li>
-      <li><a href="/search" data-link><i class="bi bi-binoculars-fill"></i>Search</a></li>
+      <li><a href="/store/{{username}}" data-link><i class="bi bi-basket2"></i>Store</a></li>
+      <li><a href="/search" data-link><i class="bi bi-search"></i>Search</a></li>
       <li><a href="/about-us" data-link><i class="bi bi-person-raised-hand"></i>About Us</a></li> 
       <li class="notification-menu">
       <div class="notification-icon" style="margin-top: 5px; color: rgb(255, 140, 0);">
@@ -27,24 +27,26 @@
           <img style="margin-right: 5px;" src="{% static "assets/flags/turkey.png" %}" alt="Türkçe">
           <span style="margin-top: 3px;">Türkce</span>
         </a>
-      
+        <a href="https://tr.wikipedia.org/wiki/Hint%C3%A7e" target="_blank" data-link>
+          <img style="margin-right: 5px;" src="{% static "assets/flags/hindi.png" %}" alt="Hindi">
+          <span style="margin-top: 3px;">हिंदी</span>
+        </a>
         <a href="/test" data-link>
             <img style="margin-right: 5px;" src="{% static "assets/flags/english.png" %}" alt="English">
             <span style="margin-top: 3px;">English</span>
         </a>
-        
         <a href="/test" data-link>
             <img style="margin-right: 5px;" src="{% static "assets/flags/portugal.png" %}" alt="Português">
             <span style="margin-top: 3px;">Português</span>
         </a>
       </div>
-   </li>
+    </li>
       <li class="profile-menu"> 
         <div class="profile-image">
           <img src="{{avatar}}" alt="Profile Image" width="48" height="48" style="aspect-ratio: 1/1; object-fit: cover;">
         </div>
         <div class="profile-submenu">
-          <a href="/profile/{{username}}" data-link><i class="bi bi-person-fill"></i>Profile</a>
+          <a href="/profile/{{username}}" data-link><i class="bi bi-person-fill" ></i>Profile</a>
           <a href="/friends/{{username}}" data-link><i class="bi bi-people-fill"></i>Friends</a>
           <a href="/profile/{{username}}/settings" data-link><i class="bi bi-gear-fill"></i>Settings</a> 
           <a href="/logout" data-link><i class="bi bi-box-arrow-right"></i>Logout</a>
