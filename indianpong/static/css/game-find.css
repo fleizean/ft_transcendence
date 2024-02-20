@@ -9,16 +9,6 @@
   text-decoration:none !important;
 }
   
-  .opponent-btn {
-    margin-top: 1em;
-    margin-bottom: 0.5em;
-  }
-
-
-.opponent-btn a {
-  text-decoration: none;
-}
-  
   .pong-game-text {
     text-align: center;
     color: white;
@@ -128,6 +118,58 @@
   }
   
   .ponggamebtn-ai:hover:after {
+    left: 400px;
+    transition: .3s ease-in-out;
+  }
+
+
+  
+  .ponggamebtn-local {
+    font-size: 36px;
+    font-family: 'Rajdhani', sans-serif;
+    text-align: center;
+    line-height: 85px;
+    color: #fff;
+    margin: 0 auto;
+    width: 350px;
+    height: 85px;
+    background: linear-gradient(#b2c114, #31380e);
+    border: 3px #b2c114 solid; 
+    border-radius: 5px;
+    text-shadow: 0 0 20px rgba(255,255,255,0.3);
+    transition: .1s;
+    transform: scale(1);
+    cursor: pointer;
+    box-shadow: 0 0 50px rgba(0,117,9,0.5);
+    overflow: hidden;
+  }
+  
+  .ponggamebtn-local:hover {
+    text-shadow: 0 0 20px rgba(255,255,255,0.5);
+    transform: scale(1.05);
+  }
+  
+  .ponggamebtn-local:active {
+    background: linear-gradient(#1f8258, #114435);
+    text-shadow: 0 0 20px rgba(255,255,255,0.5);
+    transform: scale(1);
+    box-shadow: 0 0 75px rgba(43,137,68,0.5);
+  }
+  
+  .ponggamebtn-local:after {
+    content: "";
+    position: relative;
+    top: -120px;
+    left: -90px;
+    display: block;
+    width: 35px;
+    height: 150px;
+    background: rgba(255, 255, 255, 0.5);
+    transform: rotate(35deg);
+    transition: none;
+  }
+  
+  .ponggamebtn-local:hover:after {
     left: 400px;
     transition: .3s ease-in-out;
   }
