@@ -8,6 +8,7 @@ from django.contrib import messages
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.http import HttpResponseRedirect
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.utils.translation import activate
 import ssl  # TODO temporary solution
 
 from .forms import (
@@ -103,7 +104,6 @@ def signup(request):
     else:
         form = UserProfileForm()
     return render(request, "signup.html", {"form": form})
-
 
 @never_cache
 def activate_account(request, token):
@@ -504,10 +504,27 @@ def set_password(request, uidb64, token):
 
 @never_cache
 @login_required()
-def dashboard(request):
+def dashboard(request, language=None):
     profile = get_object_or_404(UserProfile, username=request.user.username)
     return render(request, "dashboard.html", {"profile": profile})
 
+def set_language(request, language):
+    for lang, _ in settings.LANGUAGES:
+        translation.activate(lang)
+        try:
+            view = resolve(urlparse(request.META.get("HTTP_REFERER")).path)
+        except Resolver404:
+            view = None
+        if view:
+            break
+    if view:
+        translation.activate(language)
+        next_url = reverse(view.url_name, args=view.args, kwargs=view.kwargs)
+        response = HttpResponseRedirect(next_url)
+        response.set_cookie(settings.LANGUAGE_COOKIE_NAME, language)
+    else:
+        response = HttpResponseRedirect("/")
+    return response
 
 @never_cache
 @login_required()

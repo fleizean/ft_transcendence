@@ -1,0 +1,115 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-02-21 03:57+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: indianpong/settings.py:145
+msgid "English"
+msgstr "İngilizce"
+
+#: indianpong/settings.py:146
+msgid "Türkçe"
+msgstr "Türkçe"
+
+#: indianpong/settings.py:147
+msgid "Português"
+msgstr "Portekizce"
+
+#: indianpong/settings.py:148
+msgid "हिन्दी"
+msgstr "Hintçe"
+
+#: pong/templates/_nav.html:13
+msgid "Dashboard"
+msgstr "Ana Sayfa"
+
+#: pong/templates/_nav.html:14
+msgid "Chat"
+msgstr "Sohbet"
+
+#: pong/templates/_nav.html:15
+msgid "Pong Game"
+msgstr "Pong Oyunu"
+
+#: pong/templates/_nav.html:16
+msgid "RPS Game"
+msgstr "RPS Oyunu"
+
+#: pong/templates/_nav.html:17
+msgid "Rankings"
+msgstr "Sıralama"
+
+#: pong/templates/_nav.html:18
+msgid "Store"
+msgstr "Mağaza"
+
+#: pong/templates/_nav.html:19
+msgid "Search"
+msgstr "Ara"
+
+#: pong/templates/_nav.html:20
+msgid "About Us"
+msgstr "Hakkımızda"
+
+#: pong/templates/_nav.html:50
+msgid "Profile"
+msgstr "Profil"
+
+#: pong/templates/_nav.html:51
+msgid "Friends"
+msgstr "Arkadaşlar"
+
+#: pong/templates/_nav.html:53
+msgid "Logout"
+msgstr "Çıkış yap"
+
+#: pong/templates/base.html:40
+msgid "Indian-Pong"
+msgstr "Indian-Pong"
+
+#: pong/templates/base.html:41
+msgid "Indian-Pong created for 42 school by Indian Dev!"
+msgstr ""
+"Indian-Pong, Hintli geliştiriciler tarafından 42 okulu için geliştirildi."
+
+#: pong/templates/dashboard.html:11
+msgid "Welcome"
+msgstr "Hoşgeldin"
+
+#: pong/templates/dashboard.html:12
+msgid ""
+"Indian Pong is a collaborative project developed for the 42 school "
+"community, offering a nostalgic gaming experience through the classic Atari "
+"game, Ping-Pong. This platform allows users to engage in Ping-Pong matches "
+"with each other, fostering a sense of friendly competition. In addition to "
+"the gaming aspect, Indian Pong provides a social dimension, featuring chat "
+"rooms where users can communicate and connect with one another. The platform "
+"also enables users to expand their network by adding friends within the 42 "
+"school community. Overall, Indian Pong combines the joy of retro gaming with "
+"modern social interaction, creating a vibrant and interactive experience for "
+"the 42 school community."
+msgstr ""
+"Indian Pong, 42 okul topluluğu için geliştirilmiş bir işbirliği projesidir. "
+"Klasik Atari oyunu Ping-Pong ile nostaljik bir oyun deneyimi sunarak, "
+"kullanıcılara birbirleriyle Ping-Pong maçlarına katılma imkanı tanır ve "
+"dostane bir rekabet ortamı oluşturur. Oyunun yanı sıra, Indian Pong sosyal "
+"bir boyut da sunar; kullanıcıların birbirleriyle iletişim kurabileceği ve "
+"bağlantı kurabileceği sohbet odalarını içerir. Platform aynı zamanda kullanıcıların, "
+"42 okul topluluğu içinde arkadaşlar ekleyerek ağlarını genişletmelerine olanak tanır. "
+"Genel olarak, Indian Pong retro oyun keyfini modern sosyal etkileşimle birleştirerek, "
+"42 okul topluluğu için canlı ve etkileşimli bir deneyim sunar."
