@@ -99,7 +99,7 @@ def signup(request):
             )
             obj.send_verification_email(request, user)
             messages.success(request, "Please check your email to verify your account.")
-            return HttpResponseRedirect("login")
+            return HttpResponseRedirect("login?status=success")
     else:
         form = UserProfileForm()
     return render(request, "signup.html", {"form": form})
@@ -960,12 +960,12 @@ def update_winner(request):
         loser_profile = get_object_or_404(UserProfile, username=loser)
 
         if winner:
-            winner_profile.indian_wallet += random.randint(35, 55)
-            winner_profile.elo_point += random.randint(20, 30)
+            winner_profile.indian_wallet += random.randint(200, 300)
+            winner_profile.elo_point += random.randint(1, 10)
             winner_profile.save()
         elif loser:
-            loser_profile.indian_wallet += random.randint(20, 30)
-            lose_elo -= random.randint(1, 10)
+            loser_profile.indian_wallet += random.randint(100, 200)
+            lose_elo -= random.randint(1, 6)
             if lose_elo < loser_profile.elo_point:
                 loser_profile.elo_point -= lose_elo
             loser_profile.save()

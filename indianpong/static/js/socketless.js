@@ -60,7 +60,6 @@ const MAX_SCORE = 3;
 var likeaCheaterCount = 0;
 var fastandFuriousCount = 0;
 var frozenBallCount = 0;
-var isFrozenBallActive = false;
 
 // Add a new variable to track if the game is paused
 let isScored = false;
@@ -72,15 +71,6 @@ let downPressedAI = false;
 // Add a new variable for AI's target position
 let moveThreshold = 8;
 let targetY = paddle2.y;
-
-function resetAbilities() {
-    likeaCheaterCount = 0;
-    fastandFuriousCount = 0;
-    frozenBallCount = 0;
-    aiFrozenBallCount = 0;
-    aiLikeaCheaterCount = 0;
-    aiFastandFuriousCount = 0;
-}
 
 // Update the ball and paddle positions
 function update() {
@@ -139,13 +129,15 @@ function update() {
     // Check for game over
     if (score1 == MAX_SCORE || score2 == MAX_SCORE) {
         if (score1 == MAX_SCORE) {
+            alert(username + " wins!");
             sendWinnerToBackend(username, "IndianAI", score1, score2, start_time)
         } else {
-            
+            alert(ainame + " wins!");
             sendWinnerToBackend("IndianAI", username, score2, score1, start_time)
-        }   
-        showGameOverScreen();
-        
+        }
+        score1 = 0;
+        score2 = 0;
+        start_time = null;
     }
 
     // Move the paddles
@@ -258,15 +250,13 @@ var main = function () {
             }
         }
     }
-    if (fastandFurious == "true" && aiFastandFuriousCount < 1 && isFrozenBallActive == false) {
-        // Top rakip yarı sahaya doğru gidiyorsa ve topun X koordinatı AI'nın ceza sahasında ise
-        if (ball.dx < 0 && ball.x > canvas.width / 2 && ball.x < canvas.width - paddle2.width && ball.speed > 5) {
+    if (fastandFurious == "true" && aiFastandFuriousCount < 1) {
+        if (ball.dx > 0 && ball.x > canvas.width / 2 && ball.speed > 5) {
             console.log("AI Fast and Furious yeteneğini kullandı ve değerleri şu şekilde: ", ball.speed);
             fastandFuriousAbility();
             aiFastandFuriousCount += 1;
         }
     }
-    
 
     if (likeaCheater == "true" && aiLikeaCheaterCount < 1) {
         if (score2 < score1 || score1 === MAX_SCORE - 1 || score2 + 1 === MAX_SCORE) {
@@ -306,11 +296,13 @@ function resetBall() {
 
 function frozenBallAbility() {
     var nowBallSpeed = ball.speed;
-    isFrozenBallActive = true;
+    var previousFillStyle = ctx.fillStyle;
+
+    ctx.fillStyle = 'blue';
     ball.speed = 0;
     setTimeout(function() {
-        ball.speed = nowBallSpeed;
-        isFrozenBallActive = false;
+        ctx.fillStyle = previousFillStyle;
+        ball.speed = nowBallSpeed; // Orjinal hız değerini buraya ekleyin
     }, 2000);
 }
 
@@ -345,8 +337,8 @@ document.addEventListener("keydown", function(event) {
         likeaCheaterAbility();
         likeaCheaterCount += 1;
     }
-    else if (event.key === '2' && fastandFuriousCount < 1 && fastandFurious == "true" && isFrozenBallActive == false) {
-        fastandFuriousAbility();
+    else if (event.key === '2' && fastandFuriousCount < 1 && fastandFurious == "true") {
+        fastandFurious();
         fastandFuriousCount += 1;
     }
     else if (event.key === '3' && frozenBallCount < 1 && frozenBall == "true") {
@@ -396,43 +388,6 @@ setInterval(() => {
     targetY = predictedY - paddle2.height / 2;
 }, reactionDelay);
 
-function resetPaddles() {
-    paddle1.y = (canvas.height - abilities_paddleHeight) / 2; // Reset the paddle1 position?
-    paddle2.y = (canvas.height - abilities_paddleHeight) / 2;
-}
-
-function resetGame() {
-    score1 = 0;
-    score2 = 0;
-    resetAbilities();
-    resetPaddles();
-    start_time = null;
-    resetBall();
-}
-
-
-// Oyun bitiş ekranını gösteren fonksiyon
-function showGameOverScreen() {
-    isPaused = true;
-    var winnerText = (score1 == MAX_SCORE) ? username + " wins!" : ainame + " wins!";
-    document.getElementById('winnerText').innerText = winnerText;
-    document.getElementById('gameOverScreen').style.display = 'block';
-}
-
-// Oyunu tekrar başlatan fonksiyon
-function restartGame() {
-    document.getElementById('gameOverScreen').style.display = 'none';
-    resetGame();
-    isPaused = false;
-}
-
-// Çıkış yapma işlemleri
-function exitGame() {
-    window.location.href = '/dashboard';
-}
-
-document.getElementById('restartButton').addEventListener('click', restartGame);
-document.getElementById('exitButton').addEventListener('click', exitGame);
 
 function sendWinnerToBackend(winner, loser, winnerscore, loserscore, start_time) {
     const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;

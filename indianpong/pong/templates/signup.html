@@ -117,6 +117,26 @@
 </div>
 
 <script>
+  document.addEventListener('DOMContentLoaded', function () {
+              // Toast'ı gösterme fonksiyonu
+              function showToastFailed(content) {
+                  const liveToast = document.getElementById('liveToast');
+                  var toastContent = document.querySelector('#liveToast .fw-semibold');
+                  toastContent.textContent = content;
+                  const toast = new bootstrap.Toast(liveToast);
+                  toast.show();
+                  setTimeout(function() {
+                      toast.hide();
+                  }, 3000);
+              }
+              const urlParams = new URLSearchParams(window.location.search);
+              const statusValue = urlParams.get('status');
+              if (statusValue === 'failed_42email') {
+                  showToastFailed("You cannot register with email 42");
+              }
+              
+          });
+
 
 function showToast(content, status, iconClass) {
     const liveToast = document.getElementById('liveToast');
