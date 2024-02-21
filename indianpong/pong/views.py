@@ -47,7 +47,7 @@ from .models import (
     Room,
     Message,
 )
-from .utils import delete_from_media, pass2fa
+from .utils import delete_from_media, get_equipped_item_value, pass2fa
 from os import environ
 from datetime import datetime, timedelta
 from django.utils.http import urlsafe_base64_decode
@@ -99,7 +99,7 @@ def signup(request):
             )
             obj.send_verification_email(request, user)
             messages.success(request, "Please check your email to verify your account.")
-            return HttpResponseRedirect("login?status=success")
+            return HttpResponseRedirect("login")
     else:
         form = UserProfileForm()
     return render(request, "signup.html", {"form": form})
@@ -722,14 +722,23 @@ def play_ai(request):
 
     return render(request, "play-ai.html", {"ainametag": ainametag, "paddlecolor": paddlecolor, "playgroundcolor": playgroundcolor, "giantman": giantman, "likeacheater": likeacheater, "fastandfurious": fastandfurious, "rageoffire": rageoffire, "frozenball": frozenball})
 
-
-def get_equipped_item_value(user_items, item_name, default_item):
-    if (item_name == "My Playground" or item_name == "My Beautiful Paddle" or item_name == "My Beautiful AI"):
-        item = user_items.filter(item__name=item_name, is_equipped=True).first()
-        return item.whatis if item else default_item
-    else:
-        item = user_items.filter(item__name=item_name, is_equipped=True).first()
-        return "true" if item else "false"
+@never_cache
+@login_required()
+def local_game(request):
+    user_items = UserItem.objects.filter(user=request.user)
+    
+    # Just Customizations - PONG
+    player2name = "Player 2"
+    paddlecolor = get_equipped_item_value(user_items, "My Beautiful Paddle", "black")
+    playgroundcolor = get_equipped_item_value(user_items, "My Playground", "lightgrey")
+    
+    # Just Abilities - PONG
+    giantman = get_equipped_item_value(user_items, "Giant-Man", "None")
+    likeacheater = get_equipped_item_value(user_items, "Like a Cheater", "None")
+    fastandfurious = get_equipped_item_value(user_items, "Fast and Furious", "None")
+    rageoffire = get_equipped_item_value(user_items, "Rage of Fire", "None")
+    frozenball = get_equipped_item_value(user_items, "Frozen Ball", "None")
+    return render(request, "local-game.html", {"player2name": player2name, "paddlecolor": paddlecolor, "playgroundcolor": playgroundcolor, "giantman": giantman, "likeacheater": likeacheater, "fastandfurious": fastandfurious, "rageoffire": rageoffire, "frozenball": frozenball})
 
 
 @never_cache
@@ -960,12 +969,12 @@ def update_winner(request):
         loser_profile = get_object_or_404(UserProfile, username=loser)
 
         if winner:
-            winner_profile.indian_wallet += random.randint(200, 300)
-            winner_profile.elo_point += random.randint(1, 10)
+            winner_profile.indian_wallet += random.randint(35, 55)
+            winner_profile.elo_point += random.randint(20, 30)
             winner_profile.save()
         elif loser:
-            loser_profile.indian_wallet += random.randint(100, 200)
-            lose_elo -= random.randint(1, 6)
+            loser_profile.indian_wallet += random.randint(20, 30)
+            lose_elo -= random.randint(1, 10)
             if lose_elo < loser_profile.elo_point:
                 loser_profile.elo_point -= lose_elo
             loser_profile.save()

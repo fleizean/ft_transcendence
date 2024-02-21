@@ -4,22 +4,19 @@ import random
 import string
 
 class Command(BaseCommand):
-    help = 'Populates the database with 10 users'
-    usernames = [
-            "Indian1", "Indian2", "Indian3", "Indian4", "Indian5",
-            "Indian6", "Indian7", "Indian8", "Indian9", "Indian10"
-        ]
-    displaynames = [
-            "Original Indian 1", "Original Indian 2", "Original Indian 3", "Original Indian 4", "Original Indian 5",
-            "Original Indian 6", "Original Indian 7", "Original Indian 8", "Original Indian 9", "Original Indian 10"
-        ]
+    help = 'Populates the database with users'
+
+    def add_arguments(self, parser):
+        parser.add_argument('num_users', type=int, help='Number of users to create')
+
     def handle(self, *args, **options):
-        for i in range(10):
-            username = self.usernames[i]
-            displayname = self.displaynames[i]
+        num_users = options['num_users']
+        for i in range(num_users):
+            username = "Indian" + str(i)
+            displayname = "Original Indian" + str(i)
             email = username + '@indian.com'
             password = '123456a.'  # Replace with your desired password
 
             UserProfile.objects.create_user(username=username, email=email, displayname=displayname, password=password)
 
-        self.stdout.write(self.style.SUCCESS('Successfully populated the database with 10 users.'))
+        self.stdout.write(self.style.SUCCESS(f'Successfully populated the database with {num_users} users.'))

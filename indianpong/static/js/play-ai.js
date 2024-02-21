@@ -1,13 +1,11 @@
-// Create the canvas
-/* var canvas = document.createElement("canvas"); */
+
 const canvas = document.getElementById('pongCanvas');
 var ctx = canvas.getContext("2d");
 canvas.width = 800;
 canvas.height = 600;
-//document.body.appendChild(canvas);
+
 
 const canvasContainer = document.querySelector('.ai-game');
-
 const username = document.querySelector('.container-top').dataset.username;
 const ainame = document.querySelector('.container-top').dataset.ainame;
 const paddleColor = document.querySelector('.container-top').dataset.paddlecolor;
@@ -32,14 +30,8 @@ var start_time;
 var ainameX = canvas.width - textWidth2 - 10;
 var ainameY = 20;
 
-
-// Paddle objects
-if (giantMan == "true") { // if giantMan abilities equiped
-    var abilities_paddleHeight = 115;
-}
-else {
-    var abilities_paddleHeight = 100;
-}
+// if giantMan abilities equiped
+var abilities_paddleHeight = (giantMan == "true") ? 120 : 100;
 var paddleWidth = 10;
 var paddleHeight = 100;
 var paddleSpeed = 15;
@@ -56,10 +48,15 @@ var score2 = 0;
 
 const MAX_SCORE = 3;
 
-// AI Abilities
+// Player Abilities
 var likeaCheaterCount = 0;
 var fastandFuriousCount = 0;
 var frozenBallCount = 0;
+var aiFrozenBallCount = 0;
+var aiLikeaCheaterCount = 0;
+var aiFastandFuriousCount = 0;
+
+var isFrozenBallActive = false;
 
 // Add a new variable to track if the game is paused
 let isScored = false;
@@ -71,6 +68,15 @@ let downPressedAI = false;
 // Add a new variable for AI's target position
 let moveThreshold = 8;
 let targetY = paddle2.y;
+
+function resetAbilities() {
+    likeaCheaterCount = 0;
+    fastandFuriousCount = 0;
+    frozenBallCount = 0;
+    aiFrozenBallCount = 0;
+    aiLikeaCheaterCount = 0;
+    aiFastandFuriousCount = 0;
+}
 
 // Update the ball and paddle positions
 function update() {
@@ -129,15 +135,13 @@ function update() {
     // Check for game over
     if (score1 == MAX_SCORE || score2 == MAX_SCORE) {
         if (score1 == MAX_SCORE) {
-            alert(username + " wins!");
             sendWinnerToBackend(username, "IndianAI", score1, score2, start_time)
         } else {
-            alert(ainame + " wins!");
+            
             sendWinnerToBackend("IndianAI", username, score2, score1, start_time)
-        }
-        score1 = 0;
-        score2 = 0;
-        start_time = null;
+        }   
+        showGameOverScreen();
+        
     }
 
     // Move the paddles
@@ -193,6 +197,17 @@ function render() {
     ctx.setLineDash([5, 15]);
     ctx.stroke();
 
+    // Add shiny effect to the ball
+    ctx.beginPath();
+    ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI*2, false);
+    var gradient = ctx.createRadialGradient(ball.x, ball.y, 0, ball.x, ball.y, ball.radius);
+    gradient.addColorStop(0, 'white');
+    gradient.addColorStop(0.1, 'gold');
+    gradient.addColorStop(1, 'darkorange');
+    ctx.fillStyle = gradient;
+    ctx.fill();
+    ctx.closePath();
+
     // Add shadow to the paddles
     ctx.shadowColor = 'black';
     ctx.shadowBlur = 10;
@@ -207,16 +222,6 @@ function render() {
     ctx.shadowOffsetY = 5;
     ctx.fillRect(paddle2.x, paddle2.y, paddle2.width, paddle2.height);
 
-    // Add shiny effect to the ball
-    ctx.beginPath();
-    ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI*2, false);
-    var gradient = ctx.createRadialGradient(ball.x, ball.y, 0, ball.x, ball.y, ball.radius);
-    gradient.addColorStop(0, 'white');
-    gradient.addColorStop(0.1, 'gold');
-    gradient.addColorStop(1, 'darkorange');
-    ctx.fillStyle = gradient;
-    ctx.fill();
-    ctx.closePath();
 
     // Reset shadow properties
     ctx.shadowColor = 'transparent';
@@ -240,31 +245,7 @@ var main = function () {
         update();
         render();
     }
-    if (frozenBall == "true" && aiFrozenBallCount < 1) {
-        // Kontrol edilecek koşul: Top köşeye gidiyorsa ve AI da ters köşede ise
-        if (ball.dx > 0 && ball.x > canvas.width / 2 && ball.y > canvas.height / 2) {
-            // AI'nın kendisi için kullanması için bir kontrol ekleyin
-            if (ball.x > paddle2.x + paddle2.width) {
-                frozenBallAbility();
-                aiFrozenBallCount += 1;
-            }
-        }
-    }
-    if (fastandFurious == "true" && aiFastandFuriousCount < 1) {
-        if (ball.dx > 0 && ball.x > canvas.width / 2 && ball.speed > 5) {
-            console.log("AI Fast and Furious yeteneğini kullandı ve değerleri şu şekilde: ", ball.speed);
-            fastandFuriousAbility();
-            aiFastandFuriousCount += 1;
-        }
-    }
 
-    if (likeaCheater == "true" && aiLikeaCheaterCount < 1) {
-        if (score2 < score1 || score1 === MAX_SCORE - 1 || score2 + 1 === MAX_SCORE) {
-            console.log("AI Like a Cheater yeteneğini kullandı ve değerleri şu şekilde: ", score1, score2);
-            likeaCheaterAbility(true);
-            aiLikeaCheaterCount += 1;
-        }
-    }
 
     requestAnimationFrame(main);
 };
@@ -294,19 +275,18 @@ function resetBall() {
     }, 500);
 }
 
-function frozenBallAbility() {
+function frozenBallAbility(Count) {
     var nowBallSpeed = ball.speed;
-    var previousFillStyle = ctx.fillStyle;
-
-    ctx.fillStyle = 'blue';
+    isFrozenBallActive = true;
     ball.speed = 0;
+    Count += 1;
     setTimeout(function() {
-        ctx.fillStyle = previousFillStyle;
-        ball.speed = nowBallSpeed; // Orjinal hız değerini buraya ekleyin
+        ball.speed = nowBallSpeed;
+        isFrozenBallActive = false;
     }, 2000);
 }
 
-function likeaCheaterAbility(isAi) {
+function likeaCheaterAbility(isAi, Count) {
     if (isAi) {
         score2++;
         if (score1 > 0) {
@@ -319,10 +299,12 @@ function likeaCheaterAbility(isAi) {
             score2--;
         }
     }
+    Count += 1;
 }
 
-function fastandFuriousAbility() {
+function fastandFuriousAbility(Count) {
     ball.speed += 10;
+    Count += 1;
 }
 
 // Control paddle1 with w, s keys
@@ -334,16 +316,15 @@ document.addEventListener("keydown", function(event) {
         downPressed = true;
     }
     else if (event.key === '1' && likeaCheaterCount < 1 && likeaCheater == "true") {
-        likeaCheaterAbility();
-        likeaCheaterCount += 1;
+        likeaCheaterAbility(false, likeaCheaterCount);
+
     }
-    else if (event.key === '2' && fastandFuriousCount < 1 && fastandFurious == "true") {
-        fastandFurious();
-        fastandFuriousCount += 1;
+    else if (event.key === '2' && fastandFuriousCount < 1 && fastandFurious == "true" && isFrozenBallActive == false) {
+        fastandFuriousAbility(fastandFuriousCount);
+
     }
     else if (event.key === '3' && frozenBallCount < 1 && frozenBall == "true") {
-        frozenBallAbility();
-        frozenBallCount += 1;
+        frozenBallAbility(frozenBallCount);
     }
 });
 
@@ -361,11 +342,35 @@ let reactionDelay = 1000 / ball.speed; // Delay in milliseconds
 let lastBallPosition = { x: ball.x, y: ball.y };
 let ballDirection = { x: 0, y: 0 };
 let predictedY = paddle2.y;
-var aiFrozenBallCount = 0;
-var aiLikeaCheaterCount = 0;
-var aiFastandFuriousCount = 0;
 
+// AI's logic
 setInterval(() => {
+    // Skills
+    if (frozenBall == "true" && aiFrozenBallCount < 1) {
+        // Kontrol edilecek koşul: Top köşeye gidiyorsa ve AI da ters köşede ise
+        if (ball.dx > 0 && ball.x > canvas.width / 2 && ball.y > canvas.height / 2) {
+            // AI'nın kendisi için kullanması için bir kontrol ekleyin
+            if (ball.x > paddle2.x + paddle2.width) {
+                frozenBallAbility(aiFrozenBallCount);
+            }
+        }
+    }
+    if (fastandFurious == "true" && aiFastandFuriousCount < 1 && isFrozenBallActive == false) {
+        // Top rakip yarı sahaya doğru gidiyorsa ve topun X koordinatı AI'nın ceza sahasında ise
+        if (ball.dx < 0 && ball.x > canvas.width / 2 && ball.x < canvas.width - paddle2.width && ball.speed > 5) {
+            //console.log("AI Fast and Furious yeteneğini kullandı ve değerleri şu şekilde: ", ball.speed);
+            fastandFuriousAbility(aiFastandFuriousCount);
+        }
+    }
+    
+
+    if (likeaCheater == "true" && aiLikeaCheaterCount < 1) {
+        if (score2 < score1 || score1 === MAX_SCORE - 1 || score2 + 1 === MAX_SCORE) {
+            //console.log("AI Like a Cheater yeteneğini kullandı ve değerleri şu şekilde: ", score1, score2);
+            likeaCheaterAbility(true, aiLikeaCheaterCount);
+        }
+    }
+
     // Calculate ball direction
     ballDirection.x = ball.x - lastBallPosition.x;
     ballDirection.y = ball.y - lastBallPosition.y;
@@ -388,6 +393,43 @@ setInterval(() => {
     targetY = predictedY - paddle2.height / 2;
 }, reactionDelay);
 
+// Reset the paddle1 position?
+function resetPaddles() {
+    paddle1.y = (canvas.height - abilities_paddleHeight) / 2; 
+    paddle2.y = (canvas.height - abilities_paddleHeight) / 2;
+}
+
+function resetGame() {
+    start_time = null;
+    score1 = 0;
+    score2 = 0;
+    resetBall();
+    resetPaddles();
+    resetAbilities();
+}
+
+
+// Oyun bitiş ekranını gösteren fonksiyon
+function showGameOverScreen() {
+    isPaused = true;
+    var winnerText = (score1 == MAX_SCORE) ? username + " wins!" : ainame + " wins!";
+    document.getElementById('winnerText').innerText = winnerText;
+    document.getElementById('gameOverScreen').style.display = 'block';
+}
+
+// Oyunu tekrar başlatan fonksiyon
+function restartGame() {
+    document.getElementById('gameOverScreen').style.display = 'none';
+    resetGame();
+}
+
+// Çıkış yapma işlemleri
+function exitGame() {
+    window.location.href = '/dashboard';
+}
+
+document.getElementById('restartButton').addEventListener('click', restartGame);
+document.getElementById('exitButton').addEventListener('click', exitGame);
 
 function sendWinnerToBackend(winner, loser, winnerscore, loserscore, start_time) {
     const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;

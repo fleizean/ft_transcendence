@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block title %}Play with AI{% endblock title %}
+
+{% block app %}
+  {% include "_nav.html" %}
+
+  <div class="container-top" data-paddlecolor="{{paddlecolor}}" data-playgroundcolor="{{playgroundcolor}}">
+    <div class="ai-game">
+      <div id="gameStartInfos" class="game-start-info">
+        <h1 class="localGameText">1v1 Local Game</h1>
+        <div class="input-box">
+          <label class="localGamePlayerText" for="player1Name">Player1 Name</label>
+          <input class="input-style" type="text" id="player1Name">
+
+          <label class="localGamePlayerText" for="player1Name">Player2 Name</label>
+          <input class="input-style" type="text" id="player2Name">
+
+          <div class="selectorGame">
+            <label class="localGamePlayerText" for="maxScore">Max Score</label>
+            <select class="form-select" id="maxScore">
+              <option selected value="3">3</option>
+              <option value="5">5</option>
+              <option value="7">7</option>
+              <option value="10">10</option>
+            </select>
+          </div>
+
+          <div class="selectorGame">
+            <label class="localGamePlayerText" for="gameMode">Game Mode</label>
+            <select class="form-select" id="gameMode">
+              <option selected value="Vanilla">Vanilla</option>
+              <option value="Abilities">Abilities</option>
+            </select>
+          </div>
+        </div>
+        
+        
+        <button class="btn btn-outline-success" id="startButton">Start</button>
+      </div>
+      <canvas id="pongCanvas" width="800" height="600" style="display: none;"></canvas>
+      <div id="gameOverScreen" class="game-over">
+        <h1>Game Over</h1>
+        <p id="winnerText" class="winnerName"></p>
+        <button id="restartButton">Restart</button>
+        <button id="exitButton">Exit</button>
+      </div>
+    </div>
+  </div>
+  <script type=module src="{% static "js/local-game.js" %}"></script>
+{% endblock %}

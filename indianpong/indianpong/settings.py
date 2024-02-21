@@ -164,3 +164,6 @@ EMAIL_HOST_PASSWORD = environ.get("EMAIL_HOST_PASSWORD", default="hxog cqpq jltp
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False """
+
+""" import certifi
+environ['SSL_CERT_FILE'] = certifi.where() """

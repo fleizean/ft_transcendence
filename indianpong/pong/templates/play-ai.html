@@ -11,8 +11,14 @@
     <div class="ai-game">
       
       <canvas id="pongCanvas" width="800" height="600"></canvas>
+      <div id="gameOverScreen" class="game-over">
+        <h1>Game Over</h1>
+        <p id="winnerText" class="winnerName"></p>
+        <button id="restartButton">Restart</button>
+        <button id="exitButton">Exit</button>
+    </div>
     </div>
   </div>
-  <script type=module src="{% static "js/socketless.js" %}"></script>
+  <script type=module src="{% static "js/play-ai.js" %}"></script>
   {% csrf_token %}
 {% endblock %}
