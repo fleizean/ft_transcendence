@@ -1643,6 +1643,13 @@ body {
     cursor: pointer;
 }
 
+.input-box {
+  display: flex;
+  flex-direction: column; /* Sütun yönlendirmesi */
+  justify-content: center;
+  align-items: center;
+}
+
 #restartButton:hover,
 #exitButton:hover {
     background-color: #359e38;
@@ -1653,4 +1660,61 @@ body {
   color: green;
   font-size: 20px;
   margin: 0 0 20px;
+}
+
+.selectorGame {
+  display: flex;
+  flex-direction: column; 
+  justify-content: center;
+}
+
+.game-start-info {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  padding: 20px;
+  background-color: rgba(0, 0, 0, 0.5);
+  width: 700px;
+  height: 500px;
+  border-radius: 10px;
+}
+
+.localGameText {
+  color: greenyellow;
+  font-size: 36px;
+  margin: 0 0 20px;
+}
+
+.localGamePlayerText {
+  color: greenyellow;
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 5px;
+  margin-top: 10px;
+}
+
+.input-style {
+  padding: 10px;
+  border: 2px solid #ccc;
+  width: 70%;
+  border-radius: 5px;
+  font-size: 13px;
+  color: #555;
+  outline: none;
+}
+
+.input-style:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.form-select {
+  width: 462px !important;
+}
+
+.btn {
+  margin-top: 2em;
+  width: 300px;
 }

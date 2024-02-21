@@ -1,28 +1,24 @@
 
 const canvas = document.getElementById('pongCanvas');
+var gameStartInfos = document.getElementById("gameStartInfos");
+var startButton = document.getElementById("startButton");
 var ctx = canvas.getContext("2d");
 canvas.width = 800;
 canvas.height = 600;
 
 
 const canvasContainer = document.querySelector('.ai-game');
+var player1Name = "Player 1"
+var player2Name = "Player 2"
+var gameMode = "Vanilla";
 
-const username = document.querySelector('.container-top').dataset.username;
-const player2name = document.querySelector('.container-top').dataset.player2name;
 const paddleColor = document.querySelector('.container-top').dataset.paddlecolor;
 const playgroundColor = document.querySelector('.container-top').dataset.playgroundcolor;
 canvas.style.borderColor = playgroundColor; // Set the border color to the specified color
 
-// Pong Abilities
-const giantMan = document.querySelector('.container-top').dataset.giantman;
-const likeaCheater = document.querySelector('.container-top').dataset.likeacheater;
-const fastandFurious = document.querySelector('.container-top').dataset.fastandfurious;
-const rageofFire = document.querySelector('.container-top').dataset.rageoffire;
-const frozenBall = document.querySelector('.container-top').dataset.frozenball;
-
 /* Cordinates of the canvas */
-var textWidth1 = ctx.measureText(username + ": " + score1).width;
-var textWidth2 = ctx.measureText(player2name + ": " + score2).width;
+var textWidth1 = ctx.measureText(player1Name + ": " + score1).width;
+var textWidth2 = ctx.measureText(player2Name + ": " + score2).width;
 
 
 var usernameX = 10;
@@ -32,7 +28,7 @@ var player2nameX = canvas.width - textWidth2 - 10;
 var player2nameY = 20;
 
 // if giantMan abilities equiped
-var abilities_paddleHeight = (giantMan == "true") ? 120 : 100;
+var abilities_paddleHeight = (gameMode == "Abilities") ? 120 : 100;
 var paddleWidth = 10;
 var paddleHeight = 100;
 var paddleSpeed = 15;
@@ -47,7 +43,7 @@ var ball = {x: canvas.width / 2, y: canvas.height / 2, radius: 10, speed: 5, dx:
 var score1 = 0;
 var score2 = 0;
 
-const MAX_SCORE = 3;
+var MAX_SCORE = 3;
 
 // Player Abilities
 var likeaCheaterCount = 0;
@@ -61,7 +57,7 @@ var isFrozenBallActive = false;
 
 // Add a new variable to track if the game is paused
 let isScored = false;
-var isPaused = false;
+var isPaused = true;
 let upPressed = false;
 let downPressed = false;
 let upPressedPlayer2 = false;
@@ -88,7 +84,7 @@ function update() {
     // Check for collisions with paddles
     if (ball.y + ball.radius > paddle1.y && ball.y - ball.radius < paddle1.y + paddle1.height && ball.dx < 0) {       
         if (ball.x - ball.radius < paddle1.x + paddle1.width) {
-            if (rageofFire == "true") {
+            if (gameMode == "Abilities") {
                 if (Math.random() <= 0.5) {
                     ball.speed += 1;
                 }
@@ -103,7 +99,7 @@ function update() {
     }
     if (ball.y + ball.radius > paddle2.y && ball.y - ball.radius < paddle2.y + paddle2.height && ball.dx > 0) {
         if (ball.x + ball.radius > paddle2.x) {
-            if (rageofFire == "true") {
+            if (gameMode == "Abilities") {
                 if (Math.random() <= 0.5) {
                     ball.speed += 1;
                 }
@@ -223,8 +219,8 @@ function render() {
 
     ctx.font = "16px Roboto";
     ctx.fillStyle = 'white';
-    ctx.fillText(username + ": " + score1, usernameX, usernameY);
-    ctx.fillText(player2name + ": " + score2, player2nameX, player2nameY);
+    ctx.fillText(player1Name + ": " + score1, usernameX, usernameY);
+    ctx.fillText(player2Name + ": " + score2, player2nameX, player2nameY);
 }
 
 
@@ -304,14 +300,17 @@ document.addEventListener("keydown", function(event) {
     else if (event.key === "s" || event.key === "S") {
         downPressed = true;
     }
-    else if (event.key === '1' && likeaCheaterCount < 1 && likeaCheater == "true") {
+    else if (event.key === '1' && likeaCheaterCount < 1 && gameMode == "Abilities") {
         likeaCheaterAbility(false, likeaCheaterCount);
+        likeaCheaterCount += 1;
     }
-    else if (event.key === '2' && fastandFuriousCount < 1 && fastandFurious == "true" && isFrozenBallActive == false) {
+    else if (event.key === '2' && fastandFuriousCount < 1 && gameMode == "Abilities" && isFrozenBallActive == false) {
         fastandFuriousAbility(fastandFuriousCount);
+        fastandFuriousCount += 1;
     }
-    else if (event.key === '3' && frozenBallCount < 1 && frozenBall == "true") {
+    else if (event.key === '3' && frozenBallCount < 1 && gameMode == "Abilities") {
         frozenBallAbility(frozenBallCount);
+        frozenBallCount += 1;
     }
 });
 
@@ -322,14 +321,17 @@ document.addEventListener("keydown", function(event) {
     } else if (event.key === "ArrowDown") {
         downPressedPlayer2 = true;
     }
-    else if (event.key === '8' && Player2LikeaCheaterCount < 1 && likeaCheater == "true") {
+    else if (event.key === '8' && Player2LikeaCheaterCount < 1 && gameMode == "Abilities") {
         likeaCheaterAbility(false, Player2LikeaCheaterCount);
+        Player2LikeaCheaterCount += 1;
     }
-    else if (event.key === '9' && Player2FastandFuriousCount < 1 && fastandFurious == "true" && isFrozenBallActive == false) {
+    else if (event.key === '9' && Player2FastandFuriousCount < 1 && gameMode == "Abilities" && isFrozenBallActive == false) {
         fastandFuriousAbility(Player2FastandFuriousCount);
+        Player2FastandFuriousCount += 2;
     }
-    else if (event.key === '0' && Player2FrozenBallCount < 1 && frozenBall == "true") {
+    else if (event.key === '0' && Player2FrozenBallCount < 1 && gameMode == "Abilities") {
         frozenBallAbility(Player2FrozenBallCount);
+        Player2FrozenBallCount += 2;
     }
 });
 
@@ -349,6 +351,11 @@ document.addEventListener("keyup", function(event) {
     }
 });
 
+function showCanvas() {
+    pongCanvas.style.display = "block";
+    gameStartInfos.style.display = "none";
+    isPaused = false;
+  }
 
 // Reset the paddle1 position?
 function resetPaddles() {
@@ -368,7 +375,7 @@ function resetGame() {
 // Oyun bitiş ekranını gösteren fonksiyon
 function showGameOverScreen() {
     isPaused = true;
-    var winnerText = (score1 == MAX_SCORE) ? username + " wins!" : player2name + " wins!";
+    var winnerText = (score1 == MAX_SCORE) ? player1Name + " wins!" : player2Name + " wins!";
     document.getElementById('winnerText').innerText = winnerText;
     document.getElementById('gameOverScreen').style.display = 'block';
 }
@@ -386,3 +393,11 @@ function exitGame() {
 
 document.getElementById('restartButton').addEventListener('click', restartGame);
 document.getElementById('exitButton').addEventListener('click', exitGame);
+
+startButton.addEventListener("click", function() {
+    player1Name = document.getElementById("player1Name").value;
+    player2Name = document.getElementById("player2Name").value;
+    MAX_SCORE = document.getElementById("maxScore").value;
+    gameMode = document.getElementById("gameMode").value;
+    showCanvas();
+});
