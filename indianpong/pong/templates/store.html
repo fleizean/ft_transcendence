@@ -7,6 +7,7 @@
 {% block stylesheet %}<link rel="stylesheet" href="../../../static/css/store.css">{% endblock stylesheet %}
 
 {% block app %}
+{% load i18n %}
   {% include "_nav.html" %}
   <div class="container-top">
     <div class="store-card">
@@ -54,9 +55,9 @@
                 <img src="{% static 'assets/stores/'|add:item.image_url %}" alt="" />
                 <h2 class="card__title">{{ item.name }}</h2>
                 <h4 {% if item.category_name == "Pong" %} class="card__category pong" {% elif item.category_name == "RPS" %} class="card__category rps" {% endif %}>
-                  <a href="?category_name={{item.category_name}}">#{{ item.category_name }}</a>
+                  <a href="?category_name={{item.category_name}}"> #{{item.category_name}}</a>
                 </h4>
-                <span class="card__description">{{item.description}}</span>
+                <span class="card__description">{% trans item.description %}</span>
                 <div class="card__shop">
                   <span class="card__shop__price">{{item.price}}N₩</span>
                     <form id="store_item_form{{ item.id }}" method="POST">

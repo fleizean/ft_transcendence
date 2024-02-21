@@ -3,6 +3,7 @@
 
 {% block title %}{{ profile.username }}{% endblock title %}
 {% block app %}
+{% load static i18n %}
 {% include "_nav.html" %}
     <!-- "Edit Profile" ve "Match History" Navbar -->
     
@@ -15,11 +16,11 @@
             <div class="card mb-4" style="background-color:white !important">
                 <!-- Profil Kartı içeriği -->
                 {% if profile.is_indianai %}
-                    <span class="pro-profile"><i class="bi bi-robot"></i> I'M JUST ROBOT</span>
+                    <span class="pro-profile"><i class="bi bi-robot"></i>{% trans "I'M JUST ROBOT" %}</span>
                 {% elif profile.rank is not None %}
-                    <span class="pro-profile"><i class="bi bi-award-fill"></i> {{ profile.rank }} IN RANKINGS</span>
+                    <span class="pro-profile"><i class="bi bi-award-fill"></i> {{ profile.rank }} {% trans "IN RANKINGS" %}</span>
                 {% else %}
-                    <span class="pro-profile"><i class="bi bi-exclamation-diamond-fill"></i> NO RANKING</span>
+                    <span class="pro-profile"><i class="bi bi-exclamation-diamond-fill"></i>{% trans "NO RANKING" %}</span>
                 {% endif %}
                 <div class="card-body text-center">
                     <!-- Avatar -->
@@ -33,17 +34,17 @@
                     <h7 class="my-5" style="margin-top: -3em !important; margin-bottom: 10px !important;">{{profile.displayname}}</h7>
                     <!-- Meslek -->
                     {% if profile.social.github and not profile.is_42student %}
-                        <p class="text-muted mb-1" style="color: orange !important;margin-top: -5px;font-size: 15px; font-weight: 600;">Software Developer</p>
+                        <p class="text-muted mb-1" style="color: orange !important;margin-top: -5px;font-size: 15px; font-weight: 600;">{% trans "Software Developer" %}</p>
                     {% elif profile.is_42student %}
-                        <p class="text-muted mb-1" style="color: #00ff1e !important;margin-top: -5px;font-size: 15px; font-weight: 600;">42 Kocaeli Student</p>
+                        <p class="text-muted mb-1" style="color: #00ff1e !important;margin-top: -5px;font-size: 15px; font-weight: 600;">{% trans "42 Kocaeli Student" %}</p>
                     {% endif %}
                     <div class="d-flex justify-content-center mb-2" style="margin-top: 30px;">
                         {% if request.user.username != profile.username %}
                             {% csrf_token %}
                             {% if is_friend %}
-                                <button data-username="{{ profile.username }}" class="unfollow-btn" ><i class="bi bi-heartbreak-fill"></i> Unfollow</button>
+                                <button data-username="{{ profile.username }}" class="unfollow-btn" ><i class="bi bi-heartbreak-fill"></i> {% trans "Unfollow" %}</button>
                             {% else %}
-                                <button data-username="{{ profile.username }}" class="btn btn-danger"><i class="bi bi-heart-fill"></i> Follow</button>
+                                <button data-username="{{ profile.username }}" class="btn btn-danger"><i class="bi bi-heart-fill"></i> {% trans "Follow" %}</button>
                             {% endif %}
                         {% endif %}
                     </div>
@@ -59,7 +60,7 @@
                             {% if profile.social.stackoverflow %}
                                 <a href="https://stackoverflow.com/users/{{profile.social.stackoverflow}}" target="_blank" style="text-decoration: none;"><p class="mb-0">{{profile.social.stackoverflow}} - Stackoverflow</p></a>
                             {% else %}
-                                <p class="mb-0">No Stackoverflow</p>
+                                <p class="mb-0">{% trans "No Stackoverflow" %}</p>
                             {% endif %}
                         </li>
                         <!-- GitHub -->
@@ -68,7 +69,7 @@
                             {% if profile.social.github %}
                                 <a href="https://github.com/{{profile.social.github}}" target="_blank" style="text-decoration: none;"><p class="mb-0">{{profile.social.github}} - Github</p></a>
                             {% else %}
-                                <p class="mb-0">No Github</p>
+                                <p class="mb-0">{% trans "No Github" %}</p>
                             {% endif %}
                         </li>
                         <!-- Twitter -->
@@ -77,7 +78,7 @@
                             {% if profile.social.twitter %}
                                 <a href="https://x.com/{{profile.social.twitter}}" target="_blank" style="text-decoration: none;"><p class="mb-0">{{profile.social.twitter}} - Twitter</p></a>
                             {% else %}
-                                <p class="mb-0">No Twitter</p>
+                                <p class="mb-0">{% trans "No Twitter" %}</p>
                             {% endif %}
                         </li>
                         <!-- Instagram -->
@@ -86,7 +87,7 @@
                             {% if profile.social.instagram %}
                                 <a href="https://www.instagram.com/{{profile.social.instagram}}" target="_blank" style="text-decoration: none;"><p class="mb-0">{{profile.social.instagram}} - Instagram</p></a>
                             {% else %}
-                                <p class="mb-0">No Instagram</p>
+                                <p class="mb-0">{% trans "No Instagram" %}</p>
                             {% endif %}
                         </li>
                     </ul>
@@ -96,16 +97,16 @@
         <!-- Sağ Sütun (col-lg-8) -->
         <div class="col-lg-8">
             <!-- Profil Bilgileri -->
-            <div class="card" style="background-color:white !important;">
+            <div class="card" style="background-color:white !important; max-height: 800px !important; height: 400px !important;">
                 <div class="card-body">
                     <div class="match-history">
                         <table class="card-mhistory-table">
                             <thead>
                                 <tr>
-                                    <th>Opponent</th>
-                                    <th>Result</th>
-                                    <th>Score</th>
-                                    <th>Duration</th>
+                                    <th>{% trans "Opponent" %}</th>
+                                    <th>{% trans "Result" %}</th>
+                                    <th>{% trans "Score" %}</th>
+                                    <th>{% trans "Duration" %}</th>
                             </thead>
                             <tbody>
                                 {% for game in history_page_obj %}
@@ -117,15 +118,15 @@
                                         {% endif %}
                                         {% if profile.username == game.player1.username %}
                                             {% if game.winner.username == game.player1.username %}
-                                                <td class="won">Win</td>
+                                                <td class="won">{% trans "Win" %}</td>
                                             {% else %}
-                                                <td class="lose">Lost</td>
+                                                <td class="lose">{% trans "Lost" %}</td>
                                             {% endif %}
                                         {% else %}
                                             {% if game.winner.username == game.player2.username %}
-                                                <td class="won">Win</td>
+                                                <td class="won">{% trans "Win" %}</td>
                                             {% else %}
-                                                <td class="lose">Lost</td>
+                                                <td class="lose">{% trans "Lost" %}</td>
                                             {% endif %}
                                         {% endif %}
                                         <td>
@@ -171,7 +172,7 @@
                     <div class="card mb-4 mb-md-0" style="background-color:white !important; margin-top:10px">
                         <div class="card-body">
                             <!-- Proje Durumu Başlığı -->
-                            <p class="mb-4"><span class="text-primary font-italic me-1">{{profile.username}} </span>/ Rank</p>
+                            <p class="mb-4"><span class="text-primary font-italic me-1">{{profile.username}} </span>/ {% trans "Rank" %}</p>
                             <div class="rank-img">
                                 <img src="{% static "assets/ranks/" %}{{ profile.get_rank_image }}" alt="Rank Image">
                             </div>
@@ -189,34 +190,34 @@
                     <div class="card mb-4 mb-md-0" style="background-color:white !important; margin-top:10px; height: 328px;">
                         <div class="card-body">
                             <!-- Proje Durumu Başlığı -->
-                            <p class="mb-4"><span class="text-primary font-italic me-1">{{profile.username}} </span>/ Stats</p>
+                            <p class="mb-4"><span class="text-primary font-italic me-1">{{profile.username}} </span>/ {% trans "Stats" %}</p>
                             <div class="stats-info">
                                 <div class="stats">
-                                    <p class="stats-p"><i class="bi bi-dice-1-fill"></i> Games Played:</p>
+                                    <p class="stats-p"><i class="bi bi-dice-1-fill"></i> {% trans "Games Played:" %}</p>
                                     <p class="stats-result-p">{% if profile.game_stats.total_games_pong %} {{profile.game_stats.total_games_pong}} {% else %} 0 {% endif %}</p>
                                 </div>
                                 <div class="stats">
-                                    <p class="stats-p"><i class="bi bi-trophy-fill"></i> Wins:</p>
+                                    <p class="stats-p"><i class="bi bi-trophy-fill"></i> {% trans "Wins:" %}</p>
                                     <p class="stats-result-p">{% if profile.game_stats.total_win_pong %} {{profile.game_stats.total_win_pong}} {% else %} 0 {% endif %}</p>
                                 </div>
                                 <div class="stats">
-                                    <p class="stats-p"><i class="bi bi-emoji-frown-fill"></i> Loses:</p>
+                                    <p class="stats-p"><i class="bi bi-emoji-frown-fill"></i> {% trans "Loses:" %}</p>
                                     <p class="stats-result-p">{% if profile.game_stats.total_lose_pong %} {{profile.game_stats.total_lose_pong}} {% else %} 0 {% endif %}</p>
                                 </div>
                                 <div class="stats">
-                                    <p class="stats-p"><i class="bi bi-award-fill"></i> Win Rate:</p>
+                                    <p class="stats-p"><i class="bi bi-award-fill"></i> {% trans "Win Rate:" %}</p>
                                     <p class="stats-result-p">{% if profile.game_stats.formatted_win_rate %} {{profile.game_stats.formatted_win_rate}} {% else %} 0 {% endif %}</p>
                                 </div>
                                 <div class="stats">
-                                    <p class="stats-p"><i class="bi bi-emoji-wink-fill"></i> Win Streak:</p>
+                                    <p class="stats-p"><i class="bi bi-emoji-wink-fill"></i> {% trans "Win Streak:" %}</p>
                                     <p class="stats-result-p">{% if profile.game_stats.total_win_streak_pong %} {{profile.game_stats.total_win_streak_pong}} {% else %} 0 {% endif %}</p>
                                 </div>
                                 <div class="stats">
-                                    <p class="stats-p"><i class="bi bi-bucket-fill"></i> Lose Streak:</p>
+                                    <p class="stats-p"><i class="bi bi-bucket-fill"></i> {% trans "Lose Streak:" %}</p>
                                     <p class="stats-result-p">{% if profile.game_stats.total_lose_streak_pong %} {{profile.game_stats.total_lose_streak_pong}} {% else %} 0 {% endif %}</p>
                                 </div>
                                 <div class="stats">
-                                    <p class="stats-p"><i class="bi bi-clock-fill"></i> Average Game Duration:</p>
+                                    <p class="stats-p"><i class="bi bi-clock-fill"></i> {% trans "Average Game Duration:" %}</p>
                                     <p class="stats-result-p">{% if profile.game_stats.formatted_game_duration %} {{profile.game_stats.formatted_game_duration}} {% else %} 0 {% endif %}</p>
                                 </div>
                             </div>

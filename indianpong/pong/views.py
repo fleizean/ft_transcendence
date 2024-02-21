@@ -5,6 +5,11 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.cache import never_cache
 from django.contrib.auth import login, logout
 from django.contrib import messages
+from django.conf import settings
+from django.utils import translation
+from django.urls.exceptions import Resolver404
+from django.urls.base import resolve, reverse
+from urllib.parse import urlparse
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.http import HttpResponseRedirect
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -74,8 +79,18 @@ import random
 
 @never_cache
 def index(request):
+    current_language = request.LANGUAGE_CODE
+    
     if request.user.is_authenticated:
-        return redirect("dashboard")
+        user_profile = get_object_or_404(UserProfile, username=request.user.username)
+        if user_profile.preffered_lang == 'tr':
+            return redirect("tr/dashboard")  # Türkçe dashboard için uygun ismi kullanın
+        elif user_profile.preffered_lang == 'hi':
+            return redirect("hi/dashboard")  # Hindi dashboard için uygun ismi kullanın
+        elif user_profile.preffered_lang == 'pt':
+            return redirect("pt/dashboard")
+        else:
+            return redirect("en/dashboard")
     return render(request, "base.html")
 
 
@@ -123,7 +138,15 @@ def activate_account(request, token):
 @never_cache
 def auth(request):
     if request.user.is_authenticated and request.user.is_42student:
-        return redirect("dashboard")
+        user_profile = get_object_or_404(UserProfile, username=request.user.username)
+        if user_profile.preffered_lang == 'tr':
+            return redirect("tr/dashboard")  # Türkçe dashboard için uygun ismi kullanın
+        elif user_profile.preffered_lang == 'hi':
+            return redirect("hi/dashboard")  # Hindi dashboard için uygun ismi kullanın
+        elif user_profile.preffered_lang == 'pt':
+            return redirect("pt/dashboard")
+        else:
+            return redirect("en/dashboard")
     auth_url = "https://api.intra.42.fr/oauth/authorize"
     fields = {
         "client_id": "u-s4t2ud-4b7a045a7cc7dd977eeafae807bd4947670f273cb30e1dd674f6bfa490ba6c45",  # environ.get("FT_CLIENT_ID"),
@@ -238,7 +261,15 @@ def auth_callback(request):
 @never_cache
 def login_view(request):
     if request.user.is_authenticated:
-        return HttpResponseRedirect("dashboard")
+        user_profile = get_object_or_404(UserProfile, username=request.user.username)
+        if user_profile.preffered_lang == 'tr':
+            return redirect("tr/dashboard")  # Türkçe dashboard için uygun ismi kullanın
+        elif user_profile.preffered_lang == 'hi':
+            return redirect("hi/dashboard")  # Hindi dashboard için uygun ismi kullanın
+        elif user_profile.preffered_lang == 'pt':
+            return redirect("pt/dashboard")
+        else:
+            return redirect("en/dashboard")
     valid = True
     toast_message = ""
     if request.method == "POST":
@@ -321,14 +352,14 @@ def profile_view(request, username):
 ## Rps Game ##
 @never_cache
 @login_required()
-def rps_game_find(request):
+def rpsgamefind(request):
     return render(request, "rps-game-find.html")
 
 
 ## Pong Game ##
 @never_cache
 @login_required()
-def pong_game_find(request):
+def ponggamefind(request):
     return render(request, "pong-game-find.html")
 
 
@@ -507,24 +538,6 @@ def set_password(request, uidb64, token):
 def dashboard(request, language=None):
     profile = get_object_or_404(UserProfile, username=request.user.username)
     return render(request, "dashboard.html", {"profile": profile})
-
-def set_language(request, language):
-    for lang, _ in settings.LANGUAGES:
-        translation.activate(lang)
-        try:
-            view = resolve(urlparse(request.META.get("HTTP_REFERER")).path)
-        except Resolver404:
-            view = None
-        if view:
-            break
-    if view:
-        translation.activate(language)
-        next_url = reverse(view.url_name, args=view.args, kwargs=view.kwargs)
-        response = HttpResponseRedirect(next_url)
-        response.set_cookie(settings.LANGUAGE_COOKIE_NAME, language)
-    else:
-        response = HttpResponseRedirect("/")
-    return response
 
 @never_cache
 @login_required()
@@ -716,13 +729,34 @@ def follow_unfollow(request, username):
     return JsonResponse({"status": "ok"})
 
 
+def set_language(request, language):    
+    user_profile = get_object_or_404(UserProfile, username=request.user.username)
+    user_profile.preffered_lang = language
+    user_profile.save()
+    for lang, _ in settings.LANGUAGES:
+        translation.activate(lang)
+        try:
+            view = resolve(urlparse(request.META.get("HTTP_REFERER")).path)
+        except Resolver404:
+            view = None
+        if view:
+            break
+    if view:
+        translation.activate(language)
+        next_url = reverse(view.url_name, args=view.args, kwargs=view.kwargs)
+        response = HttpResponseRedirect(next_url)
+        response.set_cookie(settings.LANGUAGE_COOKIE_NAME, language)
+    else:
+        response = HttpResponseRedirect("/")
+    return response
+
 @login_required()
 def game(request):
     return render(request, "game.html")
 
 
 @login_required()
-def play_ai(request):
+def playai(request):
     user_items = UserItem.objects.filter(user=request.user)
     
     # Just Customizations - PONG

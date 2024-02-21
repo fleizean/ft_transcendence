@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-02-21 03:57+0300\n"
+"POT-Creation-Date: 2024-02-21 18:13+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,21 +18,23 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: indianpong/settings.py:145
+#: indianpong/settings.py:145 pong/templates/_nav.html:37
 msgid "English"
-msgstr ""
+msgstr "Ingilizce"
 
 #: indianpong/settings.py:146
+#, fuzzy
+#| msgid "Türkce"
 msgid "Türkçe"
-msgstr ""
+msgstr "Türkce"
 
-#: indianpong/settings.py:147
+#: indianpong/settings.py:147 pong/templates/_nav.html:41
 msgid "Português"
-msgstr ""
+msgstr "Portekizce"
 
 #: indianpong/settings.py:148
 msgid "हिन्दी"
-msgstr ""
+msgstr "Hindi"
 
 #: pong/templates/_nav.html:13
 msgid "Dashboard"
@@ -66,12 +68,24 @@ msgstr ""
 msgid "About Us"
 msgstr ""
 
+#: pong/templates/_nav.html:29
+msgid "Türkce"
+msgstr "Türkce"
+
+#: pong/templates/_nav.html:33
+msgid "हिंदी"
+msgstr ""
+
 #: pong/templates/_nav.html:50
 msgid "Profile"
 msgstr ""
 
 #: pong/templates/_nav.html:51
 msgid "Friends"
+msgstr ""
+
+#: pong/templates/_nav.html:52
+msgid "Settings"
 msgstr ""
 
 #: pong/templates/_nav.html:53
@@ -102,4 +116,140 @@ msgid ""
 "school community. Overall, Indian Pong combines the joy of retro gaming with "
 "modern social interaction, creating a vibrant and interactive experience for "
 "the 42 school community."
+msgstr ""
+
+#: pong/templates/dashboard.html:17
+msgid "Games Played"
+msgstr ""
+
+#: pong/templates/dashboard.html:28
+msgid "Win Count"
+msgstr ""
+
+#: pong/templates/dashboard.html:39
+msgid "Win Streak"
+msgstr ""
+
+#: pong/templates/dashboard.html:50
+msgid "Lose Streak"
+msgstr ""
+
+#: pong/templates/dashboard.html:61
+msgid "Win Rate"
+msgstr ""
+
+#: pong/templates/dashboard.html:72
+msgid "Average Game Duration"
+msgstr ""
+
+#: pong/templates/dashboard.html:84
+msgid "Average Points Won"
+msgstr ""
+
+#: pong/templates/dashboard.html:95
+msgid "Average Points Lost"
+msgstr ""
+
+#: pong/templates/profile.html:19
+msgid "I'M JUST ROBOT"
+msgstr ""
+
+#: pong/templates/profile.html:21
+msgid "IN RANKINGS"
+msgstr ""
+
+#: pong/templates/profile.html:23
+msgid "NO RANKING"
+msgstr ""
+
+#: pong/templates/profile.html:37
+msgid "Software Developer"
+msgstr ""
+
+#: pong/templates/profile.html:39
+msgid "42 Kocaeli Student"
+msgstr ""
+
+#: pong/templates/profile.html:45
+msgid "Unfollow"
+msgstr ""
+
+#: pong/templates/profile.html:47
+msgid "Follow"
+msgstr ""
+
+#: pong/templates/profile.html:63
+msgid "No Stackoverflow"
+msgstr ""
+
+#: pong/templates/profile.html:72
+msgid "No Github"
+msgstr ""
+
+#: pong/templates/profile.html:81
+msgid "No Twitter"
+msgstr ""
+
+#: pong/templates/profile.html:90
+msgid "No Instagram"
+msgstr ""
+
+#: pong/templates/profile.html:106
+msgid "Opponent"
+msgstr ""
+
+#: pong/templates/profile.html:107
+msgid "Result"
+msgstr ""
+
+#: pong/templates/profile.html:108
+msgid "Score"
+msgstr ""
+
+#: pong/templates/profile.html:109
+msgid "Duration"
+msgstr ""
+
+#: pong/templates/profile.html:121 pong/templates/profile.html:127
+msgid "Win"
+msgstr ""
+
+#: pong/templates/profile.html:123 pong/templates/profile.html:129
+msgid "Lost"
+msgstr ""
+
+#: pong/templates/profile.html:175
+msgid "Rank"
+msgstr ""
+
+#: pong/templates/profile.html:193
+msgid "Stats"
+msgstr ""
+
+#: pong/templates/profile.html:196
+msgid "Games Played:"
+msgstr ""
+
+#: pong/templates/profile.html:200
+msgid "Wins:"
+msgstr ""
+
+#: pong/templates/profile.html:204
+msgid "Loses:"
+msgstr ""
+
+#: pong/templates/profile.html:208
+msgid "Win Rate:"
+msgstr ""
+
+#: pong/templates/profile.html:212
+msgid "Win Streak:"
+msgstr ""
+
+#: pong/templates/profile.html:216
+msgid "Lose Streak:"
+msgstr ""
+
+#: pong/templates/profile.html:220
+msgid "Average Game Duration:"
 msgstr ""

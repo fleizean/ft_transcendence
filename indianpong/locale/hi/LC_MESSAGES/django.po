@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-02-21 03:57+0300\n"
+"POT-Creation-Date: 2024-02-21 18:13+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,77 +18,91 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: indianpong/settings.py:145
+#: indianpong/settings.py:145 pong/templates/_nav.html:37
 msgid "English"
-msgstr ""
+msgstr "Ingilizce"
 
 #: indianpong/settings.py:146
+#, fuzzy
+#| msgid "Türkce"
 msgid "Türkçe"
-msgstr ""
+msgstr "Türkce"
 
-#: indianpong/settings.py:147
+#: indianpong/settings.py:147 pong/templates/_nav.html:41
 msgid "Português"
-msgstr ""
+msgstr "Portekizce"
 
 #: indianpong/settings.py:148
 msgid "हिन्दी"
-msgstr ""
+msgstr "Hindi"
 
 #: pong/templates/_nav.html:13
 msgid "Dashboard"
-msgstr ""
+msgstr "डैशबोर्ड"
 
 #: pong/templates/_nav.html:14
 msgid "Chat"
-msgstr ""
+msgstr "चैट"
 
 #: pong/templates/_nav.html:15
 msgid "Pong Game"
-msgstr ""
+msgstr "पोंग गेम"
 
 #: pong/templates/_nav.html:16
 msgid "RPS Game"
-msgstr ""
+msgstr "RPS गेम"
 
 #: pong/templates/_nav.html:17
 msgid "Rankings"
-msgstr ""
+msgstr "रैंकिंग"
 
 #: pong/templates/_nav.html:18
 msgid "Store"
-msgstr ""
+msgstr "स्टोर"
 
 #: pong/templates/_nav.html:19
 msgid "Search"
-msgstr ""
+msgstr "खोज"
 
 #: pong/templates/_nav.html:20
 msgid "About Us"
+msgstr "हमारे बारे में"
+
+#: pong/templates/_nav.html:29
+msgid "Türkce"
+msgstr "Türkce"
+
+#: pong/templates/_nav.html:33
+msgid "हिंदी"
 msgstr ""
 
 #: pong/templates/_nav.html:50
 msgid "Profile"
-msgstr ""
+msgstr "प्रोफ़ाइल"
 
 #: pong/templates/_nav.html:51
 msgid "Friends"
-msgstr ""
+msgstr "दोस्त"
+
+#: pong/templates/_nav.html:52
+msgid "Settings"
+msgstr "सेटिंग्स"
 
 #: pong/templates/_nav.html:53
 msgid "Logout"
-msgstr ""
+msgstr "लॉगआउट"
 
 #: pong/templates/base.html:40
 msgid "Indian-Pong"
-msgstr ""
+msgstr "इंडियन-पॉंग"
 
 #: pong/templates/base.html:41
 msgid "Indian-Pong created for 42 school by Indian Dev!"
-msgstr ""
+msgstr "इंडियन-पॉंग को इंडियन डेव द्वारा 42 स्कूल के लिए बनाया गया!"
 
 #: pong/templates/dashboard.html:11
 msgid "Welcome"
-msgstr ""
+msgstr "स्वागत है"
 
 #: pong/templates/dashboard.html:12
 msgid ""
@@ -103,3 +117,148 @@ msgid ""
 "modern social interaction, creating a vibrant and interactive experience for "
 "the 42 school community."
 msgstr ""
+"इंडियन पॉंग एक सहयोगी परियोजना है जो 42 स्कूल के लिए विकसित की गई है समुदाय, क्लासिक "
+"एटारी गेम, पिंग-पोंग के माध्यम से एक नोस्टैल्जिक गेमिंग अनुभव प्रदान करती है। इस प्लेटफ़ॉर्म के "
+"जरिए उपयोगकर्ताओं को एक दूसरे के साथ पिंग-पोंग मैच में शामिल होने की अनुमति है, जिससे वे एक "
+"दूसरे के साथ मित्रता भावना को बढ़ावा दे सकते हैं। गेमिंग पहलु के अलावा, इंडियन पॉंग एक "
+"सामाजिक आयाम प्रदान करता है, जिसमें चैट रूम्स शामिल हैं जहां उपयोगकर्ताएँ एक दूसरे के साथ "
+"संवाद कर सकती हैं और जुड़ सकती हैं। प्लेटफ़ॉर्म उपयोगकर्ताओं को अपने नेटवर्क को बढ़ाने की "
+"अनुमति देता है जो 42 स्कूल समुदाय के भीतर दोस्तों को जोड़ने के लिए। समग्र रूप से, इंडियन पॉंग "
+"पुराने गेमिंग का आनंद और आधुनिक सामाजिक अंतरक्रिया का संयोजन करता है, 42 स्कूल समुदाय के "
+"लिए एक जीवंत और"
+
+#: pong/templates/dashboard.html:17
+msgid "Games Played"
+msgstr "खेले गए खेल"
+
+#: pong/templates/dashboard.html:28
+msgid "Win Count"
+msgstr "जीत गणना"
+
+#: pong/templates/dashboard.html:39
+msgid "Win Streak"
+msgstr "जीत स्ट्रीक"
+
+#: pong/templates/dashboard.html:50
+msgid "Lose Streak"
+msgstr "हार स्ट्रीक"
+
+#: pong/templates/dashboard.html:61
+msgid "Win Rate"
+msgstr "जीत की दर"
+
+#: pong/templates/dashboard.html:72
+msgid "Average Game Duration"
+msgstr "औसत खेल की अवधि"
+
+#: pong/templates/dashboard.html:84
+msgid "Average Points Won"
+msgstr "औसत अंक जीते"
+
+#: pong/templates/dashboard.html:95
+msgid "Average Points Lost"
+msgstr "औसत अंक हारे"
+
+#: pong/templates/profile.html:19
+msgid "I'M JUST ROBOT"
+msgstr "मैं बस एक रोबोट हूँ"
+
+#: pong/templates/profile.html:21
+msgid "IN RANKINGS"
+msgstr "रैंकिंग में"
+
+#: pong/templates/profile.html:23
+msgid "NO RANKING"
+msgstr "कोई रैंकिंग नहीं"
+
+#: pong/templates/profile.html:37
+msgid "Software Developer"
+msgstr "सॉफ़्टवेयर डेवेलपर"
+
+#: pong/templates/profile.html:39
+msgid "42 Kocaeli Student"
+msgstr "42 कोकेली छात्र"
+
+#: pong/templates/profile.html:45
+msgid "Unfollow"
+msgstr "अनफॉलो करें"
+
+#: pong/templates/profile.html:47
+msgid "Follow"
+msgstr "फॉलो करें"
+
+#: pong/templates/profile.html:63
+msgid "No Stackoverflow"
+msgstr "कोई स्टैकओवरफ्लो नहीं"
+
+#: pong/templates/profile.html:72
+msgid "No Github"
+msgstr "कोई Github नहीं"
+
+#: pong/templates/profile.html:81
+msgid "No Twitter"
+msgstr "कोई Twitter नहीं"
+
+#: pong/templates/profile.html:90
+msgid "No Instagram"
+msgstr "कोई Instagram नहीं"
+
+#: pong/templates/profile.html:106
+msgid "Opponent"
+msgstr "प्रतिद्वंद्वी"
+
+#: pong/templates/profile.html:107
+msgid "Result"
+msgstr "परिणाम"
+
+#: pong/templates/profile.html:108
+msgid "Score"
+msgstr "स्कोर"
+
+#: pong/templates/profile.html:109
+msgid "Duration"
+msgstr "अवधि"
+
+#: pong/templates/profile.html:121 pong/templates/profile.html:127
+msgid "Win"
+msgstr "जीत"
+
+#: pong/templates/profile.html:123 pong/templates/profile.html:129
+msgid "Lost"
+msgstr "हार"
+
+#: pong/templates/profile.html:175
+msgid "Rank"
+msgstr "रैंक"
+
+#: pong/templates/profile.html:193
+msgid "Stats"
+msgstr "आंकड़े"
+
+#: pong/templates/profile.html:196
+msgid "Games Played:"
+msgstr "खेले गए खेल"
+
+#: pong/templates/profile.html:200
+msgid "Wins:"
+msgstr "जीतें"
+
+#: pong/templates/profile.html:204
+msgid "Loses:"
+msgstr "हारें"
+
+#: pong/templates/profile.html:208
+msgid "Win Rate:"
+msgstr "जीत की दर"
+
+#: pong/templates/profile.html:212
+msgid "Win Streak:"
+msgstr "जीत स्ट्रीक"
+
+#: pong/templates/profile.html:216
+msgid "Lose Streak:"
+msgstr "हार स्ट्रीक"
+
+#: pong/templates/profile.html:220
+msgid "Average Game Duration:"
+msgstr "औसत खेल की अवधि"
