@@ -18,7 +18,9 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
-from pong.views import aboutus, follow_unfollow, update_winner, inventory, store, activate_account, play_ai, pong_game_find, rps_game_find, auth_callback, chat, friends, match_history, password_change, password_reset, password_reset_done, rankings, dashboard, game, index, auth, chat_room, profile_view, search, set_password, signup, login_view, logout_view, profile_settings, setup_two_factor_auth, generate_jwt_token, create_tournament, create_tournament_match, start_chat, room
+from django.views.generic import TemplateView
+from django.conf.urls.i18n import i18n_patterns
+from pong.views import aboutus, follow_unfollow, update_winner,set_language, inventory, store, activate_account, play_ai, pong_game_find, rps_game_find, auth_callback, chat, friends, match_history, password_change, password_reset, password_reset_done, rankings, dashboard, game, index, auth, chat_room, profile_view, search, set_password, signup, login_view, logout_view, profile_settings, setup_two_factor_auth, generate_jwt_token, create_tournament, create_tournament_match, start_chat, room
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -60,7 +62,16 @@ urlpatterns = [
     path('create_tournament_match', create_tournament_match, name='create_tournament_match'),
 ]
 
+urlpatterns = [
+    *i18n_patterns(*urlpatterns, prefix_default_language=False),
+   
+   # YENİ
+    path("set_language/<str:language>", set_language, name="set-language"),
+]
+
+
 handler404 = 'pong.views.handler404'
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
