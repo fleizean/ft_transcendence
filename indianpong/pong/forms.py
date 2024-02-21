@@ -22,10 +22,10 @@ class UserProfileForm(UserCreationForm):
     email = forms.EmailField(label='Email', widget=forms.EmailInput(attrs={'class': 'input'}))
     password1 = forms.CharField(label='Password', widget=forms.PasswordInput(attrs={'class': 'input'}))
     password2 = forms.CharField(label='RePassword', widget=forms.PasswordInput(attrs={'class': 'input'}))
-    #avatar = forms.ImageField(required=False ,label='Avatar', widget=forms.FileInput(attrs={'class': 'input'}))
+    avatar = forms.ImageField(required=False ,label='Avatar', widget=forms.FileInput(attrs={'class': 'input'}))
     class Meta:
         model = UserProfile
-        fields = ['username', 'displayname', 'email', 'password1', 'password2']
+        fields = ['username', 'displayname', 'email', 'password1', 'password2', 'avatar']
 
     """ def confirm_login_allowed(self, user):
         if not user.is_verified:
