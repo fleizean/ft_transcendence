@@ -189,7 +189,7 @@ msgstr "फॉलो करें"
 
 #: pong/templates/profile.html:63
 msgid "No Stackoverflow"
-msgstr "कोई स्टैकओवरफ्लो नहीं"
+msgstr "कोई Stackoverflow नहीं"
 
 #: pong/templates/profile.html:72
 msgid "No Github"
@@ -259,6 +259,6 @@ msgstr "जीत स्ट्रीक"
 msgid "Lose Streak:"
 msgstr "हार स्ट्रीक"
 
-#: pong/templates/profile.html:220
+#: pong/templates/profile.html:220f
 msgid "Average Game Duration:"
 msgstr "औसत खेल की अवधि"

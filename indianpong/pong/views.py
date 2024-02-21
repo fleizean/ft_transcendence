@@ -79,10 +79,8 @@ import random
 
 @never_cache
 def index(request):
-    current_language = request.LANGUAGE_CODE
-    
+    user_profile = get_object_or_404(UserProfile, username=request.user.username)
     if request.user.is_authenticated:
-        user_profile = get_object_or_404(UserProfile, username=request.user.username)
         if user_profile.preffered_lang == 'tr':
             return redirect("tr/dashboard")  # Türkçe dashboard için uygun ismi kullanın
         elif user_profile.preffered_lang == 'hi':
@@ -271,7 +269,6 @@ def login_view(request):
         else:
             return redirect("en/dashboard")
     valid = True
-    toast_message = ""
     if request.method == "POST":
         form = AuthenticationUserForm(request, request.POST)
         if form.is_valid():
@@ -282,16 +279,15 @@ def login_view(request):
                 return redirect('login') """
 
             login(request, user)
-            return HttpResponseRedirect("dashboard?status=success")
+            return HttpResponseRedirect("dashboard")
         else:
             valid = False  # şifre yanlışsa
-            toast_message = "Username or password incorrectly"
     else:
         form = AuthenticationUserForm()
     return render(
         request,
         "login.html",
-        {"form": form, "valid": valid, "toast_message": toast_message},
+        {"form": form, "valid": valid},
     )
 
 

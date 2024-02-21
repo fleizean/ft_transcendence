@@ -229,8 +229,6 @@ msgid "Lost"
 msgstr "Perdido"
 
 #: pong/templates/profile.html:175
-#, fuzzy
-#| msgid "Rankings"
 msgid "Rank"
 msgstr "Classificacão"
 
@@ -239,8 +237,6 @@ msgid "Stats"
 msgstr "Estatísticos:"
 
 #: pong/templates/profile.html:196
-#, fuzzy
-#| msgid "Games Played"
 msgid "Games Played:"
 msgstr "Jogos jogados"
 
@@ -253,25 +249,17 @@ msgid "Loses:"
 msgstr "Perde:"
 
 #: pong/templates/profile.html:208
-#, fuzzy
-#| msgid "Win Rate"
 msgid "Win Rate:"
 msgstr "Taxa de vitórias"
 
 #: pong/templates/profile.html:212
-#, fuzzy
-#| msgid "Win Streak"
 msgid "Win Streak:"
 msgstr "Sequência de vitórias"
 
 #: pong/templates/profile.html:216
-#, fuzzy
-#| msgid "Lose Streak"
 msgid "Lose Streak:"
 msgstr "Perder a série"
 
 #: pong/templates/profile.html:220
-#, fuzzy
-#| msgid "Average Game Duration"
 msgid "Average Game Duration:"
 msgstr "Duração média do jogo"
