@@ -12,7 +12,6 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 from pathlib import Path
 from os import environ
-from django.utils.translation import gettext_lazy as _
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -43,8 +42,6 @@ INSTALLED_APPS = [
     'pong',
 ]
 
-
-
 CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels.layers.InMemoryChannelLayer',
@@ -56,7 +53,6 @@ MIDDLEWARE = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
-    'django.middleware.locale.LocaleMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -137,22 +133,7 @@ TIME_ZONE = 'Europe/Istanbul'
 
 USE_I18N = True
 
-USE_L10N = True
-
 USE_TZ = True
-
-LANGUAGES = [
-    ('en', _('English')),
-    ('tr', _('Türkçe')),
-    ('pt', _('Português')),  # Portekizce
-    ('hi', _('हिन्दी')),    # Hintçe
-    # Diğer dilleri ekleyin
-]
-
-LOCALE_PATHS = [
-    BASE_DIR / 'locale',  # 'locale' klasörü, çeviri dosyalarının bulunduğu yer
-]
-
 
 
 # Static files (CSS, JavaScript, Images)

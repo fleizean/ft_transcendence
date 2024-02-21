@@ -3,13 +3,24 @@
 {% block title %}Dashboard{% endblock title %}
 
 {% block app %}
-  {% load static i18n %}
   {% include "_nav.html" %}
 <div class="container-top">
   <div class="dashboard-card">
     <div class="page-rotation">
-      <h1>{% trans "Welcome" %}, <span style="color: orange;">{{ username }}!</span></h1>
-      <p>{% trans "Indian Pong is a collaborative project developed for the 42 school community, offering a nostalgic gaming experience through the classic Atari game, Ping-Pong. This platform allows users to engage in Ping-Pong matches with each other, fostering a sense of friendly competition. In addition to the gaming aspect, Indian Pong provides a social dimension, featuring chat rooms where users can communicate and connect with one another. The platform also enables users to expand their network by adding friends within the 42 school community. Overall, Indian Pong combines the joy of retro gaming with modern social interaction, creating a vibrant and interactive experience for the 42 school community." %} </p>
+      <h1>Welcome, <span style="color: orange;">{{ username }}!</span></h1>
+      <p>
+        Indian Pong is a collaborative project developed for the 42 school
+        community, offering a nostalgic gaming experience through the classic
+        Atari game, Ping-Pong. This platform allows users to engage in Ping-Pong
+        matches with each other, fostering a sense of friendly competition. In
+        addition to the gaming aspect, Indian Pong provides a social dimension,
+        featuring chat rooms where users can communicate and connect with one
+        another. The platform also enables users to expand their network by
+        adding friends within the 42 school community. Overall, Indian Pong
+        combines the joy of retro gaming with modern social interaction,
+        creating a vibrant and interactive experience for the 42 school
+        community.
+      </p>
       <div class="row">
         <div class="col-md-4 col-xl-3">
           <div class="card-stat bg-c-blue order-card">
