@@ -60,6 +60,7 @@ var isFrozenBallActive = false;
 
 // Add a new variable to track if the game is paused
 let isScored = false;
+var gameScreen = false;
 var isPaused = false;
 let upPressed = false;
 let downPressed = false;
@@ -133,12 +134,12 @@ function update() {
     }
 
     // Check for game over
-    if (score1 == MAX_SCORE || score2 == MAX_SCORE) {
-        if (score1 == MAX_SCORE) {
-            sendWinnerToBackend(username, "IndianAI", score1, score2, start_time)
+    if (score1 == MAX_SCORE || score2 == MAX_SCORE && gameScreen == false) {
+        gameScreen = true;
+        if (score1 == MAX_SCORE) {   
+            sendWinnerToBackend(username, "IndianAI", score1, score2, start_time);
         } else {
-            
-            sendWinnerToBackend("IndianAI", username, score2, score1, start_time)
+            sendWinnerToBackend("IndianAI", username, score2, score1, start_time);
         }   
         showGameOverScreen();
         
@@ -241,7 +242,7 @@ var main = function () {
     if (!start_time)
         start_time = new Date();
     // Request to do this again ASAP
-    if (!isPaused) {
+    if (!isPaused && gameScreen == false) {
         update();
         render();
     }
@@ -401,6 +402,7 @@ function resetPaddles() {
 
 function resetGame() {
     start_time = null;
+    gameScreen = false;
     score1 = 0;
     score2 = 0;
     resetBall();
@@ -411,7 +413,6 @@ function resetGame() {
 
 // Oyun bitiş ekranını gösteren fonksiyon
 function showGameOverScreen() {
-    isPaused = true;
     var winnerText = (score1 == MAX_SCORE) ? username + " wins!" : ainame + " wins!";
     document.getElementById('winnerText').innerText = winnerText;
     document.getElementById('gameOverScreen').style.display = 'block';

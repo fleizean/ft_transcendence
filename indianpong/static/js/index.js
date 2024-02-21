@@ -87,21 +87,6 @@ const checkboxes = document.querySelectorAll('input[name="gameCheckbox"]');
     });
   });
 
-function togglePasswordVisibility(inputId) {
-    var passwordInput = document.getElementById(inputId);
-    var buttonIcon = document.querySelector('#' + inputId + '+ .input-group button i');
-
-    if (passwordInput.type === "password") {
-        passwordInput.type = "text";
-        buttonIcon.classList.remove("bi-eye");
-        buttonIcon.classList.add("bi-eye-slash");
-    } else {
-        passwordInput.type = "password";
-        buttonIcon.classList.remove("bi-eye-slash");
-        buttonIcon.classList.add("bi-eye");
-    }
-}
-
 
 document.addEventListener('DOMContentLoaded', function () {
     document.querySelector(".burger-menu").addEventListener("click", function () {
