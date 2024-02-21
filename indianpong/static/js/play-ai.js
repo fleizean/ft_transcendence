@@ -275,17 +275,18 @@ function resetBall() {
     }, 500);
 }
 
-function frozenBallAbility() {
+function frozenBallAbility(Count) {
     var nowBallSpeed = ball.speed;
     isFrozenBallActive = true;
     ball.speed = 0;
+    Count += 1;
     setTimeout(function() {
         ball.speed = nowBallSpeed;
         isFrozenBallActive = false;
     }, 2000);
 }
 
-function likeaCheaterAbility(isAi) {
+function likeaCheaterAbility(isAi, Count) {
     if (isAi) {
         score2++;
         if (score1 > 0) {
@@ -298,10 +299,12 @@ function likeaCheaterAbility(isAi) {
             score2--;
         }
     }
+    Count += 1;
 }
 
-function fastandFuriousAbility() {
+function fastandFuriousAbility(Count) {
     ball.speed += 10;
+    Count += 1;
 }
 
 // Control paddle1 with w, s keys
@@ -313,16 +316,15 @@ document.addEventListener("keydown", function(event) {
         downPressed = true;
     }
     else if (event.key === '1' && likeaCheaterCount < 1 && likeaCheater == "true") {
-        likeaCheaterAbility();
-        likeaCheaterCount += 1;
+        likeaCheaterAbility(false, likeaCheaterCount);
+
     }
     else if (event.key === '2' && fastandFuriousCount < 1 && fastandFurious == "true" && isFrozenBallActive == false) {
-        fastandFuriousAbility();
-        fastandFuriousCount += 1;
+        fastandFuriousAbility(fastandFuriousCount);
+
     }
     else if (event.key === '3' && frozenBallCount < 1 && frozenBall == "true") {
-        frozenBallAbility();
-        frozenBallCount += 1;
+        frozenBallAbility(frozenBallCount);
     }
 });
 
@@ -349,8 +351,7 @@ setInterval(() => {
         if (ball.dx > 0 && ball.x > canvas.width / 2 && ball.y > canvas.height / 2) {
             // AI'nın kendisi için kullanması için bir kontrol ekleyin
             if (ball.x > paddle2.x + paddle2.width) {
-                frozenBallAbility();
-                aiFrozenBallCount += 1;
+                frozenBallAbility(aiFrozenBallCount);
             }
         }
     }
@@ -358,8 +359,7 @@ setInterval(() => {
         // Top rakip yarı sahaya doğru gidiyorsa ve topun X koordinatı AI'nın ceza sahasında ise
         if (ball.dx < 0 && ball.x > canvas.width / 2 && ball.x < canvas.width - paddle2.width && ball.speed > 5) {
             //console.log("AI Fast and Furious yeteneğini kullandı ve değerleri şu şekilde: ", ball.speed);
-            fastandFuriousAbility();
-            aiFastandFuriousCount += 1;
+            fastandFuriousAbility(aiFastandFuriousCount);
         }
     }
     
@@ -367,8 +367,7 @@ setInterval(() => {
     if (likeaCheater == "true" && aiLikeaCheaterCount < 1) {
         if (score2 < score1 || score1 === MAX_SCORE - 1 || score2 + 1 === MAX_SCORE) {
             //console.log("AI Like a Cheater yeteneğini kullandı ve değerleri şu şekilde: ", score1, score2);
-            likeaCheaterAbility(true);
-            aiLikeaCheaterCount += 1;
+            likeaCheaterAbility(true, aiLikeaCheaterCount);
         }
     }
 

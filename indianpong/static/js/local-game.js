@@ -264,17 +264,18 @@ function resetBall() {
     }, 500);
 }
 
-function frozenBallAbility() {
+function frozenBallAbility(Count) {
     var nowBallSpeed = ball.speed;
     isFrozenBallActive = true;
     ball.speed = 0;
+    Count += 1;
     setTimeout(function() {
         ball.speed = nowBallSpeed;
         isFrozenBallActive = false;
     }, 2000);
 }
 
-function likeaCheaterAbility(isPlayer2) {
+function likeaCheaterAbility(isPlayer2, Count) {
     if (isPlayer2) {
         score2++;
         if (score1 > 0) {
@@ -287,10 +288,12 @@ function likeaCheaterAbility(isPlayer2) {
             score2--;
         }
     }
+    Count += 1;
 }
 
-function fastandFuriousAbility() {
+function fastandFuriousAbility(Count) {
     ball.speed += 10;
+    Count += 1;
 }
 
 // Control paddle1 with w, s keys
@@ -302,16 +305,13 @@ document.addEventListener("keydown", function(event) {
         downPressed = true;
     }
     else if (event.key === '1' && likeaCheaterCount < 1 && likeaCheater == "true") {
-        likeaCheaterAbility();
-        likeaCheaterCount += 1;
+        likeaCheaterAbility(false, likeaCheaterCount);
     }
     else if (event.key === '2' && fastandFuriousCount < 1 && fastandFurious == "true" && isFrozenBallActive == false) {
-        fastandFuriousAbility();
-        fastandFuriousCount += 1;
+        fastandFuriousAbility(fastandFuriousCount);
     }
     else if (event.key === '3' && frozenBallCount < 1 && frozenBall == "true") {
-        frozenBallAbility();
-        frozenBallCount += 1;
+        frozenBallAbility(frozenBallCount);
     }
 });
 
@@ -323,16 +323,13 @@ document.addEventListener("keydown", function(event) {
         downPressedPlayer2 = true;
     }
     else if (event.key === '8' && Player2LikeaCheaterCount < 1 && likeaCheater == "true") {
-        likeaCheaterAbility(true);
-        Player2LikeaCheaterCount += 1;
+        likeaCheaterAbility(false, Player2LikeaCheaterCount);
     }
     else if (event.key === '9' && Player2FastandFuriousCount < 1 && fastandFurious == "true" && isFrozenBallActive == false) {
-        fastandFuriousAbility();
-        Player2FastandFuriousCount += 1;
+        fastandFuriousAbility(Player2FastandFuriousCount);
     }
     else if (event.key === '0' && Player2FrozenBallCount < 1 && frozenBall == "true") {
-        frozenBallAbility();
-        Player2FrozenBallCount += 1;
+        frozenBallAbility(Player2FrozenBallCount);
     }
 });
 
