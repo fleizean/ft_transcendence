@@ -27,7 +27,7 @@ container provided by Docker. Example : docker-compose up --build </li>
       <summary> <b> Game ⌛</b></summary>
       The main purpose of this website is to play Pong versus other players.
           <ul>
-          <li>⌛ Therefore, users must have the ability to participate in a live Pong game against
+          <li>✅ Therefore, users must have the ability to participate in a live Pong game against
 another player directly on the website. Both players will use the same keyboard.
 The <b>Remote players module</b> can enhance this functionality with remote players.</li>
           <li>⌛ A player must be able to play against another player, but it should also be possible
@@ -41,10 +41,10 @@ begins. However, this requirement can be modified using the <b>Standard User
 Management module.</b> </li>
           <li>⌛ There must be a <b>matchmaking system:</b> the tournament system organize the
 matchmaking of the participants, and announce the next fight. </li>
-          <li>⌛ All players must adhere to the same rules, which includes having identical paddle
+          <li>✅ All players must adhere to the same rules, which includes having identical paddle
 speed. This requirement also applies when using AI; the AI must exhibit the same
 speed as a regular player. </li>
-          <li>⌛ The game itself must be developed in accordance with the default frontend con-
+          <li>✅ The game itself must be developed in accordance with the default frontend con-
 straints (as outlined above), or you may choose to utilize the <b>FrontEnd module</b>,
 or you have the option to override it with the <b>Graphics module.</b> While the visual
 aesthetics can vary, it must still capture the essence of the <b>original Pong</b> (1972). </li>
@@ -54,11 +54,11 @@ aesthetics can vary, it must still capture the essence of the <b>original Pong</
 <details>
       <summary> <b> Security concerns ⌛</b></summary>
           <ul>
-          <li>⌛ Any password stored in your database, if applicable, must be <b>hashed.</b> </li>
-          <li>⌛ Your website must be protected against <b>SQL injections/XSS.</b> </li>
+          <li>✅ Any password stored in your database, if applicable, must be <b>hashed.</b> </li>
+          <li>✅ Your website must be protected against <b>SQL injections/XSS.</b> </li>
           <li>⌛ If you have a backend or any other features, it is mandatory to enable an HTTPS
 connection for all aspects (Utilize wss instead of ws...). </li>
-          <li>⌛ You must implement some form of validation for forms and any user input, either
+          <li>✅ You must implement some form of validation for forms and any user input, either
 within the base page if no backend is used or on the server side if a backend is
 employed. </li>
           </ul>
@@ -173,14 +173,14 @@ of the project.</b>
   </details>
   
   <details>
-      <summary> <b> Game Customization Options. ⌛</b></summary>
+      <summary> <b> Game Customization Options. ✅</b></summary>
       In this minor module, the goal is to provide customization options for all  available games on the platform. Key features and objectives include:
           <ul>
-          <li>⌛ Offer customization features,   such as power-ups, attacks, or different maps, that enhance the   gameplay experience. </li>
-          <li>⌛ Allow users to choose a default   version of the game with basic features if they prefer a simpler  experience. </li>
-          <li>⌛ Ensure that customization   options are available and applicable to all games offered on the  platform. </li>
-          <li>⌛ Implement user-friendly settings  menus or interfaces for adjusting game parameters. </li>
-          <li>⌛ Maintain consistency in   customization features across all games to provide a unified user   experience. </li>
+          <li>✅ Offer customization features,   such as power-ups, attacks, or different maps, that enhance the   gameplay experience. </li>
+          <li>✅ Allow users to choose a default   version of the game with basic features if they prefer a simpler  experience. </li>
+          <li>✅ Ensure that customization   options are available and applicable to all games offered on the  platform. </li>
+          <li>✅ Implement user-friendly settings  menus or interfaces for adjusting game parameters. </li>
+          <li>✅ Maintain consistency in   customization features across all games to provide a unified user   experience. </li>
           </ul>
           This module aims to give users the flexibility to tailor their gaming   experience across all available games by providing a variety of   customization options while also offering a default version for those   who prefer a straightforward gameplay experience.
   </details>
