@@ -104,10 +104,7 @@
                             <div class="input-group">
                                 <input class="form-control" name="old_password" id="id_old_password" type="password" autocomplete="off" required {% if profile.is_42student %} readonly style="background-color: #e9ecef"  {% endif %}>
                                 
-                                <button class="btn btn-outline-secondary" type="button"
-                                    onclick="togglePasswordVisibility('currentPassword')" {% if profile.is_42student %} readonly {% endif %}>
-                                    <i class="bi bi-eye"></i>
-                                </button>
+                                
                             </div>
                         </div>
 
@@ -115,10 +112,7 @@
                             <label class="small mb-1" for="id_new_password1">New Password</label>
                             <div class="input-group">
                                 <input class="form-control" id="id_new_password1" name="new_password1" type="password" autocomplete="off" required {% if profile.is_42student %} readonly style="background-color: #e9ecef"  {% endif %}>
-                                <button class="btn btn-outline-secondary" type="button"
-                                    onclick="togglePasswordVisibility('newPassword')" {% if profile.is_42student %} readonly {% endif %}>
-                                    <i class="bi bi-eye"></i>
-                                </button>
+                                
                             </div>
                         </div>
 
@@ -126,16 +120,13 @@
                             <label class="small mb-1" for="id_new_password2">Confirm New Password</label>
                             <div class="input-group">
                                 <input class="form-control" id="id_new_password2" name="new_password2" type="password" autocomplete="off" required {% if profile.is_42student %} readonly style="background-color: #e9ecef"  {% endif %}>
-                                <button class="btn btn-outline-secondary" type="button"
-                                    onclick="togglePasswordVisibility('confirmNewPassword')" {% if profile.is_42student %} readonly {% endif %}>
-                                    <i class="bi bi-eye"></i>
-                                </button>
+                                
                             </div>
                         </div>
                         {% if profile.is_42student %} <label class="small mb-1" style="color:red; font-style: italic;">                                
                         Since you are logged in with 42, your password setting feature is disabled.
                         </label> <br> {% endif %}
-                        <button type="submit" name="password_form" class="btn btn-primary"><i class="bi bi-lock-fill"></i> Change
+                        <button type="submit" name="password_form" class="btn btn-outline-success"><i class="bi bi-lock-fill"></i> Change
                             Password</button>
                     </form>
                 </section>
@@ -334,5 +325,24 @@ fileInput.addEventListener('change', function(event) {
     }
 });
 
+document.addEventListener("DOMContentLoaded", function () {
+        // Tüm input alanlarını seç
+        var passwordInputs = document.querySelectorAll('input[type="password"]');
+
+        // Her bir input alanı için event listener ekle
+        passwordInputs.forEach(function (input) {
+            // Fare input alanının üzerine geldiğinde
+            input.addEventListener('mouseover', function () {
+                // Parolayı göster
+                input.type = 'text';
+            });
+
+            // Fare input alanının dışına çıktığında
+            input.addEventListener('mouseout', function () {
+                // Parolayı gizle
+                input.type = 'password';
+            });
+        });
+    });
 </script>
 {% endblock %}
