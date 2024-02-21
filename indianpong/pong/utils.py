@@ -14,6 +14,14 @@ def get_upload_to(instance, filename):
     filename = "%s_%s.%s" % (instance.username, get_random_string(length=7), ext)
     return filename
 
+def get_equipped_item_value(user_items, item_name, default_item):
+    if (item_name == "My Playground" or item_name == "My Beautiful Paddle" or item_name == "My Beautiful AI"):
+        item = user_items.filter(item__name=item_name, is_equipped=True).first()
+        return item.whatis if item else default_item
+    else:
+        item = user_items.filter(item__name=item_name, is_equipped=True).first()
+        return "true" if item else "false"
+
 def pass2fa(request, user_obj):
 	if user_obj.has_2fa:
 		hashed_secret = hashlib.sha512((user_obj.username + os.environ.get("OTP_SECRET")).encode("utf-8")).digest()
