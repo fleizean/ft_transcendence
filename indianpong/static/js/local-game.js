@@ -32,7 +32,7 @@ var player2nameX = canvas.width - textWidth2 - 10;
 var player2nameY = 20;
 
 // if giantMan abilities equiped
-var abilities_paddleHeight = (giantMan == "true") ? 115 : 100;
+var abilities_paddleHeight = (giantMan == "true") ? 120 : 100;
 var paddleWidth = 10;
 var paddleHeight = 100;
 var paddleSpeed = 15;
@@ -380,7 +380,6 @@ function showGameOverScreen() {
 function restartGame() {
     document.getElementById('gameOverScreen').style.display = 'none';
     resetGame();
-    //isPaused = false;
 }
 
 // Çıkış yapma işlemleri
