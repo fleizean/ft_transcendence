@@ -260,36 +260,33 @@ function resetBall() {
     }, 500);
 }
 
-function frozenBallAbility(Count) {
+function frozenBallAbility() {
     var nowBallSpeed = ball.speed;
     isFrozenBallActive = true;
     ball.speed = 0;
-    Count += 1;
     setTimeout(function() {
         ball.speed = nowBallSpeed;
         isFrozenBallActive = false;
     }, 2000);
 }
 
-function likeaCheaterAbility(isPlayer2, Count) {
-    if (isPlayer2) {
+function likeaCheaterAbility(whichPlayer) {
+    if (whichPlayer == "Player2") {
         score2++;
         if (score1 > 0) {
             score1--;
         }
     }
-    else {
+    else if (whichPlayer == "Player1") {
         score1++;
         if (score2 > 0) {
             score2--;
         }
     }
-    Count += 1;
 }
 
-function fastandFuriousAbility(Count) {
+function fastandFuriousAbility() {
     ball.speed += 10;
-    Count += 1;
 }
 
 // Control paddle1 with w, s keys
@@ -301,15 +298,15 @@ document.addEventListener("keydown", function(event) {
         downPressed = true;
     }
     else if (event.key === '1' && likeaCheaterCount < 1 && gameMode == "Abilities") {
-        likeaCheaterAbility(false, likeaCheaterCount);
+        likeaCheaterAbility("Player1");
         likeaCheaterCount += 1;
     }
     else if (event.key === '2' && fastandFuriousCount < 1 && gameMode == "Abilities" && isFrozenBallActive == false) {
-        fastandFuriousAbility(fastandFuriousCount);
+        fastandFuriousAbility();
         fastandFuriousCount += 1;
     }
     else if (event.key === '3' && frozenBallCount < 1 && gameMode == "Abilities") {
-        frozenBallAbility(frozenBallCount);
+        frozenBallAbility();
         frozenBallCount += 1;
     }
 });
@@ -322,16 +319,16 @@ document.addEventListener("keydown", function(event) {
         downPressedPlayer2 = true;
     }
     else if (event.key === '8' && Player2LikeaCheaterCount < 1 && gameMode == "Abilities") {
-        likeaCheaterAbility(false, Player2LikeaCheaterCount);
+        likeaCheaterAbility("Player2");
         Player2LikeaCheaterCount += 1;
     }
     else if (event.key === '9' && Player2FastandFuriousCount < 1 && gameMode == "Abilities" && isFrozenBallActive == false) {
-        fastandFuriousAbility(Player2FastandFuriousCount);
-        Player2FastandFuriousCount += 2;
+        fastandFuriousAbility();
+        Player2FastandFuriousCount += 1;
     }
     else if (event.key === '0' && Player2FrozenBallCount < 1 && gameMode == "Abilities") {
-        frozenBallAbility(Player2FrozenBallCount);
-        Player2FrozenBallCount += 2;
+        frozenBallAbility();
+        Player2FrozenBallCount += 1;
     }
 });
 

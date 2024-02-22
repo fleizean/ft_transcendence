@@ -40,7 +40,7 @@ var paddle1 = {x: 0, y: paddleY, width: paddleWidth, height: abilities_paddleHei
 var paddle2 = {x: canvas.width - paddleWidth, y: paddleY, width: paddleWidth, height: abilities_paddleHeight, dy: paddleSpeed};
 
 // Ball object
-var ball = {x: canvas.width / 2, y: canvas.height / 2, radius: 10, speed: 5, dx: 1, dy: 1};
+var ball = {x: canvas.width / 2, y: canvas.height / 2, radius: 10, speed: 10, dx: 1, dy: 1};
 
 // Scores
 var score1 = 0;
@@ -276,19 +276,18 @@ function resetBall() {
     }, 500);
 }
 
-function frozenBallAbility(Count) {
+function frozenBallAbility() {
     var nowBallSpeed = ball.speed;
     isFrozenBallActive = true;
     ball.speed = 0;
-    Count += 1;
     setTimeout(function() {
         ball.speed = nowBallSpeed;
         isFrozenBallActive = false;
     }, 2000);
 }
 
-function likeaCheaterAbility(isAi, Count) {
-    if (isAi) {
+function likeaCheaterAbility(isAi) {
+    if (isAi === true) {
         score2++;
         if (score1 > 0) {
             score1--;
@@ -300,12 +299,10 @@ function likeaCheaterAbility(isAi, Count) {
             score2--;
         }
     }
-    Count += 1;
 }
 
-function fastandFuriousAbility(Count) {
+function fastandFuriousAbility() {
     ball.speed += 10;
-    Count += 1;
 }
 
 // Control paddle1 with w, s keys
@@ -317,15 +314,18 @@ document.addEventListener("keydown", function(event) {
         downPressed = true;
     }
     else if (event.key === '1' && likeaCheaterCount < 1 && likeaCheater == "true") {
-        likeaCheaterAbility(false, likeaCheaterCount);
+        likeaCheaterAbility(false);
+        likeaCheaterCount += 1;
 
     }
     else if (event.key === '2' && fastandFuriousCount < 1 && fastandFurious == "true" && isFrozenBallActive == false) {
-        fastandFuriousAbility(fastandFuriousCount);
+        fastandFuriousAbility();
+        fastandFuriousCount += 1;
 
     }
     else if (event.key === '3' && frozenBallCount < 1 && frozenBall == "true") {
-        frozenBallAbility(frozenBallCount);
+        frozenBallAbility();
+        frozenBallCount += 1;
     }
 });
 
@@ -352,7 +352,8 @@ setInterval(() => {
         if (ball.dx > 0 && ball.x > canvas.width / 2 && ball.y > canvas.height / 2) {
             // AI'nın kendisi için kullanması için bir kontrol ekleyin
             if (ball.x > paddle2.x + paddle2.width) {
-                frozenBallAbility(aiFrozenBallCount);
+                frozenBallAbility();
+                aiFrozenBallCount += 1;
             }
         }
     }
@@ -360,7 +361,8 @@ setInterval(() => {
         // Top rakip yarı sahaya doğru gidiyorsa ve topun X koordinatı AI'nın ceza sahasında ise
         if (ball.dx < 0 && ball.x > canvas.width / 2 && ball.x < canvas.width - paddle2.width && ball.speed > 5) {
             //console.log("AI Fast and Furious yeteneğini kullandı ve değerleri şu şekilde: ", ball.speed);
-            fastandFuriousAbility(aiFastandFuriousCount);
+            fastandFuriousAbility();
+            aiFastandFuriousCount += 1;
         }
     }
     
@@ -368,7 +370,8 @@ setInterval(() => {
     if (likeaCheater == "true" && aiLikeaCheaterCount < 1) {
         if (score2 < score1 || score1 === MAX_SCORE - 1 || score2 + 1 === MAX_SCORE) {
             //console.log("AI Like a Cheater yeteneğini kullandı ve değerleri şu şekilde: ", score1, score2);
-            likeaCheaterAbility(true, aiLikeaCheaterCount);
+            likeaCheaterAbility(true);
+            aiLikeaCheaterCount += 1;
         }
     }
 
