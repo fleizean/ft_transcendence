@@ -40,7 +40,7 @@ var paddle1 = {x: 0, y: paddleY, width: paddleWidth, height: abilities_paddleHei
 var paddle2 = {x: canvas.width - paddleWidth, y: paddleY, width: paddleWidth, height: abilities_paddleHeight, dy: paddleSpeed};
 
 // Ball object
-var ball = {x: canvas.width / 2, y: canvas.height / 2, radius: 10, speed: 10, dx: 1, dy: 1};
+var ball = {x: canvas.width / 2, y: canvas.height / 2, radius: 10, speed: 5, dx: 1, dy: 1};
 
 // Scores
 var score1 = 0;
@@ -88,30 +88,27 @@ function update() {
     ball.y += ball.speed * ball.dy;
 
     // Check for collisions with paddles
-    if (ball.y + ball.radius > paddle1.y && ball.y - ball.radius < paddle1.y + paddle1.height && ball.dx < 0) {       
-        if (ball.x - ball.radius < paddle1.x + paddle1.width) {
+    if (ball.y + ball.radius >= paddle1.y && ball.y - ball.radius <= paddle1.y + paddle1.height && ball.dx < 0) {       
+        if (ball.x - ball.radius <= paddle1.x + paddle1.width) {
+            // Çarpışma var, topun x koordinatını paddle'ın yanına ayarla ve yönünü tersine çevir
             if (rageofFire == "true") {
                 if (Math.random() <= 0.5) {
                     ball.speed += 1;
                 }
             }
+            ball.x = paddle1.x + paddle1.width + ball.radius;
             ball.dx *= -1;
-            // Check if the ball hit the top or bottom 20% of the paddle
             if (ball.y < paddle1.y + 0.2 * paddle1.height || ball.y > paddle1.y + 0.8 * paddle1.height) {
                 ball.speed *= 1.2; // Increase speed by 20%
                 paddleSpeed *= 1.2;
             }
         }
     }
-    if (ball.y + ball.radius > paddle2.y && ball.y - ball.radius < paddle2.y + paddle2.height && ball.dx > 0) {
-        if (ball.x + ball.radius > paddle2.x) {
-            if (rageofFire == "true") {
-                if (Math.random() <= 0.5) {
-                    ball.speed += 1;
-                }
-            }
+    if (ball.y + ball.radius >= paddle2.y && ball.y - ball.radius <= paddle2.y + paddle2.height && ball.dx > 0) {
+        if (ball.x + ball.radius >= paddle2.x) {
+            // Çarpışma var, topun x koordinatını paddle'ın yanına ayarla ve yönünü tersine çevir
+            ball.x = paddle2.x - ball.radius;
             ball.dx *= -1;
-            // Check if the ball hit the top or bottom 20% of the paddle
             if (ball.y < paddle2.y + 0.2 * paddle2.height || ball.y > paddle2.y + 0.8 * paddle2.height) {
                 ball.speed *= 1.2; // Increase speed by 20%
                 paddleSpeed *= 1.2;
@@ -369,7 +366,7 @@ setInterval(() => {
 
     if (likeaCheater == "true" && aiLikeaCheaterCount < 1) {
         if (score2 < score1 || score1 === MAX_SCORE - 1 || score2 + 1 === MAX_SCORE) {
-            //console.log("AI Like a Cheater yeteneğini kullandı ve değerleri şu şekilde: ", score1, score2);
+            // console.log("AI Like a Cheater yeteneğini kullandı ve değerleri şu şekilde: ", score1, score2);
             likeaCheaterAbility(true);
             aiLikeaCheaterCount += 1;
         }
