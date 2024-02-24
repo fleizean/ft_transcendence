@@ -17,13 +17,20 @@
   
 
   
-.stats-info {
+.stats-info-pong {
     margin-top: 10px;
+    
+}
+
+
+.stats-info-rps {
+    margin-top: 10px;
+    display: none;
 }
 
 .stats {
     /* Add your styles for stats here */
-    margin-bottom: -2px;
+    margin-bottom: -7px;
 }
 
 .stats-p {
@@ -61,13 +68,38 @@
 }
   
   
+.switcher-btn {
+    position: fixed;
+    right: 15;
+    top: 15;
+    margin-bottom: 5px;
+    border-radius: 25%;
+    background-color: transparent;
+    border: 1px solid tomato;
+}
+
+
+.switcher-game {
+    text-align: center;
+}
+
+  .switcher-game .switch-btn {
+    background-color: transparent;
+    border: 1px solid #000000;
+    height: 30px;
+    width: 50px;
+    margin: 0 5px; /* Butonlar arasındaki boşluğu ayarlar */
+    display: inline-block; /* Butonları aynı satırda görüntüler */
+    vertical-align: top; /* Dikey hizalamayı ayarlar */
+    border-radius: 8px;
+  }
   
-  
-  
-  
-  
-  
-  
-  
+  .switcher-game .switch-btn:hover {
+    background-color: #ffa66b;
+    box-shadow: -20px 50px 50px rgba(0,0,0,0.2);
+    border: none;
+    color: palegreen; /* Metni gizler */
+    transition: none; /* Geçiş efektini kapatır */
+  }
   
   
