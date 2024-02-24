@@ -24,9 +24,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = environ.get("SECRET_KEY", default="w^bxst+y6yv=d*5+7h)2s3)5vfz!b2jayit+#1epn(gr1-fotw")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = environ.get("DEBUG", default=True)
+DEBUG = environ.get("DEBUG", default=False)
 
-ALLOWED_HOSTS = []#environ.get("ALLOWED_HOSTS", default="").split(" ")
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']#environ.get("ALLOWED_HOSTS", default="").split(" ")
 
 
 # Application definition

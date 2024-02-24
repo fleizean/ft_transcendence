@@ -10,6 +10,8 @@ RUN python -m venv venv
 RUN . venv/bin/activate
 RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
+RUN pip install gunicorn
+
 #run pip install --root-user-action=ignore
 COPY . .
 COPY ./renewdb.sh .
@@ -20,3 +22,5 @@ EXPOSE 8000
 ENTRYPOINT ["sh", "/ft_transcendence/renewdb.sh"]
 
 CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+
+#CMD ["python", "manage.py", "runsslserver", "--certificate", "/etc/ssl/certs/cert.crt", "--key", "/etc/ssl/private/cert.key", "0.0.0.0:8000"]
