@@ -1,0 +1,30 @@
+/myproject
+|-- app
+|   |-- indianpong
+|   |   |-- settings.py
+|   |   |-- asgi.py
+|   |   |-- ...
+|   |-- manage.py
+|   |-- ...
+|-- Dockerfile
+|-- Dockerfile.nginx
+|-- docker-compose.yaml
+|-- nginx.conf
+|-- requirements.txt
+
+
+Here's what each file is for:
+
+app: This is your Django application directory. It contains your Django project (indianpong), which includes your settings.py and asgi.py files, and the manage.py script.
+
+Dockerfile: This is the Dockerfile for your Django application. It specifies how to build a Docker image for your application.
+
+Dockerfile.nginx: This is the Dockerfile for Nginx. It specifies how to build a Docker image for your Nginx server.
+
+docker-compose.yaml: This file defines your services, networks and volumes. Docker Compose uses this file to create your application's environment.
+
+nginx.conf: This is the configuration file for Nginx. It tells Nginx how to handle requests.
+
+requirements.txt: This file lists the Python packages that your application depends on. You can generate it with pip freeze > requirements.txt.
+
+You should put these files in the root directory of your project (in this case, /myproject). The app directory should contain your Django application.
