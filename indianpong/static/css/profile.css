@@ -103,3 +103,20 @@
   }
   
   
+  .page-item.active .page-link-profile,
+  .page-link-profile.active {
+      background-color: #ff9500 !important;
+      border-color: #ff9500 !important;
+      color: #fff !important;
+      font-size: 1.17em !important;
+  }
+  
+
+  
+.page-item.active .page-link-rankings,
+.page-link-rankings.active {
+    background-color: #ff9500 !important;
+    border-color: #ff9500 !important;
+    color: #fff !important;
+    font-size: 1em !important;
+}

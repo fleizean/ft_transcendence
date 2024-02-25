@@ -77,3 +77,11 @@
   color: red;
   font-weight: 200;
 }
+
+.page-item.active .page-link-rankings,
+.page-link-rankings.active {
+    background-color: #ff9500 !important;
+    border-color: #ff9500 !important;
+    color: #fff !important;
+    font-size: 1em !important;
+}

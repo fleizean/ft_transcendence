@@ -150,23 +150,22 @@
                         </table>
                         <nav aria-label="Page navigation example " class="mt-4">
                             <ul class="pagination justify-content-center">
-                              <li class="page-item {% if not history_page_obj.has_previous %}disabled{% endif %}">
-                                <a class="page-link" href="{% if history_page_obj.has_previous %}?page={{ history_page_obj.previous_page_number }}{% endif %}" aria-label="Previous">
-                                  <span aria-hidden="true">&laquo;</span>
-                                </a>
-                              </li>
-                              {% for page_num in history_page_obj.paginator.page_range %}
-                                <li class="page-item {% if page_num == history_page_obj.number %}active{% endif %}">
-                                  <a class="page-link" href="?page={{ page_num }}">{{ page_num }}</a>
+                                <li class="page-item {% if not history_page_obj.has_previous %}disabled{% endif %}">
+                                    <a class="page-link" href="{% if history_page_obj.has_previous %}?page={{ history_page_obj.previous_page_number }}{% endif %}" aria-label="Previous">
+                                        <span aria-hidden="true">&laquo;</span>
+                                    </a>
                                 </li>
-                              {% endfor %}
-                              <li class="page-item {% if not history_page_obj.has_next %}disabled{% endif %}">
-                                <a class="page-link" href="{% if history_page_obj.has_next %}?page={{ history_page_obj.next_page_number }}{% endif %}" aria-label="Next">
-                                  <span aria-hidden="true">&raquo;</span>
-                                </a>
-                              </li>
+                                <li class="page-item active">
+                                    <span class="page-link page-link-profile">{{ history_page_obj.number }}</span>
+                                </li>
+                                <li class="page-item {% if not history_page_obj.has_next %}disabled{% endif %}">
+                                    <a class="page-link" href="{% if history_page_obj.has_next %}?page={{ history_page_obj.next_page_number }}{% endif %}" aria-label="Next">
+                                        <span aria-hidden="true">&raquo;</span>
+                                    </a>
+                                </li>
                             </ul>
-                          </nav>    
+                        </nav>
+                                
                     </div>
 
                     <div class="match-history-rps" id="match-history-rps">
@@ -218,23 +217,21 @@
                         </table>
                         <nav aria-label="Page navigation example " class="mt-4">
                             <ul class="pagination justify-content-center">
-                              <li class="page-item {% if not history_page_obj.has_previous %}disabled{% endif %}">
-                                <a class="page-link" href="{% if history_page_obj.has_previous %}?page={{ history_page_obj.previous_page_number }}{% endif %}" aria-label="Previous">
-                                  <span aria-hidden="true">&laquo;</span>
-                                </a>
-                              </li>
-                              {% for page_num in history_page_obj.paginator.page_range %}
-                                <li class="page-item {% if page_num == history_page_obj.number %}active{% endif %}">
-                                  <a class="page-link" href="?page={{ page_num }}">{{ page_num }}</a>
+                                <li class="page-item {% if not history_page_obj.has_previous %}disabled{% endif %}">
+                                    <a class="page-link" href="{% if history_page_obj.has_previous %}?page={{ history_page_obj.previous_page_number }}{% endif %}" aria-label="Previous">
+                                        <span aria-hidden="true">&laquo;</span>
+                                    </a>
                                 </li>
-                              {% endfor %}
-                              <li class="page-item {% if not history_page_obj.has_next %}disabled{% endif %}">
-                                <a class="page-link" href="{% if history_page_obj.has_next %}?page={{ history_page_obj.next_page_number }}{% endif %}" aria-label="Next">
-                                  <span aria-hidden="true">&raquo;</span>
-                                </a>
-                              </li>
+                                <li class="page-item active">
+                                    <span class="page-link page-link-profile">{{ history_page_obj.number }}</span>
+                                </li>
+                                <li class="page-item {% if not history_page_obj.has_next %}disabled{% endif %}">
+                                    <a class="page-link" href="{% if history_page_obj.has_next %}?page={{ history_page_obj.next_page_number }}{% endif %}" aria-label="Next">
+                                        <span aria-hidden="true">&raquo;</span>
+                                    </a>
+                                </li>
                             </ul>
-                          </nav>    
+                        </nav>
                     </div>
                 </div>
             </div>

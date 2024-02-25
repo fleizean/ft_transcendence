@@ -53,13 +53,13 @@ var paddle1 = {x: 0, y: paddleY, width: paddleWidth, height: abilities_paddleHei
 var paddle2 = {x: canvas.width - paddleWidth, y: paddleY, width: paddleWidth, height: abilities_paddleHeight, dy: paddleSpeed};
 
 // Ball object
-var ball = {x: canvas.width / 2, y: canvas.height / 2, radius: 10, speed: 5, dx: 1, dy: 1};
+var ball = {x: canvas.width / 2, y: canvas.height / 2, radius: 10, speed: 10, dx: 1, dy: 1};
 
 // Scores
 var score1 = 0;
 var score2 = 0;
 
-const MAX_SCORE = 3;
+const MAX_SCORE = 1;
 
 // Player Abilities
 var likeaCheaterCount = 0;

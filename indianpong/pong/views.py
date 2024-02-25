@@ -630,7 +630,6 @@ def inventory(request, username):
         {"profile": profile, "inventory_items": inventory_items},
     )
 
-
 @login_required()
 def search(request):
     if request.method == "POST":
@@ -656,18 +655,19 @@ def search(request):
             ).exists()
             # Append the dictionary to the list
             results_list.append(result_dict)
-        results = Paginator(results_list, 8)
+        paginator = Paginator(results_list, 8)
         page_number = request.GET.get("page")
         try:
-            results = results.page(page_number)
+            results = paginator.page(page_number)
         except PageNotAnInteger:
             # If page number is not an integer, deliver the first page
-            results = results.page(1)
+            results = paginator.page(1)
         except EmptyPage:
             # If page number is out of range, deliver the last page
-            results = results.page(results.num_pages)
+            results = paginator.page(paginator.num_pages)
         return render(request, "search.html", {"results": results})
     return render(request, "search.html")
+
 
 
 @login_required()

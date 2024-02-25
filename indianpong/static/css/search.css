@@ -242,3 +242,21 @@
 .data:last-child {
   border-right: none;
 }
+
+  
+.page-item.active .page-link-test,
+.page-link-test.active {
+    background-color: #ff9500 !important;
+    border-color: #ff9500 !important;
+    color: #fff !important;
+    font-size: 1em !important;
+}
+
+
+.page-item.active .page-link-deneme,
+.page-link-deneme.active {
+    background-color: #ff9500 !important;
+    border-color: #ff9500 !important;
+    color: #fff !important;
+    font-size: 1em !important;
+}
