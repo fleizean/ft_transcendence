@@ -18,6 +18,14 @@ const likeaCheater = document.querySelector('.container-top').dataset.likeacheat
 const fastandFurious = document.querySelector('.container-top').dataset.fastandfurious;
 const rageofFire = document.querySelector('.container-top').dataset.rageoffire;
 const frozenBall = document.querySelector('.container-top').dataset.frozenball;
+const givemethemusic = document.querySelector('.container-top').dataset.givemethemusic;
+
+var STATIC_URL = "../../static/music/";
+
+var gameMusic = false;
+var victorySound = new Audio(STATIC_URL + 'victory-sound.mp3');
+var defeatSound = new Audio(STATIC_URL + 'defeat-sound.mp3');
+var gameSound = new Audio(STATIC_URL + 'pong-music.mp3');
 
 /* Cordinates of the canvas */
 var textWidth1 = ctx.measureText(username + ": " + score1).width;
@@ -236,6 +244,9 @@ function render() {
 
 // The main game loop
 var main = function () {
+    if (gameMusic === false && givemethemusic == "true") {
+        startBackgroundMusic();
+    }
     if (!start_time)
         start_time = new Date();
     // Request to do this again ASAP
@@ -254,6 +265,34 @@ requestAnimationFrame = w.requestAnimationFrame || w.webkitRequestAnimationFrame
 
 // Let's play this game!
 main();
+
+// Stop the background music
+function stopBackgroundMusic() {
+    setTimeout(function() {
+        if (gameSound) {
+            gameSound.pause();
+        }
+    }, 1000);    
+}
+
+function startBackgroundMusic() {
+    setTimeout(function() {
+        if (gameSound) {
+            gameSound.play();
+        }
+    }, 1000);
+    gameMusic = true;
+}
+
+// Play the result sound
+function playResultSound(isVictory) {
+    stopBackgroundMusic(); // Önce müziği durdur
+    if (isVictory) {    
+        victorySound.play(); // Zafer durumunda zafer sesini çal
+    } else {
+        defeatSound.play(); // Yenilgi durumunda yenilgi sesini çal
+    }
+}
 
 
 
@@ -414,6 +453,11 @@ function resetGame() {
 // Oyun bitiş ekranını gösteren fonksiyon
 function showGameOverScreen() {
     var winnerText = (score1 == MAX_SCORE) ? username + " wins!" : ainame + " wins!";
+    if (score1 == MAX_SCORE) {
+        playResultSound(true); // Zafer durumu
+    } else {
+        playResultSound(false); // Yenilgi durumu
+    }
     document.getElementById('winnerText').innerText = winnerText;
     document.getElementById('gameOverScreen').style.display = 'block';
 }
@@ -422,10 +466,15 @@ function showGameOverScreen() {
 function restartGame() {
     document.getElementById('gameOverScreen').style.display = 'none';
     resetGame();
+    victorySound.stop();
+    defeatSound.stop();
+    startBackgroundMusic();
 }
 
 // Çıkış yapma işlemleri
 function exitGame() {
+    victorySound.stop();
+    defeatSound.stop();
     window.location.href = '/dashboard';
 }
 
@@ -459,7 +508,7 @@ function sendWinnerToBackend(winner, loser, winnerscore, loserscore, start_time)
         return response.json();
     })
     .then(data => {
-        console.log('Winner updated successfully:', data);
+        
     })
     .catch(error => {
         console.error('There was a problem updating the winner:', error);

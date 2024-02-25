@@ -231,6 +231,17 @@
   color: #1a704b;
 }
 
+
+.card__category.all a {
+  text-decoration:none;
+  color: #8e08a3;
+}
+
+.card__category.all a:hover {
+  text-decoration:none;
+  color: #5c1767;
+}
+
 .card__description {
   display: block;
   font-size: 15px;

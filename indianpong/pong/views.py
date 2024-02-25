@@ -573,7 +573,8 @@ def store(request, username):  # store_view
         form = StoreItemActionForm()
         category_name = request.GET.get("category_name")
         if category_name and category_name != "All":
-            store_items = store_items.filter(category_name=category_name)
+            store_items = store_items.filter(Q(category_name=category_name) | Q(category_name="All"))
+
     return render(
         request,
         "store.html",
@@ -620,7 +621,8 @@ def inventory(request, username):
 
         if category_name and category_name != "All":
             inventory_items = UserItem.objects.filter(
-                item__category_name=category_name, user=profile
+                Q(item__category_name=category_name) | Q(item__category_name="All"),
+                user=profile
             )
     return render(
         request,
@@ -713,14 +715,16 @@ def play_ai(request):
     paddlecolor = get_equipped_item_value(user_items, "My Beautiful Paddle", "black")
     playgroundcolor = get_equipped_item_value(user_items, "My Playground", "lightgrey")
     
+    
     # Just Abilities - PONG
     giantman = get_equipped_item_value(user_items, "Giant-Man", "None")
     likeacheater = get_equipped_item_value(user_items, "Like a Cheater", "None")
     fastandfurious = get_equipped_item_value(user_items, "Fast and Furious", "None")
     rageoffire = get_equipped_item_value(user_items, "Rage of Fire", "None")
     frozenball = get_equipped_item_value(user_items, "Frozen Ball", "None")
+    givemethemusic = get_equipped_item_value(user_items, "DJ Give Me The Music", "None")
 
-    return render(request, "play-ai.html", {"ainametag": ainametag, "paddlecolor": paddlecolor, "playgroundcolor": playgroundcolor, "giantman": giantman, "likeacheater": likeacheater, "fastandfurious": fastandfurious, "rageoffire": rageoffire, "frozenball": frozenball})
+    return render(request, "play-ai.html", {"ainametag": ainametag, "paddlecolor": paddlecolor, "playgroundcolor": playgroundcolor, "giantman": giantman, "likeacheater": likeacheater, "fastandfurious": fastandfurious, "rageoffire": rageoffire, "frozenball": frozenball, "givemethemusic": givemethemusic})
 
 @never_cache
 @login_required()
