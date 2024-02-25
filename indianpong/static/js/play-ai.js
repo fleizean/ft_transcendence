@@ -28,6 +28,9 @@ var victoryMusic = false;
 var victorySound = new Audio(STATIC_URL + 'victory-sound.mp3');
 var defeatSound = new Audio(STATIC_URL + 'defeat-sound.mp3');
 var gameSound = new Audio(STATIC_URL + 'pong-music.mp3');
+var lpaddleSound = new Audio(STATIC_URL + 'one_beep_2_left.mp3');
+var rpaddleSound = new Audio(STATIC_URL + 'one_beep_2_right.mp3');
+var wallSound = new Audio(STATIC_URL + 'one_beep.mp3');
 
 /* Cordinates of the canvas */
 var textWidth1 = ctx.measureText(username + ": " + score1).width;
@@ -93,7 +96,6 @@ function resetAbilities() {
 function update() {
     // If the game is paused, don't update anything
     if (isPaused) return;
-
     ball.x += ball.speed * ball.dx;
     ball.y += ball.speed * ball.dy;
 
@@ -101,6 +103,7 @@ function update() {
     if (ball.y + ball.radius >= paddle1.y && ball.y - ball.radius <= paddle1.y + paddle1.height && ball.dx < 0) {       
         if (ball.x - ball.radius <= paddle1.x + paddle1.width) {
             // Çarpışma var, topun x koordinatını paddle'ın yanına ayarla ve yönünü tersine çevir
+            startLPaddleSound();
             if (rageofFire == "true") {
                 if (Math.random() <= 0.5) {
                     ball.speed += 1;
@@ -116,6 +119,7 @@ function update() {
     }
     if (ball.y + ball.radius >= paddle2.y && ball.y - ball.radius <= paddle2.y + paddle2.height && ball.dx > 0) {
         if (ball.x + ball.radius >= paddle2.x) {
+            startRPaddleSound();
             // Çarpışma var, topun x koordinatını paddle'ın yanına ayarla ve yönünü tersine çevir
             ball.x = paddle2.x - ball.radius;
             ball.dx *= -1;
@@ -128,6 +132,7 @@ function update() {
 
     // Check for collisions with top/bottom walls
     if (ball.y + ball.radius > canvas.height || ball.y - ball.radius < 0) {
+        startWallSound();
         ball.dy *= -1;
     }
 
@@ -293,17 +298,27 @@ function playResultSound(isVictory) {
     if (isVictory) {  
         setTimeout(function() {  
             victorySound.play();
-        }, 1000);
+        }, 50);
         victoryMusic = true;
     } else {
         setTimeout(function() {  
             defeatSound.play();
-        }, 1000);
+        }, 50);
         defeatMusic = true;
     }
 }
 
+function startLPaddleSound() {
+    lpaddleSound.play();
+}
 
+function startRPaddleSound() {
+    rpaddleSound.play();
+}
+
+function startWallSound() {
+    wallSound.play();
+}
 
 // Reset the ball to the center
 function resetBall() {
@@ -384,7 +399,7 @@ document.addEventListener("keyup", function(event) {
 
 
 // Ai Player
-let reactionDelay = 5000 / ball.speed; // Delay in milliseconds
+let reactionDelay = 1000 / ball.speed; // Delay in milliseconds
 let lastBallPosition = { x: ball.x, y: ball.y };
 let ballDirection = { x: 0, y: 0 };
 let predictedY = paddle2.y;
@@ -477,13 +492,15 @@ function restartGame() {
     resetGame();
     if (victoryMusic === true) {
         setTimeout(function() {  
-            victorySound.play();
+            victorySound.pause();
+            victorySound.currentTime = 0;
         }, 1000);
         victoryMusic = false;
     }
     if (defeatMusic === true) {
-        setTimeout(function() {  
-            defeatSound.stop();
+        setTimeout(function() {
+            defeatSound.pause();
+            defeatSound.currentTime = 0;
         }, 1000);
         defeatMusic = false;
     }
