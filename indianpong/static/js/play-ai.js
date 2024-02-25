@@ -384,7 +384,7 @@ document.addEventListener("keyup", function(event) {
 
 
 // Ai Player
-let reactionDelay = 1000 / ball.speed; // Delay in milliseconds
+let reactionDelay = 5000 / ball.speed; // Delay in milliseconds
 let lastBallPosition = { x: ball.x, y: ball.y };
 let ballDirection = { x: 0, y: 0 };
 let predictedY = paddle2.y;

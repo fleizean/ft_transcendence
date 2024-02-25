@@ -293,7 +293,7 @@ def profile_view(request, username):
         profile.rank = UserProfile.objects.filter(
     Q(game_stats__total_win_rate_pong__isnull=False),
     ~Q(username='IndianAI')  # Exclude user with the username 'indianAI'
-    ).order_by("-game_stats__total_win_rate_pong").filter(
+    ).order_by("-elo_point").filter(
         game_stats__total_win_rate_pong__gt=profile.game_stats.total_win_rate_pong
     ).count() + 1
     else:
@@ -514,7 +514,7 @@ def dashboard(request):
 def rankings(request):
     users_by_elo = UserProfile.objects.filter(
         game_stats__total_win_rate_pong__isnull=False
-    ).exclude(username='IndianAI').order_by("-game_stats__total_win_rate_pong")
+    ).exclude(username='IndianAI').order_by("-elo_point")
     
     paginator = Paginator(users_by_elo, 10)
     page_number = request.GET.get("page")
