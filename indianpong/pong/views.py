@@ -973,7 +973,7 @@ def update_winner(request):
         loser_profile = get_object_or_404(UserProfile, username=loser)
 
         if winner:
-            winner_profile.indian_wallet += random.randint(35, 55)
+            winner_profile.indian_wallet += random.randint(300, 500)
             winner_profile.elo_point += random.randint(20, 30)
             winner_profile.save()
         elif loser:

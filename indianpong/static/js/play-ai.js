@@ -280,6 +280,7 @@ function stopBackgroundMusic() {
 function startBackgroundMusic() {
     setTimeout(function() {
         if (gameSound) {
+            gameSound.loop = true;
             gameSound.play();
         }
     }, 1000);
@@ -288,7 +289,7 @@ function startBackgroundMusic() {
 
 // Play the result sound
 function playResultSound(isVictory) {
-    stopBackgroundMusic(); // Önce müziği durdur
+    //stopBackgroundMusic(); // Önce müziği durdur
     if (isVictory) {  
         setTimeout(function() {  
             victorySound.play();
@@ -492,7 +493,7 @@ function restartGame() {
 
 // Çıkış yapma işlemleri
 function exitGame() {
-    window.location.href = '/dashboard';
+    window.location.href = '/pong-game-find';
 }
 
 document.getElementById('restartButton').addEventListener('click', restartGame);
