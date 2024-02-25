@@ -486,7 +486,8 @@ function restartGame() {
         }, 1000);
         defeatMusic = false;
     }
-    startBackgroundMusic();
+    if (givemethemusic === "true")
+        startBackgroundMusic();
 }
 
 // Çıkış yapma işlemleri
