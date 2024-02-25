@@ -23,6 +23,8 @@ const givemethemusic = document.querySelector('.container-top').dataset.givemeth
 var STATIC_URL = "../../static/music/";
 
 var gameMusic = false;
+var defeatMusic = false;
+var victoryMusic = false;
 var victorySound = new Audio(STATIC_URL + 'victory-sound.mp3');
 var defeatSound = new Audio(STATIC_URL + 'defeat-sound.mp3');
 var gameSound = new Audio(STATIC_URL + 'pong-music.mp3');
@@ -289,8 +291,10 @@ function playResultSound(isVictory) {
     stopBackgroundMusic(); // Önce müziği durdur
     if (isVictory) {    
         victorySound.play(); // Zafer durumunda zafer sesini çal
+        victoryMusic = true;
     } else {
         defeatSound.play(); // Yenilgi durumunda yenilgi sesini çal
+        defeatMusic = true;
     }
 }
 
@@ -466,15 +470,19 @@ function showGameOverScreen() {
 function restartGame() {
     document.getElementById('gameOverScreen').style.display = 'none';
     resetGame();
-    victorySound.stop();
-    defeatSound.stop();
+    if (victoryMusic === true) {
+        victorySound.stop();
+        victoryMusic = false;
+    }
+    if (defeatMusic === true) {
+        defeatSound.stop();
+        defeatMusic = false;
+    }
     startBackgroundMusic();
 }
 
 // Çıkış yapma işlemleri
 function exitGame() {
-    victorySound.stop();
-    defeatSound.stop();
     window.location.href = '/dashboard';
 }
 
