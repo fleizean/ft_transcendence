@@ -289,13 +289,14 @@ def profile_view(request, username):
     paginator = Paginator(game_records, 5)  # Sayfada 5 kayıt göster
     page_number = request.GET.get("page")
     is_friend = request.user.friends.filter(id=profile.id).exists()
-    if profile.game_stats is not None and profile.game_stats.total_win_rate_pong is not None:
+    if profile.elo_point is not None:
         profile.rank = UserProfile.objects.filter(
-    Q(game_stats__total_win_rate_pong__isnull=False),
-    ~Q(username='IndianAI')  # Exclude user with the username 'indianAI'
-    ).order_by("-elo_point").filter(
-        game_stats__total_win_rate_pong__gt=profile.game_stats.total_win_rate_pong
-    ).count() + 1
+            elo_point__isnull=False,
+            elo_point__gt=profile.elo_point,
+        ).exclude(
+            username='IndianAI'  # Exclude user with the username 'IndianAI'
+        ).order_by("-elo_point").count() + 1
+
     else:
         profile.rank = None
 

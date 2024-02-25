@@ -32,6 +32,7 @@ var lpaddleSound = new Audio(STATIC_URL + 'one_beep_2_left.mp3');
 var rpaddleSound = new Audio(STATIC_URL + 'one_beep_2_right.mp3');
 var wallSound = new Audio(STATIC_URL + 'one_beep.mp3');
 
+gameSound.volume = 0.01;
 /* Cordinates of the canvas */
 var textWidth1 = ctx.measureText(username + ": " + score1).width;
 var textWidth2 = ctx.measureText(ainame + ": " + score2).width;
@@ -59,7 +60,7 @@ var ball = {x: canvas.width / 2, y: canvas.height / 2, radius: 10, speed: 10, dx
 var score1 = 0;
 var score2 = 0;
 
-const MAX_SCORE = 1;
+const MAX_SCORE = 10;
 
 // Player Abilities
 var likeaCheaterCount = 0;
@@ -309,15 +310,21 @@ function playResultSound(isVictory) {
 }
 
 function startLPaddleSound() {
-    lpaddleSound.play();
+    setTimeout(function() {  
+        lpaddleSound.play();
+    }, 50);
 }
 
 function startRPaddleSound() {
-    rpaddleSound.play();
+    setTimeout(function() {  
+        rpaddleSound.play();
+    }, 50);
 }
 
 function startWallSound() {
-    wallSound.play();
+    setTimeout(function() {  
+        wallSound.play();
+    }, 50);
 }
 
 // Reset the ball to the center
