@@ -289,11 +289,15 @@ function startBackgroundMusic() {
 // Play the result sound
 function playResultSound(isVictory) {
     stopBackgroundMusic(); // Önce müziği durdur
-    if (isVictory) {    
-        victorySound.play(); // Zafer durumunda zafer sesini çal
+    if (isVictory) {  
+        setTimeout(function() {  
+            victorySound.play();
+        }, 1000);
         victoryMusic = true;
     } else {
-        defeatSound.play(); // Yenilgi durumunda yenilgi sesini çal
+        setTimeout(function() {  
+            defeatSound.play();
+        }, 1000);
         defeatMusic = true;
     }
 }
@@ -471,11 +475,15 @@ function restartGame() {
     document.getElementById('gameOverScreen').style.display = 'none';
     resetGame();
     if (victoryMusic === true) {
-        victorySound.stop();
+        setTimeout(function() {  
+            victorySound.play();
+        }, 1000);
         victoryMusic = false;
     }
     if (defeatMusic === true) {
-        defeatSound.stop();
+        setTimeout(function() {  
+            defeatSound.stop();
+        }, 1000);
         defeatMusic = false;
     }
     startBackgroundMusic();
