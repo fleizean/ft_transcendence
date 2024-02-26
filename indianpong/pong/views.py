@@ -293,7 +293,7 @@ def profile_view(request, username):
         profile.rank = UserProfile.objects.filter(
             elo_point__isnull=False,
             elo_point__gt=profile.elo_point,
-        ).exclude(
+        )   .exclude(
             username='IndianAI'  # Exclude user with the username 'IndianAI'
         ).order_by("-elo_point").count() + 1
 

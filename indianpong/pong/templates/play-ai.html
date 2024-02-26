@@ -9,13 +9,22 @@
 
   <div class="container-top" data-username="{{ username }}" data-ainame="{{ ainametag }}" data-paddlecolor="{{paddlecolor}}" data-playgroundcolor="{{playgroundcolor}}" data-giantman="{{giantman}}" data-likeacheater="{{likeacheater}}" data-fastandfurious="{{fastandfurious}}" data-rageoffire="{{rageoffire}}" data-frozenball="{{frozenball}}" data-givemethemusic={{givemethemusic}}>
     <div class="ai-game">
-      <canvas id="pongCanvas" width="800" height="600"></canvas>
-      <div id="gameOverScreen" class="game-over">
-        <h1>Game Over</h1>
-        <p id="winnerText" class="winnerName"></p>
-        <button id="restartButton">Restart</button>
-        <button id="exitButton">Exit</button>
-    </div>
+      <div id="countdownContainer">
+
+        <canvas id="pongCanvas" width="800" height="600"></canvas>
+        <div id="countdown" class="countdown">
+          <h1>Get Ready!</h1>
+          <p>Press 'Space' to start</p>
+          <h2 class="countdown-numbers">Starting In</h2>
+          <div id="countdownTimer" class="countdown-timer"></div>
+        </div>
+        <div id="gameOverScreen" class="game-over">
+          <h1>Game Over</h1>
+          <p id="winnerText" class="winnerName"></p>
+          <button id="restartButton">Restart</button>
+          <button id="exitButton">Exit</button>
+        </div>
+      </div>
     </div>
   </div>
   <script type=module src="{% static "js/play-ai.js" %}"></script>

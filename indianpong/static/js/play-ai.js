@@ -75,6 +75,7 @@ var isFrozenBallActive = false;
 // Add a new variable to track if the game is paused
 let isScored = false;
 var gameScreen = false;
+var gameStarted = false;
 var isPaused = false;
 let upPressed = false;
 let downPressed = false;
@@ -272,8 +273,9 @@ var w = window;
 requestAnimationFrame = w.requestAnimationFrame || w.webkitRequestAnimationFrame || w.msRequestAnimationFrame || w.mozRequestAnimationFrame;
 
 // Let's play this game!
-main();
-
+function startGame() {
+    main();
+}
 // Stop the background music
 function stopBackgroundMusic() {
     setTimeout(function() {
@@ -394,6 +396,10 @@ document.addEventListener("keydown", function(event) {
         frozenBallAbility();
         frozenBallCount += 1;
     }
+    if (event.code === 'Space' && gameStarted === false) { // Boşluk tuşu kodu
+        gameStarted = true;
+        startGameCountdown(); // Oyunu başlatmak için geri sayım başlat
+    }
 });
 
 document.addEventListener("keyup", function(event) {
@@ -468,6 +474,33 @@ setInterval(() => {
 function resetPaddles() {
     paddle1.y = (canvas.height - abilities_paddleHeight) / 2; 
     paddle2.y = (canvas.height - abilities_paddleHeight) / 2;
+}
+
+function startGameCountdown() {
+    // Geri sayım ekranını göster
+    // Örnek olarak bir HTML elementi üzerine yazıyorum, siz kendi tasarımınıza göre ayarlayabilirsiniz
+    var countdown = document.getElementById('countdownTimer');
+    var countdownElement = document.getElementById('countdown');
+    // 3 saniye sonra
+    setTimeout(function() {
+        countdown.textContent = '3';
+    }, 1000);
+
+    // 2 saniye sonra
+    setTimeout(function() {
+        countdown.textContent = '2';
+    }, 2000);
+
+    // 1 saniye sonra
+    setTimeout(function() {
+        countdown.textContent = '1';
+    }, 3000);
+
+    // Oyunu başlat
+    setTimeout(function() {
+        countdownElement.style.display = 'none'; // Geri sayım elementini kaldır
+        startGame(); // Oyunu başlatan fonksiyon
+    }, 4000);
 }
 
 function resetGame() {
