@@ -541,13 +541,22 @@ function resetGame() {
 
 // Oyun bitiş ekranını gösteren fonksiyon
 function showGameOverScreen() {
-    var winnerText = (score1 == MAX_SCORE) ? username + " wins!" : ainame + " wins!";
+    //var winnerText = (score1 == MAX_SCORE) ? username + " wins!" : ainame + " wins!";
+    var winnerText = (score1 == MAX_SCORE) ? "YOU WIN!": "";
+    var loserText = (score2 == MAX_SCORE) ? "YOU LOSE!": "";
     if (score1 == MAX_SCORE) {
         playResultSound(true); // Zafer durumu
     } else {
         playResultSound(false); // Yenilgi durumu
     }
     document.getElementById('winnerText').innerText = winnerText;
+    document.getElementById('loserText').innerText = loserText;
+    if (score1 > score2) {
+        document.getElementById('gameOverScreen').style.backgroundColor = 'rgba(11, 22, 8, 0.8)';
+    }
+    else {
+        document.getElementById('gameOverScreen').style.backgroundColor = 'rgba(20, 5, 5, 0.8)';
+    }
     document.getElementById('gameOverScreen').style.display = 'block';
 }
 

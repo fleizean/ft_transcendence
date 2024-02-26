@@ -1652,7 +1652,6 @@ body {
 .game-over h1 {
   font-size: 48px;
   font-family: 'Pixeboy-z8XGD', sans-serif;
-  color: #ffffff;
   margin-bottom: 10px;
 }
 
@@ -1710,8 +1709,10 @@ body {
 
 .winnerName {
   color: green;
-  font-size: 20px;
-  margin: 0 0 20px;
+}
+
+.loserName {
+  color: red;
 }
 
 .selectorGame {
@@ -1727,7 +1728,7 @@ body {
   transform: translate(-50%, -50%);
   text-align: center;
   padding: 20px;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(1, 2, 1, 0.5);
   width: 700px;
   height: 500px;
   border-radius: 10px;
