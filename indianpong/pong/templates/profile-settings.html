@@ -77,7 +77,7 @@
                             <!-- Email textbox -->
                             <div class="mb-3">
                                 <label class="small mb-1" for="id_email">Email</label> 
-                                <input class="form-control" id="id_email" name="email" maxlength="320" value="{{profile.email}}" required
+                                <input class="form-control"  name="email" maxlength="320" value="{{profile.email}}" required
                                     placeholder="{{profile.email}}" type="email" {% if profile.is_42student %} readonly style="background-color:#e9ecef" {% endif %}>
                                 {% if profile.is_42student %} <p style="color:red; font-style: italic;">Since you are logged in with 42, your email setting feature is disabled.</p> {% endif %}
                             </div>

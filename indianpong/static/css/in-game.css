@@ -1,3 +1,8 @@
+@font-face {
+    font-family: 'Pixeboy-z8XGD';
+    src: url('fonts/Pixeboy-z8XGD.ttf');
+  }
+  
 
 .left-card {
     width: 300px;
@@ -72,4 +77,48 @@
     border: 1px solid #ffffff;
     background-image: url("https://s1.dmcdn.net/v/NGyfI1X-BUVhMfsej/x1080");
     background-repeat: no-repeat;
+}
+
+#countdownContainer {
+    position: relative;
+}
+
+
+.countdown {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    font-family: Arial, sans-serif;
+}
+
+.countdown p {
+    font-family: 'Pixeboy-z8XGD', sans-serif;
+    font-size: 20px;
+    font-weight: bold;
+    margin-top: -20px;
+    color: palegreen;
+}
+
+.countdown h1 {
+    font-size: 48px;
+    font-family: 'Pixeboy-z8XGD', sans-serif;
+    color: #ffffff;
+    margin-bottom: 10px;
+}
+
+.countdown h2 {
+    font-size: 24px;
+    color: #ffffff;
+    font-family: 'Pixeboy-z8XGD', sans-serif;
+    margin-bottom: 20px;
+}
+
+.countdown-timer {
+    font-size: 72px;
+    color: #ffffff;
+
+    font-family: 'Pixeboy-z8XGD', sans-serif;
+
 }

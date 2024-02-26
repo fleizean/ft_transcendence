@@ -293,7 +293,7 @@ def profile_view(request, username):
         profile.rank = UserProfile.objects.filter(
             elo_point__isnull=False,
             elo_point__gt=profile.elo_point,
-        ).exclude(
+        )   .exclude(
             username='IndianAI'  # Exclude user with the username 'IndianAI'
         ).order_by("-elo_point").count() + 1
 
@@ -426,6 +426,20 @@ def password_change(request):
         form = PasswordChangeUserForm(request.user)
     return render(request, "password_change.html", {"form": form})
 
+@never_cache
+@login_required()
+def tournament(request):
+    return render(request, "tournament.html")
+
+@never_cache
+@login_required()
+def tournament_room(request):
+    return render(request, "tournament-room.html")
+
+@never_cache
+@login_required()
+def tournament_create(request):
+    return render(request, "create-tournament.html")
 
 @never_cache
 def password_reset(request):

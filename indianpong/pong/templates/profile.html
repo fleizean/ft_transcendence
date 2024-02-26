@@ -96,7 +96,7 @@
         <!-- Sağ Sütun (col-lg-8) -->
         <div class="col-lg-8">
             <!-- Profil Bilgileri -->
-            <div class="card" style="background-color:white !important; height: 415px !important;" >
+            <div class="match-history-card" >
                 <div class="card-body">
                     <div class="select-history">
                         <button type="button" class="changer-btn" onclick="matchHistoryChanger()">✂️</button>
@@ -148,7 +148,7 @@
                                 
                             </tbody>
                         </table>
-                        <nav aria-label="Page navigation example " class="mt-4">
+                        <nav aria-label="Page navigation example" class="mt-4">
                             <ul class="pagination justify-content-center">
                                 <li class="page-item {% if not history_page_obj.has_previous %}disabled{% endif %}">
                                     <a class="page-link" href="{% if history_page_obj.has_previous %}?page={{ history_page_obj.previous_page_number }}{% endif %}" aria-label="Previous">

@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block title %}Tournament Create{% endblock title %}
+{% block app %}
+{% include "_nav.html" %}
+<div class="container-top">
+    <div class="card">
+      <div class="card-body-tournament">
+        <h3 class="tournament-create-text">CREATE TOURNAMENT</h3>
+        <div class="tournament-custom-text">
+            To create a tournament I need a tournament name, how many max points each game will have.
+        </div>
+        <div class="tournament-create">
+          <div id="tournamentInfos" class="tournamentInfos">
+              <div class="input-box">
+                <label class="tournamentGame-Text" for="tournament-name">Tournament Name</label>
+                <input class="input-style" type="text" id="tournament-name">
+    
+                <label class="tournamentGame-Text" for="tournament-maxscore">Max Score Games</label>
+                <input class="input-style" type="text" id="tournament-maxscore">
+    
+                <div class="selectorGame">
+                  <label class="tournamentGame-Text" for="gameMode">Game Mode</label>
+                  <select class="form-select" id="gameMode">
+                    <option selected value="Vanilla">Vanilla</option>
+                    <option value="Abilities">Abilities</option>
+                  </select>
+                </div>
+              </div>
+
+
+              <button class="btn btn-outline-success" id="startButton">Create Tournament</button>
+            </div>
+          </div>
+    </div>
+    </div>
+</div>
+<script>
+
+</script>
+{% endblock %}
