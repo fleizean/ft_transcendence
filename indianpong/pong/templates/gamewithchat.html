@@ -15,6 +15,82 @@
         height: 600px;
     }
 
+    
+.left-card {
+    width: 300px;
+    height: auto;
+    background-color: #ddd;
+    padding: 10px;
+    margin-right: 20px; /* İstediğiniz boşluk değerini ayarlayabilirsiniz */
+    margin-left: 1em;
+    float: left;
+}
+
+
+.custom-table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.custom-table th, .custom-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.custom-table img {
+    border-radius: 50%;
+    border: 1px soldi #ffffff;
+    width: 28px;
+    height: 28px;
+    object-fit: cover; /* Ya da 'contain' kullanabilirsiniz */
+}
+
+.custom-table tr:hover {
+    background-color: #b6b6b6;
+}
+
+.custom-table .btn-outline-success {
+    padding: 4px 8px;
+    font-size: 14px;
+}
+
+.custom-table .btn-outline-primary {
+    padding: 4px 8px;
+    font-size: 14px;
+}
+
+.custom-table .btn-outline-danger {
+    padding: 4px 8px;
+    font-size: 14px;
+}
+
+.pagination {
+    display: flex;
+    list-style: none;
+    padding: 0;
+}
+
+.pagination a {
+    color: rgb(0, 0, 0);
+    padding: 8px 16px;
+    text-decoration: none;
+    transition: background-color .3s;
+}
+
+.pagination a:hover {
+    background-color: #ffffff;
+}
+
+.canvas-container {
+    float: left;
+}
+
+#myCanvas {
+    border: 1px solid #ffffff;
+    background-image: url("https://s1.dmcdn.net/v/NGyfI1X-BUVhMfsej/x1080");
+    background-repeat: no-repeat;
+}
     .chat-area {
         display: none;
         position: fixed;
@@ -30,7 +106,7 @@
         position: fixed;
         top: 10px;
         right: 10px;
-        z-index: 1000;
+        z-index: 1200;
         background-color: #ffffff;
         border: 1px solid #ff8800;
         color: #ff8800;
@@ -48,6 +124,97 @@
 
 
 
+  <div class="left-card">
+    <table class="custom-table">
+        
+      <thead>
+          <tr>
+              <th>Name</th>
+              <th>Actions</th>
+              <!-- Diğer sütunlar... -->
+          </tr>
+      </thead>
+      <tbody>
+          <!-- Burada liste elemanları döngü ile eklenir -->
+          <tr>
+              <td><img src="https://www.trtspor.com.tr/resimler/260000/260382.jpg"> ardaturan</td>
+              <td><button type="button" class="btn btn-outline-success"><i class="bi bi-plus-circle-fill"></i></button>
+              <button type="button" class="btn btn-outline-primary"><i class="bi bi-patch-check-fill"></i></button>
+              <button type="button" class="btn btn-outline-danger"><i class="bi bi-x-circle-fill"></i></button></td>
+              <!-- Diğer sütun değerleri... -->
+          </tr>
+           <tr>
+              <td><img src="https://img.a.transfermarkt.technology/portrait/big/1061-1612175084.jpeg?lm=1"> aykutkocaman</td>
+              <td><button type="button" class="btn btn-outline-success"><i class="bi bi-plus-circle-fill"></i></button>
+              <button type="button" class="btn btn-outline-primary"><i class="bi bi-patch-check-fill"></i></button>
+              <button type="button" class="btn btn-outline-danger"><i class="bi bi-x-circle-fill"></i></button></td>
+              <!-- Diğer sütun değerleri... -->
+          </tr>
+           <tr>
+              <td><img src="https://cdn.ntvspor.net/17b65e4cfb844414bc1f37abbbca62f2.jpg?mode=crop&w=940&h=626"> ersunyanal</td>
+              <td><button type="button" class="btn btn-outline-success"><i class="bi bi-plus-circle-fill"></i></button>
+              <button type="button" class="btn btn-outline-primary"><i class="bi bi-patch-check-fill"></i></button>
+              <button type="button" class="btn btn-outline-danger"><i class="bi bi-x-circle-fill"></i></button></td>
+              <!-- Diğer sütun değerleri... -->
+          </tr>
+           <tr>
+              <td><img src="../../assets/profile/profilephoto.jpeg"> fatihterim</td>
+              <td><button type="button" class="btn btn-outline-success"><i class="bi bi-plus-circle-fill"></i></button>
+              <button type="button" class="btn btn-outline-primary"><i class="bi bi-patch-check-fill"></i></button>
+              <button type="button" class="btn btn-outline-danger"><i class="bi bi-x-circle-fill"></i></button></td>
+              <!-- Diğer sütun değerleri... -->
+          </tr>
+           <tr>
+              <td><img src="https://cdn.ntvspor.net/17b65e4cfb844414bc1f37abbbca62f2.jpg?mode=crop&w=940&h=626"> ersunyanal</td>
+              <td><button type="button" class="btn btn-outline-success"><i class="bi bi-plus-circle-fill"></i></button>
+              <button type="button" class="btn btn-outline-primary"><i class="bi bi-patch-check-fill"></i></button>
+              <button type="button" class="btn btn-outline-danger"><i class="bi bi-x-circle-fill"></i></button></td>
+              <!-- Diğer sütun değerleri... -->
+          </tr>
+           <tr>
+              <td><img src="https://img.a.transfermarkt.technology/portrait/big/7237-1595580698.jpg?lm=1"> sarioglu</td>
+              <td><button type="button" class="btn btn-outline-success"><i class="bi bi-plus-circle-fill"></i></button>
+              <button type="button" class="btn btn-outline-primary"><i class="bi bi-patch-check-fill"></i></button>
+              <button type="button" class="btn btn-outline-danger"><i class="bi bi-x-circle-fill"></i></button></td>
+              <!-- Diğer sütun değerleri... -->
+          </tr>
+           <tr>
+              <td><img src="https://cdn.ntvspor.net/f26901d08c0c436aab85737d8625c5c7.jpg?mode=crop&w=940&h=626"> belezoglu</td>
+              <td><button type="button" class="btn btn-outline-success"><i class="bi bi-plus-circle-fill"></i></button>
+              <button type="button" class="btn btn-outline-primary"><i class="bi bi-patch-check-fill"></i></button>
+              <button type="button" class="btn btn-outline-danger"><i class="bi bi-x-circle-fill"></i></button></td>
+              <!-- Diğer sütun değerleri... -->
+          </tr>
+           <tr>
+              <td><img src="https://assets.goal.com/v3/assets/bltcc7a7ffd2fbf71f5/bltf9f319eb4fa8a1e6/60dbc05963584e0ecae47963/6932614169eadb875c001f02448a33658136f9c3.jpg?auto=webp&format=pjpg&width=3840&quality=60"> oburuk</td>
+              <td><button type="button" class="btn btn-outline-success"><i class="bi bi-plus-circle-fill"></i></button>
+              <button type="button" class="btn btn-outline-primary"><i class="bi bi-patch-check-fill"></i></button>
+              <button type="button" class="btn btn-outline-danger"><i class="bi bi-x-circle-fill"></i></button></td>
+              <!-- Diğer sütun değerleri... -->
+          </tr>
+           <tr>
+              <td><img src="https://img.a.transfermarkt.technology/portrait/big/801-1477746457.jpg?lm=1"> hkaraman</td>
+              <td><button type="button" class="btn btn-outline-success"><i class="bi bi-plus-circle-fill"></i></button>
+              <button type="button" onclick="setCanvasSize()" class="btn btn-outline-primary"><i class="bi bi-patch-check-fill"></i></button>
+              <button type="button" class="btn btn-outline-danger"><i class="bi bi-x-circle-fill"></i></button></td>
+              <!-- Diğer sütun değerleri... -->
+          </tr>
+          
+          <!-- Diğer liste elemanları... -->
+      </tbody>
+    </table>
+
+    <!-- Pagination Alanı -->
+    <div class="pagination">
+        <a href="#">&laquo;</a>
+        <a href="#">1</a>
+        <a href="#">2</a>
+        <a href="#">3</a>
+        <a href="#">4</a>
+        <a href="#">5</a>
+        <a href="#">&raquo;</a>
+    </div>
+</div>
 <canvas id="pongCanvas" class="pongCanvas"></canvas>
 <button id="toggleChatBtn"><i class="bi bi-toggle-off"></i></button>
 <div class="chat-area" id="chatPopup">
