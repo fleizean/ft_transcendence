@@ -72,7 +72,7 @@
 
 
 .select-history {
-  margin-top: -1em;
+  margin-top: 0.3em;
   text-align: center;
 }
 
@@ -114,4 +114,18 @@
   justify-content: center;
   align-items: center;
   margin-top: 20px; /* İhtiyaca göre ayarlayabilirsiniz */
+}
+
+
+.match-history-card {
+  background-color:white !important;
+  backdrop-filter: blur(3px); /* Arka planı 10 piksel bulanıklaştır */
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  max-width: 1300px;
+  max-height: 500px !important; 
+  height: 400px;
+  width: 100%;
+  margin: 0 auto; /* Ortalamak için */
 }
