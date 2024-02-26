@@ -426,6 +426,20 @@ def password_change(request):
         form = PasswordChangeUserForm(request.user)
     return render(request, "password_change.html", {"form": form})
 
+@never_cache
+@login_required()
+def tournament(request):
+    return render(request, "tournament.html")
+
+@never_cache
+@login_required()
+def tournament_room(request):
+    return render(request, "tournament-room.html")
+
+@never_cache
+@login_required()
+def tournament_create(request):
+    return render(request, "create-tournament.html")
 
 @never_cache
 def password_reset(request):

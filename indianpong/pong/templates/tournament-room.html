@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}Tournament Room{% endblock %}
 
@@ -6,9 +7,8 @@
     {% include "_nav.html" %}
 <div class="container-top">
     <div class="card">
-
         <div class="indian-logo">
-            <img class="logo-indian" src="../../assets/logo-dark.png">
+            <img class="logo-indian" src="{% static "assets/logo-dark.png" %}">
         </div>
         <div class="pong-game-text">
             <h3 class="pong-game-text">Room #1 - Ping Pong Tournament Room</h3>

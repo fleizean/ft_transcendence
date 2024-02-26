@@ -224,3 +224,17 @@
     left: 400px;
     transition: .3s ease-in-out;
   }
+
+  .game-btn-container {
+    margin-right: 10px; /* İstediğiniz boşluk miktarını ayarlayabilirsiniz */
+  }
+
+  .tournament-btn {
+    display: flex;
+    justify-content: center;
+    
+  }
+
+  .game-btn {
+    text-decoration: none; /* Düğme stilini kaldırmak için */
+}
