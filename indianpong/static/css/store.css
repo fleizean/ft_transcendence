@@ -238,6 +238,16 @@
   transition: color 0.3s;
 }
 
+.card__category.all a {
+  text-decoration:none;
+  color: #8e08a3;
+}
+
+.card__category.all a:hover {
+  text-decoration:none;
+  color: #5c1767;
+}
+
 .card__shop {
   width: 100%;
   margin-top: auto;

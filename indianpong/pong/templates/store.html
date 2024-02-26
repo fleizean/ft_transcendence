@@ -53,7 +53,7 @@
               <div class="product-card">
                 <img src="{% static 'assets/stores/'|add:item.image_url %}" alt="" />
                 <h2 class="card__title">{{ item.name }}</h2>
-                <h4 {% if item.category_name == "Pong" %} class="card__category pong" {% elif item.category_name == "RPS" %} class="card__category rps" {% endif %}>
+                <h4 {% if item.category_name == "Pong" %} class="card__category pong" {% elif item.category_name == "RPS" %} class="card__category rps" {% else %} class="card__category all" {% endif %}>
                   <a href="?category_name={{item.category_name}}">#{{ item.category_name }}</a>
                 </h4>
                 <span class="card__description">{{item.description}}</span>

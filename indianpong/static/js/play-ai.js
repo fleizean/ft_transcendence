@@ -18,7 +18,21 @@ const likeaCheater = document.querySelector('.container-top').dataset.likeacheat
 const fastandFurious = document.querySelector('.container-top').dataset.fastandfurious;
 const rageofFire = document.querySelector('.container-top').dataset.rageoffire;
 const frozenBall = document.querySelector('.container-top').dataset.frozenball;
+const givemethemusic = document.querySelector('.container-top').dataset.givemethemusic;
 
+var STATIC_URL = "../../static/music/";
+
+var gameMusic = false;
+var defeatMusic = false;
+var victoryMusic = false;
+var victorySound = new Audio(STATIC_URL + 'victory-sound.mp3');
+var defeatSound = new Audio(STATIC_URL + 'defeat-sound.mp3');
+var gameSound = new Audio(STATIC_URL + 'pong-music.mp3');
+var lpaddleSound = new Audio(STATIC_URL + 'one_beep_2_left.mp3');
+var rpaddleSound = new Audio(STATIC_URL + 'one_beep_2_right.mp3');
+var wallSound = new Audio(STATIC_URL + 'one_beep.mp3');
+
+gameSound.volume = 0.01;
 /* Cordinates of the canvas */
 var textWidth1 = ctx.measureText(username + ": " + score1).width;
 var textWidth2 = ctx.measureText(ainame + ": " + score2).width;
@@ -46,7 +60,7 @@ var ball = {x: canvas.width / 2, y: canvas.height / 2, radius: 10, speed: 10, dx
 var score1 = 0;
 var score2 = 0;
 
-const MAX_SCORE = 3;
+const MAX_SCORE = 10;
 
 // Player Abilities
 var likeaCheaterCount = 0;
@@ -83,35 +97,33 @@ function resetAbilities() {
 function update() {
     // If the game is paused, don't update anything
     if (isPaused) return;
-
     ball.x += ball.speed * ball.dx;
     ball.y += ball.speed * ball.dy;
 
     // Check for collisions with paddles
-    if (ball.y + ball.radius > paddle1.y && ball.y - ball.radius < paddle1.y + paddle1.height && ball.dx < 0) {       
-        if (ball.x - ball.radius < paddle1.x + paddle1.width) {
+    if (ball.y + ball.radius >= paddle1.y && ball.y - ball.radius <= paddle1.y + paddle1.height && ball.dx < 0) {       
+        if (ball.x - ball.radius <= paddle1.x + paddle1.width) {
+            // Çarpışma var, topun x koordinatını paddle'ın yanına ayarla ve yönünü tersine çevir
+            startLPaddleSound();
             if (rageofFire == "true") {
                 if (Math.random() <= 0.5) {
                     ball.speed += 1;
                 }
             }
+            ball.x = paddle1.x + paddle1.width + ball.radius;
             ball.dx *= -1;
-            // Check if the ball hit the top or bottom 20% of the paddle
             if (ball.y < paddle1.y + 0.2 * paddle1.height || ball.y > paddle1.y + 0.8 * paddle1.height) {
                 ball.speed *= 1.2; // Increase speed by 20%
                 paddleSpeed *= 1.2;
             }
         }
     }
-    if (ball.y + ball.radius > paddle2.y && ball.y - ball.radius < paddle2.y + paddle2.height && ball.dx > 0) {
-        if (ball.x + ball.radius > paddle2.x) {
-            if (rageofFire == "true") {
-                if (Math.random() <= 0.5) {
-                    ball.speed += 1;
-                }
-            }
+    if (ball.y + ball.radius >= paddle2.y && ball.y - ball.radius <= paddle2.y + paddle2.height && ball.dx > 0) {
+        if (ball.x + ball.radius >= paddle2.x) {
+            startRPaddleSound();
+            // Çarpışma var, topun x koordinatını paddle'ın yanına ayarla ve yönünü tersine çevir
+            ball.x = paddle2.x - ball.radius;
             ball.dx *= -1;
-            // Check if the ball hit the top or bottom 20% of the paddle
             if (ball.y < paddle2.y + 0.2 * paddle2.height || ball.y > paddle2.y + 0.8 * paddle2.height) {
                 ball.speed *= 1.2; // Increase speed by 20%
                 paddleSpeed *= 1.2;
@@ -121,6 +133,7 @@ function update() {
 
     // Check for collisions with top/bottom walls
     if (ball.y + ball.radius > canvas.height || ball.y - ball.radius < 0) {
+        startWallSound();
         ball.dy *= -1;
     }
 
@@ -239,6 +252,9 @@ function render() {
 
 // The main game loop
 var main = function () {
+    if (gameMusic === false && givemethemusic == "true") {
+        startBackgroundMusic();
+    }
     if (!start_time)
         start_time = new Date();
     // Request to do this again ASAP
@@ -258,7 +274,58 @@ requestAnimationFrame = w.requestAnimationFrame || w.webkitRequestAnimationFrame
 // Let's play this game!
 main();
 
+// Stop the background music
+function stopBackgroundMusic() {
+    setTimeout(function() {
+        if (gameSound) {
+            gameSound.pause();
+        }
+    }, 1000);    
+}
 
+function startBackgroundMusic() {
+    setTimeout(function() {
+        if (gameSound) {
+            gameSound.loop = true;
+            gameSound.play();
+        }
+    }, 1000);
+    gameMusic = true;
+}
+
+// Play the result sound
+function playResultSound(isVictory) {
+    //stopBackgroundMusic(); // Önce müziği durdur
+    if (isVictory) {  
+        setTimeout(function() {  
+            victorySound.play();
+        }, 50);
+        victoryMusic = true;
+    } else {
+        setTimeout(function() {  
+            defeatSound.play();
+        }, 50);
+        defeatMusic = true;
+    }
+}
+
+function startLPaddleSound() {
+    setTimeout(function() {  
+        lpaddleSound.play();
+    }, 50);
+}
+
+function startRPaddleSound() {
+    setTimeout(function() {  
+        rpaddleSound.play();
+    }, 50);
+}
+
+function startWallSound() {
+    setTimeout(function() {  
+        wallSound.play();
+    }, 50);
+}
 
 // Reset the ball to the center
 function resetBall() {
@@ -369,7 +436,7 @@ setInterval(() => {
 
     if (likeaCheater == "true" && aiLikeaCheaterCount < 1) {
         if (score2 < score1 || score1 === MAX_SCORE - 1 || score2 + 1 === MAX_SCORE) {
-            //console.log("AI Like a Cheater yeteneğini kullandı ve değerleri şu şekilde: ", score1, score2);
+            // console.log("AI Like a Cheater yeteneğini kullandı ve değerleri şu şekilde: ", score1, score2);
             likeaCheaterAbility(true);
             aiLikeaCheaterCount += 1;
         }
@@ -417,6 +484,11 @@ function resetGame() {
 // Oyun bitiş ekranını gösteren fonksiyon
 function showGameOverScreen() {
     var winnerText = (score1 == MAX_SCORE) ? username + " wins!" : ainame + " wins!";
+    if (score1 == MAX_SCORE) {
+        playResultSound(true); // Zafer durumu
+    } else {
+        playResultSound(false); // Yenilgi durumu
+    }
     document.getElementById('winnerText').innerText = winnerText;
     document.getElementById('gameOverScreen').style.display = 'block';
 }
@@ -425,11 +497,27 @@ function showGameOverScreen() {
 function restartGame() {
     document.getElementById('gameOverScreen').style.display = 'none';
     resetGame();
+    if (victoryMusic === true) {
+        setTimeout(function() {  
+            victorySound.pause();
+            victorySound.currentTime = 0;
+        }, 1000);
+        victoryMusic = false;
+    }
+    if (defeatMusic === true) {
+        setTimeout(function() {
+            defeatSound.pause();
+            defeatSound.currentTime = 0;
+        }, 1000);
+        defeatMusic = false;
+    }
+    if (givemethemusic === "true")
+        startBackgroundMusic();
 }
 
 // Çıkış yapma işlemleri
 function exitGame() {
-    window.location.href = '/dashboard';
+    window.location.href = '/pong-game-find';
 }
 
 document.getElementById('restartButton').addEventListener('click', restartGame);
@@ -462,7 +550,7 @@ function sendWinnerToBackend(winner, loser, winnerscore, loserscore, start_time)
         return response.json();
     })
     .then(data => {
-        console.log('Winner updated successfully:', data);
+        
     })
     .catch(error => {
         console.error('There was a problem updating the winner:', error);

@@ -12,7 +12,7 @@
   font-weight: 600;
 }
 
-.match-history {
+.match-history-pong {
   font-family: 'Open Sans', sans-serif;
   margin: 1em auto; /* Merkezlemek için margin kullanıyoruz */
   margin-top: -0.5em;
@@ -21,7 +21,7 @@
   width: 100%; /* Make the table take up 100% of the container */
 }
 
-.match-history nav {
+.match-history-pong nav {
   text-align: center;
   display: flex;
   justify-content: center;
@@ -68,4 +68,50 @@
 
 .card-mhistory-table tr .mhistory-username {
   font-weight: 400;
+}
+
+
+.select-history {
+  margin-top: -1em;
+  text-align: center;
+}
+
+.select-history .changer-btn {
+  background-color: transparent;
+  border: 1px solid #000000;
+  height: 30px;
+  width: 50px;
+  margin: 0 5px; /* Butonlar arasındaki boşluğu ayarlar */
+  display: inline-block; /* Butonları aynı satırda görüntüler */
+  vertical-align: top; /* Dikey hizalamayı ayarlar */
+  border-radius: 8px;
+}
+
+
+.select-history .changer-btn:hover {
+  background-color: #ffa66b;
+  box-shadow: -20px 50px 50px rgba(0,0,0,0.2);
+  border: none;
+  color: palegreen; /* Metni gizler */
+  transition: none; /* Geçiş efektini kapatır */
+}
+
+
+.match-history-rps {
+  display: none;
+  font-family: 'Open Sans', sans-serif;
+  margin: 1em auto; /* Merkezlemek için margin kullanıyoruz */
+  margin-top: -0.5em;
+  max-width: 1200px;
+  text-align: center;
+  width: 100%; /* Make the table take up 100% of the container */
+}
+
+
+.match-history-rps nav {
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px; /* İhtiyaca göre ayarlayabilirsiniz */
 }

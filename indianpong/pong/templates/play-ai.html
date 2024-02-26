@@ -7,9 +7,8 @@
 {% block app %}
   {% include "_nav.html" %}
 
-  <div class="container-top" data-username="{{ username }}" data-ainame="{{ ainametag }}" data-paddlecolor="{{paddlecolor}}" data-playgroundcolor="{{playgroundcolor}}" data-giantman="{{giantman}}" data-likeacheater="{{likeacheater}}" data-fastandfurious="{{fastandfurious}}" data-rageoffire="{{rageoffire}}" data-frozenball="{{frozenball}}">
+  <div class="container-top" data-username="{{ username }}" data-ainame="{{ ainametag }}" data-paddlecolor="{{paddlecolor}}" data-playgroundcolor="{{playgroundcolor}}" data-giantman="{{giantman}}" data-likeacheater="{{likeacheater}}" data-fastandfurious="{{fastandfurious}}" data-rageoffire="{{rageoffire}}" data-frozenball="{{frozenball}}" data-givemethemusic={{givemethemusic}}>
     <div class="ai-game">
-      
       <canvas id="pongCanvas" width="800" height="600"></canvas>
       <div id="gameOverScreen" class="game-over">
         <h1>Game Over</h1>

@@ -1,0 +1,39 @@
+# docker-compose.yaml
+version: '3.8'
+
+services:
+  db:
+    image: postgres:13.0-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    env_file:
+      - .env
+
+  web:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    command: bash -c "python manage.py migrate && python manage.py collectstatic --no-input && daphne -u /tmp/daphne.sock indianpong.asgi:application"
+    volumes:
+      - ./app:/app
+      - static_volume:/app/indianpong/staticfiles
+    env_file:
+      - .env
+    depends_on:
+      - db
+
+  nginx:
+    build:
+      context: .
+      dockerfile: Dockerfile.nginx
+    volumes:
+      - static_volume:/app/indianpong/staticfiles
+    ports:
+      - 8080:8080
+      - 8443:8443
+    depends_on:
+      - web
+
+volumes:
+  postgres_data:
+  static_volume:

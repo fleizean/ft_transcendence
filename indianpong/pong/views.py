@@ -289,13 +289,14 @@ def profile_view(request, username):
     paginator = Paginator(game_records, 5)  # Sayfada 5 kayıt göster
     page_number = request.GET.get("page")
     is_friend = request.user.friends.filter(id=profile.id).exists()
-    if profile.game_stats is not None and profile.game_stats.total_win_rate_pong is not None:
+    if profile.elo_point is not None:
         profile.rank = UserProfile.objects.filter(
-    Q(game_stats__total_win_rate_pong__isnull=False),
-    ~Q(username='IndianAI')  # Exclude user with the username 'indianAI'
-    ).order_by("-game_stats__total_win_rate_pong").filter(
-        game_stats__total_win_rate_pong__gt=profile.game_stats.total_win_rate_pong
-    ).count() + 1
+            elo_point__isnull=False,
+            elo_point__gt=profile.elo_point,
+        ).exclude(
+            username='IndianAI'  # Exclude user with the username 'IndianAI'
+        ).order_by("-elo_point").count() + 1
+
     else:
         profile.rank = None
 
@@ -514,7 +515,7 @@ def dashboard(request):
 def rankings(request):
     users_by_elo = UserProfile.objects.filter(
         game_stats__total_win_rate_pong__isnull=False
-    ).exclude(username='IndianAI').order_by("-game_stats__total_win_rate_pong")
+    ).exclude(username='IndianAI').order_by("-elo_point")
     
     paginator = Paginator(users_by_elo, 10)
     page_number = request.GET.get("page")
@@ -573,7 +574,8 @@ def store(request, username):  # store_view
         form = StoreItemActionForm()
         category_name = request.GET.get("category_name")
         if category_name and category_name != "All":
-            store_items = store_items.filter(category_name=category_name)
+            store_items = store_items.filter(Q(category_name=category_name) | Q(category_name="All"))
+
     return render(
         request,
         "store.html",
@@ -620,14 +622,14 @@ def inventory(request, username):
 
         if category_name and category_name != "All":
             inventory_items = UserItem.objects.filter(
-                item__category_name=category_name, user=profile
+                Q(item__category_name=category_name) | Q(item__category_name="All"),
+                user=profile
             )
     return render(
         request,
         "inventory.html",
         {"profile": profile, "inventory_items": inventory_items},
     )
-
 
 @login_required()
 def search(request):
@@ -654,18 +656,19 @@ def search(request):
             ).exists()
             # Append the dictionary to the list
             results_list.append(result_dict)
-        results = Paginator(results_list, 8)
+        paginator = Paginator(results_list, 8)
         page_number = request.GET.get("page")
         try:
-            results = results.page(page_number)
+            results = paginator.page(page_number)
         except PageNotAnInteger:
             # If page number is not an integer, deliver the first page
-            results = results.page(1)
+            results = paginator.page(1)
         except EmptyPage:
             # If page number is out of range, deliver the last page
-            results = results.page(results.num_pages)
+            results = paginator.page(paginator.num_pages)
         return render(request, "search.html", {"results": results})
     return render(request, "search.html")
+
 
 
 @login_required()
@@ -713,14 +716,16 @@ def play_ai(request):
     paddlecolor = get_equipped_item_value(user_items, "My Beautiful Paddle", "black")
     playgroundcolor = get_equipped_item_value(user_items, "My Playground", "lightgrey")
     
+    
     # Just Abilities - PONG
     giantman = get_equipped_item_value(user_items, "Giant-Man", "None")
     likeacheater = get_equipped_item_value(user_items, "Like a Cheater", "None")
     fastandfurious = get_equipped_item_value(user_items, "Fast and Furious", "None")
     rageoffire = get_equipped_item_value(user_items, "Rage of Fire", "None")
     frozenball = get_equipped_item_value(user_items, "Frozen Ball", "None")
+    givemethemusic = get_equipped_item_value(user_items, "DJ Give Me The Music", "None")
 
-    return render(request, "play-ai.html", {"ainametag": ainametag, "paddlecolor": paddlecolor, "playgroundcolor": playgroundcolor, "giantman": giantman, "likeacheater": likeacheater, "fastandfurious": fastandfurious, "rageoffire": rageoffire, "frozenball": frozenball})
+    return render(request, "play-ai.html", {"ainametag": ainametag, "paddlecolor": paddlecolor, "playgroundcolor": playgroundcolor, "giantman": giantman, "likeacheater": likeacheater, "fastandfurious": fastandfurious, "rageoffire": rageoffire, "frozenball": frozenball, "givemethemusic": givemethemusic})
 
 @never_cache
 @login_required()
@@ -969,7 +974,7 @@ def update_winner(request):
         loser_profile = get_object_or_404(UserProfile, username=loser)
 
         if winner:
-            winner_profile.indian_wallet += random.randint(35, 55)
+            winner_profile.indian_wallet += random.randint(300, 500)
             winner_profile.elo_point += random.randint(20, 30)
             winner_profile.save()
         elif loser:

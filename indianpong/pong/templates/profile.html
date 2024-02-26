@@ -96,9 +96,15 @@
         <!-- Sağ Sütun (col-lg-8) -->
         <div class="col-lg-8">
             <!-- Profil Bilgileri -->
-            <div class="card" style="background-color:white !important;">
+            <div class="card" style="background-color:white !important; height: 415px !important;" >
                 <div class="card-body">
-                    <div class="match-history">
+                    <div class="select-history">
+                        <button type="button" class="changer-btn" onclick="matchHistoryChanger()">✂️</button>
+                    </div>
+                    <div class="match-history-pong" id="match-history-pong">
+                        <div class="pong-header">
+                            <p style="text-align: left; margin-bottom: -1em; font-weight: bold;"> / Ping Pong</p>
+                        </div>
                         <table class="card-mhistory-table">
                             <thead>
                                 <tr>
@@ -144,23 +150,88 @@
                         </table>
                         <nav aria-label="Page navigation example " class="mt-4">
                             <ul class="pagination justify-content-center">
-                              <li class="page-item {% if not history_page_obj.has_previous %}disabled{% endif %}">
-                                <a class="page-link" href="{% if history_page_obj.has_previous %}?page={{ history_page_obj.previous_page_number }}{% endif %}" aria-label="Previous">
-                                  <span aria-hidden="true">&laquo;</span>
-                                </a>
-                              </li>
-                              {% for page_num in history_page_obj.paginator.page_range %}
-                                <li class="page-item {% if page_num == history_page_obj.number %}active{% endif %}">
-                                  <a class="page-link" href="?page={{ page_num }}">{{ page_num }}</a>
+                                <li class="page-item {% if not history_page_obj.has_previous %}disabled{% endif %}">
+                                    <a class="page-link" href="{% if history_page_obj.has_previous %}?page={{ history_page_obj.previous_page_number }}{% endif %}" aria-label="Previous">
+                                        <span aria-hidden="true">&laquo;</span>
+                                    </a>
                                 </li>
-                              {% endfor %}
-                              <li class="page-item {% if not history_page_obj.has_next %}disabled{% endif %}">
-                                <a class="page-link" href="{% if history_page_obj.has_next %}?page={{ history_page_obj.next_page_number }}{% endif %}" aria-label="Next">
-                                  <span aria-hidden="true">&raquo;</span>
-                                </a>
-                              </li>
+                                <li class="page-item active">
+                                    <span class="page-link page-link-profile">{{ history_page_obj.number }}</span>
+                                </li>
+                                <li class="page-item {% if not history_page_obj.has_next %}disabled{% endif %}">
+                                    <a class="page-link" href="{% if history_page_obj.has_next %}?page={{ history_page_obj.next_page_number }}{% endif %}" aria-label="Next">
+                                        <span aria-hidden="true">&raquo;</span>
+                                    </a>
+                                </li>
                             </ul>
-                          </nav>    
+                        </nav>
+                                
+                    </div>
+
+                    <div class="match-history-rps" id="match-history-rps">
+                        <div class="rps-header">
+                            <p style="text-align: left; margin-bottom: -1em; font-weight: bold;"> / Rock Paper Scissors</p>
+                        </div>
+                        <table class="card-mhistory-table">
+                            <thead>
+                                <tr>
+                                    <th>Opponent</th>
+                                    <th>Result</th>
+                                    <th>Score</th>
+                                    <th>Duration</th>
+                            </thead>
+                            <tbody>
+                                {% for game in history_page_obj %}
+                                    <tr>
+                                        {% if profile.username == game.player1.username %}
+                                            <td class="mhistory-username">{{ game.player2.username }}</td>
+                                        {% else %}
+                                            <td class="mhistory-username">{{ game.player1.username }}</td>
+                                        {% endif %}
+                                        {% if profile.username == game.player1.username %}
+                                            {% if game.winner.username == game.player1.username %}
+                                                <td class="won">Win</td>
+                                            {% else %}
+                                                <td class="lose">Lost</td>
+                                            {% endif %}
+                                        {% else %}
+                                            {% if game.winner.username == game.player2.username %}
+                                                <td class="won">Win</td>
+                                            {% else %}
+                                                <td class="lose">Lost</td>
+                                            {% endif %}
+                                        {% endif %}
+                                        <td>
+                                            {% if profile.username == game.player1.username %}
+                                                {{ game.player1_score }} - {{ game.player2_score }}
+                                            {% else %}
+                                                {{ game.player2_score }} - {{ game.player1_score }}
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {{ game.formatted_game_duration }}
+                                        </tr>
+                                {% endfor %}
+                                
+                            </tbody>
+                        </table>
+                        <nav aria-label="Page navigation example " class="mt-4">
+                            <ul class="pagination justify-content-center">
+                                <li class="page-item {% if not history_page_obj.has_previous %}disabled{% endif %}">
+                                    <a class="page-link" href="{% if history_page_obj.has_previous %}?page={{ history_page_obj.previous_page_number }}{% endif %}" aria-label="Previous">
+                                        <span aria-hidden="true">&laquo;</span>
+                                    </a>
+                                </li>
+                                <li class="page-item active">
+                                    <span class="page-link page-link-profile">{{ history_page_obj.number }}</span>
+                                </li>
+                                <li class="page-item {% if not history_page_obj.has_next %}disabled{% endif %}">
+                                    <a class="page-link" href="{% if history_page_obj.has_next %}?page={{ history_page_obj.next_page_number }}{% endif %}" aria-label="Next">
+                                        <span aria-hidden="true">&raquo;</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
                     </div>
                 </div>
             </div>
@@ -188,11 +259,45 @@
                 <div class="col-md-6">
                     <div class="card mb-4 mb-md-0" style="background-color:white !important; margin-top:10px; height: 328px;">
                         <div class="card-body">
+                            <div class="switcher-game">
+                                <button type="button" class="switch-btn" onclick="toggleGame()">✂️</button>
+                            </div>
                             <!-- Proje Durumu Başlığı -->
                             <p class="mb-4"><span class="text-primary font-italic me-1">{{profile.username}} </span>/ Stats</p>
-                            <div class="stats-info">
+                            <div class="stats-info-pong" id="stats-info-pong">
                                 <div class="stats">
                                     <p class="stats-p"><i class="bi bi-dice-1-fill"></i> Games Played:</p>
+                                    <p class="stats-result-p">{% if profile.game_stats.total_games_pong %} {{profile.game_stats.total_games_pong}} {% else %} 0 {% endif %}</p>
+                                </div>
+                                <div class="stats">
+                                    <p class="stats-p"><i class="bi bi-trophy-fill"></i> Wins:</p>
+                                    <p class="stats-result-p">{% if profile.game_stats.total_win_pong %} {{profile.game_stats.total_win_pong}} {% else %} 0 {% endif %}</p>
+                                </div>
+                                <div class="stats">
+                                    <p class="stats-p"><i class="bi bi-emoji-frown-fill"></i> Loses:</p>
+                                    <p class="stats-result-p">{% if profile.game_stats.total_lose_pong %} {{profile.game_stats.total_lose_pong}} {% else %} 0 {% endif %}</p>
+                                </div>
+                                <div class="stats">
+                                    <p class="stats-p"><i class="bi bi-award-fill"></i> Win Rate:</p>
+                                    <p class="stats-result-p">{% if profile.game_stats.formatted_win_rate %} {{profile.game_stats.formatted_win_rate}} {% else %} 0 {% endif %}</p>
+                                </div>
+                                <div class="stats">
+                                    <p class="stats-p"><i class="bi bi-emoji-wink-fill"></i> Win Streak:</p>
+                                    <p class="stats-result-p">{% if profile.game_stats.total_win_streak_pong %} {{profile.game_stats.total_win_streak_pong}} {% else %} 0 {% endif %}</p>
+                                </div>
+                                <div class="stats">
+                                    <p class="stats-p"><i class="bi bi-bucket-fill"></i> Lose Streak:</p>
+                                    <p class="stats-result-p">{% if profile.game_stats.total_lose_streak_pong %} {{profile.game_stats.total_lose_streak_pong}} {% else %} 0 {% endif %}</p>
+                                </div>
+                                <div class="stats">
+                                    <p class="stats-p"><i class="bi bi-clock-fill"></i> Average Game Duration:</p>
+                                    <p class="stats-result-p">{% if profile.game_stats.formatted_game_duration %} {{profile.game_stats.formatted_game_duration}} {% else %} 0 {% endif %}</p>
+                                </div>
+                            </div>
+
+                            <div class="stats-info-rps" id="stats-info-rps">
+                                <div class="stats">
+                                    <p class="stats-p"><i class="bi bi-dice-1-fill"></i> de Played:</p>
                                     <p class="stats-result-p">{% if profile.game_stats.total_games_pong %} {{profile.game_stats.total_games_pong}} {% else %} 0 {% endif %}</p>
                                 </div>
                                 <div class="stats">
@@ -227,6 +332,7 @@
         </div>
     </div>
 </div>
+<script src="{% static "js/index.js" %}"></script>
 <script>
     const followButtons = document.querySelectorAll(".btn, .unfollow-btn");
     followButtons.forEach((button) => {
