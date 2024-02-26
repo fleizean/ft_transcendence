@@ -32,7 +32,11 @@ var lpaddleSound = new Audio(STATIC_URL + 'one_beep_2_left.mp3');
 var rpaddleSound = new Audio(STATIC_URL + 'one_beep_2_right.mp3');
 var wallSound = new Audio(STATIC_URL + 'one_beep.mp3');
 
-gameSound.volume = 0.01;
+/* Skill sounds */
+var fastandFuriousSound = new Audio(STATIC_URL + 'fast-and-furious.mp3');
+var frozenBallSound = new Audio(STATIC_URL + 'frozen-ball.mp3');
+
+gameSound.volume = 0.07;
 /* Cordinates of the canvas */
 var textWidth1 = ctx.measureText(username + ": " + score1).width;
 var textWidth2 = ctx.measureText(ainame + ": " + score2).width;
@@ -60,7 +64,7 @@ var ball = {x: canvas.width / 2, y: canvas.height / 2, radius: 10, speed: 10, dx
 var score1 = 0;
 var score2 = 0;
 
-const MAX_SCORE = 10;
+const MAX_SCORE = 3;
 
 // Player Abilities
 var likeaCheaterCount = 0;
@@ -329,6 +333,23 @@ function startWallSound() {
     }, 50);
 }
 
+// Skill Sounds
+
+function startfastandFuriousSound() {
+    setTimeout(function() {  
+        fastandFuriousSound.volume = 0.2;
+        fastandFuriousSound.play();
+    }, 50);
+}
+
+function startfrozenBallSound() {
+    setTimeout(function() {  
+        //frozenBallSound.volume = 0.2;
+        frozenBallSound.play();
+    }, 50);
+}
+
+
 // Reset the ball to the center
 function resetBall() {
     isScored = true;
@@ -348,11 +369,12 @@ function resetBall() {
 function frozenBallAbility() {
     var nowBallSpeed = ball.speed;
     isFrozenBallActive = true;
+    startfrozenBallSound();
     ball.speed = 0;
     setTimeout(function() {
         ball.speed = nowBallSpeed;
         isFrozenBallActive = false;
-    }, 2000);
+    }, 1500);
 }
 
 function likeaCheaterAbility(isAi) {
@@ -371,6 +393,7 @@ function likeaCheaterAbility(isAi) {
 }
 
 function fastandFuriousAbility() {
+    startfastandFuriousSound();
     ball.speed += 10;
 }
 
@@ -412,7 +435,7 @@ document.addEventListener("keyup", function(event) {
 
 
 // Ai Player
-let reactionDelay = 1000 / ball.speed; // Delay in milliseconds
+let reactionDelay = 5000 / ball.speed; // Delay in milliseconds
 let lastBallPosition = { x: ball.x, y: ball.y };
 let ballDirection = { x: 0, y: 0 };
 let predictedY = paddle2.y;
@@ -484,17 +507,17 @@ function startGameCountdown() {
     // 3 saniye sonra
     setTimeout(function() {
         countdown.textContent = '3';
-    }, 1000);
+    }, 50);
 
     // 2 saniye sonra
     setTimeout(function() {
         countdown.textContent = '2';
-    }, 2000);
+    }, 1050);
 
     // 1 saniye sonra
     setTimeout(function() {
         countdown.textContent = '1';
-    }, 3000);
+    }, 2050);
 
     // Oyunu başlat
     setTimeout(function() {
