@@ -32,7 +32,11 @@ var lpaddleSound = new Audio(STATIC_URL + 'one_beep_2_left.mp3');
 var rpaddleSound = new Audio(STATIC_URL + 'one_beep_2_right.mp3');
 var wallSound = new Audio(STATIC_URL + 'one_beep.mp3');
 
-gameSound.volume = 0.01;
+/* Skill sounds */
+var fastandFuriousSound = new Audio(STATIC_URL + 'fast-and-furious.mp3');
+var frozenBallSound = new Audio(STATIC_URL + 'frozen-ball.mp3');
+
+gameSound.volume = 0.07;
 /* Cordinates of the canvas */
 var textWidth1 = ctx.measureText(username + ": " + score1).width;
 var textWidth2 = ctx.measureText(ainame + ": " + score2).width;
@@ -60,7 +64,7 @@ var ball = {x: canvas.width / 2, y: canvas.height / 2, radius: 10, speed: 10, dx
 var score1 = 0;
 var score2 = 0;
 
-const MAX_SCORE = 10;
+const MAX_SCORE = 3;
 
 // Player Abilities
 var likeaCheaterCount = 0;
@@ -299,12 +303,14 @@ function startBackgroundMusic() {
 function playResultSound(isVictory) {
     //stopBackgroundMusic(); // Önce müziği durdur
     if (isVictory) {  
-        setTimeout(function() {  
+        setTimeout(function() {
+            victorySound.volume = 0.2;  
             victorySound.play();
         }, 50);
         victoryMusic = true;
     } else {
-        setTimeout(function() {  
+        setTimeout(function() {
+            defeatSound.volume = 0.2;  
             defeatSound.play();
         }, 50);
         defeatMusic = true;
@@ -329,6 +335,23 @@ function startWallSound() {
     }, 50);
 }
 
+// Skill Sounds
+
+function startfastandFuriousSound() {
+    setTimeout(function() {  
+        fastandFuriousSound.volume = 0.2;
+        fastandFuriousSound.play();
+    }, 50);
+}
+
+function startfrozenBallSound() {
+    setTimeout(function() {  
+        //frozenBallSound.volume = 0.2;
+        frozenBallSound.play();
+    }, 50);
+}
+
+
 // Reset the ball to the center
 function resetBall() {
     isScored = true;
@@ -348,11 +371,12 @@ function resetBall() {
 function frozenBallAbility() {
     var nowBallSpeed = ball.speed;
     isFrozenBallActive = true;
+    startfrozenBallSound();
     ball.speed = 0;
     setTimeout(function() {
         ball.speed = nowBallSpeed;
         isFrozenBallActive = false;
-    }, 2000);
+    }, 1500);
 }
 
 function likeaCheaterAbility(isAi) {
@@ -371,6 +395,7 @@ function likeaCheaterAbility(isAi) {
 }
 
 function fastandFuriousAbility() {
+    startfastandFuriousSound();
     ball.speed += 10;
 }
 
@@ -412,7 +437,7 @@ document.addEventListener("keyup", function(event) {
 
 
 // Ai Player
-let reactionDelay = 1000 / ball.speed; // Delay in milliseconds
+let reactionDelay = 5000 / ball.speed; // Delay in milliseconds
 let lastBallPosition = { x: ball.x, y: ball.y };
 let ballDirection = { x: 0, y: 0 };
 let predictedY = paddle2.y;
@@ -484,17 +509,17 @@ function startGameCountdown() {
     // 3 saniye sonra
     setTimeout(function() {
         countdown.textContent = '3';
-    }, 1000);
+    }, 50);
 
     // 2 saniye sonra
     setTimeout(function() {
         countdown.textContent = '2';
-    }, 2000);
+    }, 1050);
 
     // 1 saniye sonra
     setTimeout(function() {
         countdown.textContent = '1';
-    }, 3000);
+    }, 2050);
 
     // Oyunu başlat
     setTimeout(function() {
@@ -516,13 +541,22 @@ function resetGame() {
 
 // Oyun bitiş ekranını gösteren fonksiyon
 function showGameOverScreen() {
-    var winnerText = (score1 == MAX_SCORE) ? username + " wins!" : ainame + " wins!";
+    //var winnerText = (score1 == MAX_SCORE) ? username + " wins!" : ainame + " wins!";
+    var winnerText = (score1 == MAX_SCORE) ? "YOU WIN!": "";
+    var loserText = (score2 == MAX_SCORE) ? "YOU LOSE!": "";
     if (score1 == MAX_SCORE) {
         playResultSound(true); // Zafer durumu
     } else {
         playResultSound(false); // Yenilgi durumu
     }
     document.getElementById('winnerText').innerText = winnerText;
+    document.getElementById('loserText').innerText = loserText;
+    if (score1 > score2) {
+        document.getElementById('gameOverScreen').style.backgroundColor = 'rgba(11, 22, 8, 0.8)';
+    }
+    else {
+        document.getElementById('gameOverScreen').style.backgroundColor = 'rgba(20, 5, 5, 0.8)';
+    }
     document.getElementById('gameOverScreen').style.display = 'block';
 }
 
