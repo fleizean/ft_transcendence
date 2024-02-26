@@ -82,30 +82,30 @@ function update() {
     ball.y += ball.speed * ball.dy;
 
     // Check for collisions with paddles
-    if (ball.y + ball.radius > paddle1.y && ball.y - ball.radius < paddle1.y + paddle1.height && ball.dx < 0) {       
-        if (ball.x - ball.radius < paddle1.x + paddle1.width) {
+    if (ball.y + ball.radius >= paddle1.y && ball.y - ball.radius <= paddle1.y + paddle1.height && ball.dx < 0) {       
+        if (ball.x - ball.radius <= paddle1.x + paddle1.width) {
             if (gameMode == "Abilities") {
                 if (Math.random() <= 0.5) {
                     ball.speed += 1;
                 }
             }
+            ball.x = paddle1.x + paddle1.width + ball.radius;
             ball.dx *= -1;
-            // Check if the ball hit the top or bottom 20% of the paddle
             if (ball.y < paddle1.y + 0.2 * paddle1.height || ball.y > paddle1.y + 0.8 * paddle1.height) {
                 ball.speed *= 1.2; // Increase speed by 20%
                 paddleSpeed *= 1.2;
             }
         }
     }
-    if (ball.y + ball.radius > paddle2.y && ball.y - ball.radius < paddle2.y + paddle2.height && ball.dx > 0) {
-        if (ball.x + ball.radius > paddle2.x) {
+    if (ball.y + ball.radius >= paddle2.y && ball.y - ball.radius <= paddle2.y + paddle2.height && ball.dx > 0) {
+        if (ball.x + ball.radius >= paddle2.x) {
             if (gameMode == "Abilities") {
                 if (Math.random() <= 0.5) {
                     ball.speed += 1;
                 }
             }
+            ball.x = paddle2.x - ball.radius;
             ball.dx *= -1;
-            // Check if the ball hit the top or bottom 20% of the paddle
             if (ball.y < paddle2.y + 0.2 * paddle2.height || ball.y > paddle2.y + 0.8 * paddle2.height) {
                 ball.speed *= 1.2; // Increase speed by 20%
                 paddleSpeed *= 1.2;
