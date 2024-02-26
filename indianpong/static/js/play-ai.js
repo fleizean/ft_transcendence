@@ -303,12 +303,14 @@ function startBackgroundMusic() {
 function playResultSound(isVictory) {
     //stopBackgroundMusic(); // Önce müziği durdur
     if (isVictory) {  
-        setTimeout(function() {  
+        setTimeout(function() {
+            victorySound.volume = 0.2;  
             victorySound.play();
         }, 50);
         victoryMusic = true;
     } else {
-        setTimeout(function() {  
+        setTimeout(function() {
+            defeatSound.volume = 0.2;  
             defeatSound.play();
         }, 50);
         defeatMusic = true;

@@ -1610,7 +1610,7 @@ body {
   border-style: ridge;
 }
 
-.game-over {
+/* .game-over {
   display: none;
   position: absolute;
   top: 50%;
@@ -1622,17 +1622,65 @@ body {
   border-radius: 10px;
 }
 
-
 .game-over h1 {
   margin: 0 0 20px;
   color: green;
   font-size: 36px;
+} */
+
+.game-over {
+  display: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 20px;
+  background-color: rgba(0, 0, 0, 0.8);
+  text-align: center;
+  font-family: Arial, sans-serif;
+  border-radius: 10px;
 }
 
+.game-over p {
+  font-family: 'Pixeboy-z8XGD', sans-serif;
+  font-size: 20px;
+  font-weight: bold;
+  margin-top: -20px;
+  color: palegreen;
+}
 
-#restartButton,
+.game-over h1 {
+  font-size: 48px;
+  font-family: 'Pixeboy-z8XGD', sans-serif;
+  color: #ffffff;
+  margin-bottom: 10px;
+}
+
+.game-over h2 {
+  font-size: 24px;
+  color: #ffffff;
+  font-family: 'Pixeboy-z8XGD', sans-serif;
+  margin-bottom: 20px;
+}
+
+#restartButton{
+  font-family: 'Pixeboy-z8XGD', sans-serif;
+  font-size: 20px;
+  background-color: #4caf50;
+  width: 120px;
+  height: 50px;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  margin: 0 10px;
+  cursor: pointer;
+}
+
 #exitButton {
-    background-color: #4caf50;
+    font-family: 'Pixeboy-z8XGD', sans-serif;
+    font-size: 20px;
+    background-color: #d75151;
     width: 120px;
     height: 50px;
     color: white;
@@ -1650,9 +1698,13 @@ body {
   align-items: center;
 }
 
-#restartButton:hover,
+#restartButton:hover {
+  background-color: #1a8b1e;
+  border: red;
+}
+
 #exitButton:hover {
-    background-color: #359e38;
+    background-color: #ce3737;
     border: red;
 }
 
