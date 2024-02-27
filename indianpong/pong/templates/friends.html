@@ -12,16 +12,11 @@
     <div class="search-card">
         <div class="card-container-wrapper">
         <!-- Arama sonuçları -->
-        {% if friends %}
             {% for friend in friends %}
               <div class="card-containers">
                 <div class="profile-card">
                     <div class="image">
-                        {% if friend.avatar %}
-                            <a href="/profile/{{friend.username}}"><img src="{{friend.avatar.url}}" alt="" class="profile-img" /></a>
-                        {% else %}
-                            <a href="/profile/{{friend.username}}"><img src="/static/assets/profile/profilephoto.jpeg" alt="" class="profile-img" /></a>
-                        {% endif %}
+                        <a href="/profile/{{friend.username}}"><img src="{{friend.avatar.url}}" alt="" class="profile-img" {% if friend.is_online and not friend.is_playing %} style="border: 3px solid #4CAF4F" {% elif friend.is_playing %} style="border: 3px solid #ffa600" {% else %} style="border: 3px solid #ff0000" {% endif %} /></a>
                     </div>
                     <div class="text-data">
                       <span class="name">{{friend.username}}</span>
@@ -53,23 +48,22 @@
                       <div class="analytics">
                         <div class="data">
                           <i class="bi bi-dice-1-fill" style="color: #FF5733;"></i>
-                          <span class="number">50</span>
+                          <span class="number">{% if friend.game_stats.total_games_pong %} {{friend.game_stats.total_games_pong}} {% else %} 0 {% endif %}</span>
                         </div>
                         <div class="data">
                           <i class="bi bi-trophy-fill" style="color: #FFD601;"></i>
-                          <span class="number">50</span>
+                          <span class="number">{% if friend.game_stats.total_win_pong %} {{friend.game_stats.total_win_pong}} {% else %} 0 {% endif %}</span>
                         </div>
                         <div class="data">
                           <i class="bi bi-award-fill" style="color: #4CAF4F;"></i>
-                          <span class="number">100%</span>
+                          <span class="number">{% if friend.game_stats.formatted_win_rate %} {{friend.game_stats.formatted_win_rate}} {% else %} 0% {% endif %}</span>
                         </div>
                       </div>
                 </div>
               </div>
+              {% empty %}
+              <p style="color:orange; font-weight:bold; text-align: center;">No friends found.</p>
               {% endfor %}
-              {% else %}
-                <p style="color:orange; font-weight:bold; text-align: center;">No friends found.</p>
-              {% endif %}
             </div>
             <nav aria-label="Page navigation example " class="mt-4">
               <ul class="pagination justify-content-center">

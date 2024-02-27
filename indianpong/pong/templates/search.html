@@ -21,76 +21,70 @@
 
         <div class="card-container-wrapper">
         <!-- Arama sonuçları -->
-        {% if results %}
-            {% for kullanici in results %}
+            {% for person in results %}
               <div class="card-containers">
                 <div class="profile-card">
                     <div class="image">
-                        {% if kullanici.avatar %}
-                            <a href="profile/{{kullanici.username}}"><img src="{{kullanici.avatar.url}}" alt="" class="profile-img" /></a>
-                        {% else %}
-                            <a href="profile/{{kullanici.username}}"><img src="/static/assets/profile/profilephoto.jpeg" alt="" class="profile-img" /></a>
-                        {% endif %}
+                        <a href="profile/{{person.username}}"><img src="{{person.avatar.url}}" alt="" class="profile-img" /></a>
                     </div>
                     <div class="text-data">
-                      <span class="name">{{kullanici.username}}</span>
-                      <span class="job">{{kullanici.displayname}}</span>
+                      <span class="name">{{person.username}}</span>
+                      <span class="job">{{person.displayname}}</span>
                     </div>
                     <div class="media-buttons">
-                      {% if kullanici.social.stackoverflow %}
-                        <a href="https://stackoverflow.com/users/{{kullanici.social.stackoverflow}}" target="_blank" class="medialinks stackoverflow"><i class="bi bi-stack-overflow"></i></a>
+                      {% if person.social.stackoverflow %}
+                        <a href="https://stackoverflow.com/users/{{person.social.stackoverflow}}" target="_blank" class="medialinks stackoverflow"><i class="bi bi-stack-overflow"></i></a>
                       {% endif %}
-                      {% if kullanici.social.github %}
-                        <a href="https://github.com/{{kullanici.social.github}}" target="_blank" class="medialinks github"><i class="bi bi-github"></i></a>
+                      {% if person.social.github %}
+                        <a href="https://github.com/{{person.social.github}}" target="_blank" class="medialinks github"><i class="bi bi-github"></i></a>
                       {% endif %}
-                      {% if kullanici.social.twitter %}
-                        <a href="https://x.com/{{kullanici.social.twitter}}" target="_blank" class="medialinks twitter"><i class="bi bi-twitter"></i></a>
+                      {% if person.social.twitter %}
+                        <a href="https://x.com/{{person.social.twitter}}" target="_blank" class="medialinks twitter"><i class="bi bi-twitter"></i></a>
                       {% endif %}
-                      {% if kullanici.social.instagram %}
-                        <a href="https://www.instagram.com/{{kullanici.social.instagram}}" target="_blank" class="medialinks instagram"><i class="bi bi-instagram"></i></a>
+                      {% if person.social.instagram %}
+                        <a href="https://www.instagram.com/{{person.social.instagram}}" target="_blank" class="medialinks instagram"><i class="bi bi-instagram"></i></a>
                       {% endif %}
                     </div>
-                    {% if not kullanici.social.stackoverflow and not kullanici.social.twitter and not kullanici.social.github and not kullanici.social.instagram %}
+                    {% if not person.social.stackoverflow and not person.social.twitter and not person.social.github and not person.social.instagram %}
                       <div class="buttons" style="margin-top: 60px !important;">
-                        {% if kullanici.is_friend %}
-                        <button data-username="{{ kullanici.username }}" class="button-follow">Unfollow</button>
+                        {% if person.is_person %}
+                        <button data-username="{{ person.username }}" class="button-follow">Unfollow</button>
                       {% else %}
-                        <button data-username="{{ kullanici.username }}" class="button-follow">Follow</button>
+                        <button data-username="{{ person.username }}" class="button-follow">Follow</button>
                       {% endif %}
-                      <a href="/start_chat/{{kullanici.username}}"> <button class="button-message">Message</button></a>
+                      <a href="/start_chat/{{person.username}}"> <button class="button-message">Message</button></a>
                       </div>
                     {% else %}
                       <div class="buttons">
-                        {% if kullanici.is_friend %}
-                        <button data-username="{{ kullanici.username }}" class="button-follow">Unfollow</button>
+                        {% if person.is_person %}
+                        <button data-username="{{ person.username }}" class="button-follow">Unfollow</button>
                       {% else %}
-                        <button data-username="{{ kullanici.username }}" class="button-follow">Follow</button>
+                        <button data-username="{{ person.username }}" class="button-follow">Follow</button>
                       {% endif %}
-                      <a href="/start_chat/{{kullanici.username}}"> <button class="button-message">Message</button></a>
+                      <a href="/start_chat/{{person.username}}"> <button class="button-message">Message</button></a>
                       </div>
                     {% endif %}
                   
                       <div class="analytics">
                         <div class="data">
                           <i class="bi bi-dice-1-fill" style="color: #FF5733;"></i>
-                          <span class="number">50</span>
+                          <span class="number">{% if person.game_stats.total_games_pong %} {{person.game_stats.total_games_pong}} {% else %} 0 {% endif %}</span>
                         </div>
                         <div class="data">
                           <i class="bi bi-trophy-fill" style="color: #FFD601;"></i>
-                          <span class="number">50</span>
+                          <span class="number">{% if person.game_stats.total_win_pong %} {{person.game_stats.total_win_pong}} {% else %} 0 {% endif %}</span>
                         </div>
                         <div class="data">
                           <i class="bi bi-award-fill" style="color: #4CAF4F;"></i>
-                          <span class="number">100%</span>
+                          <span class="number">{% if person.game_stats.formatted_win_rate %} {{person.game_stats.formatted_win_rate}} {% else %} 0% {% endif %}</span>
                         </div>
                       </div>
                    
                 </div>
               </div>
-              {% endfor %}
-              {% else %}
+              {% empty %}
               <p style="color:orange; font-weight:bold; text-align: center;">No results found.</p>
-              {% endif %}
+              {% endfor %}
             </div>
             <nav aria-label="Page navigation example" class="mt-4">
               <ul class="pagination justify-content-center">

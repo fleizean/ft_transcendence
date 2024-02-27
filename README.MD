@@ -80,7 +80,7 @@ of the project.</b>
           <li>✅ Users can select a  unique display name to play the tournaments. </li>
           <li>✅ Users can update their  information. </li>
           <li>✅ Users can upload an   avatar, with a default option if none is provided. </li>
-          <li>⌛ Users can add others as friends   and view their online status. </li>
+          <li>✅ Users can add others as friends   and view their online status. </li>
           <li>✅ User profiles display stats,  such as wins and losses. </li>
           <li>✅ Each user has a <b>Match  History</b> including 1v1 games, dates, and relevant
           details, accessible to logged-in users.</li>

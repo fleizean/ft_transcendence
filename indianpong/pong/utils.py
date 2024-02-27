@@ -6,7 +6,7 @@ import os
 from django.utils.crypto import get_random_string
 
 def delete_from_media(path):
-    if os.path.isfile(path):
+    if os.path.isfile(path) and "c4" not in path:
         os.remove(path)
 
 def get_upload_to(instance, filename):

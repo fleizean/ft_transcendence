@@ -659,7 +659,7 @@ def search(request):
             Q(username__icontains=search_query)
             | Q(displayname__icontains=search_query)
             | Q(email__icontains=search_query_email)
-        ).exclude(username=request.user.username)
+        ).exclude(username=request.user)
         results_list = []
         for result in results:
             # Create a dictionary with the data of the result
@@ -993,7 +993,7 @@ def update_winner(request):
             winner_profile.save()
         elif loser:
             loser_profile.indian_wallet += random.randint(20, 30)
-            lose_elo -= random.randint(1, 10)
+            lose_elo -= random.randint(10, 20)
             if lose_elo < loser_profile.elo_point:
                 loser_profile.elo_point -= lose_elo
             loser_profile.save()
