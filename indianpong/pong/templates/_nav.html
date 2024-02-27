@@ -55,5 +55,12 @@
     </ul>
     <div class="burger-menu">&#9776;</div>
   </nav>
-
+<script>
+  window.addEventListener("beforeunload", function(e) {
+    // Sayfa kapatılmadan önce bir istek gönder
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", "/logout", false);  // Sunucuya logout işlemi için bir istek gönder
+    xhr.send();
+});
+</script>
   <script src="{% static "js/index.js" %}"></script>

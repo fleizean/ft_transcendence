@@ -2,7 +2,9 @@ from email.mime.image import MIMEImage
 import os
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.signals import user_logged_in, user_logged_out
 from django.core.validators import MinValueValidator, MaxValueValidator
+from django.dispatch import receiver
 from django.utils.html import mark_safe
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
@@ -44,7 +46,9 @@ class UserProfile(AbstractUser):
     game_stats = models.OneToOneField('UserGameStat', on_delete=models.SET_NULL, null=True, blank=True)
     indian_wallet = models.IntegerField(blank=True, null=True, default=0, validators=[MinValueValidator(0), MaxValueValidator(9999)])
     elo_point = models.IntegerField(blank=True, null=True, default=0, validators=[MinValueValidator(0), MaxValueValidator(99999)])
-
+    is_online = models.BooleanField(default=False)
+    is_offline = models.BooleanField(default=False)
+    is_playing = models.BooleanField(default=False)
 
     def __str__(self) -> str:
         return f"{self.username}"

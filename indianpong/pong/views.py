@@ -659,7 +659,7 @@ def search(request):
             Q(username__icontains=search_query)
             | Q(displayname__icontains=search_query)
             | Q(email__icontains=search_query_email)
-        ).exclude(username=request.user.username)
+        ).exclude(username=request.user)
         results_list = []
         for result in results:
             # Create a dictionary with the data of the result

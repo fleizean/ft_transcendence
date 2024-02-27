@@ -73,15 +73,15 @@
                       <div class="analytics">
                         <div class="data">
                           <i class="bi bi-dice-1-fill" style="color: #FF5733;"></i>
-                          <span class="number">50</span>
+                          <span class="number">{% if kullanici.game_stats.total_games_pong %} {{kullanici.game_stats.total_games_pong}} {% else %} 0 {% endif %}</span>
                         </div>
                         <div class="data">
                           <i class="bi bi-trophy-fill" style="color: #FFD601;"></i>
-                          <span class="number">50</span>
+                          <span class="number">{% if kullanici.game_stats.total_win_pong %} {{kullanici.game_stats.total_win_pong}} {% else %} 0 {% endif %}</span>
                         </div>
                         <div class="data">
                           <i class="bi bi-award-fill" style="color: #4CAF4F;"></i>
-                          <span class="number">100%</span>
+                          <span class="number">{% if kullanici.game_stats.formatted_win_rate %} {{kullanici.game_stats.formatted_win_rate}} {% else %} 0% {% endif %}</span>
                         </div>
                       </div>
                    
