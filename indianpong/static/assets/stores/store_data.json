@@ -92,7 +92,7 @@
     {
         "category_name": "All",
         "name": "DJ Give Me The Music",
-        "image_url": "versus-time.webp",
+        "image_url": "djplaythemusic.webp",
         "description": "This feature activates in-game (pong, rps) music.",
         "price": 100,
         "keypress": "none",
