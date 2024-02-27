@@ -993,7 +993,7 @@ def update_winner(request):
             winner_profile.save()
         elif loser:
             loser_profile.indian_wallet += random.randint(20, 30)
-            lose_elo -= random.randint(1, 10)
+            lose_elo -= random.randint(10, 20)
             if lose_elo < loser_profile.elo_point:
                 loser_profile.elo_point -= lose_elo
             loser_profile.save()
