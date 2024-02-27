@@ -86,7 +86,7 @@
                             <div class="data-cell data-cell--sm">
                                 <div class="data-filter">Win Rate</div>
                             </div>
-                            <div class="data-cell">
+                            <div class="data-cell data-cell--sm">
                                 <div class="data-filter">Pong Point</div>
                             </div>
                         </div>
@@ -98,7 +98,7 @@
                                     <div class="data-cell data-cell--sm">
                                         <div class="data-content">
                                             <div class>
-                                                <img src="/static/assets/profile/profilephoto.jpeg" alt="avatar">
+                                                <img src="{{user.avatar.url}}" alt="avatar">
                                             </div>
                                         </div>
                                     </div>
@@ -132,7 +132,7 @@
                                             {{user.game_stats.formatted_win_rate}}  
                                         </div>
                                     </div>
-                                    <div class="data-cell">
+                                    <div class="data-cell data-cell--sm">
                                         <div class="data-content">
                                             {{user.elo_point}}  
                                         </div>
