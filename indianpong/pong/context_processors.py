@@ -9,5 +9,5 @@ def userinfo(request):
         return {}
      """
     profile = get_object_or_404(UserProfile, username=request.user.username)
-    profile_avatar = profile.avatar.url if profile.avatar else "/static/assets/profile/profilephoto.jpeg"
-    return {'username': profile.username, 'avatar': profile_avatar}
+    #profile_avatar = profile.avatar.url if profile.avatar else "/static/assets/profile/profilephoto.jpeg"
+    return {'username': profile.username, 'avatar': profile.avatar.url}

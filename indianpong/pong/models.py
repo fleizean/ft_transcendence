@@ -34,7 +34,7 @@ class UserProfile(AbstractUser):
     #id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     displayname = models.CharField(max_length=100, blank=True, null=True)
     email = models.EmailField(unique=True, max_length=254)
-    avatar = models.ImageField(upload_to=get_upload_to, null=True, blank=True)
+    avatar = models.ImageField(upload_to=get_upload_to, null=True, blank=True, default="c4.jpg")
     friends = models.ManyToManyField('self', symmetrical=False, blank=True)
     social = models.OneToOneField('Social', on_delete=models.SET_NULL, null=True, blank=True)
     #channel_name = models.CharField(max_length=100, blank=True, null=True)
@@ -47,7 +47,6 @@ class UserProfile(AbstractUser):
     indian_wallet = models.IntegerField(blank=True, null=True, default=0, validators=[MinValueValidator(0), MaxValueValidator(9999)])
     elo_point = models.IntegerField(blank=True, null=True, default=0, validators=[MinValueValidator(0), MaxValueValidator(99999)])
     is_online = models.BooleanField(default=False)
-    is_offline = models.BooleanField(default=False)
     is_playing = models.BooleanField(default=False)
 
     def __str__(self) -> str:
@@ -55,58 +54,47 @@ class UserProfile(AbstractUser):
     
     @property
     def thumbnail(self):
-        if self.avatar:
+        return mark_safe('<img src="%s" width="50" height="50" />' % (self.avatar.url))
+    """         if self.avatar:
             return mark_safe('<img src="%s" width="50" height="50" />' % (self.avatar.url))
         else:
-            return mark_safe('<img src="/static/assets/profile/profilephoto.jpeg" width="50" height="50" />')
+            return mark_safe('<img src="/static/assets/profile/profilephoto.jpeg" width="50" height="50" />') """
 
     def get_rank_image(self):
-        if 1 <= self.elo_point <= 150:
-            return "iron.webp"
-        elif 150 < self.elo_point <= 200:
-            return "bronze.webp"
-        elif 200 < self.elo_point <= 250:
-            return "silver.webp"
-        elif 250 < self.elo_point <= 310:
-            return "gold.webp"
-        elif 310 < self.elo_point <= 360:
-            return "platinum.webp"
-        elif 360 < self.elo_point <= 420:
-            return "emerlad.webp"
-        elif 420 < self.elo_point <= 500:
-            return "diamond.webp"
-        elif 500 < self.elo_point <= 550:
-            return "master.webp"
-        elif 550 < self.elo_point <= 600:
-            return "grandmaster.webp"
-        elif 600 < self.elo_point:
-            return "challenger.webp"
-        else:
-            return "unranked.webp"
-    
+        ranks = {
+            (1, 150): "iron.webp",
+            (150, 200): "bronze.webp",
+            (200, 250): "silver.webp",
+            (250, 310): "gold.webp",
+            (310, 360): "platinum.webp",
+            (360, 420): "emerlad.webp",
+            (420, 500): "diamond.webp",
+            (500, 550): "master.webp",
+            (550, 600): "grandmaster.webp",
+            (600, float('inf')): "challenger.webp"
+        }
+        for rank_range, rank_image in ranks.items():
+            if rank_range[0] <= self.elo_point <= rank_range[1]:
+                return rank_image
+        return "unranked.webp"
+
     def get_rank_name(self):
-        if 1 <= self.elo_point <= 150:
-            return "Iron"
-        elif 150 < self.elo_point <= 200:
-            return "Bronze"
-        elif 200 < self.elo_point <= 250:
-            return "Silver"
-        elif 250 < self.elo_point <= 310:
-            return "Gold"
-        elif 310 < self.elo_point <= 360:
-            return "Platinum"
-        elif 360 < self.elo_point <= 420:
-            return "Emerald"
-        elif 420 < self.elo_point <= 500:
-            return "Diamond"
-        elif 500 < self.elo_point <= 550:
-            return "Master"
-        elif 550 < self.elo_point <= 600:
-            return "Grandmaster"
-        elif 600 < self.elo_point:
-            return "Challenger"
-        else:
-            return "Unranked"
+        ranks = {
+            (1, 150): "Iron",
+            (150, 200): "Bronze",
+            (200, 250): "Silver",
+            (250, 310): "Gold",
+            (310, 360): "Platinum",
+            (360, 420): "Emerald",
+            (420, 500): "Diamond",
+            (500, 550): "Master",
+            (550, 600): "Grandmaster",
+            (600, float('inf')): "Challenger"
+        }
+        for rank_range, rank_name in ranks.items():
+            if rank_range[0] <= self.elo_point <= rank_range[1]:
+                return rank_name
+        return "Unranked"
 
 
 class UserItem(models.Model):

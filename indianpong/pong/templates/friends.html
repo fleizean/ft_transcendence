@@ -12,16 +12,11 @@
     <div class="search-card">
         <div class="card-container-wrapper">
         <!-- Arama sonuçları -->
-        {% if friends %}
             {% for friend in friends %}
               <div class="card-containers">
                 <div class="profile-card">
                     <div class="image">
-                        {% if friend.avatar %}
-                            <a href="/profile/{{friend.username}}"><img src="{{friend.avatar.url}}" alt="" class="profile-img" {% if friend.is_online and not friend.is_playing %} style="border: 3px solid #4CAF4F" {% elif friend.is_playing %} style="border: 3px solid #ffa600" {% else %} style="border: 3px solid #ff0000" {% endif %} /></a>
-                        {% else %}
-                            <a href="/profile/{{friend.username}}"><img src="/static/assets/profile/profilephoto.jpeg" alt="" class="profile-img"  {% if friend.is_online and not friend.is_playing %} style="border: 3px solid #4CAF4F" {% elif friend.is_playing %} style="border: 3px solid #ffa600" {% else %} style="border: 3px solid #ff0000" {% endif %} /></a>
-                        {% endif %}
+                        <a href="/profile/{{friend.username}}"><img src="{{friend.avatar.url}}" alt="" class="profile-img" {% if friend.is_online and not friend.is_playing %} style="border: 3px solid #4CAF4F" {% elif friend.is_playing %} style="border: 3px solid #ffa600" {% else %} style="border: 3px solid #ff0000" {% endif %} /></a>
                     </div>
                     <div class="text-data">
                       <span class="name">{{friend.username}}</span>
@@ -66,10 +61,9 @@
                       </div>
                 </div>
               </div>
+              {% empty %}
+              <p style="color:orange; font-weight:bold; text-align: center;">No friends found.</p>
               {% endfor %}
-              {% else %}
-                <p style="color:orange; font-weight:bold; text-align: center;">No friends found.</p>
-              {% endif %}
             </div>
             <nav aria-label="Page navigation example " class="mt-4">
               <ul class="pagination justify-content-center">

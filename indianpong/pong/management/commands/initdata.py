@@ -3,6 +3,7 @@ from pong.models import UserProfile, StoreItem, Social
 from django.core.files import File
 from os import environ
 import json
+import shutil
 
 class Command(BaseCommand):
 	def handle(self, *args, **options):
@@ -38,3 +39,10 @@ class Command(BaseCommand):
 			StoreItem.objects.create(**item_data)
 
 		self.stdout.write(self.style.SUCCESS('Store data loaded successfully.'))
+
+		# Load default avatar to media directory
+		source_path = 'static/assets/profile/c4.jpg'
+		destination_path = 'media/c4.jpg'
+		shutil.copyfile(source_path, destination_path)
+
+
