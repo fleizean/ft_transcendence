@@ -23,11 +23,7 @@
                 {% endif %}
                 <div class="card-body text-center">
                     <!-- Avatar -->
-                    {% if not profile.avatar %}
-                        <img src="/static/assets/profile/profilephoto.jpeg" alt="avatar" class="profile-image-circ" style="aspect-ratio: 1/1; object-fit: cover;">
-                    {% else %}
-                        <img src="{{ profile.avatar.url }}" alt="avatar" class="profile-image-circ" style="aspect-ratio: 1/1; object-fit: cover;">
-                    {% endif %}
+                    <img src="{{ profile.avatar.url }}" alt="avatar" class="profile-image-circ" {% if profile.is_online and not profile.is_playing %} style="border: 3px solid #4CAF4F; aspect-ratio: 1/1; object-fit: cover;" {% elif profile.is_playing %} style="border: 3px solid #ffa600; aspect-ratio: 1/1; object-fit: cover;" {% else %} style="border: 3px solid #ff0000; aspect-ratio: 1/1; object-fit: cover;" {% endif %}>
                     <!-- isim -->
                     <h5 class="my-3" style="margin-bottom: 0 !important;">{{profile.username}}</h5>
                     <h7 class="my-5" style="margin-top: -3em !important; margin-bottom: 10px !important;">{{profile.displayname}}</h7>
@@ -332,7 +328,7 @@
         </div>
     </div>
 </div>
-<script src="{% static "js/index.js" %}"></script>
+<script src="{% static "js/profile.js" %}"></script>
 <script>
     const followButtons = document.querySelectorAll(".btn, .unfollow-btn");
     followButtons.forEach((button) => {

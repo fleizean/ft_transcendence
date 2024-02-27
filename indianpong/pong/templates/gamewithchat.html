@@ -289,6 +289,24 @@
             chatPopup.style.display = "none";
         }
     });
+
+    var canvas = document.getElementById("myCanvas");
+
+function setCanvasSize() {
+    if (canvas) {
+        var maxWidth = window.innerWidth - 370;
+        var maxHeight = window.innerHeight - 100;
+        console.log("width" + maxWidth)
+        console.log("height" + maxHeight)
+        // Canvas'ın genişliğini ve yüksekliğini belirle
+        canvas.width = maxWidth;
+        canvas.height = maxHeight;
+    }
+}
+
+document.addEventListener("DOMContentLoaded", setCanvasSize);
+window.addEventListener("resize", setCanvasSize);
+
 </script>
 </html>
 

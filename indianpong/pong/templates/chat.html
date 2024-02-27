@@ -56,7 +56,7 @@
                   {% for user in users %}
                       <li>
                         <a href="{% url 'start_chat' user %}" data-link>
-                          <img class="content-message-image" src="{% if user.avatar %}{{ user.avatar.url }}{% else %}/static/assets/profile/profilephoto.jpeg{% endif %}" alt="" />
+                          <img class="content-message-image" src="{{ user.avatar.url }}" alt="" />
                           
                           <span class="content-message-info">
                             <span class="content-message-name">{{ user }}</span>

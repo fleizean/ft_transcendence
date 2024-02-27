@@ -19,7 +19,7 @@ class UserProfileAdmin(admin.ModelAdmin):
     list_display = ('username', 'email', 'displayname', 'avatar_thumbnail')
     search_fields = ('username', 'email', 'displayname')
     fieldsets = (
-    ('User Information', {'fields': ('username', 'password', 'displayname', 'email', 'avatar', 'friends', 'elo_point', 'indian_wallet')}),
+    ('User Information', {'fields': ('username', 'password', 'displayname', 'email', 'avatar', 'friends', 'elo_point', 'indian_wallet', 'is_online', 'is_playing')}),
     ('Dates', {'fields': ('date_joined', 'last_login')}),
     ('Roles', {'fields': ('is_staff', 'is_active', 'is_superuser', 'is_verified', 'is_42student', 'is_indianai')}),
     ('Permissions', {'fields': ('groups', 'user_permissions')}),

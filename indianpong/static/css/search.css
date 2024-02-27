@@ -92,11 +92,9 @@
   width: 100%;
   object-fit: cover;
   border-radius: 50%;
-  border: 3px solid #fff;
 }
 
 .image .profile-img:hover {
-  border: 3px solid #ff8d01;
   transform: scale(1.05); /* Fotoğrafın boyutunu büyüt */
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
 }
