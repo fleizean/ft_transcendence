@@ -1,0 +1,197 @@
+
+.data {
+    overflow: auto;
+    font-size: .9333333333rem
+}
+
+.data .data-container {
+    min-width: fit-content
+}
+
+.data .data-container .data-row {
+    display: flex;
+    align-items: center
+}
+
+.data .data-container .data-row .data-cell {
+    flex: 1;
+    padding: 0 8px;
+    color: #eff2fe
+}
+
+.data .data-container .data-row .data-cell.data-cell--xsm {
+    flex: .1
+}
+
+.data .data-container .data-row .data-cell.data-cell--sm {
+    flex: .5
+}
+
+.data .data-container .data-row .data-cell.data-cell--md {
+    flex: 1.5
+}
+
+.data .data-container .data-row .data-cell.data-cell--lg {
+    flex: 2
+}
+
+.data .data-container .data-row .data-cell:first-child {
+    padding-left: 0
+}
+
+.data .data-container .data-row .data-cell:last-child .data-filter {
+    border: 0
+}
+
+.data .data-container .data-row .data-cell .data-filter {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: .5625rem .3125rem;
+    font-size: .8rem;
+    /* font-family: 'Pixeboy-z8XGD'; */
+    font-weight: 600;
+    text-transform: uppercase;
+    border-right: 1px dashed #303044
+}
+
+.data .data-container .data-row .data-cell .data-filter:hover svg {
+    fill: #181824
+}
+
+.data .data-container .data-row .data-cell .data-filter svg {
+    width: 18px;
+    margin-top: .1rem;
+    margin-left: .4rem;
+    fill: #303044
+}
+
+.data .data-container .data-row .data-cell .data-filter.data-filter--clickable {
+    cursor: pointer
+}
+
+.data .data-container .data-head {
+    color: #303044;
+    font-size: .8666666667rem;
+    background: #abaabf;
+    border: 1px solid transparent
+}
+
+.data .data-container .data-head .data-cell {
+    color: #232334
+}
+
+.data .data-container .data-body {
+    padding: 15px 0
+}
+
+.data .data-container .data-body .data-item {
+    position: relative;
+    padding: 20px 0;
+    border: 1px solid rgba(171, 170, 191, .4);
+    border-radius: 12px;
+    text-decoration: none;
+}
+
+.data .data-container .data-body .data-item:not(:last-child) {
+    margin-bottom: 15px
+}
+
+.data .data-container .data-body .data-item .data-row {
+    display: flex;
+    align-items: center
+}
+
+.data .data-container .data-body .data-item .data-row .data-cell {
+    padding-left: 1rem
+}
+
+.data .data-container .data-body .data-item.data-title-wrapper:hover {
+    color: #fff;
+    background: #c21aa5;
+    box-shadow: 0 4px 3px #0000001a, 0 0 1px #0000001a
+}
+
+.data .data-container .data-body .data-item.data-title-wrapper:hover .label {
+    background: rgba(255, 255, 255, .3);
+    border: 0
+}
+
+.data .data-container .data-body .data-item.data-title-wrapper:hover .data-cell--title a {
+    color: #fff
+}
+
+.data .data-container .data-body .data-item.data-title-wrapper .data-cell--title {
+    z-index: 5;
+    display: block;
+    line-height: 1.7em
+}
+
+.data .data-container .data-body .data-item.data-title-wrapper .data-cell--title a {
+    color: #fff
+}
+
+.data .data-container .data-body .data-item.data-title-wrapper .data-cell--title a:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: block;
+    width: 100%;
+    height: 100%
+}
+
+.leaderboard-ranking {
+    padding: 25px 15px 10px;
+    background: #453a4e;
+    border-radius: 10px
+}
+
+.leaderboard-ranking .data .data-container .data-head {
+    font-size: .8rem;
+    background-color: #181824;
+    border-radius: 5px
+}
+
+.leaderboard-ranking .data .data-container .data-head .data-cell {
+    color: #fff
+}
+
+.leaderboard-ranking .data .data-container .data-body img {
+    width: 2.6666666667rem;
+    margin-top: .5333333333rem;
+    border-radius: 100%;
+    aspect-ratio: 1/1;
+    object-fit: cover
+}
+
+.leaderboard-ranking .data .data-container .data-body .data-item {
+    position: relative;
+    display: block;
+    padding: 5px;
+    background-color: #232334;
+    border: 1px solid #181824;
+    transition: background-color .1s ease-in
+}
+
+.leaderboard-ranking .data .data-container .data-body .data-item:hover {
+    background-color: #F99601
+}
+
+.leaderboard-ranking .data .data-container .data-body .data-item .data-content {
+    font-size: 1.0666666667rem
+}
+
+.leaderboard-ranking .data .data-container .data-body .data-item .data-content .label {
+    margin-left: -1rem;
+    text-transform: lowercase;
+    background-color: #fff
+}
+
+.leaderboard-ranking .data .leaderboard-pro:after {
+    top: initial;
+    right: initial;
+    bottom: .3333333333rem;
+    left: 1.7333333333rem;
+    font-size: .6rem
+}
