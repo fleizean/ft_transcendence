@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 
+{% block stylesheet %}<link rel="stylesheet" href="../../../static/css/ranking.css">{% endblock stylesheet %}
+
 {% load static %}
 
 {% block title %}Rankings{% endblock title %}
@@ -57,6 +59,92 @@
           </nav>
           
         </div>
+        
+        <div class="leaderboard-ranking">
+            <div class="data">
+                <div class="data-container">
+                    <div class="data-head">
+                        <div class="data-row">
+                            <div class="data-cell data-cell--sm">
+                                <div class="data-filter"></div>
+                            </div>
+                            <div class="data-cell data-cell--sm">
+                                <div class="data-filter">Rank</div>
+                            </div>
+                            <div class="data-cell">
+                                <div class="data-filter">Name</div>
+                            </div>
+                            <div class="data-cell">
+                                <div class="data-filter">User Name</div>
+                            </div>
+                            <div class="data-cell data-cell--sm">
+                                <div class="data-filter">Wins</div>
+                            </div>
+                            <div class="data-cell data-cell--sm">
+                                <div class="data-filter">Losses</div>
+                            </div>
+                            <div class="data-cell data-cell--sm">
+                                <div class="data-filter">Win Rate</div>
+                            </div>
+                            <div class="data-cell data-cell--sm">
+                                <div class="data-filter">Pong Point</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="data-body">
+                        {% for user in users_page_obj %}
+                            <a href="profile/{{user.username}}" class="data-item">
+                                <div class="data-row">
+                                    <div class="data-cell data-cell--sm">
+                                        <div class="data-content">
+                                            <div class>
+                                                <img src="{{user.avatar.url}}" alt="avatar">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="data-cell data-cell--sm">
+                                        <div class="data-content">
+                                            <strong>{{user.rank}}</strong>
+                                        </div>
+                                    </div>
+                                    <div class="data-cell">
+                                        <div class="data-content">
+                                            {{user.displayname}}  
+                                        </div>
+                                    </div>
+                                    <div class="data-cell">
+                                        <div class="data-content">
+                                            {{user.username}}  
+                                        </div>
+                                    </div>
+                                    <div class="data-cell data-cell--sm">
+                                        <div class="data-content">
+                                            {{user.game_stats.total_win_pong}}  
+                                        </div>
+                                    </div>
+                                    <div class="data-cell data-cell--sm">
+                                        <div class="data-content">
+                                            {{user.game_stats.total_lose_pong}}  
+                                        </div>
+                                    </div>
+                                    <div class="data-cell data-cell--sm">
+                                        <div class="data-content">
+                                            {{user.game_stats.formatted_win_rate}}  
+                                        </div>
+                                    </div>
+                                    <div class="data-cell data-cell--sm">
+                                        <div class="data-content">
+                                            {{user.elo_point}}  
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    
     </div>
 </div>
 {% endblock %}
