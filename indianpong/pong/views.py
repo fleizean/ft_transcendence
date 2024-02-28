@@ -527,11 +527,22 @@ def dashboard(request):
 @never_cache
 @login_required()
 def rankings(request):
-    users_by_elo = UserProfile.objects.filter(
+    top_users = UserProfile.objects.filter(
         game_stats__total_win_rate_pong__isnull=False
-    ).exclude(username='IndianAI').order_by("-elo_point")
+    ).exclude(username='IndianAI').order_by("-elo_point")[:3]
+
+    # Her bir kullanıcıya sıra numarası eklemek için döngü
+    for index, user in enumerate(top_users, start=1):
+        user.rank = index
     
-    paginator = Paginator(users_by_elo, 10)
+    other_users = UserProfile.objects.filter(
+        game_stats__total_win_rate_pong__isnull=False
+    ).exclude(username='IndianAI').order_by("-elo_point")[3:]
+
+    for index, user in enumerate(other_users, start=4):
+        user.rank = index
+
+    paginator = Paginator(other_users, 3)
     page_number = request.GET.get("page")
     try:
         users_page_obj = paginator.page(page_number)
@@ -541,12 +552,8 @@ def rankings(request):
         users_page_obj = paginator.page(paginator.num_pages)
 
     # Add rank attribute to each user in the page
-    start_rank = users_page_obj.start_index()
-    for user in users_page_obj:
-        user.rank = start_rank
-        start_rank += 1
 
-    return render(request, "rankings.html", {"users_page_obj": users_page_obj})
+    return render(request, "rankings.html", {"top_users": top_users, "users_page_obj": users_page_obj})
 
 
 @login_required()
