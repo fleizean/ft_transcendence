@@ -1,8 +1,9 @@
 {% extends "base.html" %}
 
-{% block stylesheet %}<link rel="stylesheet" href="../../../static/css/ranking.css">{% endblock stylesheet %}
-
 {% load static %}
+
+{% block stylesheet %}<link rel="stylesheet" href="{% static 'css/ranking.css' %}">{% endblock stylesheet %}
+
 
 {% block title %}Rankings{% endblock title %}
 
@@ -10,57 +11,39 @@
   {% include "_nav.html" %}
 <div class="container-top">
     <div class="card">
-        <div class="rankings-card-header">
+{% comment %}         <div class="rankings-card-header">
             <h3 class="rankings-header"> / Rankings</h3>
-        </div>
-        <div class="rankings">
-            <table class="card-rankings-table">
-                <thead>
-                    <tr>
-                        <th>Rank</th>
-                        <th>Users</th>
-                        <th>Wins</th>
-                        <th>Losses</th>
-                        <th>Win Rate</th>
-                        <th>Pong Point (PP)</th>
-                </thead>
-                <tbody>
-                    {% for user in users_page_obj %}
-                        <tr>
-                            <td class="rank-number">{{user.rank}}</td>
-                            <td class="rank-username">{{user.username}}</th>
-                            <td class="wins">{{user.game_stats.total_win_pong}}</th>
-                            <td class="losses">{{user.game_stats.total_lose_pong}}</td>
-                            <td class="win-rate">{{user.game_stats.formatted_win_rate}}</td>
-                            <td class="pong-point">{{user.elo_point}}</td>
-                        </tr>
-                    {% endfor %}
-
-                </tbody>
-            </table>
-            <nav aria-label="Page navigation example " class="mt-4">
-              <ul class="pagination justify-content-center">
-                  <li class="page-item {% if not users_page_obj.has_previous %}disabled{% endif %}">
-                      <a class="page-link" href="{% if users_page_obj.has_previous %}?page={{ users_page_obj.previous_page_number }}{% endif %}" aria-label="Previous">
-                          <span aria-hidden="true">&laquo;</span>
-                      </a>
-                  </li>
-                  {% for page_num in users_page_obj.paginator.page_range %}
-                      <li class="page-item {% if page_num == users_page_obj.number %}active{% endif %}">
-                          <a class="page-link page-link-rankings" href="?page={{ page_num }}">{{ page_num }}</a>
-                      </li>
-                  {% endfor %}
-                  <li class="page-item {% if not users_page_obj.has_next %}disabled{% endif %}">
-                      <a class="page-link" href="{% if users_page_obj.has_next %}?page={{ users_page_obj.next_page_number }}{% endif %}" aria-label="Next">
-                          <span aria-hidden="true">&raquo;</span>
-                      </a>
-                  </li>
-              </ul>
-          </nav>
-          
-        </div>
-        
-        <div class="leaderboard-ranking">
+        </div> {% endcomment %}
+            <div class="rankings">
+            </div>
+            <!-- leaderboard Podium-->
+            <div class="leaderboard-podium">
+            {% for user in users_page_obj %}
+            {% if forloop.counter <= 3 and user.rank <= 3 %}
+            <a href="profile/{{user.username}}" class="leaderboard-winner leaderboard-winner--rank{{user.rank}}">
+                <header class="leaderboard-winner-header">
+                    <img src="{{user.avatar.url}}" alt="{{user.username}}" class="winner-img">
+                    <h3>{{user.displayname}}</h3>
+                    <span class="badge">{{user.username}}</span>
+                </header>
+                <footer class="leaderboard-winner-footer">
+                    <ul>
+                        <li>
+                            <small>Rank</small>
+                            <strong>#{{user.rank}}</strong>
+                        </li>
+                        <li>
+                            <small>Pong Point</small>
+                            <strong>{{user.elo_point}}</strong>
+                        </li>
+                    </ul>
+                </footer>
+            </a>
+            {% endif %}
+            {% endfor %}
+            </div> 
+            <!-- leaderboard Ranking-->
+            <div class="leaderboard-ranking">
             <div class="data">
                 <div class="data-container">
                     <div class="data-head">
@@ -93,12 +76,13 @@
                     </div>
                     <div class="data-body">
                         {% for user in users_page_obj %}
+                        {% if forloop.counter > 3 or user.rank >= 3%}
                             <a href="profile/{{user.username}}" class="data-item">
                                 <div class="data-row">
                                     <div class="data-cell data-cell--sm">
                                         <div class="data-content">
                                             <div class>
-                                                <img src="{{user.avatar.url}}" alt="avatar">
+                                                <img src="{{user.avatar.url}}" alt="{{user.username}}}">
                                             </div>
                                         </div>
                                     </div>
@@ -139,12 +123,32 @@
                                     </div>
                                 </div>
                             </a>
+                        {% endif %}
                         {% endfor %}
                     </div>
                 </div>
             </div>
-        </div>
-    
+            </div>
+            <!-- Pagination -->
+            <nav aria-label="Page navigation example " class="mt-4">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item {% if not users_page_obj.has_previous %}disabled{% endif %}">
+                        <a class="page-link" href="{% if users_page_obj.has_previous %}?page={{ users_page_obj.previous_page_number }}{% endif %}"    aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    {% for page_num in users_page_obj.paginator.page_range %}
+                        <li class="page-item {% if page_num == users_page_obj.number %}active{% endif %}">
+                            <a class="page-link page-link-rankings" href="?page={{ page_num }}">{{ page_num }}</a>
+                        </li>
+                    {% endfor %}
+                    <li class="page-item {% if not users_page_obj.has_next %}disabled{% endif %}">
+                        <a class="page-link" href="{% if users_page_obj.has_next %}?page={{ users_page_obj.next_page_number }}{% endif %}"    aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
     </div>
 </div>
 {% endblock %}
