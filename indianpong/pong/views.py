@@ -649,7 +649,7 @@ def inventory(request, username):
     return render(
         request,
         "inventory.html",
-        {"profile": profile, "inventory_items": inventory_items},
+        {"profile": profile, "inventory_items": inventory_items}
     )
 
 @login_required()

@@ -4,7 +4,7 @@
 
 {% load static %}
 
-{% block stylesheet %}<link rel="stylesheet" href="../../../static/css/inventory.css">{% endblock stylesheet %}
+{% block stylesheet %}<link rel="stylesheet" href="{% static "css/inventory.css" %}">{% endblock stylesheet %}
 
 {% block app %}
   {% include "_nav.html" %}
@@ -50,7 +50,7 @@
           <div class="modal fade" id="setPropertyModal" tabindex="-1" aria-labelledby="setPropertyModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
-                  <form id="store_item_form{{ item.id }}" method="POST">
+                  <form id="store_item_form{{ item.id }}"  method="POST">
                     {% csrf_token %}
                     <div class="modal-header">
                         <h5 class="modal-title" id="setPropertyModalLabel">Özelliği Ayarla</h5>
@@ -64,8 +64,8 @@
                         </div>
                     </div>
                     <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary" onclick="event.preventDefault(); saveProperty(`{{item.id}}`)">Kaydet</button>
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
-                        <button type="button" class="btn btn-primary" onclick="saveProperty(`{{item.id}}`)">Kaydet</button>
                     </div>
                   </div>
               </form>
@@ -89,16 +89,16 @@
                   <span class="card__shop__price">{{item.item.price}}N₩</span>
                   {% if item.is_bought %}
                     {% if item.item.name == "My Playground" or item.item.name == "My Beautiful AI" or item.item.name == "My Beautiful Paddle" %}
-                      <button class="card__shop__action-set" onclick="openSetPropertyModal(`{{item.item.name}}`, `{{item.whatis}}`)">
+                      <button id="button-{{item.item.name}}" class="card__shop__action-set" data-whatis="{{item.whatis}}" onclick="openSetPropertyModal(`{{item.item.name}}`, this.getAttribute('data-whatis'))">
                         <i class="bi bi-gear-fill" style="color:white; font-size: 1.1em;"></i>
                       </button>
                     {% endif %}
-                    <form id="store_item_form{{ item.item.name }}" method="POST">
+                    <form id="store_item_form{{ item.item.name }}" method="POST"  data-is-equipped="{{ item.is_equipped }}" onsubmit="event.preventDefault(); submitStoreItemForm(`{{ item.item.name }}`);">
                       {% csrf_token %}
                       <input type="hidden" name="name" value="{{ item.item.name }}">
                       <input type="hidden" name="action" value="equip">
                       <input type="hidden" name="whatis" value="none">
-                      <button type="button" class="card__shop__action-gear" onclick="submitStoreItemForm('{{ item.item.name }}')" >
+                      <button type="submit" class="card__shop__action-gear">
                         <i class="bi bi-backpack-fill" style="color:white; font-size: 1.1em;"></i>
                       </button>
                     </form>
@@ -145,7 +145,7 @@ function showToast(content, status, iconClass) {
 function openSetPropertyModal(itemName, itemWhatIs) {
     document.getElementById('itemNameInput').value = itemName;
     var propertyContent = document.getElementById('propertyContent');
-    if (itemName === "My Playground" || itemName === "My Beautiful Paddle") {
+        if (itemName === "My Playground" || itemName === "My Beautiful Paddle") {
         itemWhatIs = itemWhatIs || '#000000';
         propertyContent.innerHTML = `
             <label for="color">Choose Color:</label>
@@ -166,8 +166,6 @@ function openSetPropertyModal(itemName, itemWhatIs) {
 
 function saveProperty(itemId) {
     var itemName = document.getElementById('itemNameInput').value;
-    var whatis = '';
-
     if (itemName === "My Playground" || itemName === "My Beautiful Paddle") {
         whatis = document.getElementById('color').value;
     } else {
@@ -176,21 +174,60 @@ function saveProperty(itemId) {
 
     showToast(`${itemName} öğesini başarıyla özelleştirdin!`, `text-bg-success`, `bi bi-shop`);
     const form = document.getElementById('store_item_form' + itemId);
-    setTimeout(function () {
-      form.submit();
-    }, 500);
+    const formData = new FormData(form);
+
+
+    fetch("/inventory/{{username}}/", {
+      method: form.method,
+      body: formData,
+      headers: {
+        'X-CSRFToken': form.querySelector('[name=csrfmiddlewaretoken]').value
+      }
+    })
+    .then(response => response.text())
+    .then(text => {
+      let button = document.getElementById(`button-${itemName}`);
+      button.setAttribute('data-whatis', whatis);
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+    });
 }
 
 function submitStoreItemForm(itemName) {
-    const form = document.getElementById('store_item_form' + itemName);
+  const form = document.getElementById('store_item_form' + itemName);
+  const formData = new FormData(form);
+  // Access the data-is-equipped attribute
+  let isEquipped = form.getAttribute('data-is-equipped');
+  console.log(isEquipped, typeof isEquipped);
 
-    showToast(`${itemName} öğesini başarıyla kuşandın!`, `text-bg-success`, `bi bi-check-circle-fill`);
+  
+  let toastMessage;
+  let toastIcon;
+  if (isEquipped == 'True') {
+    toastMessage = `${itemName} öğesini başarıyla çıkardın!`; // You successfully unequipped the item!
+    toastIcon = `bi bi-x-circle-fill`; // Change this to the icon you want to show when unequipping
+  } else {
+    toastMessage = `${itemName} öğesini başarıyla kuşandın!`; // You successfully equipped the item!
+    toastIcon = `bi bi-check-circle-fill`;
+  }
+  showToast(toastMessage, `text-bg-success`, toastIcon);
 
-    // İstediğiniz zaman formu submit etmek için uygun bir zamanlayıcı kullanabilirsiniz
-    setTimeout(function () {
-        // Formu gerçekleştir
-        form.submit();
-    }, 500); // Örnekte 2 saniye ertelemeyi belirtiyoruz, ihtiyaca göre ayarlayabilirsiniz.
+  fetch("/inventory/{{username}}/", {
+    method: form.method,
+    body: formData,
+    headers: {
+      'X-CSRFToken': form.querySelector('[name=csrfmiddlewaretoken]').value
+    }
+  })
+  .then(response => response.text())
+  .then(text => {
+     // Change the value of data-is-equipped attribute
+    form.setAttribute('data-is-equipped', isEquipped == 'True' ? 'False' : 'True');
+  })
+  .catch((error) => {
+    console.error('Error:', error);
+  });
 }
 
 document.addEventListener('DOMContentLoaded', (event) => {
