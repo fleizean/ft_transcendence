@@ -1,4 +1,18 @@
 
+/* .badge {
+    display: inline-block;
+    min-width: 24px;
+    padding: 0 6px;
+    color: #181824;
+    font-size: .9333333333rem;
+    font-weight: 600;
+    line-height: 1.6rem;
+    text-align: center;
+    background: #eff2fe;
+    border-radius: 12px
+}
+ */
+
 .data {
     overflow: auto;
     font-size: .9333333333rem
@@ -141,6 +155,159 @@
     height: 100%
 }
 
+/* Leaderboard podium */
+
+.leaderboard-podium {
+    display: flex;
+    width: 85%;
+    margin: auto auto 55px
+}
+
+.leaderboard-winner {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 33.3333333333%;
+    color: #fff;
+    background-color: #232334;
+    border: 1px solid #303044;
+    border-radius: 10px;
+    transform: perspective(1000px);
+    transform-style: preserve-3d;
+    transition: all .2s ease-in;
+    text-decoration: none;
+    
+}
+
+.leaderboard-winner:hover {
+    border: 1px solid #F99601
+}
+
+.leaderboard-winner:not(:last-child) {
+    margin-right: 25px
+}
+
+.leaderboard-winner:not(.leaderboard-winner--rank1) {
+    top: 15px
+}
+
+.leaderboard-winner.leaderboard-winner--rank1 {
+    order: 2;
+    background-color: #181824;
+    border-color: transparent
+}
+
+.leaderboard-winner.leaderboard-winner--rank1:before {
+    content: "";
+    position: absolute;
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+    background-color: #181824;
+    border-radius: 10px
+}
+
+.leaderboard-winner.leaderboard-winner--rank1:after {
+    content: "";
+    position: absolute;
+    z-index: 0;
+    /* background: linear-gradient(45deg, #f00 0%, #ff9a00 10%, #d0de21 20%, #4fdc4a 30%, #3fdad8 40%, #2fc9e2 50%, #1c7fee 60%, #5f15f2 70%, #ba0cf8 80%, #fb07d9 90%, #f00 100%) repeat 0% 0%/300% 100%; */
+    background: greenyellow;
+    border-radius: 10px;
+    transform: translateZ(-1px);
+    transition: inset .2s ease-in;
+    animation: rgb 6s linear infinite;
+    inset: -2px
+}
+
+.leaderboard-winner.leaderboard-winner--rank1:hover:after {
+    inset: -3px
+}
+
+.leaderboard-winner.leaderboard-winner--rank1 .leaderboard-winner-header,
+.leaderboard-winner.leaderboard-winner--rank1 .leaderboard-winner-footer {
+    z-index: 3
+}
+
+.leaderboard-winner.leaderboard-winner--rank1 .leaderboard-winner-header .winner-img {
+    aspect-ratio: 1/1; 
+    object-fit: cover;
+    /* border: 2px solid rgba(195, 194, 212, .3); */
+}
+
+.leaderboard-winner.leaderboard-winner--rank1 .leaderboard-winner-header .badge {
+    color: #fff;
+    background: #F99601
+}
+
+.leaderboard-winner.leaderboard-winner--rank2 .leaderboard-winner-header .badge {
+    color: #fff;
+    /* background: #F99601 */
+}
+
+.leaderboard-winner.leaderboard-winner--rank3 .leaderboard-winner-header .badge {
+    color: #fff;
+    /* background: #F99601 */
+}
+
+.leaderboard-winner.leaderboard-winner--rank2 {
+    order: 1
+    
+}
+
+.leaderboard-winner.leaderboard-winner--rank3 {
+    order: 3
+}
+
+.leaderboard-winner .leaderboard-winner-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 25px 15px 0
+}
+
+.leaderboard-winner .leaderboard-winner-header .winner-img {
+    aspect-ratio: 1/1; 
+    object-fit: cover;
+    width: 7rem;
+    height: 7rem;
+    /* border: 2px solid rgba(195, 194, 212, .3); */
+    border-radius: 55px;
+    box-shadow: 1px 1px 4px 2px #0003
+}
+
+.leaderboard-winner .leaderboard-winner-header h3 {
+    margin: 10px 0;
+    font-size: 1.0666666667rem;
+    font-weight: 400
+}
+
+.leaderboard-winner .leaderboard-winner-header span {
+    font-size: .7333333333rem
+}
+
+.leaderboard-winner .leaderboard-winner-footer {
+    width: 100%;
+    font-size: 1.0666666667rem;
+    border-radius: 0 0 10px 10px
+}
+
+.leaderboard-winner .leaderboard-winner-footer ul {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 15px 15px;
+    margin-top: -20px
+}
+
+.leaderboard-winner .leaderboard-winner-footer ul small {
+    font-size: .8rem
+}
+
+
+/* Leaderboard ranking */
+
 .leaderboard-ranking {
     padding: 25px 15px 10px;
     background: #453a4e;
@@ -158,6 +325,8 @@
 }
 
 .leaderboard-ranking .data .data-container .data-body img {
+    aspect-ratio: 1/1; 
+    object-fit: cover;
     width: 2.6666666667rem;
     margin-top: .5333333333rem;
     border-radius: 100%;
@@ -194,4 +363,8 @@
     bottom: .3333333333rem;
     left: 1.7333333333rem;
     font-size: .6rem
+}
+
+ul li {
+    list-style: none
 }
