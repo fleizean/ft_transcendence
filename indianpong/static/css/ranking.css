@@ -13,6 +13,20 @@
 }
  */
 
+ 
+.rankings-card {
+    background-color: rgba(241, 241, 251, 0.3) !important;
+    backdrop-filter: blur(3px); /* Arka planı 10 piksel bulanıklaştır */
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    max-width: 1300px;
+    width: 100%;
+    height: auto; /* Yüksekliği otomatik ayarla */
+    max-height: auto;
+    margin: 0 auto; /* Ortalamak için */
+  }
+
 .data {
     overflow: auto;
     font-size: .9333333333rem
@@ -328,10 +342,10 @@
     aspect-ratio: 1/1; 
     object-fit: cover;
     width: 2.6666666667rem;
-    margin-top: .5333333333rem;
     border-radius: 100%;
     aspect-ratio: 1/1;
-    object-fit: cover
+    object-fit: cover;
+    margin-bottom:2px !important;
 }
 
 .leaderboard-ranking .data .data-container .data-body .data-item {
@@ -367,4 +381,33 @@
 
 ul li {
     list-style: none
+}
+
+
+@media screen and (max-width: 1024px) {
+    .leaderboard-podium {
+        flex-wrap: wrap;
+    }
+    .leaderboard-winner {
+        width: 100%;
+        margin-right: 2%;
+        margin-bottom: 20px;
+    }
+    .leaderboard-winner:not(:last-child) {
+        margin-right: 0;
+    }
+    .leaderboard-winner.leaderboard-winner--rank1 {
+        order: 1;
+        background-color: #181824;
+        margin-bottom: 5px;
+        border-color: transparent
+    }
+    .leaderboard-winner.leaderboard-winner--rank2 {
+        order: 2;
+        
+    }
+    
+    .leaderboard-winner.leaderboard-winner--rank3 {
+        order: 33;
+    }
 }
