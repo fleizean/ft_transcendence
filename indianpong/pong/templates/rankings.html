@@ -1,8 +1,9 @@
 {% extends "base.html" %}
 
-{% block stylesheet %}<link rel="stylesheet" href="../../../static/css/ranking.css">{% endblock stylesheet %}
-
 {% load static %}
+
+{% block stylesheet %}<link rel="stylesheet" href="{% static 'css/ranking.css' %}">{% endblock stylesheet %}
+
 
 {% block title %}Rankings{% endblock title %}
 
