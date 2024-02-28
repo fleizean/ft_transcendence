@@ -1,6 +1,3 @@
-
-
-
 /* Profile Page */
 
 .nav-item {
@@ -14,14 +11,11 @@
     box-shadow: 0px 15px 11px -6px #7a7a7d;
     color: #fff; /* İsterseniz metin rengini de ayarlayabilirsiniz */
 }
-  
 
-  
 .stats-info-pong {
     margin-top: 10px;
     
 }
-
 
 .stats-info-rps {
     margin-top: 10px;
@@ -58,16 +52,15 @@
     position: absolute;
     margin-right: 2.5em;
 }
-  
+
 .stats-p, .stats-result-p {
     display: inline-block;
 }
-  
+
 .profile-slashed-info {
     font-size: 10px;
 }
-  
-  
+
 .switcher-btn {
     position: fixed;
     right: 15;
@@ -92,8 +85,8 @@
     display: inline-block; /* Butonları aynı satırda görüntüler */
     vertical-align: top; /* Dikey hizalamayı ayarlar */
     border-radius: 8px;
-  }
-  
+}
+
   .switcher-game .switch-btn:hover {
     background-color: #ffa66b;
     box-shadow: -20px 50px 50px rgba(0,0,0,0.2);
@@ -101,18 +94,16 @@
     color: palegreen; /* Metni gizler */
     transition: none; /* Geçiş efektini kapatır */
   }
-  
-  
+
   .page-item.active .page-link-profile,
   .page-link-profile.active {
       background-color: #ff9500 !important;
       border-color: #ff9500 !important;
       color: #fff !important;
       font-size: 1.17em !important;
-  }
-  
+}
 
-  
+
 .page-item.active .page-link-rankings,
 .page-link-rankings.active {
     background-color: #ff9500 !important;
