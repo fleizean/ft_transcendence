@@ -17,8 +17,8 @@ Rankings
             <!-- Podium -->
             <div class="leaderboard-podium">
                 {% for user in top_users %}
-                <a href="profile/{{ user.username }}" class="leaderboard-winner leaderboard-winner--rank{{ user.rank }}">
-                    <header class="leaderboard-winner-header">
+                <a href="profile/{{ user.username }}" {% if user.username == request.user.username %} class="leaderboard-winner leaderboard-winner--rank{{ user.rank }}you" {% else %} class="leaderboard-winner leaderboard-winner--rank{{ user.rank }}" {% endif %}>
+                    <header class="leaderboard-winner-header" >
                         <img src="{{ user.avatar.url }}" alt="{{ user.username }}" class="winner-img">
                         <h3>{{ user.displayname }}</h3>
                         <span class="badge">{{ user.username }}</span>
@@ -75,7 +75,7 @@ Rankings
                         </div>
                         <div class="data-body">
                             {% for user in users_page_obj %}
-                            <a href="profile/{{ user.username }}" class="data-item">
+                            <a href="profile/{{ user.username }}" {% if user.username == request.user.username %} style="background-color: rgb(255, 187, 0);" {% endif %} class="data-item">
                                 <div class="data-row">
                                     <div class="data-cell data-cell--sm">
                                         <div class="data-content">
