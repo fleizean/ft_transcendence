@@ -1,133 +1,132 @@
 {% extends "base.html" %}
-
 {% load static %}
 
-{% block stylesheet %}<link rel="stylesheet" href="{% static 'css/ranking.css' %}">{% endblock stylesheet %}
+{% block stylesheet %}
+<link rel="stylesheet" href="{% static 'css/ranking.css' %}">
+{% endblock stylesheet %}
 
-
-{% block title %}Rankings{% endblock title %}
+{% block title %}
+Rankings
+{% endblock title %}
 
 {% block app %}
-  {% include "_nav.html" %}
+{% include "_nav.html" %}
 <div class="container-top">
-    <div class="card">
-{% comment %}         <div class="rankings-card-header">
-            <h3 class="rankings-header"> / Rankings</h3>
-        </div> {% endcomment %}
-            <div class="rankings">
-            </div>
-            <!-- leaderboard Podium-->
+    <div class="rankings-card">
+        <div class="rankings">
+            <!-- Podium -->
             <div class="leaderboard-podium">
-            {% for user in users_page_obj %}
-            {% if forloop.counter <= 3 and user.rank <= 3 %}
-            <a href="profile/{{user.username}}" class="leaderboard-winner leaderboard-winner--rank{{user.rank}}">
-                <header class="leaderboard-winner-header">
-                    <img src="{{user.avatar.url}}" alt="{{user.username}}" class="winner-img">
-                    <h3>{{user.displayname}}</h3>
-                    <span class="badge">{{user.username}}</span>
-                </header>
-                <footer class="leaderboard-winner-footer">
-                    <ul>
-                        <li>
-                            <small>Rank</small>
-                            <strong>#{{user.rank}}</strong>
-                        </li>
-                        <li>
-                            <small>Pong Point</small>
-                            <strong>{{user.elo_point}}</strong>
-                        </li>
-                    </ul>
-                </footer>
-            </a>
-            {% endif %}
-            {% endfor %}
-            </div> 
-            <!-- leaderboard Ranking-->
+                {% for user in top_users %}
+                <a href="profile/{{ user.username }}" class="leaderboard-winner leaderboard-winner--rank{{ user.rank }}">
+                    <header class="leaderboard-winner-header">
+                        <img src="{{ user.avatar.url }}" alt="{{ user.username }}" class="winner-img">
+                        <h3>{{ user.displayname }}</h3>
+                        <span class="badge">{{ user.username }}</span>
+                    </header>
+                    <footer class="leaderboard-winner-footer">
+                        <ul>
+                            <li>
+                                <small>Rank</small>
+                                {% if user.rank %}
+                                <strong>#{{ user.rank }}</strong>
+                                {% endif %}
+                            </li>
+                            <li>
+                                <small>Pong Point</small>
+                                <strong>{{ user.elo_point }}</strong>
+                            </li>
+                        </ul>
+                    </footer>
+                </a>
+                {% endfor %}
+            </div>
+
+            <!-- Ranking -->
             <div class="leaderboard-ranking">
-            <div class="data">
-                <div class="data-container">
-                    <div class="data-head">
-                        <div class="data-row">
-                            <div class="data-cell data-cell--sm">
-                                <div class="data-filter"></div>
-                            </div>
-                            <div class="data-cell data-cell--sm">
-                                <div class="data-filter">Rank</div>
-                            </div>
-                            <div class="data-cell">
-                                <div class="data-filter">Name</div>
-                            </div>
-                            <div class="data-cell">
-                                <div class="data-filter">User Name</div>
-                            </div>
-                            <div class="data-cell data-cell--sm">
-                                <div class="data-filter">Wins</div>
-                            </div>
-                            <div class="data-cell data-cell--sm">
-                                <div class="data-filter">Losses</div>
-                            </div>
-                            <div class="data-cell data-cell--sm">
-                                <div class="data-filter">Win Rate</div>
-                            </div>
-                            <div class="data-cell data-cell--sm">
-                                <div class="data-filter">Pong Point</div>
+                <div class="data">
+                    <div class="data-container">
+                        <div class="data-head">
+                            <div class="data-row">
+                                <div class="data-cell data-cell--sm">
+                                    <div class="data-filter"></div>
+                                </div>
+                                <div class="data-cell data-cell--sm">
+                                    <div class="data-filter">Rank</div>
+                                </div>
+                                <div class="data-cell">
+                                    <div class="data-filter">Name</div>
+                                </div>
+                                <div class="data-cell">
+                                    <div class="data-filter">User Name</div>
+                                </div>
+                                <div class="data-cell data-cell--sm">
+                                    <div class="data-filter">Wins</div>
+                                </div>
+                                <div class="data-cell data-cell--sm">
+                                    <div class="data-filter">Losses</div>
+                                </div>
+                                <div class="data-cell data-cell--sm">
+                                    <div class="data-filter">Win Rate</div>
+                                </div>
+                                <div class="data-cell data-cell--sm">
+                                    <div class="data-filter">Pong Point</div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="data-body">
-                        {% for user in users_page_obj %}
-                        {% if forloop.counter > 3 or user.rank >= 3%}
-                            <a href="profile/{{user.username}}" class="data-item">
+                        <div class="data-body">
+                            {% for user in users_page_obj %}
+                            <a href="profile/{{ user.username }}" class="data-item">
                                 <div class="data-row">
                                     <div class="data-cell data-cell--sm">
                                         <div class="data-content">
-                                            <div class>
-                                                <img src="{{user.avatar.url}}" alt="{{user.username}}}">
+                                            <div>
+                                                <img src="{{ user.avatar.url }}" alt="{{ user.username }}">
                                             </div>
                                         </div>
                                     </div>
                                     <div class="data-cell data-cell--sm">
                                         <div class="data-content">
-                                            <strong>{{user.rank}}</strong>
+                                            <strong>
+                                                    {{ user.rank }}
+                                            </strong>
                                         </div>
                                     </div>
                                     <div class="data-cell">
                                         <div class="data-content">
-                                            {{user.displayname}}  
+                                            {{ user.displayname }}  
                                         </div>
                                     </div>
                                     <div class="data-cell">
                                         <div class="data-content">
-                                            {{user.username}}  
+                                            {{ user.username }}  
                                         </div>
                                     </div>
                                     <div class="data-cell data-cell--sm">
                                         <div class="data-content">
-                                            {{user.game_stats.total_win_pong}}  
+                                            {{ user.game_stats.total_win_pong }}  
                                         </div>
                                     </div>
                                     <div class="data-cell data-cell--sm">
                                         <div class="data-content">
-                                            {{user.game_stats.total_lose_pong}}  
+                                            {{ user.game_stats.total_lose_pong }}  
                                         </div>
                                     </div>
                                     <div class="data-cell data-cell--sm">
                                         <div class="data-content">
-                                            {{user.game_stats.formatted_win_rate}}  
+                                            {{ user.game_stats.formatted_win_rate }}  
                                         </div>
                                     </div>
                                     <div class="data-cell data-cell--sm">
                                         <div class="data-content">
-                                            {{user.elo_point}}  
+                                            {{ user.elo_point }}  
                                         </div>
                                     </div>
                                 </div>
                             </a>
-                        {% endif %}
-                        {% endfor %}
+                            {% endfor %}
+                        </div>
                     </div>
                 </div>
-            </div>
             </div>
             <!-- Pagination -->
             <nav aria-label="Page navigation example " class="mt-4">
@@ -138,9 +137,9 @@
                         </a>
                     </li>
                     {% for page_num in users_page_obj.paginator.page_range %}
-                        <li class="page-item {% if page_num == users_page_obj.number %}active{% endif %}">
-                            <a class="page-link page-link-rankings" href="?page={{ page_num }}">{{ page_num }}</a>
-                        </li>
+                    <li class="page-item {% if page_num == users_page_obj.number %}active{% endif %}">
+                        <a class="page-link page-link-rankings" href="?page={{ page_num }}">{{ page_num }}</a>
+                    </li>
                     {% endfor %}
                     <li class="page-item {% if not users_page_obj.has_next %}disabled{% endif %}">
                         <a class="page-link" href="{% if users_page_obj.has_next %}?page={{ users_page_obj.next_page_number }}{% endif %}"    aria-label="Next">
@@ -149,6 +148,7 @@
                     </li>
                 </ul>
             </nav>
+        </div>
     </div>
 </div>
 {% endblock %}
