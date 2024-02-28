@@ -36,7 +36,7 @@
           <input type="text" name="username" class="input" placeholder="Username" maxlength="150" required id="id_username" autocomplete="off">
         </p>
         <p>
-          <input type="password" name="password" class="input" placeholder="Password" onmouseover="showPassword('id_password')" onmouseout="hidePassword('id_password')" required id="id_password" autocomplete="off">
+          <input type="password" name="password" class="input" placeholder="Password" onmouseover="showPassword('id_password')" onmouseout="showPassword('id_password')" required id="id_password" autocomplete="off">
         </p>
         <div class="forgot-pass">
           <a href="/password_reset" class="forgot-password-link">Forgot Password?</a>
@@ -83,7 +83,12 @@
     {% endif %}
   </div>
 </div>
-<script src="{% static "js/login-register.js" %}"></script>
+<script>
+  function showPassword(input) {
+    var passwordField = document.getElementById(input);
+    passwordField.type = "text" ? "password" : "text";
+  }
+</script>
 
 {% endblock %}
 

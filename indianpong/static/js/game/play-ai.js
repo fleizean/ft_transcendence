@@ -20,21 +20,21 @@ const rageofFire = document.querySelector('.container-top').dataset.rageoffire;
 const frozenBall = document.querySelector('.container-top').dataset.frozenball;
 const givemethemusic = document.querySelector('.container-top').dataset.givemethemusic;
 
-var STATIC_URL = "../../static/music/";
+const MUSIC_PATH = document.querySelector('.container-top').dataset.musicpath;
 
 var gameMusic = false;
 var defeatMusic = false;
 var victoryMusic = false;
-var victorySound = new Audio(STATIC_URL + 'victory-sound.mp3');
-var defeatSound = new Audio(STATIC_URL + 'defeat-sound.mp3');
-var gameSound = new Audio(STATIC_URL + 'pong-music.mp3');
-var lpaddleSound = new Audio(STATIC_URL + 'one_beep_2_left.mp3');
-var rpaddleSound = new Audio(STATIC_URL + 'one_beep_2_right.mp3');
-var wallSound = new Audio(STATIC_URL + 'one_beep.mp3');
+var victorySound = new Audio(MUSIC_PATH+ 'victory-sound.mp3');
+var defeatSound = new Audio(MUSIC_PATH+ 'defeat-sound.mp3');
+var gameSound = new Audio(MUSIC_PATH+ 'pong-music.mp3');
+var lpaddleSound = new Audio(MUSIC_PATH+ 'one_beep_2_left.mp3');
+var rpaddleSound = new Audio(MUSIC_PATH+ 'one_beep_2_right.mp3');
+var wallSound = new Audio(MUSIC_PATH+ 'one_beep.mp3');
 
 /* Skill sounds */
-var fastandFuriousSound = new Audio(STATIC_URL + 'fast-and-furious.mp3');
-var frozenBallSound = new Audio(STATIC_URL + 'frozen-ball.mp3');
+var fastandFuriousSound = new Audio(MUSIC_PATH+ 'fast-and-furious.mp3');
+var frozenBallSound = new Audio(MUSIC_PATH+ 'frozen-ball.mp3');
 
 gameSound.volume = 0.07;
 /* Cordinates of the canvas */
@@ -437,7 +437,7 @@ document.addEventListener("keyup", function(event) {
 
 
 // Ai Player
-let reactionDelay = 5000 / ball.speed; // Delay in milliseconds
+let reactionDelay = 1000 / ball.speed; // Delay in milliseconds
 let lastBallPosition = { x: ball.x, y: ball.y };
 let ballDirection = { x: 0, y: 0 };
 let predictedY = paddle2.y;

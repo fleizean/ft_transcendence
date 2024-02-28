@@ -4,7 +4,7 @@
 
 {% load static %}
 
-{% block stylesheet %}<link rel="stylesheet" href="../../../static/css/search.css">{% endblock stylesheet %}
+{% block stylesheet %}<link rel="stylesheet" href="{% static "css/search.css" %}">{% endblock stylesheet %}
 
 {% block app %}
   {% include "_nav.html" %}

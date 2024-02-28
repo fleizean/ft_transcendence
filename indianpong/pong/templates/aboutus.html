@@ -1,10 +1,11 @@
 {% extends "base.html" %}
 
+{% load static %}
+
 {% block title %}About Us{% endblock title %}
 
-{% block stylesheet %}<link rel="stylesheet" href="../../../static/css/aboutus.css">{% endblock stylesheet %}
+{% block stylesheet %}<link rel="stylesheet" href="{% static "css/aboutus.css" %}">{% endblock stylesheet %}
 
-{% load static %}
 
 {% block app %}
     {% include '_nav.html' %} 
