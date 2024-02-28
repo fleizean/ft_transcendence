@@ -19,8 +19,8 @@
             <!-- leaderboard Podium-->
             <div class="leaderboard-podium">
             {% for user in users_page_obj %}
-            {% if forloop.counter <= 3 %}
-            <a href="profile/{{user.username}}" class="leaderboard-winner leaderboard-winner--rank{{forloop.counter}}">
+            {% if forloop.counter <= 3 and user.rank <= 3 %}
+            <a href="profile/{{user.username}}" class="leaderboard-winner leaderboard-winner--rank{{user.rank}}">
                 <header class="leaderboard-winner-header">
                     <img src="{{user.avatar.url}}" alt="{{user.username}}" class="winner-img">
                     <h3>{{user.displayname}}</h3>
@@ -76,7 +76,7 @@
                     </div>
                     <div class="data-body">
                         {% for user in users_page_obj %}
-                        {% if forloop.counter > 3 %}
+                        {% if forloop.counter > 3 or user.rank >= 3%}
                             <a href="profile/{{user.username}}" class="data-item">
                                 <div class="data-row">
                                     <div class="data-cell data-cell--sm">
