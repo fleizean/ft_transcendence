@@ -230,6 +230,13 @@
     border-color: transparent
 }
 
+.leaderboard-winner.leaderboard-winner--rank1you {
+    order: 2;
+    background-color: rgb(255, 187, 0);
+    border-color: transparent;
+}
+
+
 .leaderboard-winner.leaderboard-winner--rank1:before {
     content: "";
     position: absolute;
@@ -239,6 +246,12 @@
     background-color: #181824;
     border-radius: 10px
 }
+
+.leaderboard-winner.leaderboard-winner--rank1you:hover {
+    content: "";
+    background-color: #181824;
+}
+
 
 .leaderboard-winner.leaderboard-winner--rank1:after {
     content: "";

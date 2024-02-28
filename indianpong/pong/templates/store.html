@@ -4,7 +4,7 @@
 
 {% load static %}
 
-{% block stylesheet %}<link rel="stylesheet" href="../../../static/css/store.css">{% endblock stylesheet %}
+{% block stylesheet %}<link rel="stylesheet" href="{% static "css/store.css" %}">{% endblock stylesheet %}
 
 {% block app %}
   {% include "_nav.html" %}
@@ -50,7 +50,7 @@
           
           {% for item in store_items %}
             {% if item.show_status %}
-              <div class="product-card">
+              <div class="product-card" id="product-card-{{ item.id }}">
                 <img src="{% static 'assets/stores/'|add:item.image_url %}" alt="" />
                 <h2 class="card__title">{{ item.name }}</h2>
                 <h4 {% if item.category_name == "Pong" %} class="card__category pong" {% elif item.category_name == "RPS" %} class="card__category rps" {% else %} class="card__category all" {% endif %}>
@@ -59,23 +59,21 @@
                 <span class="card__description">{{item.description}}</span>
                 <div class="card__shop">
                   <span class="card__shop__price">{{item.price}}N₩</span>
-                    <form id="store_item_form{{ item.id }}" method="POST">
-                      {% csrf_token %}
-                      <input type="hidden" name="name" value="{{ item.name }}">
-                      <input type="hidden" name="action" value="buy">
-                      <input type="hidden" name="whatis" value="none">
-                      <button type="button" class="card__shop__action" 
-                          {% if item.price <= profile.indian_wallet %}
-                              onclick="submitStoreItemForm('{{ item.name }}', '{{item.id}}')"
-                          {% else %}
-                              onclick="showToast('{{ item.name}} öğesini satın almak için yeterli N₩`ın yok', 'text-bg-danger', 'bi bi-info-square-fill')"
-                          {% endif %}
-                      >
-                          <i class="bi bi-bag-heart-fill" style="color:white; font-size: 1.1em;"></i>
+                  <form id="store_item_form{{ item.id }}" method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="name" value="{{ item.name }}">
+                    <input type="hidden" name="action" value="buy">
+                    <input type="hidden" name="whatis" value="none">
+                    {% if item.price <= profile.indian_wallet %}
+                      <button type="submit" class="card__shop__action" onclick="event.preventDefault(); submitStoreItemForm('{{ item.name }}', '{{item.id}}', '{{item.price}}')">
+                        <i class="bi bi-bag-heart-fill" style="color:white; font-size: 1.1em;"></i>
                       </button>
-                    </form>
-                      <i class="bi bi-bag-heart-fill" style="color:white; font-size: 1.1em;"></i>
-                    </button>
+                    {% else %}
+                      <button type="button" class="card__shop__action" onclick="event.preventDefault(); showToast('{{ item.name}} öğesini satın almak için yeterli N₩`ın yok', 'text-bg-danger', 'bi bi-info-square-fill')">
+                        <i class="bi bi-bag-heart-fill" style="color:white; font-size: 1.1em;"></i>
+                      </button>
+                    {% endif %}
+                  </form>
                 </div>
               </div>
             {% endif %}
@@ -118,12 +116,31 @@ function showToast(content, status, iconClass) {
 }
 
 
-function submitStoreItemForm(itemName, formId) {
+function submitStoreItemForm(itemName, formId, price) {
     const form = document.getElementById('store_item_form' + formId);
+    const formData = new FormData(form);
+
     showToast(`${itemName} öğesini başarıyla satın aldın!`, `text-bg-success`, `bi bi-shop`);
-    setTimeout(function () {
-        form.submit();
-    }, 500);
+    
+    fetch("/store/{{username}}/", {
+      method: form.method,
+      body: formData,
+      headers: {
+        'X-CSRFToken': form.querySelector('[name=csrfmiddlewaretoken]').value
+      }
+    })
+    .then(response => response.text())
+    .then(text => {
+      // hide the item after it is bought
+      const productCard = document.getElementById('product-card-' + formId);
+      productCard.style.display = 'none';
+      //update the wallet amount with price
+      const walletAmount = document.querySelector('.wallet-amount');
+      walletAmount.textContent = (parseInt(walletAmount.textContent) - price) + 'N₩';
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+    });
 }
 
 

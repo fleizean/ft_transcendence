@@ -649,7 +649,7 @@ def inventory(request, username):
     return render(
         request,
         "inventory.html",
-        {"profile": profile, "inventory_items": inventory_items},
+        {"profile": profile, "inventory_items": inventory_items}
     )
 
 @login_required()
@@ -675,6 +675,9 @@ def search(request):
             result_dict["is_friend"] = request.user.friends.filter(
                 id=result.id
             ).exists()
+            # Add social media information to the dictionary
+            if result.social:
+                result_dict["social"] = model_to_dict(result.social)
             # Append the dictionary to the list
             results_list.append(result_dict)
         paginator = Paginator(results_list, 8)
