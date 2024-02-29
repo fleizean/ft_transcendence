@@ -678,6 +678,8 @@ def search(request):
             # Add social media information to the dictionary
             if result.social:
                 result_dict["social"] = model_to_dict(result.social)
+            if result.game_stats:
+                result_dict["game_stats"] = model_to_dict(result.game_stats)
             # Append the dictionary to the list
             results_list.append(result_dict)
         paginator = Paginator(results_list, 8)
