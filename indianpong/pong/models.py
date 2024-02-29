@@ -16,7 +16,8 @@ import uuid
 from datetime import timedelta
 
 class Social(models.Model):
-    stackoverflow = models.CharField(max_length=200, blank=True, null=True)
+    intra42 = models.CharField(max_length=200, blank=True, null=True)
+    linkedin = models.CharField(max_length=200, blank=True, null=True)
     github = models.CharField(max_length=200, blank=True, null=True)
     twitter = models.CharField(max_length=200, blank=True, null=True)
     instagram = models.CharField(max_length=200, blank=True, null=True)
@@ -36,7 +37,7 @@ class UserProfile(AbstractUser):
     email = models.EmailField(unique=True, max_length=254)
     avatar = models.ImageField(upload_to=get_upload_to, null=True, blank=True, default="c4.jpg")
     friends = models.ManyToManyField('self', symmetrical=False, blank=True)
-    social = models.OneToOneField('Social', on_delete=models.SET_NULL, null=True, blank=True)
+    social = models.OneToOneField('Social', on_delete=models.CASCADE, null=True, blank=True)
     #channel_name = models.CharField(max_length=100, blank=True, null=True)
     is_verified = models.BooleanField(default=False)
     is_42student = models.BooleanField(default=False)
