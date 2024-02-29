@@ -518,7 +518,7 @@ body {
   cursor: default;
 }
 
-.profile-card {
+.profiles-card {
   background-color: rgba(241, 241, 251, 0.3) !important;
   backdrop-filter: blur(3px); /* Arka planı 10 piksel bulanıklaştır */
   padding: 20px;
