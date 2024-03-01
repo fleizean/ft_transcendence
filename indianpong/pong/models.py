@@ -1,5 +1,6 @@
 from email.mime.image import MIMEImage
 import os
+import random
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.signals import user_logged_in, user_logged_out
@@ -221,7 +222,7 @@ class GameWarning(models.Model):
 
 
 class Game(models.Model):
-
+    tournament_id = models.UUIDField(null=True, blank=True) #? Maybe 
     group_name = models.CharField(max_length=100)
     player1 = models.ForeignKey(UserProfile, related_name='games_as_player1', on_delete=models.CASCADE)
     player2 = models.ForeignKey(UserProfile, related_name='games_as_player2', on_delete=models.CASCADE)
@@ -259,19 +260,51 @@ class Tournament(models.Model):
     )
 
     name = models.CharField(max_length=100)
+    creator = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='creator_tournament')
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default="open")
     start_date = models.DateTimeField(auto_now_add=True)
     #end_date = models.DateTimeField()
     participants = models.ManyToManyField(UserProfile, related_name='tournaments')
+    first_round_matches = models.ManyToManyField(Game, related_name='first_round_matches', blank=True)
+    final_round_matches = models.ManyToManyField(Game, related_name='final_round_matches', blank=True)
+    played_games_count = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(3)], default=0)
+    winner = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='tournament_wins', null=True, blank=True)
 
     def __str__(self) -> str:
         return f"{self.name}"
     
-class TournamentMatch(models.Model):
+    def create_first_round_matches(self):
+        if self.participants.count() % 2 != 0:
+            self.participants.add(UserProfile.objects.get(username="IndianAI"))
+
+        participants = list(self.participants.all())
+        random.shuffle(participants)
+
+        for i in range(0, len(participants), 2):
+            game = Game.objects.create(
+                tournament_id=self.id,
+                group_name=f"{participants[i].username}-{participants[i+1].username}",
+                player1=participants[i],
+                player2=participants[i+1]
+            )
+            self.first_round_matches.add(game)
+        
+    def create_final_round_matches(self):
+        # Get the winners of the first round matches
+        winners = [match.winner for match in self.first_round_matches.all()]
+        final_game = Game.objects.create(
+            tournament_id=self.id,
+            group_name=f"{winners[0].username}-{winners[1].username}",
+            player1=winners[0],
+            player2=winners[1]
+        )
+        self.final_round_matches.add(final_game)
+    
+""" class TournamentMatch(models.Model):
     tournament = models.ForeignKey(Tournament, on_delete=models.CASCADE, related_name='matches')
     player1 = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='tournament_matches_as_player1')
     player2 = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='tournament_matches_as_player2')
-    winner = models.ForeignKey(UserProfile, on_delete=models.CASCADE, null=True, blank=True, related_name='tournament_wins')
+    winner = models.ForeignKey(UserProfile, on_delete=models.CASCADE, null=True, blank=True, related_name='tournament_wins') """
 
 class OAuthToken(models.Model):
     user = models.OneToOneField(UserProfile, on_delete=models.CASCADE)
