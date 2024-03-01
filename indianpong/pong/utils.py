@@ -4,7 +4,6 @@ import asyncio
 import os
 from django.utils.crypto import get_random_string
 from django.core.files.base import ContentFile
-import svgwrite
 import base64, hashlib
 
 def delete_from_media(path):
@@ -17,16 +16,13 @@ def get_upload_to(instance, filename):
     return filename
 
 def create_random_svg(username):
-    return f'''
+    svg_content= f'''
     <svg width="100" height="100" xmlns="http://www.w3.org/2000/svg">
         <line x1="0" y1="0" x2="100" y2="100" stroke="black"/>
         <text x="20" y="35" font-size="1.5em" fill="red">{username}</text>
     </svg>
     '''
-
-def get_random_svg_image(instance):
-    svg_content = create_random_svg(instance.username)
-    return ContentFile(svg_content.encode('utf-8'), name=f"{instance.username}.svg")
+    return ContentFile(svg_content.encode('utf-8'))
 
 def get_equipped_item_value(user_items, item_name, default_item):
     if (item_name == "My Playground" or item_name == "My Beautiful Paddle" or item_name == "My Beautiful AI"):

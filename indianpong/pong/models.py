@@ -10,11 +10,12 @@ from django.utils.html import mark_safe
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from django.core.mail import EmailMultiAlternatives
-from .utils import get_random_svg_image, get_upload_to
+from .utils import create_random_svg, get_upload_to
 from indianpong.settings import EMAIL_HOST_USER, STATICFILES_DIRS
 from django.utils import timezone
 import uuid
 from datetime import timedelta
+
 
 class Social(models.Model):
     intra42 = models.CharField(max_length=200, blank=True, null=True)
@@ -36,7 +37,7 @@ class UserProfile(AbstractUser):
     #id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     displayname = models.CharField(max_length=100, blank=True, null=True)
     email = models.EmailField(unique=True, max_length=254)
-    avatar = models.ImageField(upload_to=get_upload_to, null=True, blank=True, default=get_random_svg_image)
+    avatar = models.ImageField(upload_to=get_upload_to, null=True, blank=True)
     friends = models.ManyToManyField('self', symmetrical=False, blank=True)
     social = models.OneToOneField('Social', on_delete=models.CASCADE, null=True, blank=True)
     #channel_name = models.CharField(max_length=100, blank=True, null=True)
@@ -53,6 +54,12 @@ class UserProfile(AbstractUser):
 
     def __str__(self) -> str:
         return f"{self.username}"
+    
+    def save(self, *args, **kwargs):
+        if not self.avatar:
+            svg_content = create_random_svg(self.username)
+            self.avatar.save(f"{self.username}.svg", svg_content, save=False)
+        super().save(*args, **kwargs)
     
     @property
     def thumbnail(self):
