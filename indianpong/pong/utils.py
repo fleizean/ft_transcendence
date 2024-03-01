@@ -16,10 +16,15 @@ def get_upload_to(instance, filename):
     return filename
 
 def create_random_svg(username):
-    svg_content= f'''
-    <svg width="100" height="100" xmlns="http://www.w3.org/2000/svg">
-        <line x1="0" y1="0" x2="100" y2="100" stroke="black"/>
-        <text x="20" y="35" font-size="1.5em" fill="red">{username}</text>
+    hash = hashlib.md5(username.encode()).hexdigest()
+    hue = int(hash, 16) % 360
+    svg_parts = []
+    for i in range(25):
+        if int(hash, 16) & (1 << (i % 15)):
+            svg_parts.append(f'<rect x="{i // 5}" y="{i % 5}" width="1" height="1"/>')
+    svg_content = f'''
+    <svg viewBox="-1.5 -1.5 8 8" xmlns="http://www.w3.org/2000/svg" fill="hsl({hue}, 95%, 45%)">
+    {''.join(svg_parts)}
     </svg>
     '''
     return ContentFile(svg_content.encode('utf-8'))

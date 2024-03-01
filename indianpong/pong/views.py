@@ -208,7 +208,7 @@ def auth_callback(request):
                     if image_url:
                         image_name, response = urllib.request.urlretrieve(image_url)
                         file = File(open(image_name, "rb"))
-                        user.avatar.save(f"{file.name}.jpg", file, save=True)
+                        user.avatar.save(f"{file.name}.jpg", file, save=False)
                         file.close()
                     user.save()
 
