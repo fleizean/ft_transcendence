@@ -312,7 +312,7 @@ body {
   right: 0;
   bottom: 0;
   height: 2px; /* Çizgi kalınlığını ayarlayabilirsiniz */
-  background-color: F99601; /* Çizgi rengini ayarlayabilirsiniz */
+  background-color: #F99601; /* Çizgi rengini ayarlayabilirsiniz */
   visibility: hidden;
   transform: scaleX(0);
   transition: transform 0.3s ease, visibility 0.3s ease;
@@ -413,9 +413,11 @@ body {
   padding: 10px;
 }
 
+.notification-submenu a:hover {
+  background-color: #1b6718; /* Hover rengi */
+}
 
 .profile-submenu a:hover {
-  
   background-color: #333; /* Hover rengi */
 }
 
@@ -1120,5 +1122,5 @@ body {
 }
 
 .language-submenu a:hover {
-  background-color: #09ff00; /* Hover rengi */
+  background-color: #1b6718; /* Hover rengi */
 }

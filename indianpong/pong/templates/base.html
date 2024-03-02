@@ -31,6 +31,7 @@
     <div class="snow-class">
         <div class="backgroundimage">
             <div class="app" id="app">
+                    {% if not user.is_authenticated %}
                     <li class="language-menu">
                         <div class="notification-icon" style="margin-top: 25px; color: rgb(255, 140, 0); margin-right: 3em;">
                             <i class="bi bi-flag-fill"></i>       
@@ -57,6 +58,7 @@
                             </form>
                         </div>
                     </li>
+                {% endif %}
                 {% block app %}
                 <div class="cursor">
                     <div class="container">

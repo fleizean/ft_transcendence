@@ -232,18 +232,16 @@ class UserProfileForm(UserCreationForm):
         lang = self.lang
         if avatar:
             if avatar.size > 2*1024*1024:
-                if (lang == 'tr'):
-                    raise forms.ValidationError("Resim dosya boyutu 2MB'dan az olmalidir.")
-                elif (lang == 'en'):
-                    raise forms.ValidationError("Image file size should be less than 2MB")
-                elif (lang == 'hi'):
-                    raise forms.ValidationError("छवि फ़ाइल का आकार 2MB से कम होना चाहिए")
-                elif (lang == 'pt'):
-                    raise forms.ValidationError("O tamanho do arquivo de imagem deve ser inferior a 2MB")
-                else:
-                    raise forms.ValidationError("Image file size should be less than 2MB")
+                error_message = {
+                    'tr': "Resim dosya boyutu 2MB'dan az olmalidir.",
+                    'en': "Image file size should be less than 2MB",
+                    'hi': "छवि फ़ाइल का आकार 2MB से कम होना चाहिए",
+                    'pt': "O tamanho do arquivo de imagem deve ser inferior a 2MB",
+                    # Diğer diller için gerekli hata mesajlarını ekleyin
+                }
+                raise forms.ValidationError(error_message.get(lang, "Image file size should be less than 2MB")) 
 
-        return avatar
+            return avatar
 
 class StoreItemActionForm(forms.Form):
     ACTION_CHOICES = [
