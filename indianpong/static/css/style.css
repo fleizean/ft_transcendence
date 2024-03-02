@@ -1083,3 +1083,42 @@ body {
   margin-top: 2em;
   width: 300px;
 }
+
+/* Base HTML - Language Submenu */
+
+.language-menu {
+  position: relative;
+  display: flex; /* İçerikleri yatay olarak hizalar */
+  justify-content: flex-end; /* İçeriği sağa hizalar */
+}
+
+.language-submenu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: auto; /* Sağ kenara yapıştırır */
+  background-color: rgba(51, 51, 51, 0.8);
+  border-radius: 10px;
+  font-size: 10px;
+  text-align: left;
+  margin-right: 10px;
+  padding: 0 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.language-menu:hover .language-submenu {
+  display: block;
+  z-index: 900;
+}
+
+.language-submenu a {
+  color: white;
+  text-decoration: none;
+  display: flex;
+  font-size: 10px;
+  padding: 10px;
+}
+
+.language-submenu a:hover {
+  background-color: #09ff00; /* Hover rengi */
+}

@@ -89,7 +89,7 @@ def handler404(request, exception):
 @never_cache
 def signup(request):
     if request.method == "POST":
-        form = UserProfileForm(request.POST, request.FILES)
+        form = UserProfileForm(request.POST, request.FILES, lang=request.session.get('language', 'en'))
         if form.is_valid():
             user = form.save()
             obj = VerifyToken.objects.create(
@@ -99,7 +99,7 @@ def signup(request):
             messages.success(request, "Please check your email to verify your account.")
             return HttpResponseRedirect("login")
     else:
-        form = UserProfileForm()
+        form = UserProfileForm(lang=request.session.get('language', 'en'))
     return render(request, "signup.html", {"form": form})
 
 
@@ -601,6 +601,12 @@ def store(request, username):  # store_view
         {"store_items": store_items, "profile": profile, "form": form},
     )
 
+def set_language(request):
+    if request.method == 'POST':
+        selected_language = request.POST.get('language')
+        # Burada seçilen dil bilgisini oturum verilerine kaydedebilirsiniz
+        request.session['language'] = selected_language
+    return redirect(request.META.get('HTTP_REFERER'))
 
 @never_cache
 @login_required
