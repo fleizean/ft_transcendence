@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}
+  Play with AI
+{% endblock %}
+
+{% block app %}
+  {% include '_nav.html' %}
+  <link rel="stylesheet" href="{% static 'css/rps.css' %}" />
+  <div class="ai-btn">
+    <div class="ponggamebtn" id="ponggamebtn" onclick="joinQueue()">
+      Search Opponent <i class="bi bi-person-arms-up"></i>
+    </div>
+  </div>
+  <div class="container-top" id="container-top" style="visibility: hidden;">
+    <div class="header-top">
+      <div class="header">
+        <div class="score" style="margin-right: 15px;">
+          <div class="score__title">score</div>
+          <div class="score__number">0</div>
+        </div>
+        <h3 class="rps-header-text">ROCK<br />PAPER<br />SCISSORS</h3>
+        <div class="score" style="margin-left: 15px;">
+          <div class="score__title">score</div>
+          <div class="score__number">0</div>
+        </div>
+      </div>
+    </div>
+    <section class="game">
+      <button class="choice-btn" data-choice="paper">
+        <div class="choice paper">
+          <img src="{% static 'assets/rps/icon-paper.svg' %}" alt="Paper" />
+        </div>
+      </button>
+      <button class="choice-btn" data-choice="scissors">
+        <div class="choice scissors">
+          <img src="{% static 'assets/rps/icon-scissors.svg' %}" alt="Scissors" />
+        </div>
+      </button>
+      <button class="choice-btn" data-choice="rock">
+        <div class="choice rock">
+          <img src="{% static 'assets/rps/icon-rock.svg' %}" alt="Rock" />
+        </div>
+      </button>
+    </section>
+  </div>
+
+  <section class="results hidden">
+    <h2 class="results__heading">you picked</h2>
+    <h2 class="results__heading">the house picked</h2>
+    <div class="results__result"></div>
+    <div class="results__winner hidden">
+      <h3 class="results__text"></h3>
+      <button class="play-again">play again</button>
+    </div>
+    <div class="results__result"></div>
+  </section>
+
+  <script src="{% static 'js/sockRps.js' %}"></script>
+{% endblock %}

@@ -751,6 +751,17 @@ def play_ai(request):
 
     return render(request, "play-ai.html", {"ainametag": ainametag, "paddlecolor": paddlecolor, "playgroundcolor": playgroundcolor, "giantman": giantman, "likeacheater": likeacheater, "fastandfurious": fastandfurious, "rageoffire": rageoffire, "frozenball": frozenball, "givemethemusic": givemethemusic})
 
+
+@never_cache
+@login_required()
+def play_rps(request):
+    return render(request, "play-rps.html")
+
+@never_cache
+@login_required()
+def play_rps_ai(request):
+    return render(request, "play-rps-ai.html")
+
 @never_cache
 @login_required()
 def local_game(request):
