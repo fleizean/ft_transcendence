@@ -14,6 +14,7 @@
 .search-container {
   display: flex;
   align-items: center;
+  padding-bottom: 20px;
 }
 
 .search-input {
@@ -31,8 +32,9 @@
   background-color: white;  
   box-shadow: 4px 4px;
   cursor: pointer;
-  padding: 9px;
-  margin-left: 1px; /* İkon ile arama alanı arasında bir boşluk bırakmak için */
+  padding: 5px;
+  margin-left: 3px; /* İkon ile arama alanı arasında bir boşluk bırakmak için */
+  width: 40px;
 }
 
 .search-button:hover {
