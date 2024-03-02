@@ -27,6 +27,7 @@ from .forms import (
     JWTTokenForm,
     AuthenticationUserForm,
     TournamentForm,
+    TournamentMatchForm,
 )
 from .models import (
     BlockedUser,
@@ -39,6 +40,7 @@ from .models import (
     JWTToken,
     UserGameStat,
     Tournament,
+    TournamentMatch,
     UserItem,
     StoreItem,
     OAuthToken,
@@ -208,7 +210,7 @@ def auth_callback(request):
                     if image_url:
                         image_name, response = urllib.request.urlretrieve(image_url)
                         file = File(open(image_name, "rb"))
-                        user.avatar.save(f"{file.name}.jpg", file, save=False)
+                        user.avatar.save(f"{file.name}.jpg", file, save=True)
                         file.close()
                     user.save()
 
@@ -931,7 +933,7 @@ def create_tournament(request):
     return render(request, "create_tournament.html", {"form": form})
 
 
-""" @never_cache
+@never_cache
 @login_required()
 def create_tournament_match(request):
     if request.method == "POST":
@@ -945,7 +947,7 @@ def create_tournament_match(request):
             return redirect("tournament_match_list")
     else:
         form = TournamentMatchForm()
-    return render(request, "create_tournament_match.html", {"form": form}) """
+    return render(request, "create_tournament_match.html", {"form": form})
 
 
 ### Two-Factor Authentication ###

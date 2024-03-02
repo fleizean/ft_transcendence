@@ -1,33 +1,18 @@
+import base64, hashlib, os
 from django.shortcuts import render, redirect
 from django.contrib.auth import login
 import asyncio
 import os
 from django.utils.crypto import get_random_string
-from django.core.files.base import ContentFile
-import base64, hashlib
 
 def delete_from_media(path):
-    if os.path.isfile(path):
+    if os.path.isfile(path) and "c4" not in path:
         os.remove(path)
 
 def get_upload_to(instance, filename):
     ext = filename.split('.')[-1]
     filename = "%s_%s.%s" % (instance.username, get_random_string(length=7), ext)
     return filename
-
-def create_random_svg(username):
-    hash = hashlib.md5(username.encode()).hexdigest()
-    hue = int(hash, 16) % 360
-    svg_parts = []
-    for i in range(25):
-        if int(hash, 16) & (1 << (i % 15)):
-            svg_parts.append(f'<rect x="{i // 5}" y="{i % 5}" width="1" height="1"/>')
-    svg_content = f'''
-    <svg viewBox="-1.5 -1.5 8 8" xmlns="http://www.w3.org/2000/svg" fill="hsl({hue}, 95%, 45%)">
-    {''.join(svg_parts)}
-    </svg>
-    '''
-    return ContentFile(svg_content.encode('utf-8'))
 
 def get_equipped_item_value(user_items, item_name, default_item):
     if (item_name == "My Playground" or item_name == "My Beautiful Paddle" or item_name == "My Beautiful AI"):

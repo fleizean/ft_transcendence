@@ -2,5 +2,3 @@ Django==5.0
 Pillow==10.1.0
 channels==4.0.0
 daphne==4.0.0
-psycopg2==2.9.9
-```

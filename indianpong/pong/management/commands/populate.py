@@ -1,4 +1,3 @@
-from django.contrib.auth.hashers import make_password
 from pong.models import UserProfile, UserGameStat, Social
 from random import randint, choice
 from django.core.management.base import BaseCommand
@@ -15,12 +14,12 @@ class Command(BaseCommand):
         user_game_stats = []
         socials = []
         user_profiles = []
-        password = make_password('123456a.')
 
         for i in range(num_users):
             username = "Indian" + str(i)
             displayname = "Original Indian" + str(i)
             email = username + '@indian.com'
+            password = '123456a.'  # Replace with your desired password
 
             # Prepare UserGameStat instance
             game_stat = UserGameStat(
@@ -60,9 +59,6 @@ class Command(BaseCommand):
         # Create instances in database
         UserGameStat.objects.bulk_create(user_game_stats)
         Social.objects.bulk_create(socials)
-        #UserProfile.objects.bulk_create(user_profiles)
-        # Create UserProfile instances individually to trigger save method
-        for user_profile in user_profiles:
-            user_profile.save()
+        UserProfile.objects.bulk_create(user_profiles)
 
         self.stdout.write(self.style.SUCCESS(f'Successfully populated the database with {num_users} users.'))
