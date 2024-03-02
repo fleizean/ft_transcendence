@@ -3,7 +3,6 @@ from pong.models import UserProfile, StoreItem, Social
 from django.core.files import File
 from os import environ
 import json
-import shutil
 
 class Command(BaseCommand):
 	def handle(self, *args, **options):
@@ -13,17 +12,19 @@ class Command(BaseCommand):
 		superpass = environ.get("SUPER_PASS", default="9247")
 		if not UserProfile.objects.filter(username=superuser).exists():
 			super_user = UserProfile.objects.create_superuser(superuser, supermail, superpass)
+			file = File(open('static/assets/profile/default_avatar.jpeg', "rb"))
+			super_user.avatar.save(f"{file.name}.jpg", file, save=False)
+			file.close()
 			super_user.indian_wallet = 1000
 			super_user.save()
 			self.stdout.write(self.style.SUCCESS('Superuser created successfully.'))
 		# Create IndianAI if not exists
 		if not UserProfile.objects.filter(username="IndianAI").exists():
 			user = UserProfile.objects.create_user(username="IndianAI", email="indianpong@gmail.com")
-			
 			user.set_unusable_password()
 			user.displayname = "Sitting AI"
 			file = File(open('static/assets/profile/indianai.jpg', "rb"))
-			user.avatar.save(f"{file.name}.jpg", file, save=True)
+			user.avatar.save(f"{file.name}.jpg", file, save=False)
 			file.close()
 			user.is_verified = True
 			user.indian_wallet = 1000
@@ -39,10 +40,5 @@ class Command(BaseCommand):
 			StoreItem.objects.create(**item_data)
 
 		self.stdout.write(self.style.SUCCESS('Store data loaded successfully.'))
-
-		# Load default avatar to media directory
-		source_path = 'static/assets/profile/c4.jpg'
-		destination_path = 'media/c4.jpg'
-		shutil.copyfile(source_path, destination_path)
 
 

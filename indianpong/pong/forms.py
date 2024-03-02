@@ -13,7 +13,7 @@ from django.utils.http import urlsafe_base64_encode
 from django.utils.encoding import force_bytes
 from indianpong.settings import EMAIL_HOST_USER, STATICFILES_DIRS
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, UserChangeForm, PasswordChangeForm, PasswordResetForm, SetPasswordForm 
-from .models import Social, VerifyToken, BlockedUser, ChatMessage, GameInvitation, UserProfile, TwoFactorAuth, JWTToken, Tournament, TournamentMatch
+from .models import Social, VerifyToken, BlockedUser, ChatMessage, GameInvitation, UserProfile, TwoFactorAuth, JWTToken, Tournament
 
 class UserProfileForm(UserCreationForm):
 
@@ -251,9 +251,5 @@ class TournamentForm(forms.ModelForm):
         model = Tournament
         fields = ['name']
 
-class TournamentMatchForm(forms.ModelForm):
-    class Meta:
-        model = TournamentMatch
-        fields = ['tournament', 'player1', 'player2']
 
 
