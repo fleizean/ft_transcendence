@@ -396,7 +396,7 @@ def get_lang_pt():
         "loginInputPasswordText": "Senha",
         "loginForgotPasswordText": "Esqueceu a Senha?",
         "loginButtonLogin": "Vamos lá",
-        "loginButtonJoin": "Junte-se a Nós",
+        "loginButtonJoin": "Digitar",
         
         #Signup
         "signupHeaderText1": "Bem-vindo,",
@@ -406,8 +406,8 @@ def get_lang_pt():
         "signupInputEmailText": "E-mail",
         "signupInputPasswordText": "Senha",
         "signupInputConfirmPasswordText": "Senha (novamente)",
-        "signupImageUploadText": "Carregar Imagem",
-        "signupButtonSignup": "Vamos Brilhar!",
+        "signupImageUploadText": "Selecione",
+        "signupButtonSignup": "Juntar!",
 
 
         #Dashboard
@@ -524,7 +524,7 @@ def get_lang_hi():
         "loginInputPasswordText": "पासवर्ड",
         "loginForgotPasswordText": "पासवर्ड भूल गए?",
         "loginButtonLogin": "चलो चलते हैं",
-        "loginButtonJoin": "हमारे साथ शामिल हों",
+        "loginButtonJoin": "जोड़ना",
         
         #Signup
         "signupHeaderText1": "स्वागत है,",

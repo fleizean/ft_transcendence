@@ -25,62 +25,29 @@
             </svg></button
         ></a>
         <div class="title">
-          Welcome,
-          <span class="titlebottom">sign in to continue</span>
+          {{context.loginHeaderText1}}
+          <span class="titlebottom">{{context.loginHeaderText2}}</span>
         </div>
         <div class="login-with">
           <a href="/auth" data-link class="no-underline"><div class="button-log"><b>42</b></div></a>
         </div>
         {% csrf_token %}
         <p>
-          <input type="text" name="username" class="input" placeholder="Username" maxlength="150" required id="id_username" autocomplete="off">
+          <input type="text" name="username" class="input" placeholder="{{context.loginInputUsernameText}}" maxlength="150" required id="id_username" autocomplete="off">
         </p>
         <p>
-          <input type="password" name="password" class="input" placeholder="Password" onmouseover="showPassword('id_password')" onmouseout="showPassword('id_password')" required id="id_password" autocomplete="off">
+          <input type="password" name="password" class="input" placeholder="{{context.loginInputPasswordText}}" onmouseover="showPassword('id_password')" onmouseout="showPassword('id_password')" required id="id_password" autocomplete="off">
         </p>
         <div class="forgot-pass">
-          <a href="/password_reset" class="forgot-password-link">Forgot Password?</a>
+          <a href="/password_reset" class="forgot-password-link">{{context.loginForgotPasswordText}}</a>
         </div>
-        <a ><button type="submit" class="button-confirm">Let's go →</button></a>
-        <a href="/signup" data-link><button type="button" class="registerbtn">Join Us ✓</button></a>
+        <a ><button type="submit" class="button-confirm">{{context.loginButtonLogin}}</button></a>
+        <a href="/signup" data-link><button type="button" class="registerbtn">{{context.loginButtonJoin}}</button></a>
       </form>
       
     </div>
 
-    {% if not valid %}
-    <div class="toast-container position-fixed bottom-0 end-0 p-6" style="margin-right: 20px; margin-bottom: 20px">
-      <div class="toast text-bg-danger" id="liveToast" role="alert">
-          <div class="toast-body">
-              <div class="d-flex gap-4">
-                  <span class="i-class"><i class="bi bi-bug-fill"></i></span>
-                  <div class="d-flex flex-grow-1 align-items-center">
-                      <span class="fw-semibold">{{ toast_message }}</span>
-                      <span class="toast-close" data-bs-dismiss="toast"><i class="bi bi-x-circle-fill"></i></span>
-                  </div>
-              </div>
-          </div>
-      </div>
-    </div>
-    <script>
-      document.addEventListener('DOMContentLoaded', function () {
-          // Toast'ı gösterme fonksiyonu
-          function showToast() {
-              const liveToast = document.getElementById('liveToast');
-              // içeriği güncelle
-              liveToast.querySelector('.fw-semibold').textContent = '{{ toast_message }}';
-              // Toast'ı göster
-              const toast = new bootstrap.Toast(liveToast);
-              toast.show();
-              setTimeout(function() {
-                  toast.hide();
-              }, 3000);
-          }
-
-          // Toast'ı göstermek için bir tetikleyici ekleyin
-          showToast();
-      });
-    </script>
-    {% endif %}
+  
   </div>
 </div>
 <script>
