@@ -1,6 +1,15 @@
 
 /* Game */
 
+.pong-buttons {
+  text-align: center;
+}
+
+.pong-buttons .ai-btn {
+  display: inline-block;
+  margin: 10px 4em;
+}
+
 .ai-btn {
     margin-top: 0.5em;
   }
@@ -237,4 +246,55 @@
 
   .game-btn {
     text-decoration: none; /* Düğme stilini kaldırmak için */
+}
+
+
+.ponggamebtn-remote {
+  font-size: 36px;
+  font-family: 'Rajdhani', sans-serif;
+  text-align: center;
+  line-height: 85px;
+  color: #fff;
+  margin: 0 auto;
+  width: 350px;
+  height: 85px;
+  background: linear-gradient(#821f1f, #443c11);
+  border: 3px #821f1f solid; 
+  border-radius: 5px;
+  text-shadow: 0 0 20px rgba(255,255,255,0.3);
+  transition: .1s;
+  transform: scale(1);
+  cursor: pointer;
+  box-shadow: 0 0 50px rgba(0,117,9,0.5);
+  overflow: hidden;
+}
+
+.ponggamebtn-remote:hover {
+  text-shadow: 0 0 20px rgba(255,255,255,0.5);
+  transform: scale(1.05);
+}
+
+.ponggamebtn-remote:active {
+  background: linear-gradient(#821f1f, #443c11);
+  text-shadow: 0 0 20px rgba(255,255,255,0.5);
+  transform: scale(1);
+  box-shadow: 0 0 75px rgba(43,137,68,0.5);
+}
+
+.ponggamebtn-remote:after {
+  content: "";
+  position: relative;
+  top: -120px;
+  left: -90px;
+  display: block;
+  width: 35px;
+  height: 150px;
+  background: rgba(255, 255, 255, 0.5);
+  transform: rotate(35deg);
+  transition: none;
+}
+
+.ponggamebtn-remote:hover:after {
+  left: 400px;
+  transition: .3s ease-in-out;
 }

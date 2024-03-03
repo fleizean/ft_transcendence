@@ -439,6 +439,8 @@ def tournament_room(request):
 def tournament_create(request):
     return render(request, "create-tournament.html")
 
+
+
 @never_cache
 def password_reset(request):
     if request.method == "POST":
