@@ -56,14 +56,14 @@
     </ul>
     <div class="burger-menu">&#9776;</div>
   </nav>
-<script>
+{% comment %} <script>
   window.addEventListener("beforeunload", function(e) {
     // Sayfa kapatılmadan önce bir istek gönder
     var xhr = new XMLHttpRequest();
     xhr.open("GET", "/logout", false);  // Sunucuya logout işlemi için bir istek gönder
     xhr.send();
 });
-</script>
+</script> {% endcomment %}
 <script >
     document.addEventListener('DOMContentLoaded', function () {
       document.querySelector(".burger-menu").addEventListener("click", function () {

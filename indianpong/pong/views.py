@@ -266,12 +266,6 @@ def logout_view(request):
 
 ### Profile ###
 
-""" @login_required()
-def profile(request):
-    user = request.user
-    return render(request, 'profile.html', {'user': user}) """
-
-
 @never_cache
 @login_required()
 def profile_view(request, username):
