@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block stylesheet %}
+<link rel="stylesheet" href="{% static 'css/room-list.css' %}">
+{% endblock stylesheet %}
+
+{% block title %} Tournament Room List {% endblock title %}
+
+{% block app %}
+{% include "_nav.html" %}
+<div class="container-top">
+    <div class="card">
+            <h3 class="pong-game-text">Tournament Room List</h3>
+            
+            <div class="room-wrapper">
+                
+                <div class="room rps-room">
+                    <a href="https://www.mythrillfiction.com/force-mage" alt="Mythrill" target="_blank">
+                      <div class="game-room-card">
+                        <div class="wrapper-rooms">
+                          <img src="https://m.media-amazon.com/images/M/MV5BMjAwMjUwMzQyOV5BMl5BanBnXkFtZTcwODA0MTgwOA@@._V1_FMjpg_UX1000_.jpg" class="cover-image" />
+                        </div>
+                        <div class="title-room">
+                            <h4>RPS</h4>
+                            <h6>Opened</h6>
+                            <p>Bitlis</p>
+                        </div>
+                        <img src="https://cdn3d.iconscout.com/3d/premium/thumb/table-tennis-5789761-4849378.png?f=webp" class="character" />
+                      </div>
+                    </a>
+                </div>
+
+                <div class="room pong-room">
+                    <a href="https://www.mythrillfiction.com/force-mage" alt="Mythrill" target="_blank">
+                      <div class="game-room-card">
+                        <div class="wrapper-rooms">
+                          <img src="https://m.media-amazon.com/images/M/MV5BY2Y4MTNmMWItOGM1MC00ZWU1LTk3YmItZmYxNDVlODIyNjRkXkEyXkFqcGdeQXVyMTI0MzExNTAx._V1_.jpg" class="cover-image" />
+                        </div>
+                        <div class="title-room">
+                            <h4>RPS</h4>
+                            <h6>Opened</h6>
+                            <p>Bitlis</p>
+                        </div>
+                        <img src="https://cdn3d.iconscout.com/3d/premium/thumb/rock-paper-scissors-hand-gesture-3984949-3297447.png?f=webp" class="character" />
+                      </div>
+                    </a>
+                </div>
+
+                <div class="room pong-room">
+                    <a href="https://www.mythrillfiction.com/force-mage" alt="Mythrill" target="_blank">
+                      <div class="game-room-card">
+                        <div class="wrapper-rooms">
+                          <img src="https://m.media-amazon.com/images/M/MV5BY2Y4MTNmMWItOGM1MC00ZWU1LTk3YmItZmYxNDVlODIyNjRkXkEyXkFqcGdeQXVyMTI0MzExNTAx._V1_.jpg" class="cover-image" />
+                        </div>
+                        <div class="title-room">
+                            <h4>RPS</h4>
+                            <h6>Opened</h6>
+                            <p>Bitlis</p>
+                        </div>
+                        <img src="https://cdn3d.iconscout.com/3d/premium/thumb/rock-paper-scissors-hand-gesture-3984949-3297447.png?f=webp" class="character" />
+                      </div>
+                    </a>
+                </div>
+
+                <div class="room rps-room">
+                    <a href="https://www.mythrillfiction.com/force-mage" alt="Mythrill" target="_blank">
+                      <div class="game-room-card">
+                        <div class="wrapper-rooms">
+                          <img src="https://m.media-amazon.com/images/M/MV5BMjAwMjUwMzQyOV5BMl5BanBnXkFtZTcwODA0MTgwOA@@._V1_FMjpg_UX1000_.jpg" class="cover-image" />
+                        </div>
+                        <div class="title-room">
+                            <h4>RPS</h4>
+                            <h6>Opened</h6>
+                            <p>Bitlis</p>
+                        </div>
+                        <img src="https://cdn3d.iconscout.com/3d/premium/thumb/table-tennis-5789761-4849378.png?f=webp" class="character" />
+                      </div>
+                    </a>
+                </div>
+
+                
+            </div>
+            
+    </div>
+</div>
+{% endblock %}

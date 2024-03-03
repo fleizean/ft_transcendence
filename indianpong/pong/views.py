@@ -237,8 +237,6 @@ def auth_callback(request):
 def login_view(request):
     if request.user.is_authenticated:
         return HttpResponseRedirect("dashboard")
-    valid = True
-    toast_message = ""
     if request.method == "POST":
         form = AuthenticationUserForm(request, request.POST)
         if form.is_valid():
@@ -249,16 +247,13 @@ def login_view(request):
                 return redirect('login') """
 
             login(request, user)
-            return HttpResponseRedirect("dashboard?status=success")
-        else:
-            valid = False  # şifre yanlışsa
-            toast_message = "Username or password incorrectly"
+            return HttpResponseRedirect("dashboard")
     else:
         form = AuthenticationUserForm()
     return render(
         request,
         "login.html",
-        {"form": form, "valid": valid, "toast_message": toast_message},
+        {"form": form},
     )
 
 
@@ -329,6 +324,12 @@ def rps_game_find(request):
 @login_required()
 def pong_game_find(request):
     return render(request, "pong-game-find.html")
+
+## Tournament Room List ##
+@never_cache
+@login_required()
+def tournament_room_list(request):
+    return render(request, "room-list.html")
 
 
 ### Profile Settings ###

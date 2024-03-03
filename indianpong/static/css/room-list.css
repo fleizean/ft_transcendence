@@ -1,0 +1,134 @@
+@import url('https://fonts.googleapis.com/css2?family=Black+Ops+One&family=Honk&family=Jacquarda+Bastarda+9&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Silkscreen:wght@400;700&display=swap');
+/* Room List */
+
+:root {
+    --card-height: 300px;
+    --card-width: calc(var(--card-height) / 1.5);
+  }
+
+.room-wrapper {
+    max-width: 1000px;
+    margin: auto;
+    text-align: left;
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+.pong-room, .rps-room {
+  margin-top: 4em;
+}
+
+.pong-room a, .rps-room a {
+  text-decoration: none;
+}
+
+
+.game-room-card {
+    width: var(--card-width);
+    height: var(--card-height);
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    padding: 0 36px;
+    perspective: 2500px;
+    margin: 0 25px;
+  }
+  
+  .cover-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.5);
+  }
+  
+  .wrapper-rooms {
+    transition: all 0.5s;
+    position: absolute;
+    width: 100%;
+    z-index: -1;
+  }
+  
+  .game-room-card:hover .wrapper-rooms {
+    transform: perspective(900px) translateY(-5%) rotateX(25deg) translateZ(0);
+    box-shadow: 2px 35px 32px -8px rgba(0, 0, 0, 0.75);
+    -webkit-box-shadow: 2px 35px 32px -8px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 2px 35px 32px -8px rgba(0, 0, 0, 0.75);
+  }
+  
+  .wrapper-rooms::before,
+  .wrapper-rooms::after {
+    content: "";
+    opacity: 0;
+    width: 100%;
+    height: 80px;
+    transition: all 0.5s;
+    position: absolute;
+    left: 0;
+  }
+  .wrapper-rooms::before {
+    top: 0;
+    height: 100%;
+    background-image: linear-gradient(
+      to top,
+      transparent 46%,
+      rgba(12, 13, 19, 0.5) 68%,
+      rgba(12, 13, 19) 97%
+    );
+  }
+  .wrapper-rooms::after {
+    bottom: 0;
+    opacity: 1;
+    background-image: linear-gradient(
+      to bottom,
+      transparent 46%,
+      rgba(12, 13, 19, 0.5) 68%,
+      rgba(12, 13, 19) 97%
+    );
+  }
+  
+  .game-room-card:hover .wrapper-rooms::before,
+  .wrapper-rooms::after {
+    opacity: 1;
+  }
+  
+  .game-room-card:hover .wrapper-rooms::after {
+    height: 120px;
+  }
+
+  .title-room {
+    width: 100%;
+    font-family: "Roboto", sans-serif;
+    font-weight: bold;
+    text-align: center;
+    font-style: normal;
+    color:white;
+    transition: transform 0.5s;
+    
+  }
+
+  .title-room h4 {
+    margin-bottom: -2px;
+  }
+
+  .title-room p {
+    margin-top: -6px;
+  }
+
+  .game-room-card:hover .title {
+    transform: translate3d(0%, -50px, 100px);
+  }
+  
+  .character {
+    width: 100%;
+    opacity: 0;
+    transition: all 0.5s;
+    position: absolute;
+    z-index: -1;
+  }
+  
+  .game-room-card:hover .character {
+    opacity: 1;
+    transform: translate3d(0%, -30%, 100px);
+  }
+  
