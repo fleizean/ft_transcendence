@@ -1,28 +1,36 @@
 {% extends 'base.html' %}
 
-{% block title %}Rps Game Find{% endblock title %}
+{% block title %}
+  Rps Game Find
+{% endblock %}
 {% block app %}
-{% include "_nav.html" %}
-<div class="container-top">
+  {% include '_nav.html' %}
+  <div class="container-top">
     <div class="card">
-        <h3 class="pong-game-text">Welcome to RPS Lobby</h3>
-        <div class="custom-text">
-            You can play with the AI and improve yourself without reflecting it in your stats, as if you were just
-            warming up. If you want to play with a real person, consider the other option, remember that if we don't
-            find someone to match you within 5 minutes, the match will be canceled. Good luck before I forget!
-        </div>
-        <div class="pong-buttons">
+      <h3 class="pong-game-text">Welcome to RPS Lobby</h3>
+      <div class="custom-text">You can play with the AI and improve yourself without reflecting it in your stats, as if you were just warming up. If you want to play with a real person, consider the other option, remember that if we don't find someone to match you within 5 minutes, the match will be canceled. Good luck before I forget!</div>
 
-            <div class="ai-btn">
-                <a href="/local-game-rps"><div class="rpsgamebtn-local">Local Game <i class="bi bi-wifi-off"></i></div></a>
-            </div>
-            <div class="ai-btn">
-                <a href="/room-list"><div class="ponggamebtn">Search Opponent <i class="bi bi-person-arms-up"></i></div></a>
-            </div>
-        </div>
+      <div class="ai-btn">
+        <a href="/play-rps-ai">
+          <div class="ponggamebtn-ai">
+            Play With AI <i class="bi bi-robot"></i>
+          </div>
+        </a>
+      </div>
+      <div class="ai-btn">
+        <a href="/local-game-rps">
+          <div class="rpsgamebtn-local">
+            Local Game <i class="bi bi-wifi-off"></i>
+          </div>
+        </a>
+      </div>
+      <div class="ai-btn">
+        <a href="/play-rps">
+          <div class="ponggamebtn">
+            Search Opponent <i class="bi bi-person-arms-up"></i>
+          </div>
+        </a>
+      </div>
     </div>
-</div>
-<script>
-
-</script>
+  </div>
 {% endblock %}

@@ -5,7 +5,8 @@ function matchHistoryChanger() {
     var switcherBtn = document.querySelector(".changer-btn");
     var historyPong = document.getElementById('match-history-pong');
     var historyRPS = document.getElementById('match-history-rps');
-    
+    isRPSVisibleHistory = !isRPSVisibleHistory;
+
     if (isRPSVisibleHistory) {
         // Ping pong istatistiklerini göster
         historyPong.style.display = 'block';
@@ -19,7 +20,6 @@ function matchHistoryChanger() {
     }
     
     // Durumu tersine çevir
-    isRPSVisibleHistory = !isRPSVisibleHistory;
 }
 
 var isRPSVisibleStats = true; 
@@ -28,6 +28,7 @@ function toggleGame() {
     var switcherBtn = document.querySelector(".switch-btn");
     var statsPong = document.getElementById('stats-info-pong');
     var statsRPS = document.getElementById('stats-info-rps');
+    isRPSVisibleStats = !isRPSVisibleStats;
 
     if (isRPSVisibleStats) {
         // Ping pong istatistiklerini göster
@@ -42,7 +43,6 @@ function toggleGame() {
     }
     
     // Durumu tersine çevir
-    isRPSVisibleStats = !isRPSVisibleStats;
 }
 
 const followButtons = document.querySelectorAll(".btn, .unfollow-btn");

@@ -80,7 +80,7 @@ class SocialAdmin(admin.ModelAdmin):
 
 @admin.register(Game)
 class GameAdmin(admin.ModelAdmin):
-    list_display = ('group_name', 'player1', 'player2', 'player1_score', 'player2_score', 'created_at', 'game_duration', 'winner', 'loser')
+    list_display = ('game_name' ,'group_name', 'player1', 'player2', 'player1_score', 'player2_score', 'created_at', 'game_duration', 'winner', 'loser')
     list_filter = ('player1', 'player2', 'winner', 'loser')
     search_fields = ('player1__username', 'player2__username', 'group_name')
 
