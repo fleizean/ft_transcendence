@@ -226,6 +226,8 @@ class TournamentForm(forms.ModelForm):
         # Save the changes
         if commit:
             tournament.save()
+            # Add the creator to the participants list
+            tournament.participants.add(self.request.user)
         return tournament
     
 

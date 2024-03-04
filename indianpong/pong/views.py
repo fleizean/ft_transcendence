@@ -898,18 +898,71 @@ def tournament(request):
 
 @never_cache
 @login_required()
-def tournament_room(request):
-    return render(request, "tournament-room.html")
+def tournament_room(request, id):
+    # Get tournament with id
+    tournament = get_object_or_404(Tournament, id=id)
+    # Check request user in tournament participants
+    """     if request.user not in tournament.participants.all():
+        return redirect("tournament_room_list") """
+    
+    if 'start_tournament' in request.POST:
+        # Check if there are at least 3 participants
+        if tournament.participants.count() < 3:
+            messages.error(request, 'At least 3 participants are required to start the tournament.')
+        else:
+            tournament.create_first_round_matches()
+            messages.success(request, 'Tournament started successfully.')
+
+    elif 'join_tournament' in request.POST:
+        if tournament.participants.count() >= 4:
+            messages.error(request, 'The tournament is full.')
+        else:
+            tournament.participants.add(request.user)
+            messages.success(request, 'You have joined the tournament.')
+    
+    elif 'leave_tournament' in request.POST:
+        if not (tournament.status == 'started' or tournament.status == 'ended'):
+            tournament.participants.remove(request.user)
+            if request.user == tournament.creator:
+                if tournament.participants.count() > 0:
+                    tournament.creator = tournament.participants.first()
+                    tournament.save()
+                else:
+                    tournament.delete()
+            messages.success(request, 'You have left the tournament.')
+        else:
+            #Find the game that the user is in first_round_matches or final_round_matches which winner is not determined yet
+            match = Game.objects.filter(
+                Q(tournament_id=tournament.id, player1=request.user) | Q(tournament_id=tournament.id, player2=request.user),
+            ).exclude(winner__isnull=False).first()
+
+            if match:
+                match.forfeit(request.user, max_score=tournament.max_score)
+                messages.success(request, 'You have forfeited the tournament.')
+            else:
+                messages.error(request, 'There is no such a game')
+    
+    empty_slots = range(max(1, 4-tournament.participants.count()))
+    is_participants = tournament.participants.filter(id=request.user.id).exists()
+
+    return render(request, "tournament-room.html", {"tournament": tournament, 'user': request.user, 'is_participants': is_participants, 'empty_slots': empty_slots})
 
 @never_cache
 @login_required()
 def tournament_room_list(request):
-    return render(request, "room-list.html")
+    tournaments_list = Tournament.objects.all()
+    paginator = Paginator(tournaments_list, 4)  # Show 4 tournaments per page.
+    page_number = request.GET.get('page')
 
-@never_cache
-@login_required()
-def tournament_create(request):
-    return render(request, "create-tournament.html")
+    try:
+        tournament_page_obj = paginator.page(page_number)
+    except PageNotAnInteger:
+        # Sayfa numarası bir tamsayı değilse, ilk sayfayı al
+        tournament_page_obj = paginator.page(1)
+    except EmptyPage:
+        # Geçersiz bir sayfa numarası istenirse, son sayfayı al
+        tournament_page_obj = paginator.page(paginator.num_pages)
+    return render(request, "tournament-room-list.html", {"tournaments": tournament_page_obj})
 
 
 @never_cache
@@ -922,12 +975,12 @@ def tournament_create(request):
             messages.success(
                 request, f'Tournament "{tournament.name}" created successfully.'
             )
-            return redirect("tournament-room")
+            return redirect("tournament-room", tournament.id)
         else:
             print(form.errors)
     else:
         form = TournamentForm(request=request)
-    return render(request, "create-tournament.html", {"form": form})
+    return render(request, "tournament-create.html", {"form": form})
 
 
 """ @never_cache

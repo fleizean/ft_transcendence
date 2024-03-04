@@ -243,6 +243,19 @@ class Game(models.Model):
     def __str__(self):
         return f"{self.player1.username} vs {self.player2.username}"
     
+    def forfeit(self, forfeiting_user, max_score=10):
+        if self.player1 == forfeiting_user:
+            self.winner = self.player2
+            self.loser = self.player1
+            self.player1_score = 0
+            self.player2_score = max_score
+        else:
+            self.winner = self.player1
+            self.loser = self.player2
+            self.player1_score = max_score
+            self.player2_score = 0
+        self.save()
+    
     def formatted_game_duration(self):
         if self.game_duration is None:
             return None
@@ -302,6 +315,8 @@ class Tournament(models.Model):
                 player2=participants[i+1]
             )
             self.first_round_matches.add(game)
+        self.status = "started"
+        self.save()
         
     def create_final_round_matches(self):
         # Get the winners of the first round matches
