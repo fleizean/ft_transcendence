@@ -11,25 +11,26 @@
             To create a tournament I need a tournament name, how many max points each game will have.
         </div>
         <div class="tournament-create">
-          <div id="tournamentInfos" class="tournamentInfos">
+          <form method="post" action="">
+            {% csrf_token %}
+            <div id="tournamentInfos" class="tournamentInfos">
               <div class="input-box">
-                <label class="tournamentGame-Text" for="tournament-name">Tournament Name</label>
-                <input class="input-style" type="text" id="tournament-name">
-    
-                <label class="tournamentGame-Text" for="tournament-maxscore">Max Score Games</label>
-                <input class="input-style" type="text" id="tournament-maxscore">
-    
+                <label class="tournamentGame-Text" for="id_name">Tournament Name</label>
+                <input class="input-style" type="text" name="name" maxlength="100" required id="id_name">
+                <label class="tournamentGame-Text" for="id_max_score">Max Score Games</label>
+                <input class="input-style" type="number" name="max_score" value="10" required id="id_max_score">
                 <div class="selectorGame">
-                  <label class="tournamentGame-Text" for="gameMode">Game Mode</label>
-                  <select class="form-select" id="gameMode">
-                    <option selected value="Vanilla">Vanilla</option>
-                    <option value="Abilities">Abilities</option>
+                  <label class="tournamentGame-Text" for="id_game_mode">Game Mode</label>
+                  <select class="form-select" name="game_mode" id="id_game_mode">
+                    <option selected value="vanilla">Vanilla</option>
+                    <option value="abilities">Abilities</option>
                   </select>
                 </div>
               </div>
-
-
-              <button class="btn btn-outline-success" id="startButton">Create Tournament</button>
+              <button class="btn btn-outline-success" id="startButton" type="submit">Create Tournament</button>
+            </div>
+          </form>
+        </div>
             </div>
           </div>
     </div>

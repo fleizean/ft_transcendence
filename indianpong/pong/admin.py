@@ -86,8 +86,8 @@ class GameAdmin(admin.ModelAdmin):
 
 @admin.register(Tournament)
 class TournamentAdmin(admin.ModelAdmin):
-    list_display = ('name', 'start_date')
-    search_fields = ('name',)
+    list_display = ('name', 'creator', 'winner', 'start_date', 'status')
+    search_fields = ('name', 'status')
 
 @admin.register(Room)
 class RoomAdmin(admin.ModelAdmin):

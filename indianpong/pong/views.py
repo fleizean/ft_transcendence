@@ -319,11 +319,6 @@ def rps_game_find(request):
 def pong_game_find(request):
     return render(request, "pong-game-find.html")
 
-## Tournament Room List ##
-@never_cache
-@login_required()
-def tournament_room_list(request):
-    return render(request, "room-list.html")
 
 
 ### Profile Settings ###
@@ -418,22 +413,6 @@ def password_change(request):
     else:
         form = PasswordChangeUserForm(request.user)
     return render(request, "password_change.html", {"form": form})
-
-@never_cache
-@login_required()
-def tournament(request):
-    return render(request, "tournament.html")
-
-@never_cache
-@login_required()
-def tournament_room(request):
-    return render(request, "tournament-room.html")
-
-@never_cache
-@login_required()
-def tournament_create(request):
-    return render(request, "create-tournament.html")
-
 
 
 @never_cache
@@ -914,18 +893,41 @@ def game_warning(request, opponent_id):
 
 @never_cache
 @login_required()
-def create_tournament(request):
+def tournament(request):
+    return render(request, "tournament.html")
+
+@never_cache
+@login_required()
+def tournament_room(request):
+    return render(request, "tournament-room.html")
+
+@never_cache
+@login_required()
+def tournament_room_list(request):
+    return render(request, "room-list.html")
+
+@never_cache
+@login_required()
+def tournament_create(request):
+    return render(request, "create-tournament.html")
+
+
+@never_cache
+@login_required()
+def tournament_create(request):
     if request.method == "POST":
-        form = TournamentForm(request.POST)
+        form = TournamentForm(request.POST, request=request)
         if form.is_valid():
             tournament = form.save()
             messages.success(
                 request, f'Tournament "{tournament.name}" created successfully.'
             )
-            return redirect("tournament_list")
+            return redirect("tournament-room")
+        else:
+            print(form.errors)
     else:
-        form = TournamentForm()
-    return render(request, "create_tournament.html", {"form": form})
+        form = TournamentForm(request=request)
+    return render(request, "create-tournament.html", {"form": form})
 
 
 """ @never_cache

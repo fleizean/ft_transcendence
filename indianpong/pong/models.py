@@ -266,7 +266,14 @@ class Tournament(models.Model):
         ("ended", "Ended")
     )
 
+    GAME_MODE_CHOICES = (
+        ("vanilla", "Vanilla"),
+        ("abilities", "Abilities")
+    )
+
     name = models.CharField(max_length=100)
+    max_score = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(10)], default=10)
+    game_mode = models.CharField(max_length=10, choices=GAME_MODE_CHOICES, default="vanilla")
     creator = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='creator_tournament')
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default="open")
     start_date = models.DateTimeField(auto_now_add=True)
