@@ -10,21 +10,37 @@
   {% include '_nav.html' %}
   <link rel="stylesheet" href="{% static 'css/rps.css' %}" />
 
-  <div class="container-top">
+  <div class="container-top" data-cheater="{{ cheater_rps }}" data-godthings="{{godthings_rps}}">
     <div class="header-top">
       <div class="header">
         <div class="score" style="margin-right: 15px;">
+          <div class="player1_name">{{request.user.username}}</div>
           <div class="score__title">score</div>
           <div class="score__number1">0</div>
         </div>
         <h3 class="rps-header-text">ROCK<br />PAPER<br />SCISSORS</h3>
         <div class="score" style="margin-left: 15px;">
+          <div class="player2_name">{% if not ainametag %} IndianAI {% else %} {{ainametag}} {% endif %}</div>
           <div class="score__title">score</div>
           <div class="score__number2">0</div>
         </div>
       </div>
     </div>
     <section class="game">
+      {% if cheater_rps == "true" %}
+        <button class="choice-btn" id="cheater-choice" data-choice="cheater">
+          <div class="choice cheater">
+            <img src="{% static 'assets/rps/icon-cheater.svg' %}" alt="Cheater" />
+          </div>
+        </button>
+      {% endif %}
+      {% if godthings_rps == "true" %}
+        <button class="choice-btn" id="godthings-choice" data-choice="godthings">
+          <div class="choice godthings">
+            <img src="{% static 'assets/rps/icon-godthings.svg' %}" alt="Godthings" />
+          </div>
+        </button>
+      {% endif %}
       <button class="choice-btn" data-choice="paper">
         <div class="choice paper">
           <img src="{% static 'assets/rps/icon-paper.svg' %}" alt="Paper" />

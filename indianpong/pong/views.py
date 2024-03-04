@@ -755,12 +755,19 @@ def play_ai(request):
 @never_cache
 @login_required()
 def play_rps(request):
+    
+
     return render(request, "play-rps.html")
 
 @never_cache
 @login_required()
 def play_rps_ai(request):
-    return render(request, "play-rps-ai.html")
+    user_items = UserItem.objects.filter(user=request.user)
+    ainametag = get_equipped_item_value(user_items, "My Beautiful AI", "IndianAI")
+    cheater_rps = get_equipped_item_value(user_items, "Cheater", "None")
+    godthings_rps = get_equipped_item_value(user_items, "God Things", "None")
+
+    return render(request, "play-rps-ai.html" , {"cheater_rps": cheater_rps, "godthings_rps": godthings_rps, "ainametag": ainametag})
 
 @never_cache
 @login_required()

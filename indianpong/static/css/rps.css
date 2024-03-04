@@ -13,6 +13,10 @@
     --scissors-2: hsl(40, 84%, 53%);
     --paper-1: hsl(230, 89%, 62%);
     --paper-2: hsl(230, 89%, 65%);
+    --godthings-1: hsl(112, 71%, 56%);
+    --godthings-2: hsl(112, 70%, 56%);
+    --cheater-1: hsl(181, 71%, 56%);
+    --cheater-2: hsl(181, 70%, 56%);
     --rock-1: hsl(349, 71%, 52%);
     --rock-2: hsl(349, 70%, 56%);
     --shadow-light: #00000026;
@@ -25,7 +29,6 @@
     flex-direction: column;
     justify-content: center;
     overflow-x: hidden;
-    overflow-y: hidden;
     z-index: 2;
 }
 
@@ -66,6 +69,19 @@
     line-height: 1;
 }
 
+
+.player1_name {
+    font-size: 1rem;
+    letter-spacing: 0.1em;
+    color: orangered;
+}
+
+.player2_name {
+    font-size: 1rem;
+    letter-spacing: 0.1em;
+    color: orangered;
+}
+
 .score__title {
     font-size: 1.1rem;
     letter-spacing: 0.1em;
@@ -84,17 +100,19 @@
     color: var(--dark-text);
 }
 
+
 /* Game */
 .game {
     position: relative;
     display: grid;
-    grid-template-columns: (repeat(2, 1fr));
+    grid-template-columns: (repeat(4, 1fr));
     grid-template-areas:
+        "cheater godthings"
         "paper scissors"
         "rock rock";
     place-items: center;
     height: 30rem;
-    padding-top: 4rem;
+    padding-top: 2rem;
 }
 
 .game::before {
@@ -157,6 +175,16 @@
     box-shadow: 0 0.5rem var(--shadow-med), 0 0.5rem var(--paper-2);
 }
 
+.choice.godthings::before {
+    background: linear-gradient(to bottom, var(--godthings-1), var(--godthings-2));
+    box-shadow: 0 0.5rem var(--shadow-med), 0 0.5rem var(--godthings-2);
+}
+
+.choice.cheater::before {
+    background: linear-gradient(to bottom, var(--cheater-1), var(--cheater-2));
+    box-shadow: 0 0.5rem var(--shadow-med), 0 0.5rem var(--cheater-2);
+}
+
 .choice.scissors::before {
     background: linear-gradient(to bottom, var(--scissors-1), var(--scissors-2));
     box-shadow: 0 0.5rem var(--shadow-med), 0 0.5rem var(--scissors-2);
@@ -169,6 +197,17 @@
 
 .choice-btn[data-choice="paper"] {
     grid-area: paper;
+    
+}
+
+.choice-btn[data-choice="godthings"] {
+    grid-area: godthings;
+    margin-bottom: 3rem;
+}
+
+.choice-btn[data-choice="cheater"] {
+    grid-area: cheater;
+    margin-bottom: 3rem;
 }
 
 .choice-btn[data-choice="scissors"] {
