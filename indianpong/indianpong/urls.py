@@ -18,7 +18,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path
-from pong.views import play_rps, play_rps_ai, aboutus, follow_unfollow, tournament_room, tournament_create, local_game, tournament, update_winner, inventory, store, activate_account, play_ai, pong_game_find, rps_game_find, auth_callback, chat, friends, match_history, password_change, password_reset, password_reset_done, rankings, dashboard, game, index, auth, chat_room, profile_view, search, set_password, signup, login_view, logout_view, profile_settings, setup_two_factor_auth, generate_jwt_token, create_tournament, start_chat, room
+from pong.views import play_rps, play_rps_ai, aboutus, follow_unfollow, tournament_room, tournament_create, local_game, tournament, update_winner, inventory, store, activate_account, play_ai, pong_game_find, rps_game_find, auth_callback, chat, friends, password_change, password_reset, password_reset_done, rankings, dashboard, game, index, auth, chat_room, profile_view, search, set_password, signup, login_view, logout_view, profile_settings, setup_two_factor_auth, generate_jwt_token, create_tournament, start_chat, room
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -42,7 +42,6 @@ urlpatterns = [
     #path('chat_room', chat_room, name='chat_room'),
     path('dashboard', dashboard, name='dashboard'),
     path('friends/<str:profile>', friends, name='friends'),
-    path('match-history/<str:profile>', match_history, name='match_history'),
     path('about-us', aboutus, name='aboutus'),
     path('rankings', rankings, name='rankings'),
     path('inventory/<str:username>/', inventory, name='inventory'),

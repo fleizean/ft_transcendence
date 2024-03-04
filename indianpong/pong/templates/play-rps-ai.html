@@ -10,7 +10,7 @@
   {% include '_nav.html' %}
   <link rel="stylesheet" href="{% static 'css/rps.css' %}" />
 
-  <div class="container-top" data-cheater="{{ cheater_rps }}" data-godthings="{{godthings_rps}}">
+  <div class="container-top" data-cheater="{{ cheater_rps }}" data-godthings="{{godthings_rps}}" data-username="{{request.user.username}}">
     <div class="header-top">
       <div class="header">
         <div class="score" style="margin-right: 15px;">
@@ -71,11 +71,12 @@
   </section>
 
   <div id="gameOverScreen" class="game-over">
-    <h1>Game Over</h1>
+    <h1 style="color: white;">Game Over</h1>
     <p id="winnerText" class="winnerName"></p>
     <button id="restartButton">Restart</button>
     <button id="exitButton">Exit</button>
   </div>
 
   <script src="{% static 'js/rps.js' %}"></script>
+  {% csrf_token %}
 {% endblock %}

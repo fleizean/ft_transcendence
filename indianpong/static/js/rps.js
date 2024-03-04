@@ -42,12 +42,17 @@ const scoreNumber2 = document.querySelector(".score__number2");
 
 const cheater = document.querySelector('.container-top').dataset.cheater;
 const godthings = document.querySelector('.container-top').dataset.godthings;
+const username = document.querySelector('.container-top').dataset.username;
 
 const ischeater = (cheater === "true") ? true : false;
 const isgodthings = (godthings === "true") ? true : false;
 
+var start_time;
+
 let cheatercount = 0;
 let godthingscount = 0;
+let aicheatercount = 0;
+let aigodthingscount = 0;
 let nowChoice = "";
 
 let aicheater = "inactive";
@@ -58,6 +63,8 @@ let score = 0;
 // Game Logic
 choiceButtons.forEach((button) => {
     button.addEventListener("click", () => {
+        if (!start_time)
+            start_time = new Date();
         const choiceName = button.dataset.choice;
         const choice = CHOICES.find((choice) => choice.name === choiceName);
         nowChoice = choice.name;
@@ -83,9 +90,35 @@ function choose(choice) {
 }
 
 function aiChoose() {
-    const rand = Math.floor(Math.random() * CHOICES.length);
-    return CHOICES[rand];
+    var filteredChoices = [];
+    var choice = "";
+    if (cheater === "true" && godthings !== "true" && aicheatercount < 1) {
+        aicheatercount++;
+        filteredChoices = CHOICES.filter(choice => choice.name !== "godthings");
+        choice = filteredChoices[Math.floor(Math.random() * filteredChoices.length)];
+    } else if (godthings === "true" && cheater !== "true" && aigodthingscount < 1) {
+        aigodthingscount++;
+        filteredChoices = CHOICES.filter(choice => choice.name !== "cheater");
+        choice = filteredChoices[Math.floor(Math.random() * filteredChoices.length)];
+    } else if (godthings === "true" && cheater === "true" && (aicheatercount < 1 || aigodthingscount < 1)) {
+        if (aicheatercount > 0 )
+            filteredChoices = CHOICES.filter(choice => choice.name !== "cheater");
+        else if (aigodthingscount > 0)
+            filteredChoices = CHOICES.filter(choice => choice.name !== "godthings");
+        else
+            filteredChoices = CHOICES;
+        choice = filteredChoices[Math.floor(Math.random() * CHOICES.length)];
+        if (choice.name === "cheater")
+            aicheatercount++;
+        else if (choice.name === "godthings")
+            aigodthingscount++;
+    } else {
+        filteredChoices = CHOICES.filter(choice => choice.name !== "cheater" && choice.name !== "godthings");
+        choice = filteredChoices[Math.floor(Math.random() * filteredChoices.length)];
+    }
+    return choice;
 }
+
 
 function displayResults(results) {
     resultDivs.forEach((resultDiv, idx) => {
@@ -109,11 +142,11 @@ function displayWinner(results) {
         if (winner == "user") {
             resultText.innerText = "you win";
             resultDivs[0].classList.toggle("winner");
-            keepScore(1, true);
+            keepScore(1, results[0].name);
         } else if (winner == "ai") {
             resultText.innerText = "you lose";
             resultDivs[1].classList.toggle("winner");
-            keepScore(-1, true);
+            keepScore(-1, results[1].name);
 
         } else {
             resultText.innerText = "draw";
@@ -133,12 +166,16 @@ function displayWinner(results) {
 function showGameOverScreenRPS() {
 
     resultsDiv.classList.toggle("show-winner");
+    var winnerText = (scoreNumber1.innerText == MAX_SCORE_RPS) ? "YOU WIN!" : "YOU LOSE";
     document.getElementById('winnerText').innerText = winnerText;
-    var winnerText = (scoreNumber1 == MAX_SCORE_RPS) ? "YOU WIN!" : "";
-    if (scoreNumber1 > scoreNumber2) {
+    if (parseInt(scoreNumber1.innerText) > parseInt(scoreNumber2.innerText)) {
+        sendWinnerToBackend(username, "IndianAI", parseInt(scoreNumber1.innerText), parseInt(scoreNumber2.innerText), start_time);
+        document.getElementById('winnerText').style.color = 'green';
         document.getElementById('gameOverScreen').style.backgroundColor = 'rgba(11, 22, 8, 0.8)';
     }
     else {
+        sendWinnerToBackend("IndianAI", username, parseInt(scoreNumber2.innerText), parseInt(scoreNumber1.innerText), start_time);
+        document.getElementById('winnerText').style.color = 'red';
         document.getElementById('gameOverScreen').style.backgroundColor = 'rgba(20, 5, 5, 0.8)';
     }
     document.getElementById('gameOverScreen').style.display = 'block';
@@ -151,6 +188,10 @@ function resetGameRPS() {
     document.getElementById('gameOverScreen').style.display = 'none';
     scoreNumber1.innerText = 0;
     scoreNumber2.innerText = 0;
+    cheatercount = 0;
+    godthingscount = 0;
+    aicheatercount = 0;
+    aigodthingscount = 0;
     PlayAgainRPS();
 }
 
@@ -196,20 +237,20 @@ function isWinner(results) {
     return results[0].beats === results[1].name ? "user" : "ai";
 }
 
-function keepScore(point, cheater) {
+function keepScore(point, name) {
     const tempscore = Math.abs(point);
     if (point > 0) {
         scoreNumber1.innerText = parseInt(scoreNumber1.innerText) + tempscore;
-        if (cheater === true)
+        if (name === "cheater" && parseInt(scoreNumber2.innerText) > 0)
             scoreNumber2.innerText = parseInt(scoreNumber2.innerText) - 1;
     } else {
         scoreNumber2.innerText = parseInt(scoreNumber2.innerText) + tempscore;
-        if (cheater === true)
+        if (name === "cheater" && parseInt(scoreNumber1.innerText) > 0)
             scoreNumber1.innerText = parseInt(scoreNumber1.innerText) - tempscore;
     }
 }
 
-function  PlayAgainRPS() {
+function PlayAgainRPS() {
     gameDiv.classList.toggle("hidden");
     resultsDiv.classList.toggle("hidden");
     
@@ -238,3 +279,37 @@ playAgainBtn.addEventListener("click", () => {
     resultsDiv.classList.toggle("show-winner");
 });
 
+function sendWinnerToBackend(winner, loser, winnerscore, loserscore, start_time) {
+    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    var finish_time = new Date();
+    const data = {
+        game: "rps",
+        winner: winner,
+        loser: loser,
+        winnerscore: winnerscore,
+        loserscore: loserscore,
+        start_time: start_time,
+        finish_time: finish_time
+    };
+
+    fetch('update_winner', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': csrfToken,
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => {
+        
+    })
+    .catch(error => {
+        console.error('There was a problem updating the winner:', error);
+    });
+}

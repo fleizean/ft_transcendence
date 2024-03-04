@@ -36,6 +36,7 @@ from .models import (
     UserProfile,
     Game,
     TwoFactorAuth,
+    UserGameStatRPS,
     JWTToken,
     UserGameStat,
     Tournament,
@@ -282,8 +283,13 @@ def profile(request):
 def profile_view(request, username):
     profile = get_object_or_404(UserProfile, username=username)
     game_records = Game.objects.filter(
-        Q(player1=profile) | Q(player2=profile)
+        Q(player1=profile) | Q(player2=profile),
+        game_name='pong'
     ).order_by("-created_at")
+    game_records_rps = Game.objects.filter(
+        Q(player1=profile) | Q(player2=profile),
+        game_name='rps'
+    ).order_by("-created_at")[:5]
     paginator = Paginator(game_records, 5)  # Sayfada 5 kayıt göster
     page_number = request.GET.get("page")
     is_friend = request.user.friends.filter(id=profile.id).exists()
@@ -313,6 +319,7 @@ def profile_view(request, username):
             "profile": profile,
             "history_page_obj": history_page_obj,
             "is_friend": is_friend,
+            "game_records_rps": game_records_rps,
         },
     )
 
@@ -1005,121 +1012,117 @@ def generate_jwt_token(request):
 def update_winner(request):
     if request.method == "POST":
         data = json.loads(request.body)
-        winner = data.get("winner")
-        loser = data.get("loser")
-        winnerscore = data.get("winnerscore")
-        loserscore = data.get("loserscore")
-        start_time = data.get("start_time")
-        finish_time = data.get("finish_time")
-
-        winner_profile = get_object_or_404(UserProfile, username=winner)
-        loser_profile = get_object_or_404(UserProfile, username=loser)
-
-        if winner:
-            winner_profile.indian_wallet += random.randint(300, 500)
-            winner_profile.elo_point += random.randint(20, 30)
-            winner_profile.save()
-        elif loser:
-            loser_profile.indian_wallet += random.randint(20, 30)
-            lose_elo -= random.randint(10, 20)
-            if lose_elo < loser_profile.elo_point:
-                loser_profile.elo_point -= lose_elo
-            loser_profile.save()
-
-        start_time = datetime.strptime(start_time, "%Y-%m-%dT%H:%M:%S.%fZ")
-        finish_time = datetime.strptime(finish_time, "%Y-%m-%dT%H:%M:%S.%fZ")
-        game_duration = finish_time - start_time
-
-        game_record = Game.objects.create(
-            group_name=winner_profile.username + "_" + loser_profile.username,
-            player1=winner_profile,
-            player2=loser_profile,
-            player1_score=winnerscore,
-            player2_score=loserscore,
-            winner=winner_profile,
-            loser=loser_profile,
-            game_duration=game_duration,
-        )
-
-        if winner_profile.game_stats is None:
-            winner_profile.game_stats = UserGameStat.objects.create()
-            winner_profile.save()
-        if loser_profile.game_stats is None:
-            loser_profile.game_stats = UserGameStat.objects.create()
-            loser_profile.save()
-        # Game Stats #
-
-        # Winner #
-        winner_profile.game_stats.total_games_pong += 1
-
-        winner_profile.game_stats.total_win_pong += 1
-        winner_profile.game_stats.total_win_rate_pong = (
-            winner_profile.game_stats.total_win_pong
-            / winner_profile.game_stats.total_games_pong
-        )
-        winner_profile.game_stats.total_win_streak_pong += 1
-        winner_profile.game_stats.total_lose_streak_pong = 0
-
-        # Kazananın ortalama puan kazanma ve kaybetme sayılarını güncelle
-        winner_profile.game_stats.total_avg_points_won_pong = (
-            winner_profile.game_stats.total_avg_points_won_pong
-            * (winner_profile.game_stats.total_win_pong - 1)
-            + winnerscore
-        ) / winner_profile.game_stats.total_win_pong
-        winner_profile.game_stats.total_avg_points_lost_pong = (
-            winner_profile.game_stats.total_avg_points_lost_pong
-            * (winner_profile.game_stats.total_win_pong - 1)
-            + loserscore
-        ) / winner_profile.game_stats.total_win_pong
-        total_game_duration_seconds = (
-            winner_profile.game_stats.total_avg_game_duration_pong.total_seconds()
-            * (winner_profile.game_stats.total_games_pong - 1)
-        )
-        total_game_duration_seconds += game_duration.total_seconds()
-        avg_game_duration_seconds = (
-            total_game_duration_seconds / winner_profile.game_stats.total_games_pong
-        )
-        winner_profile.game_stats.total_avg_game_duration_pong = timedelta(
-            seconds=avg_game_duration_seconds
-        )
-        winner_profile.game_stats.save()
-
-        # Loser #
-        loser_profile.game_stats.total_games_pong += 1
-
-        loser_profile.game_stats.total_lose_pong += 1
-        loser_profile.game_stats.total_win_rate_pong = (
-            loser_profile.game_stats.total_win_pong
-            / loser_profile.game_stats.total_games_pong
-        )
-        loser_profile.game_stats.total_win_streak_pong = 0
-        loser_profile.game_stats.total_lose_streak_pong += 1
-
-        # Kaybedenin ortalama puan kazanma ve kaybetme sayılarını güncelle
-        loser_profile.game_stats.total_avg_points_won_pong = (
-            loser_profile.game_stats.total_avg_points_won_pong
-            * (loser_profile.game_stats.total_lose_pong - 1)
-            + loserscore
-        ) / loser_profile.game_stats.total_lose_pong
-        loser_profile.game_stats.total_avg_points_lost_pong = (
-            loser_profile.game_stats.total_avg_points_lost_pong
-            * (loser_profile.game_stats.total_lose_pong - 1)
-            + winnerscore
-        ) / loser_profile.game_stats.total_lose_pong
-        loser_total_game_duration_seconds = (
-            loser_profile.game_stats.total_avg_game_duration_pong.total_seconds()
-            * (loser_profile.game_stats.total_games_pong - 1)
-        )
-        loser_total_game_duration_seconds += game_duration.total_seconds()
-        loser_avg_game_duration_seconds = (
-            loser_total_game_duration_seconds
-            / loser_profile.game_stats.total_games_pong
-        )
-        loser_profile.game_stats.total_avg_game_duration_pong = timedelta(
-            seconds=loser_avg_game_duration_seconds
-        )
-        loser_profile.game_stats.save()
-
+        game = data.get("game")
+        if (game == "pong"):
+            update_winner_rps(data)
+        else:
+            update_winner_rps(data)
         ##############
         return JsonResponse({"message": "Winner and Loser updated successfully"})
     return render(request, "404.html", status=404)
+
+def update_winner_rps(data):
+    winner = data.get("winner")
+    loser = data.get("loser")
+    winnerscore = int(data.get("winnerscore"))
+    loserscore = int(data.get("loserscore"))
+    start_time = data.get("start_time")
+    finish_time = data.get("finish_time")
+    winner_profile = get_object_or_404(UserProfile, username=winner)
+    loser_profile = get_object_or_404(UserProfile, username=loser)
+    if winner:
+        winner_profile.indian_wallet += random.randint(300, 500)
+        winner_profile.elo_point += random.randint(20, 30)
+        winner_profile.save()
+    elif loser:
+        loser_profile.indian_wallet += random.randint(20, 30)
+        lose_elo -= random.randint(10, 20)
+        if lose_elo < loser_profile.elo_point:
+            loser_profile.elo_point -= lose_elo
+        loser_profile.save()
+    start_time = datetime.strptime(start_time, "%Y-%m-%dT%H:%M:%S.%fZ")
+    finish_time = datetime.strptime(finish_time, "%Y-%m-%dT%H:%M:%S.%fZ")
+    game_duration = finish_time - start_time
+    game_record = Game.objects.create(
+        game_name = "rps",
+        group_name=winner_profile.username + "_" + loser_profile.username,
+        player1=winner_profile,
+        player2=loser_profile,
+        player1_score=winnerscore,
+        player2_score=loserscore,
+        winner=winner_profile,
+        loser=loser_profile,
+        game_duration=game_duration,
+    )
+    if winner_profile.game_stats_rps is None:
+        winner_profile.game_stats_rps = UserGameStatRPS.objects.create()
+        winner_profile.save()
+    if loser_profile.game_stats_rps is None:
+        loser_profile.game_stats_rps = UserGameStatRPS.objects.create()
+        loser_profile.save()
+    # Game Stats #
+    # Winner #
+    winner_profile.game_stats_rps.total_games_rps += 1
+    winner_profile.game_stats_rps.total_win_rps += 1
+    winner_profile.game_stats_rps.total_win_rate_rps = (
+        winner_profile.game_stats_rps.total_win_rps
+        / winner_profile.game_stats_rps.total_games_rps
+    )
+    winner_profile.game_stats_rps.total_win_streak_rps += 1
+    winner_profile.game_stats_rps.total_lose_streak_rps = 0
+    # Kazananın ortalama puan kazanma ve kaybetme sayılarını güncelle
+    winner_profile.game_stats_rps.total_avg_points_won_rps = (
+        winner_profile.game_stats_rps.total_avg_points_won_rps
+        * (winner_profile.game_stats_rps.total_win_rps - 1)
+        + winnerscore
+    ) / winner_profile.game_stats_rps.total_win_rps
+    winner_profile.game_stats_rps.total_avg_points_lost_rps = (
+        winner_profile.game_stats_rps.total_avg_points_lost_rps
+        * (winner_profile.game_stats_rps.total_win_rps - 1)
+        + loserscore
+    ) / winner_profile.game_stats_rps.total_win_rps
+    total_game_duration_seconds = (
+        winner_profile.game_stats_rps.total_avg_game_duration_rps.total_seconds()
+        * (winner_profile.game_stats_rps.total_games_rps - 1)
+    )
+    total_game_duration_seconds += game_duration.total_seconds()
+    avg_game_duration_seconds = (
+        total_game_duration_seconds / winner_profile.game_stats_rps.total_games_rps
+    )
+    winner_profile.game_stats_rps.total_avg_game_duration_rps = timedelta(
+        seconds=avg_game_duration_seconds
+    )
+    winner_profile.game_stats_rps.save()
+    # Loser #
+    loser_profile.game_stats_rps.total_games_rps += 1
+    loser_profile.game_stats_rps.total_lose_rps += 1
+    loser_profile.game_stats_rps.total_win_rate_rps = (
+        loser_profile.game_stats_rps.total_win_rps
+        / loser_profile.game_stats_rps.total_games_rps
+    )
+    loser_profile.game_stats_rps.total_win_streak_rps = 0
+    loser_profile.game_stats_rps.total_lose_streak_rps += 1
+    # Kaybedenin ortalama puan kazanma ve kaybetme sayılarını güncelle
+    loser_profile.game_stats_rps.total_avg_points_won_rps = (
+        loser_profile.game_stats_rps.total_avg_points_won_rps
+        * (loser_profile.game_stats_rps.total_lose_rps - 1)
+        + loserscore
+    ) / loser_profile.game_stats_rps.total_lose_rps
+    loser_profile.game_stats_rps.total_avg_points_lost_rps = (
+        loser_profile.game_stats_rps.total_avg_points_lost_rps
+        * (loser_profile.game_stats_rps.total_lose_rps - 1)
+        + winnerscore
+    ) / loser_profile.game_stats_rps.total_lose_rps
+    loser_total_game_duration_seconds = (
+        loser_profile.game_stats_rps.total_avg_game_duration_rps.total_seconds()
+        * (loser_profile.game_stats_rps.total_games_rps - 1)
+    )
+    loser_total_game_duration_seconds += game_duration.total_seconds()
+    loser_avg_game_duration_seconds = (
+        loser_total_game_duration_seconds
+        / loser_profile.game_stats_rps.total_games_rps
+    )
+    loser_profile.game_stats_rps.total_avg_game_duration_rps = timedelta(
+        seconds=loser_avg_game_duration_seconds
+    )
+    loser_profile.game_stats_rps.save()
