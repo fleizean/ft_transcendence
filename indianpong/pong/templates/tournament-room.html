@@ -55,7 +55,7 @@
         {% endif %}
         <section id="game-room-section">
             <div class="player-wrapper">
-                {% for participant in tournament.participants.all|slice:":4" %}
+                {% for participant in tournament.participants.all %}
                         <div class="place">
                             <div class="place-container">
                                 <div class="avatar-container">

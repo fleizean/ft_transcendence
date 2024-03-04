@@ -900,11 +900,10 @@ def tournament(request):
 @login_required()
 def tournament_room(request, id):
     # Get tournament with id
-    tournament = get_object_or_404(Tournament, id=id)
-    # Check request user in tournament participants
-    """     if request.user not in tournament.participants.all():
-        return redirect("tournament_room_list") """
-    
+    tournament = Tournament.objects.filter(id=id).first()
+    if not tournament:
+        return redirect('tournament_room_list')
+
     if 'start_tournament' in request.POST:
         # Check if there are at least 3 participants
         if tournament.participants.count() < 3:
@@ -929,6 +928,7 @@ def tournament_room(request, id):
                     tournament.save()
                 else:
                     tournament.delete()
+                return redirect('tournament_room_list')
             messages.success(request, 'You have left the tournament.')
         else:
             #Find the game that the user is in first_round_matches or final_round_matches which winner is not determined yet
@@ -942,9 +942,13 @@ def tournament_room(request, id):
             else:
                 messages.error(request, 'There is no such a game')
     
-    empty_slots = range(max(1, 4-tournament.participants.count()))
-    is_participants = tournament.participants.filter(id=request.user.id).exists()
-
+    tournament = Tournament.objects.filter(id=id).first()
+    if tournament:
+        empty_slots = range(max(1, 4-tournament.participants.count()))
+        is_participants = tournament.participants.filter(id=request.user.id).exists()
+    else:
+        empty_slots = range(0, 4)
+        is_participants = False
     return render(request, "tournament-room.html", {"tournament": tournament, 'user': request.user, 'is_participants': is_participants, 'empty_slots': empty_slots})
 
 @never_cache
