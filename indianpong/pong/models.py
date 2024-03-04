@@ -47,6 +47,7 @@ class UserProfile(AbstractUser):
     preffered_lang = models.CharField(max_length=100, blank=True, null=True)
     store_items = models.ManyToManyField(StoreItem, through='UserItem', blank=True)
     game_stats = models.OneToOneField('UserGameStat', on_delete=models.SET_NULL, null=True, blank=True)
+    game_stats_rps = models.OneToOneField('UserGameStatRPS', on_delete=models.SET_NULL, null=True, blank=True)
     indian_wallet = models.IntegerField(blank=True, null=True, default=0, validators=[MinValueValidator(0), MaxValueValidator(9999)])
     elo_point = models.IntegerField(blank=True, null=True, default=0, validators=[MinValueValidator(0), MaxValueValidator(99999)])
     is_online = models.BooleanField(default=False)
@@ -153,6 +154,47 @@ class UserGameStat(models.Model):
     def formatted_avg_points_won(self):
         return "{:.2f}".format(self.total_avg_points_won_pong)
 
+
+class UserGameStatRPS(models.Model):
+    total_games_rps = models.IntegerField(default=0)
+    total_win_rps = models.IntegerField(default=0)
+    total_lose_rps = models.IntegerField(default=0)
+    total_win_streak_rps = models.IntegerField(default=0)
+    total_lose_streak_rps = models.IntegerField(default=0)
+    total_win_rate_rps = models.FloatField(default=0.0)
+    total_avg_game_duration_rps = models.DurationField(default=timedelta(0), null=True, blank=True)
+    total_avg_points_won_rps = models.FloatField(default=0.0)
+    total_avg_points_lost_rps = models.FloatField(default=0.0)
+
+    def formatted_game_duration(self):
+        if self.total_avg_game_duration_rps is None:
+            return None
+
+        total_seconds = int(self.total_avg_game_duration_rps.total_seconds())
+        hours, remainder = divmod(total_seconds, 3600)
+        minutes, seconds = divmod(remainder, 60)
+
+        # Format the duration as "1h 3m 2s", "3m 2s", "2s", etc.
+        if hours:
+            return f"{hours}h {minutes}m {seconds}s"
+        elif minutes:
+            return f"{minutes}m {seconds}s"
+        else:
+            return f"{seconds}s"
+
+    def formatted_win_rate(self):
+        # Win rate'i yüzde cinsinden hesapla ve float olarak döndür
+        win_rate_percentage = self.total_win_rate_rps * 100
+
+        # Win rate'i string olarak formatla
+        return f"%{win_rate_percentage:.1f}"
+
+    def formatted_avg_points_lost(self):
+        return "{:.2f}".format(self.total_avg_points_lost_rps)
+
+    def formatted_avg_points_won(self):
+        return "{:.2f}".format(self.total_avg_points_won_rps)
+
 class VerifyToken(models.Model):
     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     token = models.CharField(max_length=255)
@@ -227,8 +269,8 @@ class GameWarning(models.Model):
     def __str__(self):
         return f"{self.user.username} sent a game warning to {self.opponent.username}"
 
-
 class Game(models.Model):
+    game_name = models.CharField(max_length=20, blank=True, null=True, default="pong")
     tournament_id = models.UUIDField(null=True, blank=True) #? Maybe 
     group_name = models.CharField(max_length=100)
     player1 = models.ForeignKey(UserProfile, related_name='games_as_player1', on_delete=models.CASCADE)
@@ -242,6 +284,19 @@ class Game(models.Model):
 
     def __str__(self):
         return f"{self.player1.username} vs {self.player2.username}"
+    
+    def forfeit(self, forfeiting_user, max_score=10):
+        if self.player1 == forfeiting_user:
+            self.winner = self.player2
+            self.loser = self.player1
+            self.player1_score = 0
+            self.player2_score = max_score
+        else:
+            self.winner = self.player1
+            self.loser = self.player2
+            self.player1_score = max_score
+            self.player2_score = 0
+        self.save()
     
     def formatted_game_duration(self):
         if self.game_duration is None:
@@ -266,7 +321,14 @@ class Tournament(models.Model):
         ("ended", "Ended")
     )
 
+    GAME_MODE_CHOICES = (
+        ("vanilla", "Vanilla"),
+        ("abilities", "Abilities")
+    )
+
     name = models.CharField(max_length=100)
+    max_score = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(10)], default=10)
+    game_mode = models.CharField(max_length=10, choices=GAME_MODE_CHOICES, default="vanilla")
     creator = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='creator_tournament')
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default="open")
     start_date = models.DateTimeField(auto_now_add=True)
@@ -295,6 +357,8 @@ class Tournament(models.Model):
                 player2=participants[i+1]
             )
             self.first_round_matches.add(game)
+        self.status = "started"
+        self.save()
         
     def create_final_round_matches(self):
         # Get the winners of the first round matches

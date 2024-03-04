@@ -207,6 +207,28 @@ class SetPasswordUserForm(SetPasswordForm):
         return user
 
 
+class TournamentForm(forms.ModelForm):
+    class Meta:
+        model = Tournament
+        fields = ['name', 'max_score', 'game_mode']
+
+    def __init__(self, *args, **kwargs):
+        self.request = kwargs.pop('request', None)
+        super(TournamentForm, self).__init__(*args, **kwargs)
+
+    def save(self, commit=True, *args, **kwargs):
+        # Call the original save method
+        tournament = super(TournamentForm, self).save(commit=False, *args, **kwargs)
+        
+        # Assign the creator field to the user who sent the form
+        tournament.creator = self.request.user
+
+        # Save the changes
+        if commit:
+            tournament.save()
+            # Add the creator to the participants list
+            tournament.participants.add(self.request.user)
+        return tournament
     
 
 class ChatMessageForm(forms.ModelForm):
@@ -246,10 +268,6 @@ class JWTTokenForm(forms.ModelForm):
         fields = ['token']
 
 
-class TournamentForm(forms.ModelForm):
-    class Meta:
-        model = Tournament
-        fields = ['name']
 
 
 

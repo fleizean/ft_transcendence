@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block title %}Tournament Create{% endblock title %}
+{% block app %}
+{% include "_nav.html" %}
+<div class="container-top">
+    <div class="card">
+      <div class="card-body-tournament">
+        <h3 class="tournament-create-text">CREATE TOURNAMENT</h3>
+        <div class="tournament-custom-text">
+            To create a tournament I need a tournament name, how many max points each game will have.
+        </div>
+        <div class="tournament-create">
+          <form method="post" action="">
+            {% csrf_token %}
+            <div id="tournamentInfos" class="tournamentInfos">
+              <div class="input-box">
+                <label class="tournamentGame-Text" for="id_name">Tournament Name</label>
+                <input class="input-style" type="text" name="name" maxlength="100" required id="id_name">
+                <label class="tournamentGame-Text" for="id_max_score">Max Score Games</label>
+                <input class="input-style" type="number" name="max_score" value="10" required id="id_max_score">
+                <div class="selectorGame">
+                  <label class="tournamentGame-Text" for="id_game_mode">Game Mode</label>
+                  <select class="form-select" name="game_mode" id="id_game_mode">
+                    <option selected value="vanilla">Vanilla</option>
+                    <option value="abilities">Abilities</option>
+                  </select>
+                </div>
+              </div>
+              <button class="btn btn-outline-success" id="startButton" type="submit">Create Tournament</button>
+            </div>
+          </form>
+        </div>
+            </div>
+          </div>
+    </div>
+    </div>
+</div>
+<script>
+
+</script>
+{% endblock %}

@@ -594,6 +594,7 @@ function sendWinnerToBackend(winner, loser, winnerscore, loserscore, start_time)
     const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
     var finish_time = new Date();
     const data = {
+        game: "pong",
         winner: winner,
         loser: loser,
         winnerscore: winnerscore,
