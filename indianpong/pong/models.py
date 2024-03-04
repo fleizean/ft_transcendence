@@ -270,7 +270,7 @@ class GameWarning(models.Model):
         return f"{self.user.username} sent a game warning to {self.opponent.username}"
 
 class Game(models.Model):
-    game_name = models.CharField(max_length=20, blank=True, null=True)
+    game_name = models.CharField(max_length=20, blank=True, null=True, default="pong")
     tournament_id = models.UUIDField(null=True, blank=True) #? Maybe 
     group_name = models.CharField(max_length=100)
     player1 = models.ForeignKey(UserProfile, related_name='games_as_player1', on_delete=models.CASCADE)
