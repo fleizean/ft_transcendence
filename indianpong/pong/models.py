@@ -22,7 +22,6 @@ class Social(models.Model):
     linkedin = models.CharField(max_length=200, blank=True, null=True)
     github = models.CharField(max_length=200, blank=True, null=True)
     twitter = models.CharField(max_length=200, blank=True, null=True)
-    instagram = models.CharField(max_length=200, blank=True, null=True)
 
 class StoreItem(models.Model):
     category_name = models.CharField(max_length=100, default="")

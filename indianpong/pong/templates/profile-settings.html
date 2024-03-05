@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block title %}{{username}} Profile Settings{% endblock %}
 
 {% block app %}
@@ -136,11 +136,11 @@
                         {% csrf_token %}
                         <div class="mb-3 position-relative">
                             <label class="small mb-1" for="id_stackoverflow">
-                                <i class="bi bi-stack-overflow fs-4"></i> Stackoverflow
+                                <i class="bi bi-linkedin fs-4"></i> LinkedIn
                             </label>
                             <div class="input-group">
-                                <input type="text" name="stackoverflow" class="form-control" id="id_stackoverflow" 
-                                    placeholder="Enter your Stackoverflow username" value="{{ profile.social.stackoverflow }}">
+                                <input type="text" name="linkedin" class="form-control" id="id_linkedin" 
+                                    placeholder="Enter your Stackoverflow username" value="{{ profile.social.linkedin }}">
                             </div>
                         </div>
 
@@ -156,11 +156,11 @@
 
                         <div class="mb-3 position-relative">
                             <label class="small mb-1" for="id_instagram">
-                                <i class="bi bi-instagram fs-4"></i> Instagram
+                                <img src="{% static "assets/intra42-logo.svg" %}"> Intra42
                             </label>
                             <div class="input-group">
-                                <input type="text" name="instagram" class="form-control" id="id_instagram"
-                                    placeholder="Enter your Instagram username" value="{{ profile.social.instagram }}">
+                                <input type="text" name="intra42" class="form-control" id="id_intra42"
+                                    placeholder="Enter your Instagram username" value="{{ profile.social.intra42 }}">
                             </div>
                         </div>
 

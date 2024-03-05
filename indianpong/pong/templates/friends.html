@@ -23,18 +23,20 @@
                       <span class="job">{{friend.displayname}}</span>
                     </div>
                     <div class="media-buttons">
-                      {% if friend.social.stackoverflow %}
-                        <a href="https://stackoverflow.com/users/{{friend.social.stackoverflow}}" target="_blank" class="medialinks stackoverflow"><i class="bi bi-stack-overflow"></i></a>
+                      {% if friend.social.linkedin %}
+                      <a href="https://www.linkedin.com/in/{{friend.social.linkedin}}" target="_blank" class="medialinks instagram"><i class="bi bi-linkedin"></i></a>
+                      {% endif %}
+                      {% if friend.social.twitter %}
+                        <a href="https://x.com/{{friend.social.twitter}}" target="_blank" class="medialinks twitterx"><i class="bi bi-twitter-x"></i></a>
+                      {% endif %} 
+                      {% if friend.social.intra42 %}
+                        <a href="https://profile.intra.42.fr/users/{{friend.social.intra42}}" target="_blank" class="medialinks stackoverflow"><img src="{% static "assets/intra-42-white.svg" %}"></a>
                       {% endif %}
                       {% if friend.social.github %}
                         <a href="https://github.com/{{friend.social.github}}" target="_blank" class="medialinks github"><i class="bi bi-github"></i></a>
                       {% endif %}
-                      {% if friend.social.twitter %}
-                        <a href="https://x.com/{{friend.social.twitter}}" target="_blank" class="medialinks twitterx"><i class="bi bi-twitter-x"></i></a>
-                      {% endif %}
-                      {% if friend.social.instagram %}
-                        <a href="https://www.instagram.com/{{friend.social.instagram}}" target="_blank" class="medialinks instagram"><i class="bi bi-instagram"></i></a>
-                      {% endif %}
+                      
+                                
                     </div>
                     {% if not friend.social.stackoverflow and not friend.social.twitter and not friend.social.github and not friend.social.instagram %}
                       <div class="buttons" style="margin-top: 60px !important;">

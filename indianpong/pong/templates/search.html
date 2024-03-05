@@ -32,18 +32,20 @@
                       <span class="job">{{person.displayname}}</span>
                     </div>
                     <div class="media-buttons">
-                      {% if person.social.stackoverflow %}
-                        <a href="https://stackoverflow.com/users/{{person.social.stackoverflow}}" target="_blank" class="medialinks stackoverflow"><i class="bi bi-stack-overflow"></i></a>
-                      {% endif %}
-                      {% if person.social.github %}
-                        <a href="https://github.com/{{person.social.github}}" target="_blank" class="medialinks github"><i class="bi bi-github"></i></a>
+                      {% if person.social.linkedin %}
+                        <a href="https://www.linkedin.com/in/{{person.social.linkedin}}" target="_blank" class="medialinks instagram"><i class="bi bi-linkedin"></i></a>
                       {% endif %}
                       {% if person.social.twitter %}
                         <a href="https://x.com/{{person.social.twitter}}" target="_blank" class="medialinks twitterx"><i class="bi bi-twitter-x"></i></a>
                       {% endif %}
-                      {% if person.social.instagram %}
-                        <a href="https://www.instagram.com/{{person.social.instagram}}" target="_blank" class="medialinks instagram"><i class="bi bi-instagram"></i></a>
+                      {% if person.social.intra42 %}
+                        <a href="https://profile.intra.42.fr/users/{{person.social.intra42}}" target="_blank" class="medialinks stackoverflow"><img src="{% static "assets/intra-42-white.svg" %}"></a>
                       {% endif %}
+                      {% if person.social.github %}
+                        <a href="https://github.com/{{person.social.github}}" target="_blank" class="medialinks github"><i class="bi bi-github"></i></a>
+                      {% endif %}
+                      
+                   
                     </div>
                     {% if not person.social.stackoverflow and not person.social.twitter and not person.social.github and not person.social.instagram %}
                       <div class="buttons" style="margin-top: 60px !important;">

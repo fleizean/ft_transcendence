@@ -42,7 +42,6 @@ class Command(BaseCommand):
                 linkedin = username,
                 github = username,
                 twitter= username,
-                instagram= username,
             )
             socials.append(social)
 

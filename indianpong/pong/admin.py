@@ -69,13 +69,13 @@ class UserGameStatAdmin(admin.ModelAdmin):
 
 @admin.register(Social)
 class SocialAdmin(admin.ModelAdmin):
-    list_display = ('get_user', 'intra42', 'linkedin', 'github', 'twitter', 'instagram')
+    list_display = ('get_user', 'intra42', 'linkedin', 'github', 'twitter')
 
     def get_user(self, obj):
         return obj.userprofile
     get_user.short_description = 'User'
 
-    search_fields = ('userprofile__username', 'intra42', 'linkedin', 'github', 'twitter', 'instagram')
+    search_fields = ('userprofile__username', 'intra42', 'linkedin', 'github', 'twitter')
 
 
 @admin.register(Game)
