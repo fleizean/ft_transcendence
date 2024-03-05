@@ -969,7 +969,7 @@ def tournament_room(request, id):
     
     tournament = Tournament.objects.filter(id=id).first()
     if tournament:
-        empty_slots = range(max(1, 4-tournament.participants.count()))
+        empty_slots = range(max(0, 4-tournament.participants.count()))
         is_participants = tournament.participants.filter(id=request.user.id).exists()
     else:
         empty_slots = range(0, 4)
@@ -1070,7 +1070,7 @@ def update_winner(request):
         data = json.loads(request.body)
         game = data.get("game")
         if (game == "pong"):
-            update_winner_rps(data)
+            update_winner_pong(data)
         else:
             update_winner_rps(data)
         ##############
