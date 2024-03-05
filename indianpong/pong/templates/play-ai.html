@@ -10,7 +10,11 @@
   <div class="container-top" data-username="{{ username }}" data-ainame="{{ ainametag }}" data-paddlecolor="{{paddlecolor}}" data-playgroundcolor="{{playgroundcolor}}" data-giantman="{{giantman}}" data-likeacheater="{{likeacheater}}" data-fastandfurious="{{fastandfurious}}" data-rageoffire="{{rageoffire}}" data-frozenball="{{frozenball}}" data-givemethemusic={{givemethemusic}} data-musicpath="{% static "music/" %}">
     <div class="ai-game">
       <div id="countdownContainer">
-
+        <div class="slider-container">
+          <label for="reactionDelay" style="color: white;">Reaction Delay:</label>
+          <span id="delayValue" style="color: white;">200</span>
+          <input type="range" id="reactionDelay" name="reactionDelay" min="1000" max="10000" value="2000" step="1000">
+        </div>
         <canvas id="pongCanvas" width="800" height="600"></canvas>
         <div id="countdown" class="countdown">
           <h1>Get Ready!</h1>

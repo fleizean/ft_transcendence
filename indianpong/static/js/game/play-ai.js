@@ -356,8 +356,8 @@ function startfrozenBallSound() {
 function resetBall() {
     isScored = true;
     isPaused = true;
-    ball.speed = 5;
-    paddleSpeed = 14;
+    ball.speed = 10;
+    paddleSpeed = 15;
     ball.dx = -ball.dx;
     ball.dy = -ball.dy;
     setTimeout(() => {     
@@ -437,7 +437,17 @@ document.addEventListener("keyup", function(event) {
 
 
 // Ai Player
-let reactionDelay = 5000 / ball.speed; // Delay in milliseconds
+let reactionDelaySlider = document.getElementById('reactionDelay');
+let delayValueSpan = document.getElementById('delayValue');
+// Update the reactionDelay variable whenever the slider value changes
+reactionDelaySlider.oninput = function() {
+    // Delay in milliseconds
+    reactionDelay = this.value / ball.speed;
+    delayValueSpan.innerText = Math.round(reactionDelay); // Display the current value of the slider
+    let value = (this.value-this.min)/(this.max-this.min)*100
+    this.style.background = 'linear-gradient(to right, violet, yellow ' + value + '%, #ccc ' + value + '%, #ccc)';
+}
+let reactionDelay = Math.round(reactionDelaySlider.value / ball.speed);
 let lastBallPosition = { x: ball.x, y: ball.y };
 let ballDirection = { x: 0, y: 0 };
 let predictedY = paddle2.y;

@@ -122,3 +122,19 @@
     font-family: 'Pixeboy-z8XGD', sans-serif;
 
 }
+
+.slider-container {
+    position: absolute;
+    left: 530px;
+    top: -25px;
+}
+
+input[type=range] {
+    /* Required for Firefox. */
+    background: linear-gradient(to right, violet, yellow);
+}
+
+input[type=range]::-webkit-slider-runnable-track {
+    background: linear-gradient(to right, violet, yellow);
+}
+
