@@ -62,7 +62,7 @@ class UserProfile(AbstractUser):
         return f"{self.username}"
     
     def save(self, *args, **kwargs):
-        if not self.avatar:
+        if not self.avatar and self.username != os.environ.get("INDIANAI_USERNAME", default="IndianAI") and self.username != os.environ.get("SUPER_USER", default="Bitlis"):
             svg_content = create_random_svg(self.username)
             self.avatar.save(f"{self.username}.svg", svg_content, save=False)
         super().save(*args, **kwargs)
