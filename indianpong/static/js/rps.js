@@ -60,6 +60,9 @@ let aicheater = "inactive";
 const MAX_SCORE_RPS = 3;
 let score = 0;
 
+const MUSIC_PATH = document.querySelector('.container-top').dataset.musicpath;
+
+var GameSound = new Audio();
 // Game Logic
 choiceButtons.forEach((button) => {
     button.addEventListener("click", () => {
@@ -75,48 +78,65 @@ choiceButtons.forEach((button) => {
 function choose(choice) {
     // Cheater kontrolü
     const aichoice = aiChoose();
-    if (choice.name === "cheater" && ischeater  === true && cheatercount < 1) {
+    if (choice.name === "cheater" && ischeater === true && cheatercount < 1) {
         cheatercount++;
         document.getElementById("cheater-choice").style.display = "none";
     }
-    if (choice.name === "godthings" && isgodthings === true && godthingscount < 1) {
+    else if (choice.name === "godthings" && isgodthings === true && godthingscount < 1) {
         godthingscount++;
         document.getElementById("godthings-choice").style.display = "none";
     }
-    // Godthings değilse normal oyun kurallarını uygula
+    
+    findMusic(choice.name);
     displayResults([choice, aichoice]);
     displayWinner([choice, aichoice]);
 
 }
 
+function findMusic(string){
+
+    const music = `rps-${string}.mp3`;
+    console.log(music);
+    const SoundChoice = new Audio(MUSIC_PATH + music);
+    playMusic(SoundChoice);
+}
+
 function aiChoose() {
     var filteredChoices = [];
-    var choice = "";
+
     if (cheater === "true" && godthings !== "true" && aicheatercount < 1) {
-        aicheatercount++;
-        filteredChoices = CHOICES.filter(choice => choice.name !== "godthings");
-        choice = filteredChoices[Math.floor(Math.random() * filteredChoices.length)];
+        filteredChoices = filterChoices(["godthings"]);
     } else if (godthings === "true" && cheater !== "true" && aigodthingscount < 1) {
-        aigodthingscount++;
-        filteredChoices = CHOICES.filter(choice => choice.name !== "cheater");
-        choice = filteredChoices[Math.floor(Math.random() * filteredChoices.length)];
+        filteredChoices = filterChoices(["cheater"]);
     } else if (godthings === "true" && cheater === "true" && (aicheatercount < 1 || aigodthingscount < 1)) {
         if (aicheatercount > 0 )
-            filteredChoices = CHOICES.filter(choice => choice.name !== "cheater");
+            filteredChoices = filterChoices(["cheater"]);
         else if (aigodthingscount > 0)
-            filteredChoices = CHOICES.filter(choice => choice.name !== "godthings");
+            filteredChoices = filterChoices(["godthings"]);
         else
             filteredChoices = CHOICES;
-        choice = filteredChoices[Math.floor(Math.random() * CHOICES.length)];
-        if (choice.name === "cheater")
-            aicheatercount++;
-        else if (choice.name === "godthings")
-            aigodthingscount++;
+        
+        updateCounts(filteredChoices[0].name);
     } else {
-        filteredChoices = CHOICES.filter(choice => choice.name !== "cheater" && choice.name !== "godthings");
-        choice = filteredChoices[Math.floor(Math.random() * filteredChoices.length)];
+        filteredChoices = filterChoices(["cheater", "godthings"]);
     }
-    return choice;
+
+    return chooseRandom(filteredChoices);
+}
+
+function filterChoices(excludedChoices) {
+    return CHOICES.filter(choice => !excludedChoices.includes(choice.name));
+}
+
+function chooseRandom(choices) {
+    return choices[Math.floor(Math.random() * choices.length)];
+}
+
+function updateCounts(choiceName) {
+    if (choiceName === "cheater")
+        aicheatercount++;
+    else if (choiceName === "godthings")
+        aigodthingscount++;
 }
 
 
@@ -129,8 +149,9 @@ function displayResults(results) {
         </div>
       `;
         }, idx * 1000);
+        
     });
-
+    
     gameDiv.classList.toggle("hidden");
     resultsDiv.classList.toggle("hidden");
 }
@@ -138,24 +159,27 @@ function displayResults(results) {
 function displayWinner(results) {
     setTimeout(() => {
         const winner = isWinner(results);
-
+        let tempmusicname = "";
         if (winner == "user") {
             resultText.innerText = "you win";
             resultDivs[0].classList.toggle("winner");
             keepScore(1, results[0].name);
+            tempmusicname = "winonce";
         } else if (winner == "ai") {
             resultText.innerText = "you lose";
             resultDivs[1].classList.toggle("winner");
             keepScore(-1, results[1].name);
-
+            tempmusicname = "loseonce";
         } else {
             resultText.innerText = "draw";
+            tempmusicname = "drawonce";
         }
 
         if (MAX_SCORE_RPS == parseInt(scoreNumber1.innerText) || MAX_SCORE_RPS == parseInt(scoreNumber2.innerText)) {
             showGameOverScreenRPS();
         }
         else {
+            findMusic(tempmusicname);
             resultWinner.classList.toggle("hidden");
             resultsDiv.classList.toggle("show-winner");
         }
@@ -164,11 +188,12 @@ function displayWinner(results) {
 }
 
 function showGameOverScreenRPS() {
-
     resultsDiv.classList.toggle("show-winner");
-    var winnerText = (scoreNumber1.innerText == MAX_SCORE_RPS) ? "YOU WIN!" : "YOU LOSE";
+    var winnerText = (scoreNumber1.innerText == MAX_SCORE_RPS) ? "YOU WIN!" : "YOU LOSE!";
     document.getElementById('winnerText').innerText = winnerText;
-    if (parseInt(scoreNumber1.innerText) > parseInt(scoreNumber2.innerText)) {
+    const isWin = (scoreNumber1.innerText == MAX_SCORE_RPS) ? true : false;
+    const Result = (scoreNumber1.innerText == MAX_SCORE_RPS) ? "win" : "defeat";
+    if (isWin) {
         sendWinnerToBackend(username, "IndianAI", parseInt(scoreNumber1.innerText), parseInt(scoreNumber2.innerText), start_time);
         document.getElementById('winnerText').style.color = 'green';
         document.getElementById('gameOverScreen').style.backgroundColor = 'rgba(11, 22, 8, 0.8)';
@@ -178,6 +203,8 @@ function showGameOverScreenRPS() {
         document.getElementById('winnerText').style.color = 'red';
         document.getElementById('gameOverScreen').style.backgroundColor = 'rgba(20, 5, 5, 0.8)';
     }
+    
+    findMusic(Result);
     document.getElementById('gameOverScreen').style.display = 'block';
 }
 
@@ -208,27 +235,27 @@ function isWinner(results) {
         return "draw";
     }
 
-    // İlk oyuncunun seçimi Godthings ise ve ikinci oyuncu Godthings değilse, ilk oyuncu kazanır
+    // ilk oyuncunun seçimi Godthings ise ve ikinci oyuncu Godthings değilse, ilk oyuncu kazanır
     if (player1 === "godthings" && player2 !== "godthings") {
         return "user";
     }
 
-    // İkinci oyuncunun seçimi Godthings ise ve ilk oyuncu Godthings değilse, ikinci oyuncu kazanır
+    // ikinci oyuncunun seçimi Godthings ise ve ilk oyuncu Godthings değilse, ikinci oyuncu kazanır
     if (player2 === "godthings" && player1 !== "godthings") {
         return "ai";
     }
 
-    // İlk oyuncunun seçimi Cheater ise ve ikinci oyuncu Cheater değilse, ilk oyuncu kazanır
+    // ilk oyuncunun seçimi Cheater ise ve ikinci oyuncu Cheater değilse, ilk oyuncu kazanır
     if (player1 === "cheater" && player2 !== "cheater") {
         return "user";
     }
 
-    // İkinci oyuncunun seçimi Cheater ise ve ilk oyuncu Cheater değilse, ikinci oyuncu kazanır
+    // ikinci oyuncunun seçimi Cheater ise ve ilk oyuncu Cheater değilse, ikinci oyuncu kazanır
     if (player2 === "cheater" && player1 !== "cheater") {
         return "ai";
     }
 
-    // İki oyuncudan birinin seçimi Godthings veya Cheater ise ve diğeri değilse, bu oyuncu kazanır
+    // iki oyuncudan birinin seçimi Godthings veya Cheater ise ve diğeri değilse, bu oyuncu kazanır
     if (player1 === "godthings" || player1 === "cheater" || player2 === "godthings" || player2 === "cheater") {
         return player1 === "godthings" || player1 === "cheater" ? "user" : "ai";
     }
@@ -260,7 +287,10 @@ function PlayAgainRPS() {
     });
 
     //resultText.innerText = "";
-    //resultWinner.classList.toggle("hidden");
+    if (cheater == "true")
+        document.getElementById("cheater-choice").style.display = "inline-block";
+    if (godthings == "true")
+        document.getElementById("godthings-choice").style.display = "inline-block";
     resultsDiv.classList.toggle("show-winner");
     
 }
@@ -312,4 +342,19 @@ function sendWinnerToBackend(winner, loser, winnerscore, loserscore, start_time)
     .catch(error => {
         console.error('There was a problem updating the winner:', error);
     });
+}
+
+function playMusic(Sound) {
+    if(GameSound){
+        GameSound.pause();
+        GameSound.currentTime = 0;
+    }
+    GameSound = Sound;
+
+    setTimeout(function() {
+        if (GameSound) {
+            //GameSound.currentTime = 0.2;
+            GameSound.play();
+        }
+    }, 50);  
 }

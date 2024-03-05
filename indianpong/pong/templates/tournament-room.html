@@ -55,17 +55,30 @@
         {% endif %}
         <section id="game-room-section">
             <div class="player-wrapper">
-                {% for participant in tournament.participants.all %}
-                        <div class="place">
-                            <div class="place-container">
-                                <div class="avatar-container">
-                                    <img src="{{ participant.avatar.url }}" alt="Avatar" class="game-room-avatar">
-                                </div>
-                                <div class="clash-info player-info">
-                                    <p class="truncate-pseudo" title="{{ participant.username }}">{{ participant.username }}</p>
+                {% for participant in tournament.participants.all %}   
+                        {% if participant.username == tournament.creator.username %}
+                            <div class="place">
+                                <div class="place-container">
+                                    <div class="avatar-container-creator">
+                                        <img src="{{ participant.avatar.url }}" alt="Avatar" class="game-room-avatar">
+                                    </div>
+                                    <div class="clash-info player-info">
+                                        <p class="truncate-pseudo-creator" title="{{ participant.username }}">{{ participant.username }} (L)</p>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        {% else %}
+                            <div class="place">
+                                <div class="place-container">
+                                    <div class="avatar-container">
+                                        <img src="{{ participant.avatar.url }}" alt="Avatar" class="game-room-avatar">
+                                    </div>
+                                    <div class="clash-info player-info">
+                                        <p class="truncate-pseudo" title="{{ participant.username }}">{{ participant.username }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
                 {% endfor %}
                 {% for i in empty_slots %}
                         <div class="place">
