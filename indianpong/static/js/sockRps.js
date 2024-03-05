@@ -50,6 +50,9 @@ const CHOICES = [
         beats: "scissors",
     },
 ];
+
+const ICON_PATH = document.querySelector('.container-top').dataset.iconpath;
+
 const choiceButtons = document.querySelectorAll(".choice-btn");
 const gameDiv = document.querySelector(".game");
 const resultsDiv = document.querySelector(".results");
@@ -86,11 +89,12 @@ function choose(choice) {
 
 
 function displayResults(results) {
+
     resultDivs.forEach((resultDiv, idx) => {
         setTimeout(() => {
             resultDiv.innerHTML = `
         <div class="choice ${results[idx].name}">
-            <img src="../../static/assets/rps/icon-${results[idx].name}.svg" alt="${results[idx].name}" />
+            <img src="${ICON_PATH}icon-${results[idx].name}.svg" alt="${results[idx].name}" />
         </div>
       `;
         }, idx * 1000);

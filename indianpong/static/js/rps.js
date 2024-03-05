@@ -60,6 +60,8 @@ let aicheater = "inactive";
 const MAX_SCORE_RPS = 3;
 let score = 0;
 
+const ICON_PATH = document.querySelector('.container-top').dataset.iconpath;
+
 const MUSIC_PATH = document.querySelector('.container-top').dataset.musicpath;
 
 var GameSound = new Audio();
@@ -145,7 +147,7 @@ function displayResults(results) {
         setTimeout(() => {
             resultDiv.innerHTML = `
         <div class="choice ${results[idx].name}">
-            <img src="../../static/assets/rps/icon-${results[idx].name}.svg" alt="${results[idx].name}" />
+            <img src="${ICON_PATH}icon-${results[idx].name}.svg" alt="${results[idx].name}" />
         </div>
       `;
         }, idx * 1000);

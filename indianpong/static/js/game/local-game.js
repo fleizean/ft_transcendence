@@ -185,6 +185,19 @@ function render() {
     ctx.setLineDash([5, 15]);
     ctx.stroke();
 
+    // Add shadow to the paddles
+    ctx.shadowColor = 'black';
+    ctx.shadowBlur = 10;
+    ctx.shadowOffsetX = 5;
+    ctx.shadowOffsetY = 5;
+      
+    ctx.fillStyle = paddleColor
+    ctx.fillRect(paddle1.x, paddle1.y, paddle1.width, paddle1.height);
+    // If paddle2 is on the right, draw the shadow to the left
+    ctx.shadowOffsetX = -5;
+    ctx.shadowOffsetY = 5;
+    ctx.fillRect(paddle2.x, paddle2.y, paddle2.width, paddle2.height);
+    
     // Add shiny effect to the ball
     ctx.beginPath();
     ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI*2, false);
@@ -195,21 +208,6 @@ function render() {
     ctx.fillStyle = gradient;
     ctx.fill();
     ctx.closePath();
-
-    // Add shadow to the paddles
-    ctx.shadowColor = 'black';
-    ctx.shadowBlur = 10;
-    ctx.shadowOffsetX = 5;
-    ctx.shadowOffsetY = 5;
-
-
-    ctx.fillStyle = paddleColor
-    ctx.fillRect(paddle1.x, paddle1.y, paddle1.width, paddle1.height);
-    // If paddle2 is on the right, draw the shadow to the left
-    ctx.shadowOffsetX = -5;
-    ctx.shadowOffsetY = 5;
-    ctx.fillRect(paddle2.x, paddle2.y, paddle2.width, paddle2.height);
-
 
     // Reset shadow properties
     ctx.shadowColor = 'transparent';

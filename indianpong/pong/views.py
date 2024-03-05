@@ -273,11 +273,11 @@ def profile_view(request, username):
     profile = get_object_or_404(UserProfile, username=username)
     game_records = Game.objects.filter(
         Q(player1=profile) | Q(player2=profile),
-        game_name='pong'
+        game_kind='pong'
     ).order_by("-created_at")
     game_records_rps = Game.objects.filter(
         Q(player1=profile) | Q(player2=profile),
-        game_name='rps'
+        game_kind='rps'
     ).order_by("-created_at")[:5]
     paginator = Paginator(game_records, 5)  # Sayfada 5 kayıt göster
     page_number = request.GET.get("page")
@@ -1101,7 +1101,7 @@ def update_winner_pong(data):
     finish_time = datetime.strptime(finish_time, "%Y-%m-%dT%H:%M:%S.%fZ")
     game_duration = finish_time - start_time
     game_record = Game.objects.create(
-        game_name = "pong",
+        game_kind = "pong",
         group_name=winner_profile.username + "_" + loser_profile.username,
         player1=winner_profile,
         player2=loser_profile,
@@ -1209,7 +1209,7 @@ def update_winner_rps(data):
     finish_time = datetime.strptime(finish_time, "%Y-%m-%dT%H:%M:%S.%fZ")
     game_duration = finish_time - start_time
     game_record = Game.objects.create(
-        game_name = "rps",
+        game_kind = "rps",
         group_name=winner_profile.username + "_" + loser_profile.username,
         player1=winner_profile,
         player2=loser_profile,
