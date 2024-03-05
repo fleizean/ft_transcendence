@@ -319,8 +319,9 @@
 .store-info {
   visibility: hidden;
   position: absolute;
-  right:20;
-  margin-top: -20px;
+  margin-left: auto;
+  margin-top: -1.7em !important;
+  right: 20px;
 }
 
 .tooltiptext {
