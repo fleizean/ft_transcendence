@@ -73,7 +73,7 @@ of the project.</b>
 ### Major Modules
 
   <details>
-      <summary> <b> Standard user management, authentication, users across  tournaments. ⌛</b></summary>
+      <summary> <b> Standard user management, authentication, users across  tournaments. ✅</b></summary>
           <ul>
           <li>✅ Users can subscribe to  the website in a secure way. </li>
           <li>✅ Registered users can log  in in a secure way. </li>
