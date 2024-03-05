@@ -13,6 +13,9 @@
   
   .game-room-buttons {
     text-align: center;
+    display:flex;
+    justify-content: center;
+    align-items: center;
   }
   
   .leave-button {
@@ -26,6 +29,8 @@
       text-transform: uppercase;
       border: none;
       cursor: pointer;
+      margin-right: 1em !important;
+      margin-left: 1em !important;
       padding: 0 5px;
       width: 180px;
       min-width: 180px;
@@ -36,6 +41,10 @@
       margin: 15px 0;
       display: inline-block;
       margin-bottom: 3em;
+  }
+
+  .leave-button:hover {
+    background-color: rgba(255, 255, 255, 0.207);
   }
   
   /* Eğer bi class'ınızı özelleştirmek istiyorsanız, bi class'ını kullanabilirsiniz. */
@@ -73,6 +82,14 @@
   .avatar-container img {
     height: 90px;
     width: 90px;
+    object-fit: cover;
+  }
+
+  .avatar-container-creator {
+    height: 90px;
+    width: 90px;
+    object-fit: cover;
+    border: 1px solid orangered;
   }
 
   
@@ -83,6 +100,17 @@
   }
   
   .truncate-pseudo {
+    color: orange;
+    text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 100%;
+  }
+
+  .truncate-pseudo-creator {
+    color: orangered;
+    text-align: center;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
