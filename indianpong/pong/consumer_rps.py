@@ -2,12 +2,17 @@ import json
 from channels.db import database_sync_to_async
 from channels.generic.websocket import AsyncWebsocketConsumer
 from .models import Game, UserProfile
-
+import asyncio
+import random
 
 class RPSConsumer(AsyncWebsocketConsumer):
     players_queue = []
 
+
+    # Diğer kodlar...
+
     async def connect(self):
+        self.opponent_selection = None  # Burada opponent_selection özniteliğini tanımlıyoruz
         await self.accept()
 
     async def disconnect(self, close_code):
@@ -16,10 +21,76 @@ class RPSConsumer(AsyncWebsocketConsumer):
     async def receive(self, text_data):
         text_data_json = json.loads(text_data)
         action = text_data_json.get('action')
-
+        if action == 'make_selection':
+            selection = text_data_json.get('selection')
+            print(selection)
+            await self.make_selection(selection)
         if action == 'join_queue':
             await self.join_queue()
-        
+    
+
+
+    async def make_selection(self, selection):
+        print('Bekleniyor')
+        # Oyuncunun seçimini kaydedin
+        self.selection = selection
+
+        # Eğer rakip de seçimini yapmışsa, karşılaştırma işlemini yapın
+        if hasattr(self, 'opponent_selection') and self.opponent_selection:
+            await self.compare_selections(self.channel_name, self.opponent_channel, self.selection, self.opponent_selection)
+        else:
+            # Rakibin seçimini bekleyin
+            print('Bekleniyor 2')
+
+            # Önce bir sözlük oluşturuz
+            if not hasattr(self, 'waiting_selections'):
+                self.waiting_selections = {}
+
+            # Rakibin seçimini bekleyen bir oyuncu olarak kendinizi ekleyin
+            self.waiting_selections[self.channel_name] = self.selection
+
+            # Rakip seçimini belirli bir süre içinde yapmazsa, kendisi otomatik bir seçim yapacak
+            await asyncio.sleep(3)  # 3 saniye bekle
+            if self.opponent_selection is None:
+                self.opponent_selection = random.choice(["rock", "paper", "scissors"])  # Otomatik seçim yap
+                print(f"Rakip oyuncu otomatik olarak {self.opponent_selection} seçti.")
+
+                # Otomatik seçim yapıldığında, karşılaştırma işlemini yapın
+                await self.compare_selections(self.channel_name, self.opponent_channel, self.selection, self.opponent_selection)
+            else:
+                # Rakip seçim yapıldıysa, onu compare_selections'a gönderin
+                await self.compare_selections(self.channel_name, self.opponent_channel, self.selection, self.opponent_selection)
+
+    
+    async def compare_selections(self, own_channel, opponent_channel, own_selection, opponent_selection):
+        # Oyuncuların seçimlerini karşılaştırın ve sonucu belirleyin
+        print('Karsilastiriliyor')
+        result = None
+        if own_selection == opponent_selection:
+            result = "Draw"
+        elif own_selection == "rock":
+            result = "Win" if opponent_selection == "scissors" else "Lose"
+        elif own_selection == "paper":
+            result = "Win" if opponent_selection == "rock" else "Lose"
+        elif own_selection == "scissors":
+            result = "Win" if opponent_selection == "paper" else "Lose"
+
+        # Sonucu her iki oyuncuya da gönderin
+        await self.channel_layer.group_send(
+            own_channel,
+            {
+                'type': 'game.result',
+                'result': result
+            }
+        )
+        await self.channel_layer.group_send(
+            opponent_channel,
+            {
+                'type': 'game.result',
+                'result': "Win" if result == "Lose" else "Lose" if result == "Win" else "Draw"
+            }
+        )
+
 
     async def join_queue(self):
         # Bağlanan kullanıcıyı kuyruğa ekleyin

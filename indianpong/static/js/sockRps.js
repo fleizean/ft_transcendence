@@ -12,6 +12,7 @@ setTimeout(() => {
     document.body.classList.remove("preload");
 }, 500);
 
+
 websocket.onmessage = function (e) {
     var data = JSON.parse(e.data)
     if (data.message) {
@@ -24,9 +25,19 @@ websocket.onmessage = function (e) {
         document.getElementById('ponggamebtn').style.visibility = 'hidden';
         document.getElementById('container-top').style.visibility = 'visible'
     }
+    if (data.result) {
+        choiceButtons.forEach((button) => {
+            button.disabled = false;
+        });
+        displayResult(data.result);
+    }
 }
 
-
+// Sonucu kullanıcı arayüzünde göster
+function displayResult(result) {
+    // Sonucu ekrana yazdırabilir veya başka bir kullanıcı arayüzü işlemi yapabilirsiniz
+    console.log("Oyun sonucu: " + result);
+}
 function joinQueue() {
     // "rps-buttons" yerine "container-top" kullanıyoruz
     websocket.send(
@@ -70,22 +81,28 @@ let score = 0;
 // Game Logic
 choiceButtons.forEach((button) => {
     button.addEventListener("click", () => {
-        const choiceName = button.dataset.choice;
-        const choice = CHOICES.find((choice) => choice.name === choiceName);
-        choose(choice);
 
-        // Seçimi WebSocket üzerinden gönder
-        const dataToSend = { choice: choiceName };
-        websocket.send(JSON.stringify(dataToSend));
+        const choiceName = button.dataset.choice;
+        //choose(choice);
+        console.log(choiceName);
+        makeSelection(choiceName);
     });
 });
 
+// Kullanıcı seçimini yaptıktan sonra sunucuya gönder
+function makeSelection(selection) {
+    var action = {
+        action: 'make_selection',
+        selection: selection
+    };
+    websocket.send(JSON.stringify(action));
 
-function choose(choice) {
-    const aichoice = data;
-    displayResults([choice, aichoice]);
-    displayWinner([choice, aichoice]);
+        // Seçim yapıldıktan sonra düğmeleri devre dışı bırak
+        choiceButtons.forEach((button) => {
+            button.disabled = true;
+        });
 }
+
 
 
 function displayResults(results) {
