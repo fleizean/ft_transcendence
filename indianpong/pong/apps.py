@@ -7,7 +7,7 @@ class PongConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
     name = 'pong'
 
-    def ready(self):
+"""     def ready(self):
 
         @receiver(user_logged_in)
         def user_logged_in_handler(sender, request, **kwargs):
@@ -17,5 +17,5 @@ class PongConfig(AppConfig):
         @receiver(user_logged_out)
         def user_logged_out_handler(sender, request, **kwargs):
             request.user.is_online = False
-            request.user.save()
+            request.user.save() """
 

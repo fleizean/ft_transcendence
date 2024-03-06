@@ -5,6 +5,7 @@ import os
 from django.utils.crypto import get_random_string
 from django.core.files.base import ContentFile
 import base64, hashlib
+from django.core.cache import cache
 
 def delete_from_media(path):
     if os.path.isfile(path):
@@ -83,3 +84,14 @@ class AsyncLockedDict:
     async def set_field_value(self, key, value, field_name):
         async with self.lock:
             setattr(self.dict[key], field_name, value)
+
+
+def add_to_cache(key, container, value):
+    container_ = cache.get(key, container)
+    container_.add(value)
+    cache.set(key, container_)
+
+def remove_from_cache(key, container, value):
+    container_ = cache.get(key, container)
+    container_.remove(value)
+    cache.set(key, container_)

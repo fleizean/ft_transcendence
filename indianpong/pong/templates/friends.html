@@ -16,7 +16,7 @@
               <div class="card-containers">
                 <div class="profile-card">
                     <div class="image">
-                        <a href="/profile/{{friend.username}}"><img src="{{friend.avatar.url}}" alt="" class="profile-img" {% if friend.is_online and not friend.is_playing %} style="border: 3px solid #4CAF4F" {% elif friend.is_playing %} style="border: 3px solid #ffa600" {% else %} style="border: 3px solid #ff0000" {% endif %} /></a>
+                        <a href="/profile/{{friend.username}}"><img src="{{friend.avatar.url}}" alt="" class="profile-img" {% if friend.is_playing %} style="border: 3px solid #ffa600" {% elif friend.is_online %} style="border: 3px solid #4CAF4F" {% else %} style="border: 3px solid #ff0000" {% endif %} /></a>
                     </div>
                     <div class="text-data">
                       <span class="name">{{friend.username}}</span>

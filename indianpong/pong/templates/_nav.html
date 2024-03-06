@@ -1,5 +1,4 @@
 <!-- _nav.html -->
-<!DOCTYPE html>
 
 {% load static %}
 
@@ -44,7 +43,7 @@
     </li>
       <li class="profile-menu"> 
         <div class="profile-image">
-          <img src="{{avatar}}" alt="Profile Image" width="48" height="48" style="aspect-ratio: 1/1; object-fit: cover;">
+          <img src="{{avatar}}" alt="Profile Image" width="48" height="48" {% if is_playing %} style="aspect-ratio: 1/1; object-fit: cover; border: 3px solid #ffa600" {% else %} style="aspect-ratio: 1/1; object-fit: cover; border: 3px solid #4CAF4F"{% endif %}>
         </div>
         <div class="profile-submenu">
           <a href="/profile/{{username}}" data-link><i class="bi bi-person-fill" ></i>Profile</a>
@@ -56,6 +55,21 @@
     </ul>
     <div class="burger-menu">&#9776;</div>
   </nav>
+  <script>
+    var socket = new WebSocket('ws://' + window.location.host + '/ws/online_status/');
+  
+    socket.onopen = function(e) {
+        console.log('User is connected');
+    };
+  
+    socket.onmessage = function(e) {
+        var data = JSON.parse(e.data);
+        var status = data['status'];
+        if (status === 'online') {
+            console.log('User is online');
+        }
+    };
+  </script>
 {% comment %} <script>
   window.addEventListener("beforeunload", function(e) {
     // Sayfa kapatılmadan önce bir istek gönder
