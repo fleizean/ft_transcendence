@@ -35,7 +35,7 @@ to propose a <b>tournament.</b> This tournament will consist of multiple players
 can take turns playing against each other. You have flexibility in how you implement
 the tournament, but it must clearly display who is playing against whom and the
 order of the players. </li>
-          <li>⌛ A <b>registration system</b> is required: at the start of a tournament, each player
+          <li>✅ A <b>registration system</b> is required: at the start of a tournament, each player
 must input their alias name. The aliases will be reset when a new tournament
 begins. However, this requirement can be modified using the <b>Standard User
 Management module.</b> </li>
