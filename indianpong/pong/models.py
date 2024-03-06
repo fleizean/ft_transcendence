@@ -279,9 +279,9 @@ class Game(models.Model):
         ("pong", "Pong"),
         ("rps", "Rock Paper Scissors")
     )
-    
+
     game_kind = models.CharField(max_length=10, choices=GAME_KIND_CHOICES, default="pong")
-    tournament_id = models.UUIDField(null=True, blank=True) #? Maybe 
+    tournament_id = models.IntegerField(MinValueValidator(1), null=True, blank=True)
     group_name = models.CharField(max_length=100)
     player1 = models.ForeignKey(UserProfile, related_name='games_as_player1', on_delete=models.CASCADE)
     player2 = models.ForeignKey(UserProfile, related_name='games_as_player2', on_delete=models.CASCADE)
