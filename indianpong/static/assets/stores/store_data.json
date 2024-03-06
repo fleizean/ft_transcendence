@@ -9,7 +9,7 @@
         "description": "Change Paddle color, it only affects you.",
         "description_hi": "पैडल का रंग बदलें, यह केवल आपको प्रभावित करता है।",
         "description_pt": "Mude a cor da raquete, isso só afeta você.",
-        "description_tr": "Raket rengini değiştir, sadece seni etkiler.",
+        "description_tr": "Raket rengini değiştir, bu sadece seni etkiler.",
         "price": 50,
         "keypress": "none",
         "show_status": true
@@ -24,7 +24,7 @@
         "description": "Change the playground color, it only affects you.",
         "description_hi": "खेल का रंग बदलें, यह केवल आपको प्रभावित करता है।",
         "description_pt": "Mude a cor do playground, isso só afeta você.",
-        "description_tr": "Oyun alanı rengini değiştir, sadece seni etkiler.",
+        "description_tr": "Oyun alanı rengini değiştir, bu sadece seni etkiler.",
         "price": 25,
         "keypress": "none",
         "show_status": true
@@ -39,7 +39,7 @@
         "description": "How about giving your ai a name?",
         "description_hi": "अपने ए.आई. को एक नाम देने का क्या ख्याल है?",
         "description_pt": "Que tal dar um nome ao seu ai?",
-        "description_tr": "Ai'na bir isim vermek nasıl olur?",
+        "description_tr": "Ai'ya bir isim vermek nasıl olurdu?",
         "price": 50,
         "keypress": "none",
         "show_status": true
@@ -114,7 +114,7 @@
         "description": "Slow down the ball for three second just once.",
         "description_hi": "गेंद को एक बार केवल तीन सेकंड के लिए धीमा करें।",
         "description_pt": "Diminua a velocidade da bola por três segundos apenas uma vez.",
-        "description_tr": "Topu sadece bir kez üç saniye yavaşlat.",
+        "description_tr": "Topu sadece bir kez, üç saniye yavaşlat.",
         "price": 100,
         "keypress": "3",
         "show_status": true
@@ -144,7 +144,7 @@
         "description": "Rob your opponent of points.",
         "description_hi": "अपने प्रतिद्वंद्वी से अंक चुराओ।",
         "description_pt": "Roube pontos do seu oponente.",
-        "description_tr": "Rakibinden puan çal.",
+        "description_tr": "Rakibinin puanini gasp et.",
         "price": 200,
         "keypress": "2",
         "show_status": true
