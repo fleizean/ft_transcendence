@@ -51,13 +51,11 @@ var start_time;
 
 let cheatercount = 0;
 let godthingscount = 0;
-let aicheatercount = 0;
-let aigodthingscount = 0;
 let nowChoice = "";
 
 let aicheater = "inactive";
 
-const MAX_SCORE_RPS = 3;
+const MAX_SCORE_RPS = 10;
 let score = 0;
 
 const ICON_PATH = document.querySelector('.container-top').dataset.iconpath;
@@ -222,8 +220,8 @@ function resetGameRPS() {
     scoreNumber2.innerText = 0;
     cheatercount = 0;
     godthingscount = 0;
-    aicheatercount = 0;
-    aigodthingscount = 0;
+    aigodthingsused = false;
+    aicheaterused = false;
     PlayAgainRPS();
 }
 

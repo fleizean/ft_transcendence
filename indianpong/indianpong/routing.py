@@ -12,3 +12,6 @@ websocket_urlpatterns = [
     re_path(r'^ws/rps/$', consumer_rps.RPSConsumer.as_asgi()),
 ]
 
+channel_routing = {
+    'player.matched': consumer_rps.RPSConsumer.player_matched,
+}

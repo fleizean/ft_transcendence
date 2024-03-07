@@ -8,6 +8,8 @@ class RPSConsumer(AsyncWebsocketConsumer):
     players_queue = []
 
     async def connect(self):
+        self.room_name = 'rps_game'
+        self.room_group_name = 'rps_game_group'
         await self.accept()
 
     async def disconnect(self, close_code):
@@ -22,30 +24,38 @@ class RPSConsumer(AsyncWebsocketConsumer):
         
 
     async def join_queue(self):
-        # Bağlanan kullanıcıyı kuyruğa ekleyin
-        self.players_queue.append(self.channel_name)
-        # Kullanıcıya kuyruğa başarıyla katıldığına dair bir mesaj gönderin
+        self.user = self.scope["user"]
+        user_elo_point = self.user.elo_point
+        print(self.user.username + ": " + str(user_elo_point) + " elo point")
+        self.players_queue.append((self.channel_name, user_elo_point))  # Append a tuple
+        # Send a message to the user that they have successfully joined the matchmaking queue
         await self.send(text_data=json.dumps({
             'message': 'Successfully joined matchmaking queue.'
         }))
-        # Kuyrukta eşleşme olup olmadığını kontrol etmek için kuyruğu kontrol etme işlemi başlatın
+        # Start the process of checking the queue for a match
         await self.check_for_match()
 
     async def check_for_match(self):
         if len(self.players_queue) >= 2:
-            # Eğer kuyrukta en az iki kişi varsa, ilk iki kişiyi eşleştirin
-            players_to_match = self.players_queue[:2]
-            self.players_queue = self.players_queue[2:]
-
-            # Her iki oyuncuya da eşleşme bilgisini gönderin
-            for player_channel in players_to_match:
-                await self.channel_layer.send(
-                    player_channel,
-                    {
-                        'type': 'game.match',
-                        'opponent_channel': players_to_match[1] if player_channel == players_to_match[0] else players_to_match[0]
-                    }
-                )
+            # If there are at least two people in the queue, match the first two people
+            player1, player2 = self.players_queue[:2]
+            # Check if the elo_point difference is not greater than 100
+            if abs(player1[1] - player2[1]) <= 100:
+                # If the elo_point difference is not greater than 100, match the players
+                # Remove the matched players from the queue
+                self.players_queue = self.players_queue[2:]
+                # Send a message to the players that they have been matched
+                await self.channel_layer.send(player1[0], {
+                    'type': 'player.matched',
+                    'opponent_channel_name': player2[0]
+                })
+                await self.channel_layer.send(player2[0], {
+                    'type': 'player.matched',
+                    'opponent_channel_name': player1[0]
+                })
+            else:
+                # If the elo_point difference is greater than 100, don't match the players
+                pass
 
     def remove_from_queue(self):
         # Kuyruktan ayrılan kullanıcıyı kaldırın
@@ -60,6 +70,13 @@ class RPSConsumer(AsyncWebsocketConsumer):
             'message': 'You are matched with an opponent!'
         }))
 
+    async def player_matched(self, event):
+        # Extract the opponent's channel name from the event
+        opponent_channel_name = event['opponent_channel_name']
+        # Send a message to the user to let them know they've been matched
+        await self.send(text_data=json.dumps({
+            'message': f'You have been matched with {opponent_channel_name}.'
+        }))
 
 """ 
 class RPSConsumer(AsyncWebsocketConsumer):

@@ -16,16 +16,17 @@ websocket.onmessage = function (e) {
     var data = JSON.parse(e.data)
     if (data.message) {
         alert(data.message)
+        if (data.message.startsWith('You have been matched')) {
+            // The user has been matched with another player
+            // Hide the 'Join Queue' button and show the game container
+            document.getElementById('ponggamebtn').style.visibility = 'hidden';
+            document.getElementById('container-top').style.visibility = 'visible';
+        }
     }
     if (data.queue_count) {
         document.getElementById('queueCount').innerText = data.queue_count
     }
-    if (data.matched) {
-        document.getElementById('ponggamebtn').style.visibility = 'hidden';
-        document.getElementById('container-top').style.visibility = 'visible'
-    }
 }
-
 
 function joinQueue() {
     // "rps-buttons" yerine "container-top" kullanıyoruz
