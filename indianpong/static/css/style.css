@@ -988,6 +988,21 @@ body {
   cursor: pointer;
 }
 
+
+#restartButtonTournament{
+  font-family: 'Pixeboy-z8XGD', sans-serif;
+  font-size: 20px;
+  background-color: #ffbb00;
+  width: 120px;
+  height: 50px;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  margin: 0 10px;
+  cursor: pointer;
+}
+
 #exitButton {
     font-family: 'Pixeboy-z8XGD', sans-serif;
     font-size: 20px;
@@ -1010,9 +1025,16 @@ body {
 }
 
 #restartButton:hover {
+  background-color: #dfa70c;
+  border: red;
+}
+
+
+#restartButton:hover {
   background-color: #1a8b1e;
   border: red;
 }
+
 
 #exitButton:hover {
     background-color: #ce3737;

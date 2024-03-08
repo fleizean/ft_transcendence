@@ -134,7 +134,12 @@ function update() {
 
     // Check for game over
     if (score1 == MAX_SCORE || score2 == MAX_SCORE) {
-        showGameOverScreen(score1 == MAX_SCORE ? matches[matchCount].player1 : matches[matchCount].player2);
+        if (matchCount < 2)
+            showGameOverScreen(score1 == MAX_SCORE ? matches[matchCount].player1 : matches[matchCount].player2);
+        else {
+            isPaused = true;
+            showGameOverTournament(score1 == MAX_SCORE ? matches[matchCount].player1 : matches[matchCount].player2);
+        }
     }
 
     // Move the paddle1
@@ -382,7 +387,6 @@ function resetGame() {
     resetAbilities();
 }
 
-
 // Oyun bitiş ekranını gösteren fonksiyon
 function showGameOverScreen(player1, player2) {
     var winnerText = (score1 == MAX_SCORE) ? player1 + " wins!" : player2 + " wins!";
@@ -407,10 +411,16 @@ function showGameOverScreen(player1, player2) {
     isPaused = true;
 }
 
+function showGameOverTournament(winner) {
+    
+    var winnerText = winner + " wins the tournament!";
+    document.getElementById('winnerTextTournament').innerText = winnerText;
+    document.getElementById('gameOverScreenTournament').style.display = 'block';
+}
+
 function showBracket() {
     gameStartInfos.style.display = "none";
     canvas.style.display = "none";
-    console.log(playerNames);
     // Oyuncu isimlerini karıştır
     playerNames.sort(() => Math.random() - 0.5);
     
@@ -432,7 +442,7 @@ function showBracket() {
     }
 
 
-    console.log(matches);
+    
     document.getElementById('top-name-1').innerText = matches[0].player1;
     document.getElementById('top-name-2').innerText = matches[0].player2;
 
@@ -448,8 +458,21 @@ function showBracket() {
 // Oyunu tekrar başlatan fonksiyon
 function restartGame() {
     document.getElementById('gameOverScreen').style.display = 'none';
-    console.log(matchCount);
     resetGame();
+}
+
+function restartTournament() {
+    document.getElementById('gameOverScreenTournament').style.display = 'none';
+    score1 = 0;
+    score2 = 0;
+    resetPaddles();
+    resetAbilities();
+    matches = [];
+    playerNames = [];
+    matchCount = 0;
+    document.getElementById('show-bracket').style.display = 'none';
+    canvas.style.display = "none";
+    document.getElementById('tournament-start-info').style.display = 'block';
 }
 
 // Çıkış yapma işlemleri
@@ -459,12 +482,24 @@ function exitGame() {
 
 document.getElementById('restartButton').addEventListener('click', restartGame);
 document.getElementById('exitButton').addEventListener('click', exitGame);
+document.getElementById('restartButtonTournament').addEventListener('click', restartTournament);
+
+function replaceTurkishCharacters(str) {
+    var turkishMap = {
+        'ş':'s', 'Ş':'S', 'ı':'i', 'İ':'I',
+        'ğ':'g', 'Ğ':'G', 'ü':'u', 'Ü':'U',
+        'ö':'o', 'Ö':'O', 'ç':'c', 'Ç':'C'
+    };
+    return str.replace(/ş|Ş|ı|İ|ğ|Ğ|ü|Ü|ö|Ö|ç|Ç/g, function(match) {
+        return turkishMap[match];
+    });
+}
 
 startButton.addEventListener("click", function() {
-    var player1Name = document.getElementById("player1Name").value.substring(0, 8);
-    var player2Name = document.getElementById("player2Name").value.substring(0, 8);
-    var player3Name = document.getElementById("player3Name").value.substring(0, 8);
-    var player4Name = document.getElementById("player4Name").value.substring(0, 8);
+    var player1Name = replaceTurkishCharacters(document.getElementById("player1Name").value.substring(0, 8));
+    var player2Name = replaceTurkishCharacters(document.getElementById("player2Name").value.substring(0, 8));
+    var player3Name = replaceTurkishCharacters(document.getElementById("player3Name").value.substring(0, 8));
+    var player4Name = replaceTurkishCharacters(document.getElementById("player4Name").value.substring(0, 8));    
     playerNames.push(player1Name);
     playerNames.push(player2Name);
     playerNames.push(player3Name);
