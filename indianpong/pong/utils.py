@@ -93,5 +93,6 @@ def add_to_cache(key, container, value):
 
 def remove_from_cache(key, container, value):
     container_ = cache.get(key, container)
-    container_.remove(value)
-    cache.set(key, container_)
+    if container_:
+        container_.remove(value)
+        cache.set(key, container_)

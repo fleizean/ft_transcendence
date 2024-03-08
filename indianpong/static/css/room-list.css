@@ -133,3 +133,11 @@
     transform: translate3d(0%, -30%, 100px);
   }
   
+    
+.page-item.active .page-link-roomlist,
+.page-link-roomlist.active {
+    background-color: #ff9500 !important;
+    border-color: #ff9500 !important;
+    color: #fff !important;
+    font-size: 1em !important;
+}

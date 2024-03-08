@@ -7,7 +7,6 @@
 {% endblock %}
 
 {% block app %}
-  {% include '_nav.html' %}
   <link rel="stylesheet" href="{% static 'css/rps.css' %}" />
 
   <div class="container-top" data-cheater="{{ cheater_rps }}" data-godthings="{{godthings_rps}}" data-username="{{request.user.username}}" data-musicpath="{% static "music/" %}" data-iconpath="{% static "assets/rps/" %}">

@@ -441,3 +441,11 @@ ul li {
         order: 33;
     }
 }
+
+.page-item.active .page-link-rankings,
+.page-link.active {
+    background-color: #ff9500 !important;
+    border-color: #ff9500 !important;
+    color: #fff !important;
+    font-size: 1em !important;
+}

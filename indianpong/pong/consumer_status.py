@@ -7,13 +7,15 @@ import json
 class OnlineStatusConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         self.user = self.scope['user']
-        # Add user ID to online_users list
-        add_to_cache('online_users', set(), self.user.id)
+        if self.user.is_anonymous:
+            return
 
         # get UserProfile object
         user_profile = await UserProfile.objects.aget(id=self.user.id)
         user_profile.is_online = True
         await user_profile.asave()
+        # Add user ID to online_users list
+        add_to_cache('online_users', set(), self.user.id)
         await self.accept()
 
         await self.send(text_data=json.dumps({
@@ -22,13 +24,15 @@ class OnlineStatusConsumer(AsyncWebsocketConsumer):
 
 
     async def disconnect(self, close_code):
+        if self.user.is_anonymous:
+            return
 
-        # Remove user ID from online_users list
-        remove_from_cache('online_users', set(), self.user.id)
 
         user_profile = await UserProfile.objects.aget(id=self.user.id)
         user_profile.is_online = False
         await user_profile.asave()
+        # Remove user ID from online_users list
+        remove_from_cache('online_users', set(), self.user.id)
         await self.close()
 
 """
