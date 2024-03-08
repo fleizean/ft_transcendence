@@ -16,7 +16,8 @@ class OnlineStatusConsumer(AsyncWebsocketConsumer):
         await user_profile.asave()
         # Add user ID to online_users list
         add_to_cache('online_users', set(), self.user.id) """
-        cache.set(f'online_{self.user.id}', True)
+        cache.set(f'online_{self.user.username}', True)
+        # Maybe add playing to the cache
         await self.accept()
 
         await self.send(text_data=json.dumps({
@@ -28,7 +29,8 @@ class OnlineStatusConsumer(AsyncWebsocketConsumer):
         if self.user.is_anonymous:
             return
 
-        cache.set(f'online_{self.user.id}', False)
+        cache.set(f'online_{self.user.username}', False)
+        # Maybe add playing to the cache
         """         user_profile = await UserProfile.objects.aget(id=self.user.id)
         user_profile.is_online = False
         await user_profile.asave()

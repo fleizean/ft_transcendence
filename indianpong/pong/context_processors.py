@@ -10,7 +10,7 @@ def userinfo(request):
         return {}
      """
     profile = get_object_or_404(UserProfile, username=request.user.username)
-    is_online = cache.get(f'online_{profile.id}', default=False)
-    is_playing = cache.get(f'playing_{profile.id}', default=False)
+    is_online = cache.get(f'online_{profile.username}', default=False)
+    is_playing = cache.get(f'playing_{profile.username}', default=False)
     #profile_avatar = profile.avatar.url if profile.avatar else "/static/assets/profile/profilephoto.jpeg"
     return {'username': profile.username, 'avatar': profile.avatar.url, 'is_online': is_online, 'is_playing': is_playing}
