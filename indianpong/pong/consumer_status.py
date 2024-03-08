@@ -10,12 +10,13 @@ class OnlineStatusConsumer(AsyncWebsocketConsumer):
         if self.user.is_anonymous:
             return
 
-        # get UserProfile object
+        """         # get UserProfile object
         user_profile = await UserProfile.objects.aget(id=self.user.id)
         user_profile.is_online = True
         await user_profile.asave()
         # Add user ID to online_users list
-        add_to_cache('online_users', set(), self.user.id)
+        add_to_cache('online_users', set(), self.user.id) """
+        cache.set(f'online_{self.user.id}', True)
         await self.accept()
 
         await self.send(text_data=json.dumps({
@@ -27,12 +28,12 @@ class OnlineStatusConsumer(AsyncWebsocketConsumer):
         if self.user.is_anonymous:
             return
 
-
-        user_profile = await UserProfile.objects.aget(id=self.user.id)
+        cache.set(f'online_{self.user.id}', False)
+        """         user_profile = await UserProfile.objects.aget(id=self.user.id)
         user_profile.is_online = False
         await user_profile.asave()
         # Remove user ID from online_users list
-        remove_from_cache('online_users', set(), self.user.id)
+        remove_from_cache('online_users', set(), self.user.id) """
         await self.close()
 
 """

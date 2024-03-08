@@ -28,7 +28,9 @@
                 {% endif %}
                 <div class="card-body text-center">
                     <!-- Avatar -->
-                    <img src="{{ profile.avatar.url }}" alt="avatar" class="profile-image-circ" {% if profile.is_playing %} style="border: 3px solid #ffa600; aspect-ratio: 1/1; object-fit: cover;" {% elif profile.is_online %} style="border: 3px solid #4CAF4F; aspect-ratio: 1/1; object-fit: cover;" {% else %} style="border: 3px solid #ff0000; aspect-ratio: 1/1; object-fit: cover;" {% endif %}>
+                    {% is_user_online profile.id as profile_is_online %}
+                    {% is_user_playing profile.id as profile_is_playing %}
+                    <img src="{{ profile.avatar.url }}" alt="avatar" class="profile-image-circ" {% if profile_is_playing %} style="border: 3px solid #ffa600; aspect-ratio: 1/1; object-fit: cover;" {% elif profile_is_online %} style="border: 3px solid #4CAF4F; aspect-ratio: 1/1; object-fit: cover;" {% else %} style="border: 3px solid #ff0000; aspect-ratio: 1/1; object-fit: cover;" {% endif %}>
                     <!-- isim -->
                     <h5 class="my-3" style="margin-bottom: 0 !important;">{{profile.username}}</h5>
                     <h7 class="my-5" style="margin-top: -3em !important; margin-bottom: 10px !important;">{{profile.displayname}}</h7>
