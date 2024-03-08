@@ -410,14 +410,29 @@ function showGameOverScreen(player1, player2) {
 function showBracket() {
     gameStartInfos.style.display = "none";
     canvas.style.display = "none";
+    console.log(playerNames);
+    // Oyuncu isimlerini karıştır
     playerNames.sort(() => Math.random() - 0.5);
-    for (var i = 0; i < playerNames.length; i += 2) {
+    
+    // Oyuncu isimlerini rastgele çiftler oluştur
+    while (playerNames.length > 1) {
+        var randomIndex1 = Math.floor(Math.random() * playerNames.length);
+        var player1 = playerNames[randomIndex1];
+        playerNames.splice(randomIndex1, 1);
+    
+        var randomIndex2 = Math.floor(Math.random() * playerNames.length);
+        var player2 = playerNames[randomIndex2];
+        playerNames.splice(randomIndex2, 1);
+    
         var match = {
-            player1: playerNames[i],
-            player2: playerNames[i + 1]
+            player1: player1,
+            player2: player2
         };
         matches.push(match);
     }
+
+
+    console.log(matches);
     document.getElementById('top-name-1').innerText = matches[0].player1;
     document.getElementById('top-name-2').innerText = matches[0].player2;
 
