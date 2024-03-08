@@ -1,6 +1,10 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}Pong Game Find{% endblock title %}
+
+{% block stylesheet %}<link rel="stylesheet" href="{% static "css/game-find.css" %}">{% endblock stylesheet %}
+
 {% block app %}
 <div class="container-top">
     <div class="card">

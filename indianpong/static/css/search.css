@@ -253,8 +253,8 @@
 }
 
   
-.page-item.active .page-link-friends_search,
-.page-link-friends_search.active {
+.page-item.active .page-link-search,
+.page-link-search.active {
     background-color: #ff9500 !important;
     border-color: #ff9500 !important;
     color: #fff !important;

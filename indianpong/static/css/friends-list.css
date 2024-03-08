@@ -167,7 +167,13 @@
     }
   }
   
-  
+.page-item.active .page-link-friends,
+.page-link-friends.active {
+    background-color: #ff9500 !important;
+    border-color: #ff9500 !important;
+    color: #fff !important;
+    font-size: 1em !important;
+}
   
   
   

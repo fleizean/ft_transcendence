@@ -4,7 +4,10 @@
 
 {% block title %}Search{% endblock title %}
 
-{% block stylesheet %}<link rel="stylesheet" href="{% static "css/search.css" %}">{% endblock stylesheet %}
+{% block stylesheet %}
+<link rel="stylesheet" href="{% static "css/search.css" %}">
+<link rel="stylesheet" href="{% static "css/friends-list.css" %}">
+{% endblock stylesheet %}
 
 {% block app %}
 <div class="container-top">
@@ -75,7 +78,7 @@
                   </li>
                   {% for page_num in friends.paginator.page_range %}
                     <li class="page-item {% if page_num == friends.number %}active{% endif %}">
-                      <a class="page-link page-link-friends_search" href="?page={{ page_num }}">{{ page_num }}</a>
+                      <a class="page-link page-link-friends" href="?page={{ page_num }}">{{ page_num }}</a>
                     </li>
                   {% endfor %}
                   <li class="page-item {% if not friends.has_next %}disabled{% endif %}">

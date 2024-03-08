@@ -6,8 +6,10 @@
   Play with AI
 {% endblock %}
 
+{% block stylesheet %}<link rel="stylesheet" href="{% static 'css/rps.css' %}" />{% endblock %}
+
 {% block app %}
-  <link rel="stylesheet" href="{% static 'css/rps.css' %}" />
+
   <div class="ai-btn">
     <div class="ponggamebtn" id="ponggamebtn" onclick="joinQueue()">
       Search Opponent <i class="bi bi-person-arms-up"></i>

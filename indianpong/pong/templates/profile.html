@@ -3,7 +3,11 @@
 
 {% block title %}{{ profile.username }}{% endblock title %}
 
-{% block stylesheet %}<link rel="stylesheet" href="{% static "css/profile.css" %}">{% endblock stylesheet %}
+{% block stylesheet %}
+<link rel="stylesheet" href="{% static "css/profile.css" %}">
+<link rel="stylesheet" href="{% static "css/profilesettings.css" %}">
+<link rel="stylesheet" href="{% static "css/match-history.css" %}">
+{% endblock stylesheet %}
 {% block app %}
     <!-- "Edit Profile" ve "Match History" Navbar -->
     
@@ -153,7 +157,7 @@
                                     </a>
                                 </li>
                                 <li class="page-item active">
-                                    <span class="page-link page-link-profile">{{ history_page_obj.number }}</span>
+                                    <span class="page-link page-link-history">{{ history_page_obj.number }}</span>
                                 </li>
                                 <li class="page-item {% if not history_page_obj.has_next %}disabled{% endif %}">
                                     <a class="page-link" href="{% if history_page_obj.has_next %}?page={{ history_page_obj.next_page_number }}{% endif %}" aria-label="Next">
