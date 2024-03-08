@@ -777,6 +777,10 @@ def local_game(request):
     frozenball = get_equipped_item_value(user_items, "Frozen Ball", "None")
     return render(request, "local-game.html", {"player2name": player2name, "paddlecolor": paddlecolor, "playgroundcolor": playgroundcolor, "giantman": giantman, "likeacheater": likeacheater, "fastandfurious": fastandfurious, "rageoffire": rageoffire, "frozenball": frozenball})
 
+@never_cache
+@login_required()
+def local_tournament(request):
+    return render(request, "local-tournament.html")
 
 def remote_game(request, game_type, game_id):
     return render(request, "remote-game.html")
