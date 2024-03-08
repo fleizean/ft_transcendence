@@ -1,26 +1,29 @@
 
 const canvas = document.getElementById('pongCanvas');
-var gameStartInfos = document.getElementById("gameStartInfos");
+var gameStartInfos = document.getElementById("tournament-start-info");
 var startButton = document.getElementById("startButton");
+var startTournament = document.getElementById("startTournament");
 var ctx = canvas.getContext("2d");
 canvas.width = 800;
 canvas.height = 600;
 
 
 const canvasContainer = document.querySelector('.ai-game');
-var player1Name = "Player 1"
-var player2Name = "Player 2"
-var player3Name = "Player 3"
-var player4Name = "Player 4"
 var gameMode = "Vanilla";
+
+/* Tournament */
+var playerNames = [];
+var matches = [];
+
+var matchCount = 0;
 
 const paddleColor = document.querySelector('.container-top').dataset.paddlecolor;
 const playgroundColor = document.querySelector('.container-top').dataset.playgroundcolor;
 canvas.style.borderColor = playgroundColor; // Set the border color to the specified color
 
 /* Cordinates of the canvas */
-var textWidth1 = ctx.measureText(player1Name + ": " + score1).width;
-var textWidth2 = ctx.measureText(player2Name + ": " + score2).width;
+var textWidth1 = ctx.measureText(matches[matchCount] + ": " + score1).width;
+var textWidth2 = ctx.measureText(matches[matchCount] + ": " + score2).width;
 
 
 var usernameX = 10;
@@ -131,7 +134,7 @@ function update() {
 
     // Check for game over
     if (score1 == MAX_SCORE || score2 == MAX_SCORE) {
-        showGameOverScreen();
+        showGameOverScreen(score1 == MAX_SCORE ? matches[matchCount].player1 : matches[matchCount].player2);
     }
 
     // Move the paddle1
@@ -219,8 +222,19 @@ function render() {
 
     ctx.font = "16px Roboto";
     ctx.fillStyle = 'white';
-    ctx.fillText(player1Name + ": " + score1, usernameX, usernameY);
-    ctx.fillText(player2Name + ": " + score2, player2nameX, player2nameY);
+    
+    if (matchCount === 0) {        
+        ctx.fillText(matches[matchCount].player1 + ": " + score1, usernameX, usernameY);
+        ctx.fillText(matches[matchCount].player2 + ": " + score2, player2nameX, player2nameY);
+    }
+    else if (matchCount === 1) {
+        ctx.fillText(matches[matchCount].player1 + ": " + score1, usernameX, usernameY);
+        ctx.fillText(matches[matchCount].player2 + ": " + score2, player2nameX, player2nameY);
+    }
+    else if (matchCount === 2) {
+        ctx.fillText(matches[matchCount].player1 + ": " + score1, usernameX, usernameY);
+        ctx.fillText(matches[matchCount].player2 + ": " + score2, player2nameX, player2nameY);
+    }
 }
 
 
@@ -370,16 +384,56 @@ function resetGame() {
 
 
 // Oyun bitiş ekranını gösteren fonksiyon
-function showGameOverScreen() {
-    isPaused = true;
-    var winnerText = (score1 == MAX_SCORE) ? player1Name + " wins!" : player2Name + " wins!";
+function showGameOverScreen(player1, player2) {
+    var winnerText = (score1 == MAX_SCORE) ? player1 + " wins!" : player2 + " wins!";
     document.getElementById('winnerText').innerText = winnerText;
     document.getElementById('gameOverScreen').style.display = 'block';
+    var winnerName = (score1 == MAX_SCORE) ? player1 : player2;
+    if (matchCount === 0) {
+        var match = {
+            player1: winnerName,
+            player2: "Player2"
+        };
+        matches.push(match);
+    }
+    else if (matchCount === 1) {
+        matches[2].player2 = winnerName;
+    }
+    if (isPaused == false) {
+        matchCount++;
+        if (matchCount === 3)
+            document.getElementById('winnerText').innerText = "Tournament is over! " + winnerName + " wins!";
+    }
+    isPaused = true;
+}
+
+function showBracket() {
+    gameStartInfos.style.display = "none";
+    canvas.style.display = "none";
+    playerNames.sort(() => Math.random() - 0.5);
+    for (var i = 0; i < playerNames.length; i += 2) {
+        var match = {
+            player1: playerNames[i],
+            player2: playerNames[i + 1]
+        };
+        matches.push(match);
+    }
+    document.getElementById('top-name-1').innerText = matches[0].player1;
+    document.getElementById('top-name-2').innerText = matches[0].player2;
+
+    document.getElementById('bottom-name-1').innerText = matches[1].player1;
+    document.getElementById('bottom-name-2').innerText = matches[1].player2;
+    
+    document.getElementById('final-name-1').innerText = matches[0].player1.substring(0,6) + " / " + matches[0].player2.substring(0,6);
+    document.getElementById('final-name-2').innerText = matches[1].player1.substring(0,6) + " / " + matches[1].player2.substring(0,6);
+
+    document.getElementById('show-bracket').style.display = 'block';
 }
 
 // Oyunu tekrar başlatan fonksiyon
 function restartGame() {
     document.getElementById('gameOverScreen').style.display = 'none';
+    console.log(matchCount);
     resetGame();
 }
 
@@ -392,9 +446,20 @@ document.getElementById('restartButton').addEventListener('click', restartGame);
 document.getElementById('exitButton').addEventListener('click', exitGame);
 
 startButton.addEventListener("click", function() {
-    player1Name = document.getElementById("player1Name").value;
-    player2Name = document.getElementById("player2Name").value;
+    var player1Name = document.getElementById("player1Name").value.substring(0, 8);
+    var player2Name = document.getElementById("player2Name").value.substring(0, 8);
+    var player3Name = document.getElementById("player3Name").value.substring(0, 8);
+    var player4Name = document.getElementById("player4Name").value.substring(0, 8);
+    playerNames.push(player1Name);
+    playerNames.push(player2Name);
+    playerNames.push(player3Name);
+    playerNames.push(player4Name);
     MAX_SCORE = document.getElementById("maxScore").value;
     gameMode = document.getElementById("gameMode").value;
+    showBracket();
+});
+
+startTournament.addEventListener("click", function() {
+    document.getElementById('show-bracket').style.display = 'none';
     showCanvas();
 });
