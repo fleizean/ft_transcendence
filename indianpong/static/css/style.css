@@ -1083,3 +1083,92 @@ body {
   margin-top: 2em;
   width: 300px;
 }
+
+
+/* Base HTML - Language Submenu */
+
+.top-nav-infos {
+  position: relative;
+  animation: backInDown 0.5s ease;
+  display: flex; /* İçerikleri yatay olarak hizalar */
+  justify-content: flex-end; /* İçeriği sağa hizalar */
+  margin-right: 2em;
+}
+
+.info-icon,
+.notification-icon {
+  margin-top: 25px;
+  font-size: 16px;
+  color: rgb(255, 140, 0);
+}
+
+.language-submenu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  right: 0; /* Sağ kenara yapıştırır */
+  background-color: rgba(51, 51, 51, 0.8);
+  border-radius: 10px;
+  font-size: 10px;
+  text-align: left;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.language-menu:hover .language-submenu {
+  display: block;
+  z-index: 900;
+}
+
+.info-menu:hover .info-icon,
+.language-menu:hover .notification-icon {
+  color: white !important; /* Değiştirmek istediğiniz yeni renk */
+}
+
+.language-submenu a {
+  color: white;
+  text-decoration: none;
+  display: flex;
+  font-size: 10px;
+  padding: 10px;
+}
+
+.language-submenu a:hover {
+  color: #007bff;
+  background-color: #1b6718; /* Hover rengi */
+}
+
+.container-modal {
+  display: flex;
+  justify-content: center;
+  display: none;
+}
+
+.modal-info {
+  top: 100%;
+  width: 650px;
+  height: 620px;
+  background: linear-gradient(36deg, rgba(95,49,9,1) 53%, rgba(62,41,23,1) 78%);
+  border: 3vmin solid #E6E6E5;
+  border-bottom: 10vmin solid #E6E6E5;
+  align-items: start;
+  justify-content: left;
+  display: flex;
+  transform: scale(0.8, 0.8);
+  z-index: 900;
+}
+
+.btn-close-modal {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    border: none;
+    background-color: transparent;
+    font-size: 1em;
+    color: rgb(255, 255, 255);
+    cursor: pointer;
+}
+
+.btn-close-modal:hover {
+  color: rgb(255, 140, 0);
+  background-color: white;
+}

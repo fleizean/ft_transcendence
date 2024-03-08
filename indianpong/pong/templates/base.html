@@ -35,6 +35,56 @@
                 {% include "_nav.html" %}
             {% endif %}
             <div class="app" id="app">
+                {% if not user.is_authenticated %}
+                    <div class="top-nav-infos">
+                        <li class="info-menu">
+                            <div class="info-icon" style="margin-top: 25px; color: rgb(255, 140, 0); margin-right: 3em;">
+                                <i class="bi bi-info-circle-fill" onclick="displayInfoModal()"></i>
+                            </div>
+                        </li>
+
+                        
+                        <li class="language-menu">
+                            <div class="notification-icon" style="margin-top: 25px; color: rgb(255, 140, 0); margin-right: 3em;">
+                                <i class="bi bi-flag-fill"></i>       
+                            </div>
+                            <div class="language-submenu">
+                                <form id="language-form" method="post" {% comment %} action="{% url 'set_language' %}" {% endcomment %}>
+                                  {% csrf_token %}
+                                  <a href="#" onclick="setLanguage('tr'); return false;">
+                                      <img style="margin-right: 5px;" src="{% static "assets/flags/turkey.png" %}" alt="Türkçe">
+                                      <span style="margin-top: 3px;">Türkçe</span>
+                                  </a>
+                                  <a href="#" onclick="setLanguage('hi'); return false;">
+                                      <img style="margin-right: 5px;" src="{% static "assets/flags/hindi.png" %}" alt="हिंदी">
+                                      <span style="margin-top: 3px;">हिंदी</span>
+                                  </a>
+                                  <a href="#" onclick="setLanguage('en'); return false;">
+                                      <img style="margin-right: 5px;" src="{% static "assets/flags/english.png" %}" alt="English">
+                                      <span style="margin-top: 3px;">English</span>
+                                  </a>
+                                  <a href="#" onclick="setLanguage('pt'); return false;">
+                                      <img style="margin-right: 5px;" src="{% static "assets/flags/portugal.png" %}" alt="Português">
+                                      <span style="margin-top: 3px;">Português</span>
+                                  </a>
+                                </form>
+                            </div>
+                        </li>
+                    </div>
+                    <div class="container-modal">
+                        <div class="modal-info">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="btn-close-modal" data-bs-dismiss="modal" aria-label="Close" onclick="closeInfoModal()"><i class="bi bi-x-lg"></i></button>
+                                    <h5 class="modal-title">Welcome to Indian-Pong</h5>
+                                </div>
+                                <div class="modal-body">
+                                   
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
                 {% block app %}
                 <div class="cursor">
                     <div class="container">
@@ -50,6 +100,37 @@
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"></script>
+    <script>
+        function setLanguage(language) {
+            var form = document.getElementById('language-form');
+            var input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = 'language';
+            input.value = language;
+            form.appendChild(input);
+            form.submit();
+        }
+
+        var isDisplayModel = false;
+    
+        function displayInfoModal() {
+            isDisplayModel = !isDisplayModel;
+            
+            if (isDisplayModel) {
+                var modal = document.querySelector('.container-modal');
+                modal.style.display = 'flex';
+            }
+            else {
+                var modal = document.querySelector('.container-modal');
+                modal.style.display = 'none';
+            }
+        }
+
+        function closeInfoModal() {
+            var modal = document.querySelector('.container-modal');
+            modal.style.display = 'none';
+        }
+    </script>
     {% comment %} <script src="{% static "js/bootstrap.min.js" %}"></script> {% endcomment %}
 
 </body>
