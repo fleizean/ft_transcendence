@@ -55,8 +55,8 @@ class UserProfile(AbstractUser):
     game_stats_rps = models.OneToOneField('UserGameStatRPS', on_delete=models.SET_NULL, null=True, blank=True)
     indian_wallet = models.IntegerField(blank=True, null=True, default=0, validators=[MinValueValidator(0), MaxValueValidator(9999)])
     elo_point = models.IntegerField(blank=True, null=True, default=0, validators=[MinValueValidator(0), MaxValueValidator(99999)])
-    is_online = models.BooleanField(default=False)
-    is_playing = models.BooleanField(default=False)
+    #is_online = models.BooleanField(default=False)
+    #is_playing = models.BooleanField(default=False)
 
     def __str__(self) -> str:
         return f"{self.username}"
