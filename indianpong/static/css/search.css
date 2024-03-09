@@ -42,7 +42,6 @@
   color: black;
 }
 
-
 .card-container-wrapper {
   display: flex;
   justify-content: center; /* Kartları ortalamak için */
@@ -69,9 +68,6 @@
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
   position: relative;
 }
-
-
-
 
 .profile-card::before {
   content: "";
@@ -103,6 +99,19 @@
   width: 100%;
   object-fit: cover;
   border-radius: 50%;
+  transition: all 0.2s ease;
+}
+
+.image .profile-img.playing {
+  border: 3px solid #ffa600;
+}
+
+.image .profile-img.online {
+  border: 3px solid #4CAF4F;
+}
+
+.image .profile-img.offline {
+  border: 3px solid #ff0000;
 }
 
 .image .profile-img:hover {

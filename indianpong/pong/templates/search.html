@@ -27,7 +27,7 @@
                   <div class="image">
                       {% is_user_online person.username as person_is_online %}
                       {% is_user_playing person.username as person_is_playing %}
-                        <a href="profile/{{person.username}}"><img src="{{person.avatar.url}}" alt="" class="profile-img" {% if person_is_playing %} style="border: 3px solid #ffa600" {% elif person_is_online %} style="border: 3px solid #4CAF4F" {% else %} style="border: 3px solid #ff0000" {% endif %} /></a>
+                        <a href="profile/{{person.username}}"><img src="{{person.avatar.url}}" alt="" class="profile-img {% if person_is_playing %}playing{% elif person_is_online %}online{% else %}offline{% endif %}"/></a>
                     </div>
                     <div class="text-data">
                       <span class="name">{{person.username}}</span>
