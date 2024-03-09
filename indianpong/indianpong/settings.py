@@ -26,7 +26,7 @@ SECRET_KEY = environ.get("SECRET_KEY", default="w^bxst+y6yv=d*5+7h)2s3)5vfz!b2ja
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = environ.get("DEBUG", default=True)
 
-ALLOWED_HOSTS = ['indianpong.onrender.com']#environ.get("ALLOWED_HOSTS", default="").split(" ")
+ALLOWED_HOSTS = ['indianpong.com','indianpong.onrender.com', 'http://127.0.0.1:8000', 'localhost', '127.0.0.1']#environ.get("ALLOWED_HOSTS", default="").split(" ")
 
 
 # Application definition
