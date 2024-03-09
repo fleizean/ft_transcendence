@@ -28,6 +28,10 @@ DEBUG = environ.get("DEBUG", default=True)
 
 ALLOWED_HOSTS = ['indianpong.com','indianpong.onrender.com', 'http://127.0.0.1:8000', 'localhost', '127.0.0.1']#environ.get("ALLOWED_HOSTS", default="").split(" ")
 
+CSRF_TRUSTED_ORIGINS = [
+    'https://indianpong.onrender.com',
+    'http://indianpong.onrender.com',
+]
 
 # Application definition
 
