@@ -18,7 +18,6 @@
         {% block stylesheet %}{% endblock %}
     </head>
     <body>
-        <div class="snow-class">
             <div class="backgroundimage">
                 {% if not request.user.is_anonymous %}
                 {% include "_nav.html" %}
@@ -26,38 +25,37 @@
                 <div class="app" id="app">
                     {% if not user.is_authenticated %}
                         <div class="top-nav-infos">
-                            <ul class="menu-list">
-                                <li class="info-menu">
-                                    <div class="info-icon" style="margin-top: 25px; color: rgb(255, 140, 0); margin-right: 3em;">
-                                        <i class="bi bi-info-circle-fill" data-bs-toggle="modal" data-bs-target="#exampleModal"></i>
-                                    </div>
-                                </li>
-                                <li class="language-menu">
-                                    <div class="notification-icon" style="margin-top: 25px; color: rgb(255, 140, 0); margin-right: 3em;">
-                                        <i class="bi bi-flag-fill"></i>       
-                                    </div>
-                                </li>
-                            </ul>
-                            <div class="language-submenu">
-                                <form id="language-form" method="post" {% comment %} action="{% url 'set_language' %}" {% endcomment %}>
-                                    {% csrf_token %}
-                                    <a href="#" onclick="setLanguage('tr'); return false;">
-                                        <img style="margin-right: 5px;" src="{% static "assets/flags/turkey.png" %}" alt="Türkçe">
-                                        <span style="margin-top: 3px;">Türkçe</span>
-                                    </a>
-                                    <a href="#" onclick="setLanguage('hi'); return false;">
-                                        <img style="margin-right: 5px;" src="{% static "assets/flags/hindi.png" %}" alt="हिंदी">
-                                        <span style="margin-top: 3px;">हिंदी</span>
-                                    </a>
-                                    <a href="#" onclick="setLanguage('en'); return false;">
-                                        <img style="margin-right: 5px;" src="{% static "assets/flags/english.png" %}" alt="English">
-                                        <span style="margin-top: 3px;">English</span>
-                                    </a>
-                                    <a href="#" onclick="setLanguage('pt'); return false;">
-                                        <img style="margin-right: 5px;" src="{% static "assets/flags/portugal.png" %}" alt="Português">
-                                        <span style="margin-top: 3px;">Português</span>
-                                    </a>
-                                </form>
+                            <div class="info-menu">
+                                <div class="info-icon" style="margin-top: 25px; color: rgb(255, 140, 0); margin-right: 3em;">
+                                    <i class="bi bi-info-circle-fill" data-bs-toggle="modal" data-bs-target="#exampleModal"></i>
+                                </div>
+                            </div>
+
+                            <div class="language-menu">
+                                <div class="notification-icon" style="margin-top: 25px; color: rgb(255, 140, 0); margin-right: 3em;">
+                                    <i class="bi bi-flag-fill"></i>       
+                                </div>
+                                <div class="language-submenu">
+                                    <form id="language-form" method="post" {% comment %} action="{% url 'set_language' %}" {% endcomment %}>
+                                      {% csrf_token %}
+                                      <a href="#" onclick="setLanguage('tr'); return false;">
+                                          <img style="margin-right: 5px;" src="{% static "assets/flags/turkey.png" %}" alt="Türkçe">
+                                          <span style="margin-top: 3px;">Türkçe</span>
+                                      </a>
+                                      <a href="#" onclick="setLanguage('hi'); return false;">
+                                          <img style="margin-right: 5px;" src="{% static "assets/flags/hindi.png" %}" alt="हिंदी">
+                                          <span style="margin-top: 3px;">हिंदी</span>
+                                      </a>
+                                      <a href="#" onclick="setLanguage('en'); return false;">
+                                          <img style="margin-right: 5px;" src="{% static "assets/flags/english.png" %}" alt="English">
+                                          <span style="margin-top: 3px;">English</span>
+                                      </a>
+                                      <a href="#" onclick="setLanguage('pt'); return false;">
+                                          <img style="margin-right: 5px;" src="{% static "assets/flags/portugal.png" %}" alt="Português">
+                                          <span style="margin-top: 3px;">Português</span>
+                                      </a>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     {% endif %}
@@ -101,7 +99,6 @@
                     </div>
                 </div>
             </div>
-        </div>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"></script>
         <script>
             function setLanguage(language) {

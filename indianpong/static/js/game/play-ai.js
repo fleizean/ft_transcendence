@@ -58,7 +58,7 @@ var paddle1 = {x: 0, y: paddleY, width: paddleWidth, height: abilities_paddleHei
 var paddle2 = {x: canvas.width - paddleWidth, y: paddleY, width: paddleWidth, height: abilities_paddleHeight, dy: paddleSpeed};
 
 // Ball object
-var ball = {x: canvas.width / 2, y: canvas.height / 2, radius: 10, speed: 10, dx: 1, dy: 1};
+var ball = {x: canvas.width / 2, y: canvas.height / 2, radius: 10, speed: 5, dx: 1, dy: 1};
 
 // Scores
 var score1 = 0;
@@ -84,6 +84,7 @@ var isPaused = false;
 let upPressed = false;
 let downPressed = false;
 let upPressedAI = false;
+let firstMove = false;
 let downPressedAI = false;
 // Add a new variable for AI's target position
 let moveThreshold = 8;
@@ -104,6 +105,7 @@ function update() {
     if (isPaused) return;
     ball.x += ball.speed * ball.dx;
     ball.y += ball.speed * ball.dy;
+    
 
     // Check for collisions with paddles
     if (ball.y + ball.radius >= paddle1.y && ball.y - ball.radius <= paddle1.y + paddle1.height && ball.dx < 0) {       
@@ -356,7 +358,7 @@ function startfrozenBallSound() {
 function resetBall() {
     isScored = true;
     isPaused = true;
-    ball.speed = 10;
+    ball.speed = 5;
     paddleSpeed = 15;
     ball.dx = -ball.dx;
     ball.dy = -ball.dy;
@@ -600,6 +602,20 @@ function exitGame() {
 document.getElementById('restartButton').addEventListener('click', restartGame);
 document.getElementById('exitButton').addEventListener('click', exitGame);
 
+var modal = document.getElementById('exampleModalGame');
+
+// Modal açılma olayını dinle
+modal.addEventListener('show.bs.modal', function (event) {
+    // Oyunu duraklat
+    isPaused = true;
+});
+
+// Modal kapatılma olayını dinle
+modal.addEventListener('hide.bs.modal', function (event) {
+    // Oyunu devam ettir
+    isPaused = false;
+});
+
 function sendWinnerToBackend(winner, loser, winnerscore, loserscore, start_time) {
     const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
     var finish_time = new Date();
@@ -613,7 +629,7 @@ function sendWinnerToBackend(winner, loser, winnerscore, loserscore, start_time)
         finish_time: finish_time
     };
 
-    fetch('update_winner', {
+    fetch('/update_winner', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
