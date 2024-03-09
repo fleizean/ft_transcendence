@@ -26,12 +26,16 @@
 
 .inventory-list {
   margin-top: 0.5em;
-  min-height: 100vh;
+  /* min-height: 100vh; */
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+  align-content: flex-start;
 }
 
+.app {
+  padding-bottom: 2rem;
+}
 
 .top-inventory-card {
   height: 50px;
@@ -333,8 +337,9 @@
 .inventory-info {
   visibility: hidden;
   position: absolute;
-  right:20;
-  margin-top: -20px;
+  margin-left: auto;
+  margin-top: -1.7em !important;
+  right: 20px;
 }
 
 .tooltiptext {

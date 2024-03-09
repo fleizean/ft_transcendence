@@ -1,13 +1,16 @@
 {% extends 'base.html' %}
 
+{% load static %}
+{% load status %}
+
 {% block title %}Search{% endblock title %}
 
-{% load static %}
-
-{% block stylesheet %}<link rel="stylesheet" href="{% static "css/search.css" %}">{% endblock stylesheet %}
+{% block stylesheet %}
+<link rel="stylesheet" href="{% static "css/search.css" %}">
+<link rel="stylesheet" href="{% static "css/friends-list.css" %}">
+{% endblock stylesheet %}
 
 {% block app %}
-  {% include "_nav.html" %}
 <div class="container-top">
     <div class="search-card">
         <div class="card-container-wrapper">
@@ -16,25 +19,29 @@
               <div class="card-containers">
                 <div class="profile-card">
                     <div class="image">
-                        <a href="/profile/{{friend.username}}"><img src="{{friend.avatar.url}}" alt="" class="profile-img" {% if friend.is_online and not friend.is_playing %} style="border: 3px solid #4CAF4F" {% elif friend.is_playing %} style="border: 3px solid #ffa600" {% else %} style="border: 3px solid #ff0000" {% endif %} /></a>
+                      {% is_user_online friend.username as friend_is_online %}
+                      {% is_user_playing friend.username as friend_is_playing %}
+                        <a href="/profile/{{friend.username}}"><img src="{{friend.avatar.url}}" alt="" class="profile-img {% if person_is_playing %}playing{% elif person_is_online %}online{% else %}offline{% endif %}"/></a>
                     </div>
                     <div class="text-data">
                       <span class="name">{{friend.username}}</span>
                       <span class="job">{{friend.displayname}}</span>
                     </div>
                     <div class="media-buttons">
-                      {% if friend.social.stackoverflow %}
-                        <a href="https://stackoverflow.com/users/{{friend.social.stackoverflow}}" target="_blank" class="medialinks stackoverflow"><i class="bi bi-stack-overflow"></i></a>
+                      {% if friend.social.linkedin %}
+                      <a href="https://www.linkedin.com/in/{{friend.social.linkedin}}" target="_blank" class="medialinks instagram"><i class="bi bi-linkedin"></i></a>
+                      {% endif %}
+                      {% if friend.social.twitter %}
+                        <a href="https://x.com/{{friend.social.twitter}}" target="_blank" class="medialinks twitterx"><i class="bi bi-twitter-x"></i></a>
+                      {% endif %} 
+                      {% if friend.social.intra42 %}
+                        <a href="https://profile.intra.42.fr/users/{{friend.social.intra42}}" target="_blank" class="medialinks stackoverflow"><img src="{% static "assets/intra-42-white.svg" %}"></a>
                       {% endif %}
                       {% if friend.social.github %}
                         <a href="https://github.com/{{friend.social.github}}" target="_blank" class="medialinks github"><i class="bi bi-github"></i></a>
                       {% endif %}
-                      {% if friend.social.twitter %}
-                        <a href="https://x.com/{{friend.social.twitter}}" target="_blank" class="medialinks twitterx"><i class="bi bi-twitter-x"></i></a>
-                      {% endif %}
-                      {% if friend.social.instagram %}
-                        <a href="https://www.instagram.com/{{friend.social.instagram}}" target="_blank" class="medialinks instagram"><i class="bi bi-instagram"></i></a>
-                      {% endif %}
+                      
+                                
                     </div>
                     {% if not friend.social.stackoverflow and not friend.social.twitter and not friend.social.github and not friend.social.instagram %}
                       <div class="buttons" style="margin-top: 60px !important;">
@@ -74,7 +81,7 @@
                   </li>
                   {% for page_num in friends.paginator.page_range %}
                     <li class="page-item {% if page_num == friends.number %}active{% endif %}">
-                      <a class="page-link page-link-test" href="?page={{ page_num }}">{{ page_num }}</a>
+                      <a class="page-link page-link-friends" href="?page={{ page_num }}">{{ page_num }}</a>
                     </li>
                   {% endfor %}
                   <li class="page-item {% if not friends.has_next %}disabled{% endif %}">

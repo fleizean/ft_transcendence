@@ -22,13 +22,18 @@ class Social(models.Model):
     linkedin = models.CharField(max_length=200, blank=True, null=True)
     github = models.CharField(max_length=200, blank=True, null=True)
     twitter = models.CharField(max_length=200, blank=True, null=True)
-    instagram = models.CharField(max_length=200, blank=True, null=True)
 
 class StoreItem(models.Model):
     category_name = models.CharField(max_length=100, default="")
     name = models.CharField(max_length=100)
+    name_hi = models.CharField(max_length=100, blank=True, null=True)
+    name_pt = models.CharField(max_length=100, blank=True, null=True)
+    name_tr = models.CharField(max_length=100, blank=True, null=True)
     image_url = models.TextField()
     description = models.TextField()
+    description_hi = models.TextField(blank=True, null=True)
+    description_pt = models.TextField(blank=True, null=True)
+    description_tr = models.TextField(blank=True, null=True)
     price = models.IntegerField()
     keypress = models.CharField(max_length=100, blank=True, null=True)
     show_status = models.BooleanField(default=False) # store'da görünebilir mi?
@@ -50,14 +55,15 @@ class UserProfile(AbstractUser):
     game_stats_rps = models.OneToOneField('UserGameStatRPS', on_delete=models.SET_NULL, null=True, blank=True)
     indian_wallet = models.IntegerField(blank=True, null=True, default=0, validators=[MinValueValidator(0), MaxValueValidator(9999)])
     elo_point = models.IntegerField(blank=True, null=True, default=0, validators=[MinValueValidator(0), MaxValueValidator(99999)])
-    is_online = models.BooleanField(default=False)
-    is_playing = models.BooleanField(default=False)
+    reconnect_url = models.URLField(blank=True, null=True)
+    #is_online = models.BooleanField(default=False)
+    #is_playing = models.BooleanField(default=False)
 
     def __str__(self) -> str:
         return f"{self.username}"
     
     def save(self, *args, **kwargs):
-        if not self.avatar:
+        if not self.avatar and self.username != os.environ.get("INDIANAI_USERNAME", default="IndianAI") and self.username != os.environ.get("SUPER_USER", default="Bitlis"):
             svg_content = create_random_svg(self.username)
             self.avatar.save(f"{self.username}.svg", svg_content, save=False)
         super().save(*args, **kwargs)
@@ -270,8 +276,13 @@ class GameWarning(models.Model):
         return f"{self.user.username} sent a game warning to {self.opponent.username}"
 
 class Game(models.Model):
-    game_name = models.CharField(max_length=20, blank=True, null=True, default="pong")
-    tournament_id = models.UUIDField(null=True, blank=True) #? Maybe 
+    GAME_KIND_CHOICES = (
+        ("pong", "Pong"),
+        ("rps", "Rock Paper Scissors")
+    )
+
+    game_kind = models.CharField(max_length=10, choices=GAME_KIND_CHOICES, default="pong")
+    tournament_id = models.IntegerField(MinValueValidator(1), null=True, blank=True)
     group_name = models.CharField(max_length=100)
     player1 = models.ForeignKey(UserProfile, related_name='games_as_player1', on_delete=models.CASCADE)
     player2 = models.ForeignKey(UserProfile, related_name='games_as_player2', on_delete=models.CASCADE)

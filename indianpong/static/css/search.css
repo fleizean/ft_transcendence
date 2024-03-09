@@ -42,7 +42,6 @@
   color: black;
 }
 
-
 .card-container-wrapper {
   display: flex;
   justify-content: center; /* Kartları ortalamak için */
@@ -69,9 +68,6 @@
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
   position: relative;
 }
-
-
-
 
 .profile-card::before {
   content: "";
@@ -103,6 +99,19 @@
   width: 100%;
   object-fit: cover;
   border-radius: 50%;
+  transition: all 0.2s ease;
+}
+
+.image .profile-img.playing {
+  border: 3px solid #ffa600;
+}
+
+.image .profile-img.online {
+  border: 3px solid #4CAF4F;
+}
+
+.image .profile-img.offline {
+  border: 3px solid #ff0000;
 }
 
 .image .profile-img:hover {
@@ -146,9 +155,9 @@
   background-color: #444d64;
   text-decoration: none;
 }
-
-/* .medialinks.stackoverflow {
-  background-color: #F6A663;
+/*
+.medialinks.stackoverflow {
+  fill: white;
 }
 
 .medialinks.twitterx {
@@ -253,17 +262,8 @@
 }
 
   
-.page-item.active .page-link-test,
-.page-link-test.active {
-    background-color: #ff9500 !important;
-    border-color: #ff9500 !important;
-    color: #fff !important;
-    font-size: 1em !important;
-}
-
-
-.page-item.active .page-link-deneme,
-.page-link-deneme.active {
+.page-item.active .page-link-search,
+.page-link-search.active {
     background-color: #ff9500 !important;
     border-color: #ff9500 !important;
     color: #fff !important;

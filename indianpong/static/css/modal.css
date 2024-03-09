@@ -1,0 +1,24 @@
+@font-face {
+    font-family: 'PixelifySans';
+    src: url('fonts/PixelifySans-VariableFont_wght.ttf');
+}
+
+.modal {
+    font-family: 'PixelifySans';
+}
+
+.modal.show .modal-dialog {
+    max-width: 30%;
+}
+
+.modal-header {
+    padding-bottom: 0;
+}
+
+.modal-body {
+    padding-top: 0;
+}
+
+.modal-body h3 {
+    border-bottom: 1px solid;
+}

@@ -54,7 +54,6 @@
   src: url('fonts/Minecraftia-Regular.ttf');
 }
 
-
 @font-face {
   font-family: 'alagard';
   src: url('fonts/alagard.ttf');
@@ -303,6 +302,7 @@ body {
   color: greenyellow;
   position: relative;
   /* cursor: url('../assets/scrool/crossedsword.png'), auto; */
+  padding: 0.4rem 0;
 }
 
 .nav-links li a::after {
@@ -988,6 +988,21 @@ body {
   cursor: pointer;
 }
 
+
+#restartButtonTournament{
+  font-family: 'Pixeboy-z8XGD', sans-serif;
+  font-size: 20px;
+  background-color: #ffbb00;
+  width: 120px;
+  height: 50px;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  margin: 0 10px;
+  cursor: pointer;
+}
+
 #exitButton {
     font-family: 'Pixeboy-z8XGD', sans-serif;
     font-size: 20px;
@@ -1010,9 +1025,16 @@ body {
 }
 
 #restartButton:hover {
+  background-color: #dfa70c;
+  border: red;
+}
+
+
+#restartButton:hover {
   background-color: #1a8b1e;
   border: red;
 }
+
 
 #exitButton:hover {
     background-color: #ce3737;
@@ -1082,4 +1104,57 @@ body {
 .btn {
   margin-top: 2em;
   width: 300px;
+}
+
+
+/* Base HTML - Language Submenu */
+
+.top-nav-infos {
+  position: relative;
+  animation: backInDown 0.5s ease;
+  display: flex; /* İçerikleri yatay olarak hizalar */
+  justify-content: flex-end; /* İçeriği sağa hizalar */
+  margin-right: 2em;
+}
+
+.info-icon,
+.notification-icon {
+  margin-top: 25px;
+  font-size: 16px;
+  color: rgb(255, 140, 0);
+}
+
+.language-submenu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  right: 0; /* Sağ kenara yapıştırır */
+  background-color: rgba(51, 51, 51, 0.8);
+  border-radius: 10px;
+  font-size: 10px;
+  text-align: left;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.language-menu:hover .language-submenu {
+  display: block;
+  z-index: 900;
+}
+
+.info-menu:hover .info-icon,
+.language-menu:hover .notification-icon {
+  color: white !important; /* Değiştirmek istediğiniz yeni renk */
+}
+
+.language-submenu a {
+  color: white;
+  text-decoration: none;
+  display: flex;
+  font-size: 10px;
+  padding: 10px;
+}
+
+.language-submenu a:hover {
+  color: #007bff;
+  background-color: #1b6718; /* Hover rengi */
 }

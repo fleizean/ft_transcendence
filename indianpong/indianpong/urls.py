@@ -18,7 +18,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path
-from pong.views import play_rps, play_rps_ai, aboutus, follow_unfollow, tournament_room, tournament_create, local_game, tournament, tournament_room_list, update_winner, inventory, store, activate_account, play_ai, pong_game_find, rps_game_find, auth_callback, chat, friends, password_change, password_reset, password_reset_done, rankings, dashboard, game, index, auth, chat_room, profile_view, search, set_password, signup, login_view, logout_view, profile_settings, setup_two_factor_auth, generate_jwt_token, start_chat, room
+from pong.views import play_rps, local_tournament, play_rps_ai, aboutus, follow_unfollow, remote_game, tournament_room, tournament_create, local_game, tournament, tournament_room_list, update_winner, inventory, store, activate_account, play_ai, pong_game_find, rps_game_find, auth_callback, chat, friends, password_change, password_reset, password_reset_done, rankings, dashboard, game, index, auth, chat_room, profile_view, search, set_password, signup, login_view, logout_view, profile_settings, setup_two_factor_auth, generate_jwt_token, start_chat, room
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -31,8 +31,10 @@ urlpatterns = [
     path('logout', logout_view, name='logout'),
     path('rps-game-find', rps_game_find, name='rps_game_find'),
     path('pong-game-find', pong_game_find, name='pong_game_find'),
-    path('play-ai', play_ai, name='play_ai'),
+    path('play-ai/<str:game_type>/<str:game_id>', play_ai, name='play_ai'),
+    path('remote-game/<str:game_type>/<str:game_id>', remote_game, name='remote_game'),
     path('local-game', local_game, name='local_game'),
+    path('local-tournament', local_tournament, name='local_tournament'),
     path('chat/', chat, name='chat'),
     path("start_chat/<str:username>", start_chat, name="start_chat"),
     path("chat/<str:room_name>/", room, name="room"),
@@ -40,7 +42,6 @@ urlpatterns = [
     path('tournament-room/<int:id>', tournament_room, name="tournament-room"),
     path("tournament-create", tournament_create, name="tournament_create"),
     path("tournament-room-list", tournament_room_list, name="tournament_room_list"),
-    #path('chat_room', chat_room, name='chat_room'),
     path('dashboard', dashboard, name='dashboard'),
     path('friends/<str:profile>', friends, name='friends'),
     path('about-us', aboutus, name='aboutus'),

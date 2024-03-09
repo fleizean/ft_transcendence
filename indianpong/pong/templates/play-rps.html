@@ -6,15 +6,18 @@
   Play with AI
 {% endblock %}
 
+{% block stylesheet %}<link rel="stylesheet" href="{% static 'css/rps.css' %}"/>
+<link rel="stylesheet" href="{% static 'css/game-find.css' %}"
+{% endblock %}
+
 {% block app %}
-  {% include '_nav.html' %}
-  <link rel="stylesheet" href="{% static 'css/rps.css' %}" />
+
   <div class="ai-btn">
     <div class="ponggamebtn" id="ponggamebtn" onclick="joinQueue()">
       Search Opponent <i class="bi bi-person-arms-up"></i>
     </div>
   </div>
-  <div class="container-top" id="container-top" style="visibility: hidden;">
+  <div class="container-top" id="container-top" style="visibility: hidden;" data-iconpath="{% static "assets/rps/" %}">
     <div class="header-top">
       <div class="header">
         <div class="score" style="margin-right: 15px;">

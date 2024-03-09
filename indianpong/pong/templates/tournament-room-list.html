@@ -8,7 +8,7 @@
 {% block title %} Tournament Room List {% endblock title %}
 
 {% block app %}
-{% include "_nav.html" %}
+
 <div class="container-top">
     <div class="card">
             <h3 class="pong-game-text">Tournament Room List</h3>
@@ -60,7 +60,7 @@
                     </li>
                     {% for page_num in tournaments.paginator.page_range %}
                         <li class="page-item {% if page_num == tournaments.number %}active{% endif %}">
-                            <a class="page-link page-link-deneme" href="?page={{ page_num }}">{{ page_num }}</a>
+                            <a class="page-link page-link-roomlist" href="?page={{ page_num }}">{{ page_num }}</a>
                         </li>
                     {% endfor %}
                     <li class="page-item {% if not tournaments.has_next %}disabled{% endif %}">

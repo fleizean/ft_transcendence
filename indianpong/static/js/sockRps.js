@@ -16,16 +16,17 @@ websocket.onmessage = function (e) {
     var data = JSON.parse(e.data)
     if (data.message) {
         alert(data.message)
+        if (data.message.startsWith('You have been matched')) {
+            // The user has been matched with another player
+            // Hide the 'Join Queue' button and show the game container
+            document.getElementById('ponggamebtn').style.visibility = 'hidden';
+            document.getElementById('container-top').style.visibility = 'visible';
+        }
     }
     if (data.queue_count) {
         document.getElementById('queueCount').innerText = data.queue_count
     }
-    if (data.matched) {
-        document.getElementById('ponggamebtn').style.visibility = 'hidden';
-        document.getElementById('container-top').style.visibility = 'visible'
-    }
 }
-
 
 function joinQueue() {
     // "rps-buttons" yerine "container-top" kullanıyoruz
@@ -50,6 +51,9 @@ const CHOICES = [
         beats: "scissors",
     },
 ];
+
+const ICON_PATH = document.querySelector('.container-top').dataset.iconpath;
+
 const choiceButtons = document.querySelectorAll(".choice-btn");
 const gameDiv = document.querySelector(".game");
 const resultsDiv = document.querySelector(".results");
@@ -86,11 +90,12 @@ function choose(choice) {
 
 
 function displayResults(results) {
+
     resultDivs.forEach((resultDiv, idx) => {
         setTimeout(() => {
             resultDiv.innerHTML = `
         <div class="choice ${results[idx].name}">
-            <img src="../../static/assets/rps/icon-${results[idx].name}.svg" alt="${results[idx].name}" />
+            <img src="${ICON_PATH}icon-${results[idx].name}.svg" alt="${results[idx].name}" />
         </div>
       `;
         }, idx * 1000);

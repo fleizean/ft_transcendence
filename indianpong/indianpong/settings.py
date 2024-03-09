@@ -26,7 +26,7 @@ SECRET_KEY = environ.get("SECRET_KEY", default="w^bxst+y6yv=d*5+7h)2s3)5vfz!b2ja
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = environ.get("DEBUG", default=True)
 
-ALLOWED_HOSTS = []#environ.get("ALLOWED_HOSTS", default="").split(" ")
+ALLOWED_HOSTS = ['indianpong.onrender.com']#environ.get("ALLOWED_HOSTS", default="").split(" ")
 
 
 # Application definition
@@ -47,6 +47,18 @@ CHANNEL_LAYERS = {
         'BACKEND': 'channels.layers.InMemoryChannelLayer',
     },
 }
+
+# For production use
+# you should use a more robust channel layer such as Redis.
+# pip install channels_redis
+""" CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('127.0.0.1', 6379)],
+        },
+    },
+} """
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -88,6 +100,13 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}
+
+# For production, you should use a more robust caching backend like Memcached or Redis.
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
     }
 }
 

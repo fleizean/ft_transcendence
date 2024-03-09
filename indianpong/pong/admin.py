@@ -19,7 +19,7 @@ class UserProfileAdmin(admin.ModelAdmin):
     list_display = ('username', 'email', 'displayname', 'avatar_thumbnail')
     search_fields = ('username', 'email', 'displayname')
     fieldsets = (
-    ('User Information', {'fields': ('username', 'password', 'displayname', 'email', 'avatar', 'friends', 'elo_point', 'indian_wallet', 'is_online', 'is_playing')}),
+    ('User Information', {'fields': ('username', 'password', 'displayname', 'email', 'avatar', 'friends', 'elo_point', 'indian_wallet')}),
     ('Dates', {'fields': ('date_joined', 'last_login')}),
     ('Roles', {'fields': ('is_staff', 'is_active', 'is_superuser', 'is_verified', 'is_42student', 'is_indianai')}),
     ('Permissions', {'fields': ('groups', 'user_permissions')}),
@@ -31,7 +31,7 @@ class UserProfileAdmin(admin.ModelAdmin):
 
 @admin.register(StoreItem)
 class StoreAdmin(admin.ModelAdmin):
-    list_display = ('category_name', 'name', 'image_url', 'description', 'price', 'keypress', 'show_status')
+    list_display = ('category_name', 'name', 'name_hi', 'name_pt', 'name_tr', 'image_url', 'description', 'description_hi', 'description_pt', 'description_tr', 'price', 'keypress', 'show_status')
     search_fields = ('name', 'description')
 
     def __str__(self):
@@ -69,18 +69,18 @@ class UserGameStatAdmin(admin.ModelAdmin):
 
 @admin.register(Social)
 class SocialAdmin(admin.ModelAdmin):
-    list_display = ('get_user', 'intra42', 'linkedin', 'github', 'twitter', 'instagram')
+    list_display = ('get_user', 'intra42', 'linkedin', 'github', 'twitter')
 
     def get_user(self, obj):
         return obj.userprofile
     get_user.short_description = 'User'
 
-    search_fields = ('userprofile__username', 'intra42', 'linkedin', 'github', 'twitter', 'instagram')
+    search_fields = ('userprofile__username', 'intra42', 'linkedin', 'github', 'twitter')
 
 
 @admin.register(Game)
 class GameAdmin(admin.ModelAdmin):
-    list_display = ('game_name' ,'group_name', 'player1', 'player2', 'player1_score', 'player2_score', 'created_at', 'game_duration', 'winner', 'loser')
+    list_display = ('game_kind' ,'group_name', 'player1', 'player2', 'player1_score', 'player2_score', 'created_at', 'game_duration', 'winner', 'loser')
     list_filter = ('player1', 'player2', 'winner', 'loser')
     search_fields = ('player1__username', 'player2__username', 'group_name')
 

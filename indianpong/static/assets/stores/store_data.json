@@ -2,8 +2,14 @@
     {
         "category_name": "Pong",
         "name": "My Beautiful Paddle",
+        "name_hi": "मेरा सुंदर चप्पू",
+        "name_pt": "Minha Raquete Linda",
+        "name_tr": "Guzel Raketim",
         "image_url": "mybeatifulpaddle.webp",
         "description": "Change Paddle color, it only affects you.",
+        "description_hi": "पैडल का रंग बदलें, यह केवल आपको प्रभावित करता है।",
+        "description_pt": "Mude a cor da raquete, isso só afeta você.",
+        "description_tr": "Raket rengini değiştir, bu sadece seni etkiler.",
         "price": 50,
         "keypress": "none",
         "show_status": true
@@ -11,8 +17,14 @@
     {
         "category_name": "Pong",
         "name": "My Playground",
+        "name_hi": "मेरा खेल का स्थान",
+        "name_pt": "Meu Playground",
+        "name_tr": "Oyun Alanim",
         "image_url": "colorpick.webp",
         "description": "Change the playground color, it only affects you.",
+        "description_hi": "खेल का रंग बदलें, यह केवल आपको प्रभावित करता है।",
+        "description_pt": "Mude a cor do playground, isso só afeta você.",
+        "description_tr": "Oyun alanı rengini değiştir, bu sadece seni etkiler.",
         "price": 25,
         "keypress": "none",
         "show_status": true
@@ -20,8 +32,14 @@
     {
         "category_name": "Pong",
         "name": "My Beautiful AI",
+        "name_hi": "मेरा सुंदर ए.आई.",
+        "name_pt": "Meu Belo AI",
+        "name_tr": "Guzel AI",
         "image_url": "ai-nametag.webp",
         "description": "How about giving your ai a name?",
+        "description_hi": "अपने ए.आई. को एक नाम देने का क्या ख्याल है?",
+        "description_pt": "Que tal dar um nome ao seu ai?",
+        "description_tr": "Ai'ya bir isim vermek nasıl olurdu?",
         "price": 50,
         "keypress": "none",
         "show_status": true
@@ -29,8 +47,14 @@
     {
         "category_name": "Pong",
         "name": "Giant-Man",
+        "name_hi": "विशाल-मन",
+        "name_pt": "Homem-Gigante",
+        "name_tr": "Dev Adam",
         "image_url": "giantman.webp",
         "description": "You can increase the paddle size by %15.",
+        "description_hi": "आप पैडल का आकार %15 बढ़ा सकते हैं।",
+        "description_pt": "Você pode aumentar o tamanho da raquete em %15.",
+        "description_tr": "Raket boyutunu %15 artırabilirsin.",
         "price": 300,
         "keypress": "none",
         "show_status": true
@@ -38,8 +62,14 @@
     {
         "category_name": "Pong",
         "name": "Like a Cheater",
+        "name_hi": "जैसे एक धोखेबाज",
+        "name_pt": "Como um Trapaceiro",
+        "name_tr": "Bir Hilekar Gibi",
         "image_url": "cheater.webp",
         "description": "Steal one point from your opponent once.",
+        "description_hi": "एक बार अपने प्रतिद्वंद्वी से एक अंक चुरा लो।",
+        "description_pt": "Roube um ponto do seu oponente uma vez.",
+        "description_tr": "Rakibin bir kereligine puanini gasp et.",
         "price": 225,
         "keypress": "1",
         "show_status": true
@@ -47,8 +77,14 @@
     {
         "category_name": "Pong",
         "name": "Fast and Furious",
+        "name_hi": "तेज और उत्तेजित",
+        "name_pt": "Veloz e Furioso",
+        "name_tr": "Hizli ve Ofkeli",
         "image_url": "fast-and-furious.webp",
         "description": "When used, ball speed increase five times.",
+        "description_hi": "उपयोग किया जाने पर, गेंद की गति पांच गुना बढ़ जाती है।",
+        "description_pt": "Quando usado, a velocidade da bola aumenta cinco vezes.",
+        "description_tr": "Kullanıldığında, top hızı beş kat artar.",
         "price": 175,
         "keypress": "2",
         "show_status": true
@@ -56,8 +92,14 @@
     {
         "category_name": "Pong",
         "name": "Rage of Fire",
+        "name_hi": "आग का क्रोध",
+        "name_pt": "Fúria de Fogo",
+        "name_tr": "Ateşin Öfkesi",
         "image_url": "fireball.webp",
         "description": "%50 chance to speed up to the ball by %5 with each shot.",
+        "description_hi": "प्रत्येक शॉट के साथ गेंद को %5 तक तेज करने का %50 चांस।",
+        "description_pt": "Chance de %50 de acelerar a bola em %5 com cada tiro.",
+        "description_tr": "Her atışta topu %5 hızlandırma şansı %50.",
         "price": 75,
         "keypress": "none",
         "show_status": true
@@ -65,8 +107,14 @@
     {
         "category_name": "Pong",
         "name": "Frozen Ball",
+        "name_hi": "जमीन गेंद",
+        "name_pt": "Bola Congelada",
+        "name_tr": "Dondurulmuş Top",
         "image_url": "versus-time.webp",
         "description": "Slow down the ball for three second just once.",
+        "description_hi": "गेंद को एक बार केवल तीन सेकंड के लिए धीमा करें।",
+        "description_pt": "Diminua a velocidade da bola por três segundos apenas uma vez.",
+        "description_tr": "Topu sadece bir kez, üç saniye yavaşlat.",
         "price": 100,
         "keypress": "3",
         "show_status": true
@@ -74,8 +122,14 @@
     {
         "category_name": "RPS",
         "name": "God Things",
+        "name_hi": "भगवान चीजें",
+        "name_pt": "Coisas de Deus",
+        "name_tr": "Tanrı Şeyler",
         "image_url": "godofthings-rps.webp",
         "description": "For once, win that round no matter what comes.",
+        "description_hi": "एक बार, चाहे जो भी हो, उस राउंड को जीतो।",
+        "description_pt": "Por uma vez, ganhe essa rodada, não importa o que aconteça.",
+        "description_tr": "Bir kez, o raundu kazan, ne olursa olsun.",
         "price": 150,
         "keypress": "1",
         "show_status": true
@@ -83,8 +137,14 @@
     {
         "category_name": "RPS",
         "name": "Cheater",
+        "name_hi": "धोखेबाज",
+        "name_pt": "Trapaceiro",
+        "name_tr": "Hilekar",
         "image_url": "cheater-rps.webp",
         "description": "Rob your opponent of points.",
+        "description_hi": "अपने प्रतिद्वंद्वी से अंक चुराओ।",
+        "description_pt": "Roube pontos do seu oponente.",
+        "description_tr": "Rakibinin puanini gasp et.",
         "price": 200,
         "keypress": "2",
         "show_status": true
@@ -92,8 +152,14 @@
     {
         "category_name": "All",
         "name": "DJ Give Me The Music",
+        "name_hi": "डीजे मुझे संगीत दे",
+        "name_pt": "DJ Me Dê a Música",
+        "name_tr": "DJ Bana Müziği Ver",
         "image_url": "djplaythemusic.webp",
         "description": "This feature activates in-game (pong, rps) music.",
+        "description_hi": "यह सुविधा खेल (पोंग, आरपीएस) संगीत को सक्रिय करती है।",
+        "description_pt": "Este recurso ativa a música do jogo (pong, rps).",
+        "description_tr": "Bu özellik oyun (pong, rps) müziğini etkinleştirir.",
         "price": 100,
         "keypress": "none",
         "show_status": true

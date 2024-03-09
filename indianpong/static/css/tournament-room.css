@@ -118,7 +118,10 @@
   }
   
   .game-room-avatar {
+    border: 1px solid #dadada;
     max-width: 100%;
+    aspect-ratio: 1/1; 
+    object-fit: cover;
   }
   
   .game-room-avatar-none {

@@ -1,13 +1,13 @@
 {% extends 'base.html' %}
 
-{% block title %}{{ username }} Inventory{% endblock title %}
-
 {% load static %}
+
+{% block title %}{{ username }} Inventory{% endblock title %}
 
 {% block stylesheet %}<link rel="stylesheet" href="{% static "css/inventory.css" %}">{% endblock stylesheet %}
 
 {% block app %}
-  {% include "_nav.html" %}
+
   <div class="container-top">
     <div class="inventory-card">
       

@@ -1,8 +1,11 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}Pong Game Find{% endblock title %}
+
+{% block stylesheet %}<link rel="stylesheet" href="{% static "css/game-find.css" %}">{% endblock stylesheet %}
+
 {% block app %}
-{% include '_nav.html' %} 
 <div class="container-top">
     <div class="card">
         <h3 class="pong-game-text">Welcome to Pong Lobby</h3>
@@ -13,16 +16,19 @@
         </div>
         <div class="pong-buttons">
             <div class="ai-btn">
-                <a href="/play-ai"><div class="ponggamebtn-ai">Play With AI <i class="bi bi-robot"></i></div></a>
+                <a href="/play-ai/peer-to-ai/new"><div class="ponggamebtn-ai">Play With AI <i class="bi bi-robot"></i></div></a>
             </div>
             <div class="ai-btn">
                 <a href="/local-game"><div class="ponggamebtn-local">Local Game <i class="bi bi-wifi-off"></i></div></a>
             </div>
             <div class="ai-btn">
-                <a href="/tournament"><div class="ponggamebtn-remote">Remote Player <i class="bi bi-wifi"></i></div></a>
+                <a href="/remote-game/peer-to-peer/new"><div class="ponggamebtn-remote">Remote Player <i class="bi bi-wifi"></i></div></a>
             </div>
             <div class="ai-btn">
                 <a href="/tournament"><div class="ponggamebtn">Tournament <i class="bi bi-trophy-fill"></i></div></a>
+            </div>
+            <div class="ai-btn">
+                <a href="/local-tournament"><div class="ponggamebtn-local-tournament">Local Tournament <i class="bi bi-trophy-fill"></i></div></a>
             </div>
         </div>
     </div>

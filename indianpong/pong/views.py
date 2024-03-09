@@ -273,11 +273,11 @@ def profile_view(request, username):
     profile = get_object_or_404(UserProfile, username=username)
     game_records = Game.objects.filter(
         Q(player1=profile) | Q(player2=profile),
-        game_name='pong'
+        game_kind='pong'
     ).order_by("-created_at")
     game_records_rps = Game.objects.filter(
         Q(player1=profile) | Q(player2=profile),
-        game_name='rps'
+        game_kind='rps'
     ).order_by("-created_at")[:5]
     paginator = Paginator(game_records, 5)  # Sayfada 5 kayıt göster
     page_number = request.GET.get("page")
@@ -328,64 +328,71 @@ def pong_game_find(request):
 
 
 
+
 ### Profile Settings ###
 @login_required()
 def profile_settings(request, username):
     if request.user.username != username:
-        return redirect(
-            reverse("profile_settings", kwargs={"username": request.user.username})
-        )
-    profile = get_object_or_404(UserProfile, username=username)
-    avatar_form = ProfileAvatarForm(
-        request.POST or None, request.FILES or None, instance=request.user
-    )
-    profile_form = UpdateUserProfileForm(request.POST or None, instance=request.user)
-    password_form = PasswordChangeUserForm(request.user, request.POST or None)
-    social_form = SocialForm(request.POST or None, instance=request.user.social)
-    delete_account_form = DeleteAccountForm(request.POST or None, user=request.user)
+        return JsonResponse({"error": "Unauthorized"}, status=401)
     if request.method == "POST":
-        if "avatar_form" in request.POST:
-            if avatar_form.is_valid():
-                # Delete old avatar file from MEDIA_ROOT
-                if profile.avatar:
-                    delete_from_media(profile.avatar.path)
-                profile.avatar = avatar_form.cleaned_data["avatar"]
-                profile.save()
-                messages.success(request, "Avatar updated successfully.")
-                return redirect(
-                    reverse("profile_settings", args=[username]) + "#editProfile"
-                )
-        elif "profile_form" in request.POST:
+        data = request.POST
+        if "avatar_form" in data:
+            avatar = request.FILES.get('avatar')
+            if avatar:
+                avatar_form = ProfileAvatarForm(request.POST, request.FILES, instance=request.user)
+                if avatar_form.is_valid():
+                    profile = request.user
+                    # Delete old avatar file from MEDIA_ROOT
+                    if profile.avatar:
+                        delete_from_media(profile.avatar.path)
+                    profile.avatar = avatar_form.cleaned_data["avatar"]
+                    profile.save()
+                    return JsonResponse({"message": "Avatar updated successfully."})
+                else:
+                    return JsonResponse({"error": avatar_form.errors}, status=400)
+            else:
+                return JsonResponse({"error": "No avatar file provided."}, status=400)
+        elif "profile_form" in data:
+            profile_form = UpdateUserProfileForm(data, instance=request.user)
             if profile_form.is_valid():
                 profile_form.save()
-                messages.success(request, "Profile updated successfully.")
-                return redirect(
-                    reverse("profile_settings", args=[username]) + "#editProfile"
-                )
-        elif "password_form" in request.POST:
+                return JsonResponse({"message": "Profile updated successfully."})
+            else:
+                return JsonResponse({"error": profile_form.errors}, status=400)
+        elif "password_form" in data:
+            
+            password_form = PasswordChangeUserForm(request.user, data)
             if password_form.is_valid():
+                profile = request.user
                 profile.set_password(password_form.cleaned_data["new_password1"])
                 profile.save()
                 update_session_auth_hash(request, profile)  # Important!
-                messages.success(request, "Your password was successfully updated!")
-                return redirect(
-                    reverse("profile_settings", args=[username]) + "#changePassword"
-                )
-        elif "social_form" in request.POST:
+                return JsonResponse({"message": "Your password was successfully updated!"})
+            else:
+                return JsonResponse({"error": "Please check your passwords"}, status=400)
+        elif "social_form" in data:
+            social_form = SocialForm(request.POST, instance=request.user.social)
             if social_form.is_valid():
                 social = social_form.save()
+                profile = request.user
                 profile.social = social
                 profile.save()
-                messages.success(request, "Socials updated successfully.")
-                return redirect(
-                    reverse("profile_settings", args=[username]) + "#addSocial"
-                )
-        elif "delete_account_form" in request.POST:
+                return JsonResponse({"message": "Socials updated successfully."})
+            else:
+                return JsonResponse({"error": social_form.errors}, status=400)
+        elif "delete_account_form" in data:
+            delete_account_form = DeleteAccountForm(data, user=request.user)
             if delete_account_form.is_valid():
+                profile = request.user
                 if profile.avatar:
                     delete_from_media(profile.avatar.path)
                 profile.delete()
-                return redirect("logout")
+                return JsonResponse({"message": "Account deleted successfully."})
+            else:
+                return JsonResponse({"error": delete_account_form.errors}, status=400)
+        else:
+            return JsonResponse({"error": "Invalid form type"}, status=400)
+
     else:
         avatar_form = ProfileAvatarForm(instance=request.user)
         profile_form = UpdateUserProfileForm(instance=request.user)
@@ -393,18 +400,18 @@ def profile_settings(request, username):
         social_form = SocialForm(instance=request.user.social)
         delete_account_form = DeleteAccountForm(user=request.user)
 
-    return render(
-        request,
-        "profile-settings.html",
-        {
-            "profile": profile,
-            "avatar_form": avatar_form,
-            "profile_form": profile_form,
-            "password_form": password_form,
-            "social_form": social_form,
-            "delete_account_form": delete_account_form,
-        },
-    )
+        return render(
+            request,
+            "profile-settings.html",
+            {
+                "profile": request.user,
+                "avatar_form": avatar_form,
+                "profile_form": profile_form,
+                "password_form": password_form,
+                "social_form": social_form,
+                "delete_account_form": delete_account_form,
+            },
+        )
 
 
 @never_cache
@@ -715,7 +722,7 @@ def game(request):
 
 
 @login_required()
-def play_ai(request):
+def play_ai(request, game_type, game_id):
     user_items = UserItem.objects.filter(user=request.user)
     
     # Just Customizations - PONG
@@ -770,6 +777,18 @@ def local_game(request):
     frozenball = get_equipped_item_value(user_items, "Frozen Ball", "None")
     return render(request, "local-game.html", {"player2name": player2name, "paddlecolor": paddlecolor, "playgroundcolor": playgroundcolor, "giantman": giantman, "likeacheater": likeacheater, "fastandfurious": fastandfurious, "rageoffire": rageoffire, "frozenball": frozenball})
 
+@never_cache
+@login_required()
+def local_tournament(request):
+    user_items = UserItem.objects.filter(user=request.user)
+
+    paddlecolor = get_equipped_item_value(user_items, "My Beautiful Paddle", "black")
+    playgroundcolor = get_equipped_item_value(user_items, "My Playground", "lightgrey")
+
+    return render(request, "local-tournament.html")
+
+def remote_game(request, game_type, game_id):
+    return render(request, "remote-game.html")
 
 @never_cache
 @login_required()
@@ -1101,7 +1120,7 @@ def update_winner_pong(data):
     finish_time = datetime.strptime(finish_time, "%Y-%m-%dT%H:%M:%S.%fZ")
     game_duration = finish_time - start_time
     game_record = Game.objects.create(
-        game_name = "pong",
+        game_kind = "pong",
         group_name=winner_profile.username + "_" + loser_profile.username,
         player1=winner_profile,
         player2=loser_profile,
@@ -1209,7 +1228,7 @@ def update_winner_rps(data):
     finish_time = datetime.strptime(finish_time, "%Y-%m-%dT%H:%M:%S.%fZ")
     game_duration = finish_time - start_time
     game_record = Game.objects.create(
-        game_name = "rps",
+        game_kind = "rps",
         group_name=winner_profile.username + "_" + loser_profile.username,
         player1=winner_profile,
         player2=loser_profile,

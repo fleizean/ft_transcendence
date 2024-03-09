@@ -1,0 +1,234 @@
+
+.tournament-start-info {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  padding: 20px;
+  margin-top: 3em;
+  background-color: rgba(0, 0, 0, 0.5);
+  width: 700px;
+  height: 650px;
+  border-radius: 10px;
+}
+
+.tournamentLocalGameText {
+  color: greenyellow;
+  font-size: 30px;
+  margin: 0 0 20px;
+}
+
+.tournamentLocalGamePlayerText {
+  color: greenyellow;
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 5px;
+  margin-top: 10px;
+}
+
+.input-style {
+  padding: 10px;
+  border: 2px solid #ccc;
+  width: 70%;
+  border-radius: 5px;
+  font-size: 10px;
+  color: #555;
+  outline: none;
+}
+
+.input-style:focus {
+  border-color: #007bff;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.form-select {
+  width: 462px !important;
+}
+
+.btn {
+  margin-top: 2em;
+  width: 300px;
+}
+
+#show-bracket {
+  display: none;
+  margin-top: 5em;
+  margin-right: 2em;
+  width: 800px;
+  text-align: center;
+  height: 400px;
+  padding: 10px;
+  background-color: rgba(0, 0, 0, 0.393);
+}
+
+
+.tournament-bracket-title {
+text-align: center;
+font-size: 2rem;
+font-weight: 900;
+margin-bottom: 0.5em;
+font-family: 'Roboto', sans-serif;
+color: #fff;
+}
+
+.game-chart-middle {
+text-align: center;
+}
+
+.game-chart-middle h1,
+.game-chart-middle h2 {
+font-size: 2rem; 
+font-weight: 900;
+margin-bottom: 0.5em;;
+font-family: 'Roboto', sans-serif;
+}
+
+.game-bracket-area {
+margin-left: 6em;
+width: 50%;
+margin-top: 1em;
+}
+
+.theme {
+height: 100%;
+width: 100%;
+position: absolute;
+}
+.bracket {
+margin-right: 30px !important;
+
+}
+.bracket {
+display: flex;
+flex-direction: row;
+position: relative;
+}
+.column {
+display: flex;
+flex-direction: column;
+min-height: 100%;
+justify-content: space-around;
+align-content: center;
+}
+.match {
+position: relative;
+display: flex;
+flex-direction: column;
+min-width: 240px;
+max-width: 240px;
+height: 62px;
+margin: 12px 24px 12px 0;
+}
+.match .match-top {
+border-radius: 2px 2px 0 0;
+}
+.match .match-bottom {
+border-radius: 0 0 2px 2px;
+}
+.match .team {
+display: flex;
+align-items: center;
+width: 100%;
+height: 100%;
+border: 1px solid rgb(255, 255, 255);
+position: relative;
+}
+.match .team span {
+padding-left: 8px;
+color: #ffffff;
+font-weight: bold;
+}
+.match .team span:last-child {
+padding-right: 8px;
+}
+.match .team .score {
+margin-left: auto;
+}
+.match .team:first-child {
+margin-bottom: -1px;
+}
+.match-lines {
+display: block;
+position: absolute;
+top: 50%;
+bottom: 0;
+margin-top: 0px;
+right: -1px;
+}
+.match-lines .line {
+background: red;
+position: absolute;
+}
+.match-lines .line.one {
+height: 1px;
+width: 12px;
+}
+.match-lines .line.two {
+height: 44px;
+width: 1px;
+left: 11px;
+}
+.match-lines.alt {
+left: -12px;
+}
+.match:nth-child(even) .match-lines .line.two {
+transform: translate(0, -100%);
+}
+.column:first-child .match-lines.alt {
+display: none;
+}
+.column:last-child .match-lines {
+display: none;
+}
+.column:last-child .match-lines.alt {
+display: block;
+}
+.column:nth-child(2) .match-lines .line.two {
+height: 88px;
+}
+.column:nth-child(3) .match-lines .line.two {
+height: 175px;
+}
+.column:nth-child(4) .match-lines .line.two {
+height: 262px;
+}
+.column:nth-child(5) .match-lines .line.two {
+height: 349px;
+}
+
+
+
+.disable-image .image,
+.disable-seed .seed,
+.disable-name .name,
+.disable-score .score {
+display: none !important;
+
+}
+.disable-borders {
+border-width: 0px !important;
+}
+.disable-borders .team {
+border-width: 0px !important;
+}
+.disable-seperator .match-top {
+border-bottom: 0px !important;
+}
+.disable-seperator .match-bottom {
+border-top: 0px !important;
+}
+.disable-seperator .team:first-child {
+margin-bottom: 0px;
+}
+
+#gameInfosMenu {
+  display: none;
+}
+
+.modal-backdrop {
+  display: none !important; /* Overlay'i kaldırır */
+}
+.modal {
+  background-color: rgba(0,0,0,0.5); /* Modal arka planını yarı şeffaf yapar */
+}

@@ -122,3 +122,28 @@
     font-family: 'Pixeboy-z8XGD', sans-serif;
 
 }
+
+.slider-container {
+    position: absolute;
+    left: 530px;
+    top: -25px;
+}
+
+
+
+.modal-backdrop {
+    display: none !important; /* Overlay'i kaldırır */
+}
+.modal {
+    background-color: rgba(0,0,0,0.5); /* Modal arka planını yarı şeffaf yapar */
+}
+
+input[type=range] {
+    /* Required for Firefox. */
+    background: linear-gradient(to right, violet, yellow);
+}
+
+input[type=range]::-webkit-slider-runnable-track {
+    background: linear-gradient(to right, violet, yellow);
+}
+

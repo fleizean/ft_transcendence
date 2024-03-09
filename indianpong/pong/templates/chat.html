@@ -7,7 +7,6 @@
 
 {% block app %}
   <link rel="stylesheet" href="{% static "css/chat.css" %}"/>
-  {% include "_nav.html" %}
   <div class="container-top">
     <div class="card">
       <section class="chat-section">
@@ -18,9 +17,6 @@
             <ul class="chat-sidebar-menu">
               <li class="active">
                 <a href="#" data-title="DM"><i class="bi bi-chat-square-fill"></i></a>
-              </li>
-              <li>
-                <a href="#" data-title="Room"><i class="bi bi-chat-square-quote-fill"></i></a>
               </li>
               {% comment %} <li>
                 <a href="#" data-title="Settings"><i class="bi bi-gear-fill"></i></a>

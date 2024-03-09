@@ -27,6 +27,7 @@ class Command(BaseCommand):
 			user.avatar.save(f"{file.name}.jpg", file, save=False)
 			file.close()
 			user.is_verified = True
+			user.is_online = True
 			user.indian_wallet = 1000
 			user.is_indianai = True
 			user.elo_point = 1000

@@ -51,14 +51,14 @@ var start_time;
 
 let cheatercount = 0;
 let godthingscount = 0;
-let aicheatercount = 0;
-let aigodthingscount = 0;
 let nowChoice = "";
 
 let aicheater = "inactive";
 
-const MAX_SCORE_RPS = 3;
+const MAX_SCORE_RPS = 10;
 let score = 0;
+
+const ICON_PATH = document.querySelector('.container-top').dataset.iconpath;
 
 const MUSIC_PATH = document.querySelector('.container-top').dataset.musicpath;
 
@@ -101,42 +101,45 @@ function findMusic(string){
     playMusic(SoundChoice);
 }
 
-function aiChoose() {
-    var filteredChoices = [];
-
-    if (cheater === "true" && godthings !== "true" && aicheatercount < 1) {
-        filteredChoices = filterChoices(["godthings"]);
-    } else if (godthings === "true" && cheater !== "true" && aigodthingscount < 1) {
-        filteredChoices = filterChoices(["cheater"]);
-    } else if (godthings === "true" && cheater === "true" && (aicheatercount < 1 || aigodthingscount < 1)) {
-        if (aicheatercount > 0 )
-            filteredChoices = filterChoices(["cheater"]);
-        else if (aigodthingscount > 0)
-            filteredChoices = filterChoices(["godthings"]);
-        else
-            filteredChoices = CHOICES;
-        
-        updateCounts(filteredChoices[0].name);
-    } else {
-        filteredChoices = filterChoices(["cheater", "godthings"]);
-    }
-
-    return chooseRandom(filteredChoices);
-}
-
 function filterChoices(excludedChoices) {
     return CHOICES.filter(choice => !excludedChoices.includes(choice.name));
 }
 
-function chooseRandom(choices) {
-    return choices[Math.floor(Math.random() * choices.length)];
+var aicheaterused = false;
+var aigodthingsused = false;
+
+function aiChoose() {
+    var filteredChoices = [];
+    if (cheater === "true" || godthings === "true") {
+        if (aicheaterused === false && aigodthingsused === false) {
+            filteredChoices = filterChoices([]);
+        }
+        else if (aicheaterused === true && aigodthingsused === true) {
+            filteredChoices = filterChoices(["cheater", "godthings"]);
+        }
+        else if (aicheaterused === true) {
+            filteredChoices = filterChoices(["cheater"]);
+        } else if (aigodthingsused === true) {
+            filteredChoices = filterChoices(["godthings"]);
+        }
+    } else {
+        filteredChoices = filterChoices(["cheater", "godthings"]);
+    }
+    var chosenOption = chooseRandom(filteredChoices);
+    console.log(filteredChoices);
+    console.log(chosenOption.name);
+    if (chosenOption.name === "cheater") {
+        aicheaterused = true;
+    } else if (chosenOption.name === "godthings") {
+        aigodthingsused = true;
+    }
+    
+    return chosenOption;
 }
 
-function updateCounts(choiceName) {
-    if (choiceName === "cheater")
-        aicheatercount++;
-    else if (choiceName === "godthings")
-        aigodthingscount++;
+
+function chooseRandom(choices) {
+    return choices[Math.floor(Math.random() * choices.length)];
 }
 
 
@@ -145,7 +148,7 @@ function displayResults(results) {
         setTimeout(() => {
             resultDiv.innerHTML = `
         <div class="choice ${results[idx].name}">
-            <img src="../../static/assets/rps/icon-${results[idx].name}.svg" alt="${results[idx].name}" />
+            <img src="${ICON_PATH}icon-${results[idx].name}.svg" alt="${results[idx].name}" />
         </div>
       `;
         }, idx * 1000);
@@ -217,8 +220,8 @@ function resetGameRPS() {
     scoreNumber2.innerText = 0;
     cheatercount = 0;
     godthingscount = 0;
-    aicheatercount = 0;
-    aigodthingscount = 0;
+    aigodthingsused = false;
+    aicheaterused = false;
     PlayAgainRPS();
 }
 

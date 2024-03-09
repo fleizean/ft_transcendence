@@ -1,11 +1,15 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load status %}
 
 {% block title %}{{ profile.username }}{% endblock title %}
 
-{% block stylesheet %}<link rel="stylesheet" href="{% static "css/profile.css" %}">{% endblock stylesheet %}
+{% block stylesheet %}
+<link rel="stylesheet" href="{% static "css/profile.css" %}">
+<link rel="stylesheet" href="{% static "css/profilesettings.css" %}">
+<link rel="stylesheet" href="{% static "css/match-history.css" %}">
+{% endblock stylesheet %}
 {% block app %}
-{% include "_nav.html" %}
     <!-- "Edit Profile" ve "Match History" Navbar -->
     
 <div class="profiles-card">
@@ -25,7 +29,9 @@
                 {% endif %}
                 <div class="card-body text-center">
                     <!-- Avatar -->
-                    <img src="{{ profile.avatar.url }}" alt="avatar" class="profile-image-circ" {% if profile.is_online and not profile.is_playing %} style="border: 3px solid #4CAF4F; aspect-ratio: 1/1; object-fit: cover;" {% elif profile.is_playing %} style="border: 3px solid #ffa600; aspect-ratio: 1/1; object-fit: cover;" {% else %} style="border: 3px solid #ff0000; aspect-ratio: 1/1; object-fit: cover;" {% endif %}>
+                    {% is_user_online profile.username as profile_is_online %}
+                    {% is_user_playing profile.username as profile_is_playing %}
+                    <img src="{{ profile.avatar.url }}" alt="avatar" class="profile-image-circ" {% if profile_is_playing %} style="border: 3px solid #ffa600; aspect-ratio: 1/1; object-fit: cover;" {% elif profile_is_online %} style="border: 3px solid #4CAF4F; aspect-ratio: 1/1; object-fit: cover;" {% else %} style="border: 3px solid #ff0000; aspect-ratio: 1/1; object-fit: cover;" {% endif %}>
                     <!-- isim -->
                     <h5 class="my-3" style="margin-bottom: 0 !important;">{{profile.username}}</h5>
                     <h7 class="my-5" style="margin-top: -3em !important; margin-bottom: 10px !important;">{{profile.displayname}}</h7>
@@ -154,7 +160,7 @@
                                     </a>
                                 </li>
                                 <li class="page-item active">
-                                    <span class="page-link page-link-profile">{{ history_page_obj.number }}</span>
+                                    <span class="page-link page-link-history">{{ history_page_obj.number }}</span>
                                 </li>
                                 <li class="page-item {% if not history_page_obj.has_next %}disabled{% endif %}">
                                     <a class="page-link" href="{% if history_page_obj.has_next %}?page={{ history_page_obj.next_page_number }}{% endif %}" aria-label="Next">

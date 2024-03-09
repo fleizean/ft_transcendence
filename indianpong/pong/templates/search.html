@@ -3,11 +3,11 @@
 {% block title %}Search{% endblock title %}
 
 {% load static %}
+{% load status %}
 
 {% block stylesheet %}<link rel="stylesheet" href="{% static "css/search.css" %}">{% endblock stylesheet %}
 
 {% block app %}
-  {% include "_nav.html" %}
 <div class="container-top">
     <div class="search-card">
         <!-- Arama kutusu ve butonu -->
@@ -24,26 +24,30 @@
             {% for person in results %}
               <div class="card-containers">
                 <div class="profile-card">
-                    <div class="image">
-                        <a href="profile/{{person.username}}"><img src="{{person.avatar.url}}" alt="" class="profile-img" /></a>
+                  <div class="image">
+                      {% is_user_online person.username as person_is_online %}
+                      {% is_user_playing person.username as person_is_playing %}
+                        <a href="profile/{{person.username}}"><img src="{{person.avatar.url}}" alt="" class="profile-img {% if person_is_playing %}playing{% elif person_is_online %}online{% else %}offline{% endif %}"/></a>
                     </div>
                     <div class="text-data">
                       <span class="name">{{person.username}}</span>
                       <span class="job">{{person.displayname}}</span>
                     </div>
                     <div class="media-buttons">
-                      {% if person.social.stackoverflow %}
-                        <a href="https://stackoverflow.com/users/{{person.social.stackoverflow}}" target="_blank" class="medialinks stackoverflow"><i class="bi bi-stack-overflow"></i></a>
-                      {% endif %}
-                      {% if person.social.github %}
-                        <a href="https://github.com/{{person.social.github}}" target="_blank" class="medialinks github"><i class="bi bi-github"></i></a>
+                      {% if person.social.linkedin %}
+                        <a href="https://www.linkedin.com/in/{{person.social.linkedin}}" target="_blank" class="medialinks instagram"><i class="bi bi-linkedin"></i></a>
                       {% endif %}
                       {% if person.social.twitter %}
                         <a href="https://x.com/{{person.social.twitter}}" target="_blank" class="medialinks twitterx"><i class="bi bi-twitter-x"></i></a>
                       {% endif %}
-                      {% if person.social.instagram %}
-                        <a href="https://www.instagram.com/{{person.social.instagram}}" target="_blank" class="medialinks instagram"><i class="bi bi-instagram"></i></a>
+                      {% if person.social.intra42 %}
+                        <a href="https://profile.intra.42.fr/users/{{person.social.intra42}}" target="_blank" class="medialinks stackoverflow"><img src="{% static "assets/intra-42-white.svg" %}"></a>
                       {% endif %}
+                      {% if person.social.github %}
+                        <a href="https://github.com/{{person.social.github}}" target="_blank" class="medialinks github"><i class="bi bi-github"></i></a>
+                      {% endif %}
+                      
+                   
                     </div>
                     {% if not person.social.stackoverflow and not person.social.twitter and not person.social.github and not person.social.instagram %}
                       <div class="buttons" style="margin-top: 60px !important;">
@@ -95,7 +99,7 @@
                   </li>
                   {% for page_num in results.paginator.page_range %}
                       <li class="page-item {% if page_num == results.number %}active{% endif %}">
-                          <a class="page-link page-link-deneme" href="?page={{ page_num }}">{{ page_num }}</a>
+                          <a class="page-link page-link-search" href="?page={{ page_num }}">{{ page_num }}</a>
                       </li>
                   {% endfor %}
                   <li class="page-item {% if not results.has_next %}disabled{% endif %}">

@@ -6,11 +6,11 @@ const inputField = document.getElementById("comment")
 const inviteButton = document.getElementById("inviteButton")
 const acceptButton = document.getElementById("acceptButton")
 const declineButton = document.getElementById("declineButton")
-acceptButton.style.display = 'none';
-declineButton.style.display = 'none';
+//acceptButton.style.display = 'none';
+//declineButton.style.display = 'none';
 
 
-//const socket = new WebSocket("ws://" + window.location.host + "/ws/chat/" + roomName + "/")
+// const socket = new WebSocket("ws://" + window.location.host + "/ws/chat/" + roomName + "/")
 import { socket } from "./gamesocket.js";
 
 socket.onmessage = function (e) {
@@ -40,8 +40,8 @@ socket.onmessage = function (e) {
           console.log('Player invited:', data.user);
           console.log(user + " " + opponent);
           if (user !== data.user) {
-            acceptButton.style.display = 'block';
-            declineButton.style.display = 'block';
+            // acceptButton.style.display = 'block';
+             //declineButton.style.display = 'block';
           }
           if (user === data.user) {
             invite();

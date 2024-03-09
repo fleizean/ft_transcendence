@@ -61,14 +61,14 @@ class StoreItemActionForm(forms.Form):
     whatis = forms.CharField(max_length=200, required=False)
 
 class SocialForm(forms.ModelForm):
-    stackoverflow = forms.CharField(label='Stackoverflow', widget=forms.TextInput(attrs={'class': 'form-control'}), required=False)
-    twitter = forms.CharField(label='Twitter', widget=forms.TextInput(attrs={'class': 'form-control'}), required=False)
-    instagram = forms.CharField(label='Instagram', widget=forms.TextInput(attrs={'class': 'form-control'}), required=False)
+    intra42 = forms.CharField(label='Intra42', widget=forms.TextInput(attrs={'class': 'form-control'}), required=False)
+    linkedin = forms.CharField(label='Linkedin', widget=forms.TextInput(attrs={'class': 'form-control'}), required=False)
     github = forms.CharField(label='Github', widget=forms.TextInput(attrs={'class': 'form-control'}), required=False)
+    twitter = forms.CharField(label='Twitter', widget=forms.TextInput(attrs={'class': 'form-control'}), required=False)
 
     class Meta:
         model = Social
-        fields = ['stackoverflow', 'twitter', 'instagram', 'github']
+        fields = ['intra42', 'linkedin', 'github', 'twitter']
 
 class DeleteAccountForm(forms.Form):
     #password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control'}), help_text="Enter your password to confirm account deletion.")
