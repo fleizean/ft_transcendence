@@ -129,6 +129,14 @@
     top: -25px;
 }
 
+
+.modal-backdrop {
+    display: none !important; /* Overlay'i kaldırır */
+}
+.modal {
+    background-color: rgba(0,0,0,0.5); /* Modal arka planını yarı şeffaf yapar */
+}
+
 input[type=range] {
     /* Required for Firefox. */
     background: linear-gradient(to right, violet, yellow);

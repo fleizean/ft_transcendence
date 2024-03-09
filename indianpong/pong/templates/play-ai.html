@@ -10,6 +10,12 @@
 
   <div class="container-top" data-username="{{ username }}" data-ainame="{{ ainametag }}" data-paddlecolor="{{paddlecolor}}" data-playgroundcolor="{{playgroundcolor}}" data-giantman="{{giantman}}" data-likeacheater="{{likeacheater}}" data-fastandfurious="{{fastandfurious}}" data-rageoffire="{{rageoffire}}" data-frozenball="{{frozenball}}" data-givemethemusic={{givemethemusic}} data-musicpath="{% static "music/" %}">
     <div class="ai-game">
+      <div class="game-info-menu">
+        <div class="info-icon" style="color: rgb(255, 140, 0); margin-right: 3em; margin-bottom: -1em;">
+          <i class="bi bi-info-circle-fill" data-bs-toggle="modal" data-bs-target="#exampleModalGame"></i>
+        </div>
+      </div>
+      
       <div id="countdownContainer">
         <div class="slider-container">
           <label for="reactionDelay" style="color: white;">Reaction Delay:</label>
@@ -32,7 +38,31 @@
         </div>
       </div>
     </div>
+    
   </div>
+  <div class="modal fade" id="exampleModalGame" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header" style="z-index: 100;">
+                <h2 class="modal-title fs-2" id="exampleModalLabel">Oyun Hakkında</h2>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <h4>Oyun Nasıl Oynanır?</h4>
+              <p>Pong oyununda, oyuncular rakiplerine karşı bir masa tenisi maçı yaparlar. W-A-S-D tuşları (veya yukarı-aşağı-sağ-sol ok tuşları) topu kontrol etmek için kullanılır.</p>
+
+              <h4>Kazan ve Geliş</h3>
+              <p>Her oyunu kazandığınızda Pong Point kazanırsınız. Bu puanlarla mağazadan yeni eşyalar, raketler ve masalar satın alarak oyun deneyiminizi geliştirebilirsiniz.</p>
+
+              <h4>Hemen Başla</h4>
+              <p>Oyun deneyimini kişiselleştirmek için bir hesap oluşturabilirsiniz. Hesap ile istatistiklerinizi takip edebilir ve sıralamadaki yerinizi görebilirsiniz.</p>
+
+              <h4>Daha Fazlası</h4>
+              <p>Turnuvalara katılarak rakiplerinizle yüzleşebilir ve becerilerinizi test edebilirsiniz. Ayrıca arkadaşlarınızla özel oyunlar kurabilir ve Pong topluluğuna katılabilirsiniz.</p>
+            </div>
+        </div>
+    </div>
+</div>
   <script type=module src="{% static "js/game/play-ai.js" %}"></script>
   {% csrf_token %}
 {% endblock %}
