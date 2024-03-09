@@ -54,7 +54,6 @@
   src: url('fonts/Minecraftia-Regular.ttf');
 }
 
-
 @font-face {
   font-family: 'alagard';
   src: url('fonts/alagard.ttf');
@@ -1159,7 +1158,7 @@ body {
   background-color: #1b6718; /* Hover rengi */
 }
 
-.container-modal {
+/* .container-modal {
   display: flex;
   justify-content: center;
   display: none;
@@ -1193,4 +1192,13 @@ body {
 .btn-close-modal:hover {
   color: rgb(255, 140, 0);
   background-color: white;
+} */
+
+.menu-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.menu-list li{
+  display: inline-block;
 }
