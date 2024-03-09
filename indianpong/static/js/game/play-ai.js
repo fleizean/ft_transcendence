@@ -561,12 +561,12 @@ function showGameOverScreen() {
     }
     document.getElementById('winnerText').innerText = winnerText;
     document.getElementById('loserText').innerText = loserText;
-    if (score1 > score2) {
+/*     if (score1 > score2) {
         document.getElementById('gameOverScreen').style.backgroundColor = 'rgba(11, 22, 8, 0.8)';
     }
     else {
         document.getElementById('gameOverScreen').style.backgroundColor = 'rgba(20, 5, 5, 0.8)';
-    }
+    } */
     document.getElementById('gameOverScreen').style.display = 'block';
 }
 
