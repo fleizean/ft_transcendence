@@ -302,6 +302,7 @@ body {
   color: greenyellow;
   position: relative;
   /* cursor: url('../assets/scrool/crossedsword.png'), auto; */
+  padding: 0.4rem 0;
 }
 
 .nav-links li a::after {
