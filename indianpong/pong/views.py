@@ -780,6 +780,11 @@ def local_game(request):
 @never_cache
 @login_required()
 def local_tournament(request):
+    user_items = UserItem.objects.filter(user=request.user)
+
+    paddlecolor = get_equipped_item_value(user_items, "My Beautiful Paddle", "black")
+    playgroundcolor = get_equipped_item_value(user_items, "My Playground", "lightgrey")
+
     return render(request, "local-tournament.html")
 
 def remote_game(request, game_type, game_id):
