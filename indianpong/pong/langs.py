@@ -254,8 +254,8 @@ def get_lang_tr():
     context = {
         #index
         "baseHeaderText": "Indian-Pong",
-        "baseSubHeaderText": "Indian-Pong Hintli gelistiriciler tarafindan 42 okulu icin gelistirildi!",
-        "basePlayButtonText": "Baslayin!",
+        "baseSubHeaderText": "Indian-Pong Hintli geliştiriciler tarafından 42 okulu için geliştirilmiştir!",
+        "basePlayButtonText": "YOLCULUĞA BAŞLA!",
 
         "baseInfoHeaderText": "Indian-Pong'a hoş geldiniz!",
         "baseInfoHeaderDescription": "Pong, klasik masa tenisi oyununun heyecanını ve rekabetini internet ortamına taşıyor. Bu platformda hem eğlenebilir hem de yeteneğini konuşturabilir, sıralamada yükselip en iyiler arasına girebilirsin.",
@@ -493,7 +493,7 @@ def get_lang_pt():
         "baseInfoSubHeaderText3": "Mais Recursos",
         "baseInfoSubHeaderDescription4": "Participe de torneios para enfrentar seus oponentes.",
         "baseInfoSubHeaderDescription5": "Divirta-se com seus amigos hospedando jogos privados.",
-        "baseInfoSubHeaderDescription6": "Converse com outros jogadores, compartilhe táticas e participe da comunidade Pong.
+        "baseInfoSubHeaderDescription6": "Converse com outros jogadores, compartilhe táticas e participe da comunidade Pong.",
 
         #Login
         "loginHeaderText1": "Bem-vindo,",

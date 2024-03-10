@@ -65,7 +65,7 @@ from django.contrib.auth import update_session_auth_hash
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 import random
-
+from . import langs
 
 ### Homepage and Error Page ###
 
@@ -74,7 +74,9 @@ import random
 def index(request):
     if request.user.is_authenticated:
         return redirect("dashboard")
-    return render(request, "base.html")
+    lang = request.session.get('language', 'en')
+    context = langs.get_langs(lang)
+    return render(request, "base.html", context)
 
 
 @login_required()
@@ -230,6 +232,12 @@ def auth_callback(request):
 
     return redirect("login")  # Handle authentication failure
 
+def set_language(request):
+    if request.method == 'POST':
+        selected_language = request.POST.get('language')
+        # Burada seçilen dil bilgisini oturum verilerine kaydedebilirsiniz
+        request.session['language'] = selected_language
+    return redirect(request.META.get('HTTP_REFERER'))
 
 ### Login and Logout ###
 

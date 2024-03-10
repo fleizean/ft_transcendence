@@ -36,24 +36,24 @@
                                     <i class="bi bi-flag-fill"></i>       
                                 </div>
                                 <div class="language-submenu">
-                                    <form id="language-form" method="post" {% comment %} action="{% url 'set_language' %}" {% endcomment %}>
-                                      {% csrf_token %}
-                                      <a href="#" onclick="setLanguage('tr'); return false;">
-                                          <img style="margin-right: 5px;" src="{% static "assets/flags/turkey.png" %}" alt="Türkçe">
-                                          <span style="margin-top: 3px;">Türkçe</span>
-                                      </a>
-                                      <a href="#" onclick="setLanguage('hi'); return false;">
-                                          <img style="margin-right: 5px;" src="{% static "assets/flags/hindi.png" %}" alt="हिंदी">
-                                          <span style="margin-top: 3px;">हिंदी</span>
-                                      </a>
-                                      <a href="#" onclick="setLanguage('en'); return false;">
-                                          <img style="margin-right: 5px;" src="{% static "assets/flags/english.png" %}" alt="English">
-                                          <span style="margin-top: 3px;">English</span>
-                                      </a>
-                                      <a href="#" onclick="setLanguage('pt'); return false;">
-                                          <img style="margin-right: 5px;" src="{% static "assets/flags/portugal.png" %}" alt="Português">
-                                          <span style="margin-top: 3px;">Português</span>
-                                      </a>
+                                    <form id="language-form" method="post" action="{% url 'set_language' %}">
+                                        {% csrf_token %}
+                                        <a href="#" onclick="setLanguage('tr'); return false;">
+                                            <img style="margin-right: 5px;" src="{% static "assets/flags/turkey.png" %}" alt="Türkçe">
+                                            <span style="margin-top: 3px;">Türkçe</span>
+                                        </a>
+                                        <a href="#" onclick="setLanguage('hi'); return false;">
+                                            <img style="margin-right: 5px;" src="{% static "assets/flags/hindi.png" %}" alt="हिंदी">
+                                            <span style="margin-top: 3px;">हिंदी</span>
+                                        </a>
+                                        <a href="#" onclick="setLanguage('en'); return false;">
+                                            <img style="margin-right: 5px;" src="{% static "assets/flags/english.png" %}" alt="English">
+                                            <span style="margin-top: 3px;">English</span>
+                                        </a>
+                                        <a href="#" onclick="setLanguage('pt'); return false;">
+                                            <img style="margin-right: 5px;" src="{% static "assets/flags/portugal.png" %}" alt="Português">
+                                            <span style="margin-top: 3px;">Português</span>
+                                        </a>
                                     </form>
                                 </div>
                             </div>
@@ -63,9 +63,9 @@
                         <div class="cursor">
                             <div class="container">
                                 <div class="HeaderArea" id="HeaderArea">
-                                    <div class="big-text">Indian-Pong</div>
-                                    <div class="small-text">Indian-Pong created for 42 school by Indian Dev!</div>
-                                    <a href="/login" data-link><button type="button" class="PixellButton">Get Started!</button></a>
+                                    <div class="big-text">{{baseHeaderText}}</div>
+                                    <div class="small-text">{{baseSubHeaderText}}</div>
+                                    <a href="/login" data-link><button type="button" class="PixellButton">{{basePlayButtonText}}</button></a>
                                 </div>
                             </div>
                         </div>
@@ -77,23 +77,23 @@
                 <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h4 class="modal-title fs-4 text-info" id="exampleModalLabel">Welcome to Indian-Pong!</h4>
+                            <h4 class="modal-title fs-4 text-info" id="exampleModalLabel">{{baseInfoHeaderText}}</h4>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <p>Pong brings the excitement and competition of classic table tennis to the internet. On this platform, you can have fun, showcase your skills, and rise in the rankings to become one of the best.</p>
+                            <p>{{baseInfoHeaderDescription}}</p>
     
-                            <h3>Play and Win</h3>
-                            <p>Gain Pong Points with each game you win to climb the ranks.</p>
-                            <p>Use your earnings to purchase new items, rackets, and tables from the store to enhance your gaming experience.</p>
+                            <h3>{{baseInfoSubHeaderText}}</h3>
+                            <p>{{baseInfoSubHeaderDescription1}}</p>
+                            <p>{{baseInfoSubHeaderDescription2}}</p>
 
-                            <h3>Get Started Now</h3>
-                            <p>Create an account to personalize your profile, track your statistics, and see where you stand in the rankings.</p>
+                            <h3>{{baseInfoSubHeaderText2}}</h3>
+                            <p>{{baseInfoSubHeaderDescription3}}</p>
 
-                            <h3>More Features</h3>
-                            <p>Participate in tournaments to face off against your opponents.</p>
-                            <p>Enjoy quality time with your friends by hosting private games.</p>
-                            <p>Chat with other players, share tactics, and join the Pong community.</p>
+                            <h3>{{baseInfoSubHeaderText3}}</h3>
+                            <p>{{baseInfoSubHeaderDescription4}}</p>
+                            <p>{{baseInfoSubHeaderDescription5}}</p>
+                            <p>{{baseInfoSubHeaderDescription6}}</p>
                         </div>
                     </div>
                 </div>
@@ -101,14 +101,14 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"></script>
         <script>
             function setLanguage(language) {
-                var form = document.getElementById('language-form');
-                var input = document.createElement('input');
-                input.type = 'hidden';
-                input.name = 'language';
-                input.value = language;
-                form.appendChild(input);
-                form.submit();
-            }
+            var form = document.getElementById('language-form');
+            var input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = 'language';
+            input.value = language;
+            form.appendChild(input);
+            form.submit();
+        }
         </script>
         {% comment %} <script src="{% static "js/bootstrap.min.js" %}"></script> {% endcomment %}
     </body>

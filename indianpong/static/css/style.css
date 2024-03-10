@@ -12,16 +12,8 @@
 
 @import url('https://fonts.googleapis.com/css?family=Rajdhani:600');
 
+@import url('https://fonts.googleapis.com/css2?family=Black+Ops+One&family=Honk&family=Jacquarda+Bastarda+9&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Silkscreen:wght@400;700&family=VT323&display=swap');
 
-@font-face {
-  font-family: "Beaufort for LOL";
-  font-style: normal;
-  font-weight: 400;
-  src: url("https://lolstatic-a.akamaihd.net/awesomefonts/1.0.0/Fonts/BeaufortforLOL-Regular.eot?#iefix") format("eot"),
-       url("https://lolstatic-a.akamaihd.net/awesomefonts/1.0.0/Fonts/BeaufortforLOL-Regular.woff") format("woff"),
-       url("https://lolstatic-a.akamaihd.net/awesomefonts/1.0.0/Fonts/BeaufortforLOL-Regular.ttf") format("truetype"),
-       url("https://lolstatic-a.akamaihd.net/awesomefonts/1.0.0/Fonts/BeaufortforLOL-Regular.svg#") format("svg");
-}
 
 @font-face {
   font-family: "Spiegel";
@@ -37,21 +29,6 @@
 @font-face {
   font-family: 'Pixeboy-z8XGD';
   src: url('fonts/Pixeboy-z8XGD.ttf');
-}
-
-@font-face {
-  font-family: 'Common Pixel';
-  src: url('fonts/CommonPixel.ttf');
-}
-
-@font-face {
-  font-family: 'Rainy Hearts';
-  src: url('fonts/rainyhearts.ttf');
-}
-
-@font-face {
-  font-family: 'Minecraftia';
-  src: url('fonts/Minecraftia-Regular.ttf');
 }
 
 @font-face {
@@ -135,7 +112,7 @@ body {
 
 .small-text {
   animation: backInDown 1s ease;
-  font-family: 'alagard', sans-serif;
+  font-family: "VT323", monospace;
   font-size: 1em;
   color: aliceblue;
   margin-bottom: 20px;
@@ -143,7 +120,7 @@ body {
 
 .PixellButton {
   animation: slideInFromRight 0.5s ease;
-  font-family: 'Pixeboy-z8XGD';
+  font-family: "VT323", monospace;
   font-size: large;
   cursor: url('../assets/scrool/crossedsword.png'), auto;
   width: 175px;
