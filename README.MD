@@ -150,11 +150,11 @@ of the project.</b>
       <summary> <b> Add Another Game with User History and Matchmaking. ❓</b></summary>
       In this major module, the objective is to introduce a new game, distinct  from Pong, and incorporate features such as user history tracking and  matchmaking. Key features and goals include:
           <ul>
-          <li>❓ Develop a new, engaging game to   diversify the platform’s offerings and entertain users. </li>
-          <li>❓ Implement user history tracking   to record and display individual user’s gameplay statistics. </li>
+          <li>✅ Develop a new, engaging game to   diversify the platform’s offerings and entertain users. </li>
+          <li>✅ Implement user history tracking   to record and display individual user’s gameplay statistics. </li>
           <li>❓ Create a matchmaking system to  allow users to find opponents and participate in fair and balanced   matches. </li>
-          <li>❓ Ensure that user game history   and matchmaking data are stored securely and remain up-to-date. </li>
-          <li>❓ Optimize the performance and  responsiveness of the new game to provide an enjoyable user  experience. Regularly update and maintain the game to fix bugs, add  new features, and enhance gameplay. </li>
+          <li>✅ Ensure that user game history   and matchmaking data are stored securely and remain up-to-date. </li>
+          <li>✅ Optimize the performance and  responsiveness of the new game to provide an enjoyable user  experience. Regularly update and maintain the game to fix bugs, add  new features, and enhance gameplay. </li>
           </ul>
           This major module aims to expand your platform by introducing a new   game, enhancing user engagement with gameplay history, and  facilitating matchmaking for an enjoyable gaming experience.
   </details>
