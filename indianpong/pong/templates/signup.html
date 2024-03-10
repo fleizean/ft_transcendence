@@ -26,49 +26,39 @@
           </button>
         </a>
         <div class="title">
-          Welcome,
-          <span class="titlebottom">sign up to continue</span>
+          {{context.signupHeaderText1}}
+          <span class="titlebottom">{{context.signupHeaderText2}}</span>
         </div>
         <div class="login-with">
           <a href="/auth" data-link class="no-underline"><div class="button-log"><b>42</b></div></a>
         </div>
         {% csrf_token %}
-        <input type="text" name="username" class="input" placeholder="Username" autofocus required id="id_username">
+        <input type="text" name="username" class="input" placeholder="{{context.signupInputUsernameText}}" autofocus required id="id_username">
         {% for error in form.username.errors %}
             <span id="propertyUsernameError" class="text-danger">{{error}}</span>
         {% endfor %}
-        {% for infos in form.username.help_text %}
-          <span id="propertyUsernameInfo" class="text-primary">- {{infos}}</span>
-        {% endfor %}
-        <input type="text" name="displayname" class="input" placeholder="Displayname" required id="id_displayname">
+
+        <input type="text" name="displayname" class="input" placeholder="{{context.signupInputDisplayNameText}}" required id="id_displayname">
         {% for error in form.displayname.errors %}
             <span id="propertyDisplaynameError" class="text-danger">{{error}}</span>
         {% endfor %}
-        {% for infos in form.displayname.help_text %}
-          <span id="propertyDisplaynameInfo" class="text-primary">- {{infos}}</span>
-        {% endfor %}
-        <input type="email" name="email" class="input" maxlength="320" placeholder="Email" required id="id_email">
+
+        <input type="email" name="email" class="input" maxlength="320" placeholder="{{context.signupInputEmailText}}" required id="id_email">
         {% for error in form.email.errors %}
             <span id="propertyEmailError" class="text-danger">{{error}}</span>
         {% endfor %}
-        {% for infos in form.email.help_text %}
-          <span id="propertyEmailInfo" class="text-primary">- {{infos}}</span>
-        {% endfor %}
-        <input type="password" name="password1" class="input" placeholder="Password" onmouseover="showPassword('id_password1')" onmouseout="showPassword('id_password1')" required id="id_password1">
+
+        <input type="password" name="password1" class="input" placeholder="{{context.signupInputPasswordText}}" onmouseover="showPassword('id_password1')" onmouseout="showPassword('id_password1')" required id="id_password1">
         
         {% for error in form.password1.errors %}
             <span id="propertyPassword1Error" class="text-danger">{{error}}</span>
         {% endfor %}
-        {% for infos in form.password1.help_text %}
-          <span id="propertyPassword1Info" class="text-primary">- {{infos}}</span>
-        {% endfor %}
-        <input type="password" name="password2" class="input" placeholder="Password (again)" onmouseover="showPassword('id_password2')" onmouseout="showPassword('id_password2')"  required id="id_password2">
+        <input type="password" name="password2" class="input" placeholder="{{context.signupInputConfirmPasswordText}}" onmouseover="showPassword('id_password2')" onmouseout="showPassword('id_password2')"  required id="id_password2">
         
         {% for error in form.password2.errors %}
           <span id="propertyPassword2Error" class="text-danger">- {{error}}</span>
         {% endfor %}
       
-        {{form.password2.help_text}}
         <label class="custom-file-upload" for="id_avatar">
           <div class="icon">
             <svg xmlns="http://www.w3.org/2000/svg" fill="" viewBox="0 0 24 24">
@@ -89,15 +79,14 @@
             </svg>
           </div>
           <div class="text">
-            <span style="font-weight: 500;">Upload image</span>
+            <span style="font-weight: 500;">{{context.signupImageUploadText}}</span>
           </div>
           <input type="file" name="avatar" class="input" accept="image/*" id="id_avatar">
           {{form.avatar.errors}}
-          {{form.avatar.help_text}}
         </label>
 {% comment %}         {% for error in form.non_field_errors %} {% endcomment %}
         <div class="register-buttons">
-          <button type="submit" class="button-confirm">Let's shine!</button>
+          <button type="submit" class="button-confirm">{{context.signupButtonSignup}} →</button>
         </div>
       </form>
     </div>
@@ -126,6 +115,13 @@
 
 <script>
 
+function getCookie(name) {
+    const cookieValue = document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)');
+    return cookieValue ? cookieValue.pop() : '';
+}
+
+const selectedLanguage = getCookie('selectedLanguage');
+
 function showToast(content, status, iconClass) {
     const liveToast = document.getElementById('liveToast');
     var toastContent = document.querySelector('#liveToast .fw-semibold');
@@ -149,11 +145,29 @@ fileInput.addEventListener('change', function(event) {
 
   var file = this.files[0];
     if (file.size > 2.6 * 1024 * 1024) { // 1MB
-        showToast("Photo must be under 2.6MB!", "text-bg-danger", "bi bi-image");
+        if(selectedLanguage == 'en')
+          showToast("Photo must be under 2.6MB!", "text-bg-danger", "bi bi-image");
+        else if(selectedLanguage == 'tr')
+          showToast("Fotoğraf 2.6MB'dan küçük olmalıdır!", "text-bg-danger", "bi bi-image");
+        else if(selectedLanguage == 'hi')
+          showToast("फोटो 2.6MB से कम होना चाहिए!", "text-bg-danger", "bi bi-image");
+        else if(selectedLanguage == 'pt')
+          showToast("A foto deve ter menos de 2,6 MB!", "text-bg-danger", "bi bi-image");
+        else
+          showToast("Photo must be under 2.6MB!", "text-bg-danger", "bi bi-image");
         this.value = '';
     }
     else {
-        showToast("Photo added!", "text-bg-success", "bi bi-image");
+        if(selectedLanguage == 'en')
+          showToast("Photo added!", "text-bg-success", "bi bi-image");
+        else if(selectedLanguage == 'tr')
+          showToast("Fotoğraf eklendi!", "text-bg-success", "bi bi-image");
+        else if(selectedLanguage == 'hi')
+          showToast("फोटो जोड़ दी गई!", "text-bg-success", "bi bi-image");
+        else if(selectedLanguage == 'pt')
+          showToast("Foto adicionada!", "text-bg-success", "bi bi-image");
+        else
+          showToast("Photo added!", "text-bg-success", "bi bi-image");
     }
 });
 </script>

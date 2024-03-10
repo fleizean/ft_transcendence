@@ -15,6 +15,7 @@ from indianpong.settings import EMAIL_HOST_USER, STATICFILES_DIRS
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, UserChangeForm, PasswordChangeForm, PasswordResetForm, SetPasswordForm 
 from .models import Social, VerifyToken, BlockedUser, ChatMessage, GameInvitation, UserProfile, TwoFactorAuth, JWTToken, Tournament
 
+
 class UserProfileForm(UserCreationForm):
 
     username = forms.CharField(label='Username', widget=forms.TextInput(attrs={'class': 'input'}))
@@ -26,6 +27,10 @@ class UserProfileForm(UserCreationForm):
     class Meta:
         model = UserProfile
         fields = ['username', 'displayname', 'email', 'password1', 'password2', 'avatar']
+
+    def __init__(self, *args, **kwargs):
+        self.lang = kwargs.pop('lang', 'en')  # Varsayılan dil: İngilizce
+        super().__init__(*args, **kwargs)
 
     """ def confirm_login_allowed(self, user):
         if not user.is_verified:
@@ -39,16 +44,205 @@ class UserProfileForm(UserCreationForm):
 
     def clean_email(self): #TODO not just 42kocaeli.com.tr
         email = self.cleaned_data.get('email')
+        lang = self.lang
 
         if "@student.42" in email:
-            raise forms.ValidationError('Use 42 login')
+            if (lang == 'tr'):
+                raise forms.ValidationError('42 email adresi kullanamazsiniz')
+            elif (lang == 'en'):
+                raise forms.ValidationError('Cannot use 42 email address')
+            elif (lang == 'hi'):
+                raise forms.ValidationError('42 ईमेल पता नहीं उपयोग कर सकते')
+            elif (lang == 'pt'):
+                raise forms.ValidationError('Não é possível usar o endereço de e-mail 42')
+            else:
+                raise forms.ValidationError('Cannot use 42 email address')
         return email
     
     def clean_username(self):
         username = self.cleaned_data.get("username")
+        displayname = self.cleaned_data.get("displayname")
+        lang = self.lang
+        if not username:
+            if (lang == 'tr'):
+                raise forms.ValidationError("Kullanici adi zorunludur.")
+            elif (lang == 'en'):
+                raise forms.ValidationError("Username is required.")
+            elif (lang == 'hi'):
+                raise forms.ValidationError("उपयोगकर्ता नाम आवश्यक है।")
+            elif (lang == 'pt'):
+                raise forms.ValidationError("Nome de usuário é obrigatório.")
+            else:
+                raise forms.ValidationError("Username is required.")
         if not username.isascii():
-            raise forms.ValidationError("Username cannot contain non-ASCII characters.")
+            if (lang == 'tr'):
+                raise forms.ValidationError("Kullanici adi ASCII olmayan karakterler icermemelidir.")
+            elif (lang == 'en'):
+                raise forms.ValidationError("Username cannot contain non-ASCII characters.")
+            elif (lang == 'hi'):
+                raise forms.ValidationError("उपयोगकर्ता नाम में अशी नहीं हो सकते।")
+            elif (lang == 'pt'):
+                raise forms.ValidationError("Nome de usuário não pode conter caracteres não ASCII.")
+            else:
+                raise forms.ValidationError("Username cannot contain non-ASCII characters.")
+        
+        if username == displayname:
+            if (lang == 'tr'):
+                raise forms.ValidationError("Kullanıcı adı ve gorunen ad ayni olamaz.")
+            elif (lang == 'en'):
+                raise forms.ValidationError("Username and displayname cannot be the same.")
+            elif (lang == 'hi'):
+                raise forms.ValidationError("उपयोगकर्ता नाम और प्रदर्शन नाम एक ही नहीं हो सकते।")
+            elif (lang == 'pt'):
+                raise forms.ValidationError("Nome de usuário e nome de exibicão não podem ser iguais.")
+            else:
+                raise forms.ValidationError("Username and displayname cannot be the same.")
         return username
+
+    def clean_displayname(self):
+        displayname = self.cleaned_data.get("displayname")
+        username = self.cleaned_data.get("username")
+        lang = self.lang
+        
+        if not displayname:
+            if (lang == 'tr'):
+                raise forms.ValidationError("Gorunen ad zorunludur.")
+            elif (lang == 'en'):
+                raise forms.ValidationError("Displayname is required.")
+            elif (lang == 'hi'):
+                raise forms.ValidationError("प्रदर्शन नाम आवश्यक है।")
+            elif (lang == 'pt'):
+                raise forms.ValidationError("Nome de exibicão é obrigatório.")
+            else:
+                raise forms.ValidationError("Displayname is required.")
+        if username == displayname:
+            if (lang == 'tr'):
+                raise forms.ValidationError("Kullanıcı adı ve gorunen ad ayni olamaz.")
+            elif (lang == 'en'):
+                raise forms.ValidationError("Username and displayname cannot be the same.")
+            elif (lang == 'hi'):
+                raise forms.ValidationError("उपयोगकर्ता नाम और प्रदर्शन नाम एक ही नहीं हो सकते।")
+            elif (lang == 'pt'):
+                raise forms.ValidationError("Nome de usuário e nome de exibicão não podem ser iguais.")
+            else:
+                raise forms.ValidationError("Username and displayname cannot be the same.")
+
+    def clean_email(self):
+        email = self.cleaned_data.get("email")
+        lang = self.lang
+        if not email:
+            if (lang == 'tr'):
+                raise forms.ValidationError("Email zorunludur.")
+            elif (lang == 'en'):
+                raise forms.ValidationError("Email is required.")
+            elif (lang == 'hi'):
+                raise forms.ValidationError("ईमेल आवश्यक है।")
+            elif (lang == 'pt'):
+                raise forms.ValidationError("Email é obrigatório.")
+            else:
+                raise forms.ValidationError("Email is required.")
+        return email
+    
+    def clean_password1(self):
+        password1 = self.cleaned_data.get("password1")
+        lang = self.lang
+        if not password1:
+            if (lang == 'tr'):
+                raise forms.ValidationError("Parola zorunludur.")
+            elif (lang == 'en'):
+                raise forms.ValidationError("Password is required.")
+            elif (lang == 'hi'):
+                raise forms.ValidationError("पासवर्ड आवश्यक है।")
+            elif (lang == 'pt'):
+                raise forms.ValidationError("Senha é obrigatória.")
+            else:
+                raise forms.ValidationError("Password is required.")
+        
+        if len(password1) < 8:
+            if (lang == 'tr'):
+                raise forms.ValidationError("Parola en az 8 karakter uzunlugunda olmalidir.")
+            elif (lang == 'en'):
+                raise forms.ValidationError("Password must be at least 8 characters long.")
+            elif (lang == 'hi'):
+                raise forms.ValidationError("पासवर्ड कम से कम 8 वर्ण लंबा होना चाहिए।")
+            elif (lang == 'pt'):
+                raise forms.ValidationError("A senha deve ter pelo menos 8 caracteres.")
+            else:
+                raise forms.ValidationError("Password must be at least 8 characters long.")
+
+        if not any(char.isdigit() for char in password1):
+            if (lang == 'tr'):
+                raise forms.ValidationError("Parola en az bir rakam içermelidir.")
+            elif (lang == 'en'):
+                raise forms.ValidationError("Password must contain at least one digit.")
+            elif (lang == 'hi'):
+                raise forms.ValidationError("पासवर्ड में कम से कम एक अंक होना चाहिए।")
+            elif (lang == 'pt'):
+                raise forms.ValidationError("A senha deve conter pelo menos um dígito.")
+            else:
+                raise forms.ValidationError("Password must contain at least one digit.")
+        
+        
+        if not any(char.isalpha() for char in password1):
+            if (lang == 'tr'):
+                raise forms.ValidationError("Parola en az bir harf içermelidir.")
+            elif (lang == 'en'):
+                raise forms.ValidationError("Password must contain at least one letter.")
+            elif (lang == 'hi'):
+                raise forms.ValidationError("पासवर्ड में कम से कम एक अक्षर होना चाहिए।")
+            elif (lang == 'pt'):
+                raise forms.ValidationError("A senha deve conter pelo menos uma letra.")
+            else:
+                raise forms.ValidationError("Password must contain at least one letter.")
+
+        return password1
+    
+    def clean_password2(self):
+        password2 = self.cleaned_data.get("password2")
+        password1 = self.cleaned_data.get("password1")
+        lang = self.lang
+
+        if not password2:
+            if (lang == 'tr'):
+                raise forms.ValidationError("Parolayi tekrar girmek zorunludur.")
+            elif (lang == 'en'):
+                raise forms.ValidationError("Re-entering password is required.")
+            elif (lang == 'hi'):
+                raise forms.ValidationError("पासवर्ड फिर से दर्ज करना आवश्यक है।")
+            elif (lang == 'pt'):
+                raise forms.ValidationError("Re-entrar senha é obrigatório.")
+            else:
+                raise forms.ValidationError("Re-entering password is required.")
+
+        if password1 != password2:
+            if (lang == 'tr'):
+                raise forms.ValidationError("Parolalar eslesmiyor.")
+            elif (lang == 'en'):
+                raise forms.ValidationError("Passwords do not match.")
+            elif (lang == 'hi'):
+                raise forms.ValidationError("पासवर्ड मेल नहीं खा रहे हैं।")
+            elif (lang == 'pt'):
+                raise forms.ValidationError("As senhas não coincidem.")
+            else:
+                raise forms.ValidationError("Passwords do not match.")
+        return password2
+    
+    
+    def clean_avatar(self):
+        avatar = self.cleaned_data.get('avatar')
+        lang = self.lang
+        if avatar:
+            if avatar.size > 2*1024*1024:
+                error_message = {
+                    'tr': "Resim dosya boyutu 2MB'dan az olmalidir.",
+                    'en': "Image file size should be less than 2MB",
+                    'hi': "छवि फ़ाइल का आकार 2MB से कम होना चाहिए",
+                    'pt': "O tamanho do arquivo de imagem deve ser inferior a 2MB",
+                    # Diğer diller için gerekli hata mesajlarını ekleyin
+                }
+                raise forms.ValidationError(error_message.get(lang, "Image file size should be less than 2MB")) 
+
+            return avatar
     
 class StoreItemActionForm(forms.Form):
     ACTION_CHOICES = [
