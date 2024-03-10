@@ -22,7 +22,7 @@
                 {% if not request.user.is_anonymous %}
                 {% include "_nav.html" %}
                 {% endif %}
-                <div class="app" id="app">
+                <div class="app" id="app" >
                     {% if not user.is_authenticated %}
                         <div class="top-nav-infos">
                             <div class="info-menu">
@@ -77,24 +77,23 @@
                 <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h2 class="modal-title fs-2" id="exampleModalLabel">Pong'a hoş geldiniz!</h2>
+                            <h4 class="modal-title fs-4 text-info" id="exampleModalLabel">Welcome to Indian-Pong!</h4>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            
-                            <p>Pong, klasik masa tenisi oyununun heyecanını ve rekabetini internet ortamına taşıyor. Bu platformda hem eğlenebilir hem de yeteneğini konuşturabilir, sıralamada yükselip en iyiler arasına girebilirsin.</p>
-                            
-                            <h3>Oyna ve Kazan</h3>
-                            <p>Her oyun kazandığında Pong Point kazanarak sıralamada yüksel.</p>
-                            <p>Kazançlarınla mağazadan yeni eşyalar, raket ve masalar satın alarak oyun deneyimini geliştir.</p>
+                            <p>Pong brings the excitement and competition of classic table tennis to the internet. On this platform, you can have fun, showcase your skills, and rise in the rankings to become one of the best.</p>
+    
+                            <h3>Play and Win</h3>
+                            <p>Gain Pong Points with each game you win to climb the ranks.</p>
+                            <p>Use your earnings to purchase new items, rackets, and tables from the store to enhance your gaming experience.</p>
 
-                            <h3>Hemen Başla</h3>
-                            <p>Hesap oluşturarak profilini kişiselleştir, istatistiklerini takip et ve sıralamadaki yerini gör.</p>
+                            <h3>Get Started Now</h3>
+                            <p>Create an account to personalize your profile, track your statistics, and see where you stand in the rankings.</p>
 
-                            <h3>Daha Fazlası</h3>
-                            <p>Turnuvalara katılarak rakiplerinle yüzleş.</p>
-                            <p>Arkadaşlarınla özel oyunlar kurarak keyifli vakit geçir.</p>
-                            <p>Diğer oyuncularla sohbet et, taktikler paylaş ve Pong topluluğuna katıl.</p>
+                            <h3>More Features</h3>
+                            <p>Participate in tournaments to face off against your opponents.</p>
+                            <p>Enjoy quality time with your friends by hosting private games.</p>
+                            <p>Chat with other players, share tactics, and join the Pong community.</p>
                         </div>
                     </div>
                 </div>

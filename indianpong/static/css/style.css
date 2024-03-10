@@ -207,71 +207,6 @@ body {
 }
 
 
-/* Change Password */
-
-.ChangePasswordArea {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  text-align: center;
-}
-
-
-/* Forgot Password */
-
-.ForgotPasswordArea {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  text-align: center;
-}
-
-.link {
-  color: #1778f2;
-  text-decoration: none;
-}
-
-.signup-link {
-  color: #000000;
-  font-family: inherit;
-  margin-top: 20px;
-  align-self: center;
-  font-weight: 700;
-}
-
-.signup-link .link {
-  color: #2260ff;
-  font-family: inherit;
-  text-decoration: none;
-  font-weight: 500;
-}
-
-.signup-link .link:hover {
-  text-decoration: underline;
-}
-
-
-.button-send-email {
-  width: auto;
-  height: 40px;
-  border-radius: 5px;
-  border: 2px solid var(--main-color);
-  background-color: var(--bg-color);
-  box-shadow: 4px 4px var(--main-color);
-  font-size: 17px;
-  font-weight: 600;
-  color: var(--font-color);
-  margin-bottom: -10px;
-  cursor: url('../assets/scrool/crossedsword.png'), auto;
-}
-
-.button-send-email:hover {
-  transform: translate(-0.05em, -0.05em);
-  box-shadow: 0.15em 0.15em;
-}
-
 /* ----------- */
 
 /* NavBar */
@@ -1131,6 +1066,7 @@ body {
   right: 0; /* Sağ kenara yapıştırır */
   background-color: rgba(51, 51, 51, 0.8);
   border-radius: 10px;
+  margin-right: 1em;
   font-size: 10px;
   text-align: left;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
