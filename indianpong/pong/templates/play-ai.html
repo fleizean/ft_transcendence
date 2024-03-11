@@ -4,7 +4,8 @@
 
 {% block title %}Play with AI{% endblock title %}
 
-{% block stylesheet %}<link rel="stylesheet" href="{% static "css/in-game.css" %}">{% endblock %}
+{% block stylesheet %}<link rel="stylesheet" href="{% static "css/in-game.css" %}"
+<link rel="stylesheet" href="{% static "css/modal.css" %}">{% endblock %}
 
 {% block app %}
 
@@ -54,17 +55,70 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-              <h4>How to Play the Game?</h4>
-              <p>In Pong game, players engage in a table tennis match against their opponents. The W-A-S-D keys (or up-down-left-right arrow keys) are used to control the ball.</p>
-          
-              <h4>Win and Improve</h4>
+              <h3>How to Play the Game?</h3>
+              <p>In Pong game, players engage in a table tennis match against their opponents. The W-S keys (or up-down arrow keys) are used to control the ball.</p>
+
+              <h3>Win and Improve</h3>
               <p>You earn Pong Points with every game you win. With these points, you can purchase new items, rackets, and tables from the store to enhance your gaming experience.</p>
           
-              <h4>Get Started Now</h4>
+              <h3>Get Started Now</h3>
               <p>You can create an account to personalize your gaming experience. With an account, you can track your statistics and see your position in the rankings.</p>
           
-              <h4>More Features</h4>
+              <h3>More Features</h3>
               <p>You can participate in tournaments to face off against your opponents and test your skills. Additionally, you can create private games with your friends and join the Pong community.</p>
+
+              <h3>Controls</h3>
+                <div class="modal-controls">
+                  <div class="col">
+                    <b>Up</b>
+                  </div>
+                  <div class="col">
+                    <span class="modal-keys">
+                      W 
+                    </span>
+                  </div>
+                </div>
+                <div class="modal-controls">
+                  <div class="col">
+                    <b>Down</b>
+                  </div>
+                  <div class="col">
+                    <span class="modal-keys">
+                      S
+                    </span>
+                  </div>
+                </div>
+                <h3>Skils</h3>
+                <div class="modal-controls">
+                  <div class="col">
+                    <b>Like a Cheater</b>
+                  </div>
+                  <div class="col">
+                    <span class="modal-keys">
+                      1 
+                    </span>
+                  </div>
+                </div>
+                <div class="modal-controls">
+                  <div class="col">
+                    <b>Fast and Furious</b>
+                  </div>
+                  <div class="col">
+                    <span class="modal-keys">
+                      2
+                    </span>
+                  </div>
+                </div>
+                <div class="modal-controls">
+                  <div class="col">
+                    <b>Frozen Ball</b>
+                  </div>
+                  <div class="col">
+                    <span class="modal-keys">
+                      3
+                    </span>
+                  </div>
+                </div>
             </div>
         </div>
     </div>
