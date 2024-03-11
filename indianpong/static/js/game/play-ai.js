@@ -36,7 +36,7 @@ var wallSound = new Audio(MUSIC_PATH+ 'one_beep.mp3');
 var fastandFuriousSound = new Audio(MUSIC_PATH+ 'fast-and-furious.mp3');
 var frozenBallSound = new Audio(MUSIC_PATH+ 'frozen-ball.mp3');
 
-gameSound.volume = 0.07;
+/* gameSound.volume = 0.07; */
 /* Cordinates of the canvas */
 var textWidth1 = ctx.measureText(username + ": " + score1).width;
 var textWidth2 = ctx.measureText(ainame + ": " + score2).width;
@@ -306,13 +306,13 @@ function playResultSound(isVictory) {
     //stopBackgroundMusic(); // Önce müziği durdur
     if (isVictory) {  
         setTimeout(function() {
-            victorySound.volume = 0.2;  
+            /* victorySound.volume = 0.2; */  
             victorySound.play();
         }, 50);
         victoryMusic = true;
     } else {
         setTimeout(function() {
-            defeatSound.volume = 0.2;  
+            /* defeatSound.volume = 0.2;  */ 
             defeatSound.play();
         }, 50);
         defeatMusic = true;
@@ -341,7 +341,7 @@ function startWallSound() {
 
 function startfastandFuriousSound() {
     setTimeout(function() {  
-        fastandFuriousSound.volume = 0.2;
+        /* fastandFuriousSound.volume = 0.2; */
         fastandFuriousSound.play();
     }, 50);
 }
@@ -351,6 +351,81 @@ function startfrozenBallSound() {
         //frozenBallSound.volume = 0.2;
         frozenBallSound.play();
     }, 50);
+}
+
+//Music volume control
+
+const volumeSlider = document.getElementById('volumeSlider');
+
+volumeSlider.addEventListener('input', function() {
+    const volume = parseFloat(volumeSlider.value);
+    setVolume(volume);
+
+    if (volume === 0) {
+        // Eğer ses sıfırsa, ikonu mute icon olarak değiştir
+        volumeIcon.classList.remove('bi-volume-up-fill');
+        volumeIcon.classList.add('bi-volume-mute-fill');
+    } else {
+        // Değilse, ikonu normal volume icon olarak değiştir
+        volumeIcon.classList.remove('bi-volume-mute-fill');
+        volumeIcon.classList.add('bi-volume-up-fill');
+    }
+});
+
+function setVolume(volume) {
+    // Ses seviyesini ayarla
+    victorySound.volume = volume;
+    defeatSound.volume = volume;
+    gameSound.volume = volume;
+    lpaddleSound.volume = volume;
+    rpaddleSound.volume = volume;
+    wallSound.volume = volume;
+    fastandFuriousSound.volume = volume;
+    frozenBallSound.volume = volume;
+
+    // Kaydet
+    localStorage.setItem('savedVolume', volume);
+    localStorage.setItem('savedSlider', volumeSlider.value);
+}
+// Sayfa yüklendiğinde
+window.addEventListener('load', function() {
+    // Kaydedilmiş ses seviyesini kontrol et
+    const savedVolume = localStorage.getItem('savedVolume');
+    const savedSlider = localStorage.getItem('savedSlider');
+    if (savedVolume !== null) {
+        // Kaydedilmiş ses seviyesi varsa, slider'ı ve ses seviyesini ayarla
+        volumeSlider.value = savedSlider;
+        setVolume(savedVolume);
+        // İkona göre ses simgesini ayarla
+        if (savedVolume == 0) {
+            volumeIcon.classList.remove('bi-volume-up-fill');
+            volumeIcon.classList.add('bi-volume-mute-fill');
+        }
+    }
+});
+
+const volumeIcon = document.getElementById('volumeIcon');
+const volumeControl = document.getElementById('volumeControl');
+
+// Ses simgesine tıklandığında
+volumeIcon.addEventListener('click', function() {
+    // Ses kontrolünün görünürlüğünü değiştirme
+    toggleVolumeIcon();
+});
+
+function toggleVolumeIcon() {
+    if (volumeIcon.classList.contains('bi-volume-up-fill')) {
+        volumeIcon.classList.remove('bi-volume-up-fill');
+        volumeIcon.classList.add('bi-volume-mute-fill');
+        // Ses seviyesini sıfıra ayarla
+        setVolume(0);
+    } else {
+        volumeIcon.classList.remove('bi-volume-mute-fill');
+        volumeIcon.classList.add('bi-volume-up-fill');
+        // Kaydedilmiş ses seviyesini geri yükle
+        const volume = parseFloat(volumeSlider.value);
+        setVolume(volume);
+    }
 }
 
 

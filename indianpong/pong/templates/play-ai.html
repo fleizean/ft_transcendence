@@ -13,9 +13,15 @@
       <div class="game-info-menu">
         <div class="info-icon" style="color: rgb(255, 140, 0); margin-right: 3em; margin-bottom: -1em;">
           <i class="bi bi-info-circle-fill" data-bs-toggle="modal" data-bs-target="#exampleModalGame"></i>
+          <i id="volumeIcon" class="bi bi-volume-up-fill"></i>
+          <div id="volumeControl" style="display: inline-block">
+            <input type="range" id="volumeSlider" min="0" max="1" step="0.1" value="1">
+          </div>
         </div>
       </div>
-      
+      <div>
+        
+      </div>
       <div id="countdownContainer">
         <div class="slider-container">
           <label for="reactionDelay" style="color: white;">Reaction Delay:</label>
