@@ -38,7 +38,8 @@
           <input type="text" name="username" class="input" placeholder="Username" maxlength="150" required id="id_username" autocomplete="off">
         </p>
         <p>
-          <input type="password" name="password" class="input" placeholder="Password" onmouseover="showPassword('id_password')" onmouseout="showPassword('id_password')" required id="id_password" autocomplete="off">
+          <input type="password" name="password" class="input" placeholder="Password" required id="id_password" autocomplete="off">
+          <i class="bi bi-eye-slash-fill" id="togglePassword" style="position: absolute;top: 257px;right: 35px;z-index: 100; display: none;"></i>
         </p>
         <div class="forgot-pass">
           <a href="/password_reset" class="forgot-password-link">Forgot Password?</a>
@@ -46,17 +47,27 @@
         <a ><button type="submit" class="button-confirm">Let's go →</button></a>
         <a href="/signup" data-link><button type="button" class="registerbtn">Join Us ✓</button></a>
       </form>
-      
     </div>
-
-   
   </div>
 </div>
 <script>
-  function showPassword(input) {
-    var passwordField = document.getElementById(input);
-    passwordField.type = "text" ? "password" : "text";
-  }
+  const passwordInput = document.getElementById('id_password');
+  const toggleButton = document.getElementById('togglePassword');
+  
+  toggleButton.addEventListener('mousedown', function() {
+      passwordInput.type = 'text';
+      toggleButton.classList.remove('bi-eye-slash-fill');
+      toggleButton.classList.add('bi-eye-fill');
+  });
+  
+  toggleButton.addEventListener('mouseup', function() {
+      passwordInput.type = 'password';
+      toggleButton.classList.remove('bi-eye-fill');
+      toggleButton.classList.add('bi-eye-slash-fill');
+  });
+  passwordInput.addEventListener('input', function() {
+    toggleButton.style.display = this.value.trim() !== '' ? 'block' : 'none';
+  });
 </script>
 
 {% endblock %}

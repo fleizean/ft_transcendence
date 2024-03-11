@@ -54,7 +54,8 @@
         {% for infos in form.email.help_text %}
           <span id="propertyEmailInfo" class="text-primary">- {{infos}}</span>
         {% endfor %}
-        <input type="password" name="password1" class="input" placeholder="Password" onmouseover="showPassword('id_password1')" onmouseout="showPassword('id_password1')" required id="id_password1">
+        <input type="password" name="password1" class="input" placeholder="Password" required id="id_password1">
+        <i class="bi bi-eye-slash-fill" id="togglePassword1" style="position: absolute;top: 360px;right: 35px;z-index: 100; display: none;"></i>
         
         {% for error in form.password1.errors %}
             <span id="propertyPassword1Error" class="text-danger">{{error}}</span>
@@ -62,7 +63,8 @@
         {% for infos in form.password1.help_text %}
           <span id="propertyPassword1Info" class="text-primary">- {{infos}}</span>
         {% endfor %}
-        <input type="password" name="password2" class="input" placeholder="Password (again)" onmouseover="showPassword('id_password2')" onmouseout="showPassword('id_password2')"  required id="id_password2">
+        <input type="password" name="password2" class="input" placeholder="Password (again)" required id="id_password2">
+        <i class="bi bi-eye-slash-fill" id="togglePassword2" style="position: absolute;top: 420px;right: 35px;z-index: 100; display: none;"></i>
         
         {% for error in form.password2.errors %}
           <span id="propertyPassword2Error" class="text-danger">- {{error}}</span>
@@ -118,10 +120,42 @@
   
 </div>
 <script>
-  function showPassword(input) {
-    var passwordField = document.getElementById(input);
-    passwordField.type = "text" ? "password" : "text";
-}
+  const passwordInput1 = document.getElementById('id_password1');
+  const passwordInput2 = document.getElementById('id_password2');
+  const toggleButton1 = document.getElementById('togglePassword1');
+  const toggleButton2 = document.getElementById('togglePassword2');
+  
+  toggleButton1.addEventListener('mousedown', function() {
+      passwordInput1.type = 'text';
+      toggleButton1.classList.remove('bi-eye-slash-fill');
+      toggleButton1.classList.add('bi-eye-fill');
+  });
+  
+  toggleButton1.addEventListener('mouseup', function() {
+      passwordInput1.type = 'password';
+      toggleButton1.classList.remove('bi-eye-fill');
+      toggleButton1.classList.add('bi-eye-slash-fill');
+  });
+
+  toggleButton2.addEventListener('mousedown', function() {
+      passwordInput2.type = 'text';
+      toggleButton2.classList.remove('bi-eye-slash-fill');
+      toggleButton2.classList.add('bi-eye-fill');
+  });
+
+  toggleButton2.addEventListener('mouseup', function() {
+      passwordInput2.type = 'password';
+      toggleButton2.classList.remove('bi-eye-fill');
+      toggleButton2.classList.add('bi-eye-slash-fill');
+  });
+
+  passwordInput1.addEventListener('input', function() {
+    toggleButton1.style.display = this.value.trim() !== '' ? 'block' : 'none';
+  });
+
+  passwordInput2.addEventListener('input', function() {
+    toggleButton2.style.display = this.value.trim() !== '' ? 'block' : 'none';
+  });
 </script>
 
 <script>
