@@ -85,6 +85,7 @@ class PongConsumer(AsyncWebsocketConsumer):
                 await self.channel_layer.send(invitee_channel_name, {
                     'type': 'game.invite',
                     'inviter': self.user.username,
+                    'invitee': invitee_username,
                 })
 
         elif action == 'accept':
@@ -93,6 +94,7 @@ class PongConsumer(AsyncWebsocketConsumer):
 
         elif action == 'decline':
             inviter_username = data.get('inviter_username')
+            await self.decline_handler(inviter_username)
 
         
         elif action == 'start.request':
@@ -106,6 +108,28 @@ class PongConsumer(AsyncWebsocketConsumer):
             left = data.get('left')
             opponent = data.get('opponent')
             await self.leave_handler(game_id, left, opponent)
+
+        elif action == 'restart': #? not sure is needed or not
+            invitee_username = data.get('invitee_username')
+            invitee_channel_name = await USER_CHANNEL_NAME.get(invitee_username)
+            if invitee_channel_name:
+                await self.channel_layer.send(invitee_channel_name, {
+                    'type': 'game.restart',
+                    'inviter': self.user.username,
+                })
+        elif action == 'exit':
+            game_id = data.get('game_id')
+            game = await GAMES.get(game_id)
+            await self.exit_handler(game_id, game)
+
+        elif action == 'pause.game':
+            pass
+
+        elif action == 'resume.game':
+            pass
+
+        elif action == 'reconnected':
+            pass
 
         elif action == "ball": #? Needs validation
                 # Make a move in a game and get the ball coordinates
@@ -151,14 +175,6 @@ class PongConsumer(AsyncWebsocketConsumer):
                     }
                 )
 
-        elif action == 'pause.game':
-            pass
-
-        elif action == 'resume.game':
-            pass
-
-        elif action == 'reconnected':
-            pass
 
     ### HANDLERS ###
     async def accept_handler(self, inviter_username):
@@ -173,18 +189,21 @@ class PongConsumer(AsyncWebsocketConsumer):
             # Create a new game instance and save it to the cache
             await GAMES.set(game.id, PongGame(inviter_username, self.user.username, group_name, game.id))
 
-            await self.channel_layer.send(inviter_channel_name, {
+            await self.channel_layer.group_send(group_name, {
                 'type': 'game.accept',
                 'accepter': self.user.username,
+                'accepted': inviter_username,
                 'game_id': game.id,
             })
 
     async def decline_handler(self, inviter_username):
         inviter_channel_name = await USER_CHANNEL_NAME.get(inviter_username)
+        group_name = f"{inviter_username}-{self.user.username}"
         if inviter_channel_name:
-            await self.channel_layer.send(inviter_channel_name, {
+            await self.channel_layer.group_send(group_name, {
                 'type': 'game.decline',
                 'decliner': self.user.username,
+                'declined': inviter_username,
             })
 
     async def start_handler(self, game_id, opponent_username, vote):
@@ -200,12 +219,12 @@ class PongConsumer(AsyncWebsocketConsumer):
             cache.set(f"playing_{self.user.username}")
             cache.set(f"playing_{opponent_username}")
             
-            # Send message to lobby #? Maybe unnecesary bcs playing_username cache
+            """             # Send message to lobby #? Maybe unnecesary bcs playing_username cache
             await self.channel_layer.group_send('lobby', {
                 'type': 'users.ingame',
                 'game_type': self.game_type,
                 'players': [self.user.username, opponent_username],
-            })
+            }) """
         await self.channel_layer.group_send(game.group_name, {
                 'type': 'game.start',
                 'game_id': game_id,
@@ -227,12 +246,17 @@ class PongConsumer(AsyncWebsocketConsumer):
                 "left_score": left_score,
                 "opponent_score": opponent_score,
                 "winner": opponent,
+                "loser": left,
             }
         )
+        await self.exit_handler(game_id, game)
+
+    async def exit_handler(self, game_id, game):
         # Discard both from the game group
-        standing_channel_name = await USER_CHANNEL_NAME.get(opponent)
-        await self.channel_layer.group_discard(game.group_name, self.channel_name)
-        await self.channel_layer.group_discard(game.group_name, standing_channel_name)
+        player1_channel_name = await USER_CHANNEL_NAME.get(game.player1.username)
+        player2_channel_name = await USER_CHANNEL_NAME.get(game.player2.username)
+        await self.channel_layer.group_discard(game.group_name, player1_channel_name)
+        await self.channel_layer.group_discard(game.group_name, player2_channel_name)
         # delete the game from the cache
         await GAMES.delete(game_id)
 
@@ -244,19 +268,33 @@ class PongConsumer(AsyncWebsocketConsumer):
         loser = winner == game.player1.username and game.player2.username or game.player1.username
         # Set the game winner, scores and save it to the database
         await self.record_game(game_id, player1_score, player2_score, winner, loser)
+        
+        #? Maybe unnecesary
+        await self.channel_layer.group_send(
+            game.group_name,
+            {
+                "type": "game.end",
+                "game_id": game_id,
+                "player1_score": player1_score,
+                "player2_score": player2_score,
+                "winner": winner,
+                "loser": loser,
+            }
+        )
+
 
     ## SENDERS ##
     async def user_inlobby(self, event):
         user = event['user']
         await self.send(text_data=json.dumps({
-            'type': 'inlobby',
+            'type': 'user.inlobby',
             'user': user,
         }))
 
     async def user_outlobby(self, event):
         user = event['user']
         await self.send(text_data=json.dumps({
-            'type': 'outlobby',
+            'type': 'user.outlobby',
             'user': user,
         }))
 
@@ -292,7 +330,7 @@ class PongConsumer(AsyncWebsocketConsumer):
             'vote': vote,
         }))
 
-    """ #? Maybe unnecesary
+    #? Maybe unnecesary
     async def users_ingame(self, event):
         game_type = event['game_type']
         players = event['players']
@@ -300,7 +338,7 @@ class PongConsumer(AsyncWebsocketConsumer):
             'type': 'users.ingame',
             'game_type': game_type,
             'players': players,
-        }))"""
+        }))
 
     async def game_leave(self, event):
         game_id = event['game_id']

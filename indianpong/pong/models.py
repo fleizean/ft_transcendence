@@ -71,10 +71,6 @@ class UserProfile(AbstractUser):
     @property
     def thumbnail(self):
         return mark_safe('<img src="%s" width="50" height="50" />' % (self.avatar.url))
-    """         if self.avatar:
-            return mark_safe('<img src="%s" width="50" height="50" />' % (self.avatar.url))
-        else:
-            return mark_safe('<img src="/static/assets/profile/profilephoto.jpeg" width="50" height="50" />') """
 
     def get_rank_image(self):
         ranks = {
