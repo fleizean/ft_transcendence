@@ -253,9 +253,10 @@ def get_lang_en():
 def get_lang_tr():
     context = {
         #index
+        "basePageTittle": "Indian-Pong",
         "baseHeaderText": "Indian-Pong",
-        "baseSubHeaderText": "Indian-Pong Hintli gelistiriciler tarafindan 42 okulu icin gelistirildi!",
-        "basePlayButtonText": "Baslayin!",
+        "baseSubHeaderText": "Indian-Pong Hintli geliştiriciler tarafından 42 okulu için geliştirilmiştir!",
+        "basePlayButtonText": "YOLCULUĞA BAŞLA!",
 
         "baseInfoHeaderText": "Indian-Pong'a hoş geldiniz!",
         "baseInfoHeaderDescription": "Pong, klasik masa tenisi oyununun heyecanını ve rekabetini internet ortamına taşıyor. Bu platformda hem eğlenebilir hem de yeteneğini konuşturabilir, sıralamada yükselip en iyiler arasına girebilirsin.",
@@ -270,34 +271,38 @@ def get_lang_tr():
         "baseInfoSubHeaderDescription6": "Diğer oyuncularla sohbet et, taktikler paylaş ve Pong topluluğuna katıl.",
 
         #Login
-        "loginHeaderText1": "Hos geldiniz,",
-        "loginHeaderText2": "devam etmek icin giris yapin",
-        "loginInputUsernameText": "Kullanici Adi",
-        "loginInputPasswordText": "Sifre",
-        "loginForgotPasswordText": "Sifremi Unuttum?",
-        "loginButtonLogin": "Giris Yap",
-        "loginButtonJoin": "Uye Ol",
+        "loginPageTittle": "Giriş Yap",
+        "loginHeaderText1": "Hoş geldiniz,",
+        "loginHeaderText2": "devam etmek için giriş yapın",
+        "loginInputUsernameText": "Kullanıcı Adı",
+        "loginInputPasswordText": "Şifre",
+        "loginForgotPasswordText": "Şifremi Unuttum?",
+        "loginButtonLogin": "Giriş Yap",
+        "loginButtonJoin": "Üye Ol",
         
         #Signup
-        "signupHeaderText1": "Hos geldiniz,",
-        "signupHeaderText2": "devam etmek icin kaydolun",
-        "signupInputUsernameText": "Kullanici Adi",
-        "signupInputDisplayNameText": "Gorunen Ad",
+        "signupPageTittle": "Kayıt Ol",
+        "signupHeaderText1": "Hoş geldiniz,",
+        "signupHeaderText2": "devam etmek için kayıt olun",
+        "signupInputUsernameText": "Kullanıcı Adı",
+        "signupInputDisplayNameText": "Görünen Ad",
         "signupInputEmailText": "E-posta",
-        "signupInputPasswordText": "Sifre",
-        "signupInputConfirmPasswordText": "Sifreyi Onayla",
-        "signupImageUploadText": "Resim Yukle",
-        "signupButtonSignup": "Parlayalim!",
+        "signupInputPasswordText": "Şifre",
+        "signupInputConfirmPasswordText": "Şifreyi Onayla",
+        "signupImageUploadText": "Resim Yükle",
+        "signupButtonSignup": "Kayıt Ol",
 
         #ForgotPassword
-        "forgotPasswordHeaderText": "Sifremi Unuttum",
+        "forgotPasswordPageTittle": "Şifremi Unuttum",
+        "forgotPasswordHeaderText": "Şifremi Unuttum",
         "forgotPasswordInputEmailText": "E-posta",
-        "forgotPasswordButtonSend": "E-posta Gonder",
-        "forgotPasswordLinkText": "Hesabiniz yok mu?",
-        "forgotPasswordLinkButtonText": "Uye Ol",
+        "forgotPasswordButtonSend": "E-posta Gönder",
+        "forgotPasswordLinkText": "Hesabınız yok mu?",
+        "forgotPasswordLinkButtonText": "Kayıt Ol",
 
 
         #Dashboard
+        "dashboardPageTittle": "Ana Sayfa",
         "dashboardText1": "Hos geldiniz, ",
         "dashboardText2": "Indian Pong, 42 okulu toplulugu icin gelistirilmis bir isbirligi projesidir ve klasik Atari oyunu Ping-Pong ile nostaljik bir oyun deneyimi sunar. Bu platform, kullanicilarin birbirleriyle Ping-Pong maclari yapmalarina olanak tanir ve dostane rekabet ortami olusturur. Oyun deneyimi disinda, Indian Pong, kullanicilarin birbirleriyle iletisim kurabilecegi ve baglanti kurabilecegi sohbet odalarini iceren bir sosyal boyut sunar. Platform ayrica, kullanicilarin 42 okulu toplulugunda arkadas ekleyerek aglarini genisletmelerine olanak tanir. Genel olarak, Indian Pong, retro oyun keyfini modern sosyal etkilesimle birlestirerek, 42 okulu toplulugu icin canli ve etkilesimli bir deneyim sunar.",
 
@@ -312,6 +317,7 @@ def get_lang_tr():
 
         
         #Pong-Game
+        "pongGamePageTittle": "Pong Oyunu",
         "pongGameHeaderText": "Pong Lobisine Hos Geldiniz",
         "pongGameSubHeaderText": "Yapay Zeka ile oynayarak kendinizi gelistirebilir ve istatistiklerinize yansitmadan isinma gibi davranabilirsiniz. Gercek bir kisiyle oynamak istiyorsaniz, diger secenegi dusunun; 5 dakika icinde eslesecek birini bulamazsak, eslesme iptal edilecektir. Unutmadan once iyi sanslar!",
         "pongGameAIButtonText": "Yapay Zeka ile Oyna",
@@ -319,6 +325,7 @@ def get_lang_tr():
         "pongGameTournamentButtonText": "Turnuva",
 
             #AI-Game
+            "aiGamePageTittle": "Yapay Zeka Oyunu",
             "aiGameReactionDelayText": "Tepki Gecikmesi",
             "aiGameGetReadyText": "Hazir Ol",
             "aiGamePresSpaceText": "'Space' tusuna basarak basla",
@@ -339,6 +346,7 @@ def get_lang_tr():
             "aiGameInfoSubHeaderDescription4": "Rakiplerinle yüzleşmek ve becerilerini test etmek icin turnuvalara katılabilirsin. Ayrıca arkadaşlarınla özel oyunlar oluşturabilir ve Pong topluluğuna katılabilirsin.",
 
             #Local-Game
+            "localGamePageTittle": "Yerel Oyun",
             "localGameHeaderText": "1v1 Yerel Oyun",
             "localGamePlayer1Text": "1. Oyuncu Adi",
             "localGamePlayer2Text": "2. Oyuncu Adi",
@@ -349,12 +357,14 @@ def get_lang_tr():
             "localGameButtonStart": "Basla",
 
             #Tournament
+            "tournamentPageTittle": "Turnuva",
             "tournamentHeaderText": "Pong icin Turnuva Lobisine Hos Geldiniz",
             "tournamentSubHeaderText": "Burada bir turnuva lobisine katilabilir veya kendi turnuva lobinizi olusturabilirsiniz. Odanizi olusturduktan sonra davet kodunu paylasarak arkadaslarinizi davet edebilirsiniz. Unutmadan once iyi sanslar!",
             "tournamentJoinButtonText": "Turnuvaya Katil",
             "tournamentCreateButtonText": "Turnuva Olustur",
 
             #Tournament-Create
+            "tournamentCreatePageTittle": "Turnuva Oluştur",
             "tournamentCreateHeaderText": "TURNUVA OLUSTUR",
             "tournamentCreateSubHeaderText": "Bir turnuva olusturmak icin bir turnuva adina ve her oyunun maksimum kac puan alacagina ihtiyacim var. Unutmadan once iyi sanslar!",
             "tournamentCreateNameText": "Turnuva Adi",
@@ -365,12 +375,14 @@ def get_lang_tr():
             "tournamentCreateButtonCreate": "Turnuva Olustur",
 
             #Joined-Tournament-Room
+            "tournamentroomPageTittle": "Turnuva Odası",
             "tournamentroomHeaderText": "Turnuva Odasi",
             "tournamentroomLeaveButtonText": "ODADAN AYRIL",
             "tournamentroomStartButtonText": "ODAYI BASLAT",
             "tournamentCheckBracketButtonText": "ESLESMEYE BAK",
 
         #RPS Game
+        "rpsGamePageTittle": "Taş Kağıt Makas",
         "rpsGameText1": "Tas Kagit Makas Lobisine Hos Geldiniz",
         "rpsGameText2": "Yapay Zeka ile oynayarak kendinizi gelistirebilir ve istatistiklerinize yansitmadan isinma gibi davranabilirsiniz. Gercek bir kisiyle oynamak istiyorsaniz, diger secenegi dusunun; 5 dakika icinde eslesecek birini bulamazsak, eslesme iptal edilecektir. Unutmadan once iyi sanslar!",
         "rpsGameAIButtonText": "Yapay Zeka ile Oyna",
@@ -378,6 +390,7 @@ def get_lang_tr():
         "rpsGameSearchOpponentButtonText": "Rakip Arayin ",
 
         #Rankings
+        "rankingsPageTittle": "Sıralamalar",
         "rankingsTableRankText": "Sira",
         "rankingsTableNameText": "Ad",
         "rankingsTableUsernameText": "Kullanici Adi",
@@ -387,13 +400,15 @@ def get_lang_tr():
         "rankingsTablePongPointsText": "Pong Puanlari",
 
         #Store
-        "storeText": "Magaza",
-        "storeTagText": "Tumu",
-        "storeWalletText": "Cuzdan",
+        "storePageTittle": "Mağaza",
+        "storeText": "Mağaza",
+        "storeTagText": "Tümü",
+        "storeWalletText": "Cüzdan",
         "storeWalleinfoText1": "Oyun oynayarak ",
         "storeWalleinfoText2": " kazanabilirsin.",
 
         #Inventory
+        "inventoryPageTittle": "Envanter",
         "inventoryText": "Envanter",
         "inventoryTagText": "Tumu",
         "inventoryWalletText": "Cuzdan",
@@ -401,6 +416,7 @@ def get_lang_tr():
         "inventoryWalleinfoText2": " kazanabilirsin.",
         
         #Search
+        "searchPageTittle": "Arama",
         "searchInputText": "E-posta veya Kullanici Adi veya Gorunen Ad Ara...",
         "searchMessageButtonText": "Mesaj",
         "searchFollowButtonText": "Takip Et",
@@ -408,6 +424,7 @@ def get_lang_tr():
         "searchNoResultFoundText": "Sonuc bulunamadi.",
         
         #Profile
+        "profilePageTittle": "Profili",
         "profileRankAIText": "SADECE ROBOTUM",
         "profileRankUserText1": " SIRALAMADA",
         "profileRankUserText2": " SIRALAMA YOK",
@@ -431,10 +448,12 @@ def get_lang_tr():
         "profileGameStats6": "Ortalama Oyun Suresi:",
         
         #Friends
+        "friendsPageTittle": "Arkadaşlar",
         "friendsMessageButtonText": "Mesaj",
         "friendsNoResultFoundText": "Sonuc bulunamadi.",
         
         #ProfileSettings
+        "profileSettingsPageTittle": "Profil Ayarlari",
         "profileSettingsNavbar1": "Profili Duzenle",
         "profileSettingsNavbar2": "Sifre Degistir",
         "profileSettingsNavbar3": "Sosyal Medya Ekle",
@@ -493,7 +512,7 @@ def get_lang_pt():
         "baseInfoSubHeaderText3": "Mais Recursos",
         "baseInfoSubHeaderDescription4": "Participe de torneios para enfrentar seus oponentes.",
         "baseInfoSubHeaderDescription5": "Divirta-se com seus amigos hospedando jogos privados.",
-        "baseInfoSubHeaderDescription6": "Converse com outros jogadores, compartilhe táticas e participe da comunidade Pong.
+        "baseInfoSubHeaderDescription6": "Converse com outros jogadores, compartilhe táticas e participe da comunidade Pong.",
 
         #Login
         "loginHeaderText1": "Bem-vindo,",

@@ -65,7 +65,7 @@ from django.contrib.auth import update_session_auth_hash
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 import random
-
+from . import langs
 
 ### Homepage and Error Page ###
 
@@ -74,7 +74,9 @@ import random
 def index(request):
     if request.user.is_authenticated:
         return redirect("dashboard")
-    return render(request, "base.html")
+    lang = request.session.get('language', 'en')
+    context = langs.get_langs(lang)
+    return render(request, "base.html", {"context": context})
 
 
 @login_required()
@@ -89,8 +91,10 @@ def handler404(request, exception):
 ### User Authentication ###
 @never_cache
 def signup(request):
+    language = request.session.get('language', 'en')
+    context = langs.get_langs(language)
     if request.method == "POST":
-        form = UserProfileForm(request.POST, request.FILES)
+        form = UserProfileForm(request.POST, request.FILES, lang=request.session.get('language', 'en'))
         if form.is_valid():
             user = form.save()
             obj = VerifyToken.objects.create(
@@ -100,8 +104,8 @@ def signup(request):
             messages.success(request, "Please check your email to verify your account.")
             return HttpResponseRedirect("login")
     else:
-        form = UserProfileForm()
-    return render(request, "signup.html", {"form": form})
+        form = UserProfileForm(lang=request.session.get('language', 'en'))
+    return render(request, "signup.html", {"form": form, "context": context})
 
 
 @never_cache
@@ -230,6 +234,12 @@ def auth_callback(request):
 
     return redirect("login")  # Handle authentication failure
 
+def set_language(request):
+    if request.method == 'POST':
+        selected_language = request.POST.get('language')
+        # Burada seçilen dil bilgisini oturum verilerine kaydedebilirsiniz
+        request.session['language'] = selected_language
+    return redirect(request.META.get('HTTP_REFERER'))
 
 ### Login and Logout ###
 
@@ -238,6 +248,8 @@ def auth_callback(request):
 def login_view(request):
     if request.user.is_authenticated:
         return HttpResponseRedirect("dashboard")
+    lang = request.session.get('language', 'en')
+    context = langs.get_langs(lang)
     if request.method == "POST":
         form = AuthenticationUserForm(request, request.POST)
         if form.is_valid():
@@ -251,11 +263,7 @@ def login_view(request):
             return HttpResponseRedirect("dashboard")
     else:
         form = AuthenticationUserForm()
-    return render(
-        request,
-        "login.html",
-        {"form": form},
-    )
+    return render(request,"login.html", {"form": form, "context": context})
 
 
 @never_cache
