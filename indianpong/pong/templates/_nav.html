@@ -43,7 +43,7 @@
     </li>
       <li class="profile-menu"> 
         <div class="profile-image">
-          <img src="{{avatar}}" alt="Profile Image" width="48" height="48" {% if is_playing %} style="aspect-ratio: 1/1; object-fit: cover; border: 3px solid #ffa600" {% else %} style="aspect-ratio: 1/1; object-fit: cover; border: 3px solid #4CAF4F"{% endif %}>
+          <img src="{{avatar}}" alt="Profile Image" width="48" height="48" {% if is_playing %} style="border: 3px solid #ffa600" {% else %} style="border: 3px solid #4CAF4F"{% endif %}>
         </div>
         <div class="profile-submenu">
           <a href="/profile/{{username}}" data-link><i class="bi bi-person-fill" ></i>Profile</a>

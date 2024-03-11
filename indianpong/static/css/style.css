@@ -364,6 +364,8 @@ body {
   height: 48px;
   border-radius: 50%; /* Profil resmini yuvarlak yapar */
   transition: transform 0.3s ease; /* Dönme animasyonu için */
+  aspect-ratio: 1/1; 
+  object-fit: cover;
 }
 
 .profile-menu:hover .profile-image img {
