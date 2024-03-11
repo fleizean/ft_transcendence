@@ -3,7 +3,7 @@
 {% load static %}
 {% load status %}
 
-{% block title %}Search{% endblock title %}
+{% block title %}{{request.user.username}} - {{context.friendsPageTittle}}{% endblock title %}
 
 {% block stylesheet %}
 <link rel="stylesheet" href="{% static "css/search.css" %}">
@@ -45,11 +45,11 @@
                     </div>
                     {% if not friend.social.stackoverflow and not friend.social.twitter and not friend.social.github and not friend.social.instagram %}
                       <div class="buttons" style="margin-top: 60px !important;">
-                        <button class="button-message">Message</button> 
+                        <button class="button-message">{{context.friendsMessageButtonText}}</button> 
                       </div>
                     {% else %}
                       <div class="buttons">
-                        <button class="button-message">Message</button>
+                        <button class="button-message">{{context.friendsMessageButtonText}}</button>
                       </div>
                     {% endif %}
                       <div class="analytics">
@@ -69,7 +69,7 @@
                 </div>
               </div>
               {% empty %}
-              <p style="color:orange; font-weight:bold; text-align: center;">No friends found.</p>
+              <p style="color:orange; font-weight:bold; text-align: center;">{{context.friendsNoResultFoundText}}</p>
               {% endfor %}
             </div>
             <nav aria-label="Page navigation example " class="mt-4">

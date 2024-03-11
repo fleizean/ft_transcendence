@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}Search{% endblock title %}
+{% block title %}{{context.searchPageTittle}}{% endblock title %}
 
 {% load static %}
 {% load status %}
@@ -14,7 +14,7 @@
         <form action="{% url 'search' %}" method="POST">
             {% csrf_token %}
             <div class="search-container">
-                <input type="text" name="search_query" placeholder="Email or Username or Displayname Search..." class="search-input" autocomplete="off" data-lpignore="true">
+                <input type="text" name="search_query" placeholder="{{context.searchInputText}}" class="search-input" autocomplete="off" data-lpignore="true">
                 <button class="search-button" type="submit"><i class="bi bi-search"></i></button>
             </div>
         </form>
@@ -52,20 +52,20 @@
                     {% if not person.social.stackoverflow and not person.social.twitter and not person.social.github and not person.social.instagram %}
                       <div class="buttons" style="margin-top: 60px !important;">
                         {% if person.is_person %}
-                        <button data-username="{{ person.username }}" class="button-follow">Unfollow</button>
+                        <button data-username="{{ person.username }}" class="button-follow">{{context.searchFollowButtonText}}</button>
                       {% else %}
-                        <button data-username="{{ person.username }}" class="button-follow">Follow</button>
+                        <button data-username="{{ person.username }}" class="button-follow">{{context.searchFollowingButtonText}}</button>
                       {% endif %}
-                      {% comment %} <a href="/start_chat/{{person.username}}"> <button class="button-message">Message</button></a> {% endcomment %}
+                      {% comment %} <a href="/start_chat/{{person.username}}"> <button class="button-message">{{context.searchMessageButtonText}}</button></a> {% endcomment %}
                       </div>
                     {% else %}
                       <div class="buttons">
                         {% if person.is_person %}
-                        <button data-username="{{ person.username }}" class="button-follow">Unfollow</button>
+                        <button data-username="{{ person.username }}" class="button-follow">{{context.searchFollowButtonText}}</button>
                       {% else %}
-                        <button data-username="{{ person.username }}" class="button-follow">Follow</button>
+                        <button data-username="{{ person.username }}" class="button-follow">{{context.searchFollowingButtonText}}</button>
                       {% endif %}
-                      {% comment %} <a href="/start_chat/{{person.username}}"> <button class="button-message">Message</button></a> {% endcomment %}
+                      {% comment %} <a href="/start_chat/{{person.username}}"> <button class="button-message">{{context.searchMessageButtonText}}</button></a> {% endcomment %}
                       </div>
                     {% endif %}
                   
@@ -87,7 +87,7 @@
                 </div>
               </div>
               {% empty %}
-              <p style="color:orange; font-weight:bold; text-align: center;">No results found.</p>
+              <p style="color:orange; font-weight:bold; text-align: center;">{{context.searchNoResultFoundText}}</p>
               {% endfor %}
             </div>
             <nav aria-label="Page navigation example" class="mt-4">

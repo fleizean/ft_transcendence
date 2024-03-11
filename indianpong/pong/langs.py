@@ -199,8 +199,14 @@ def get_lang_en():
         "inventoryText": "Inventory",
         "inventoryTagText": "All",
         "inventoryWalletText": "Wallet",
-        "inventoryWalleinfoText1": "Oyun oynayarak ",
-        "inventoryWalleinfoText2": " kazanabilirsin.",
+        "inventoryWalleinfoText1": " playing games",
+        "inventoryWalleinfoText2": " can win.",
+        "inventoryModalHeaderText": "Set Featured Item",
+        "inventoryModalSaveButton": "Save",
+        "inventoryModalCloseButton": "Close",
+        "inventoryItemKeyboardInfoText": "Use the",
+        "inventoryItemKeyboardInfoText2": "key to use this ability. And remember, you must equip this ability.",
+        "inventoryItemKeyboardInfoText3": "There is no special keypad for this item, it is used automatically.",
         
         #Search
         "searchPageTittle": "Search",
@@ -461,6 +467,13 @@ def get_lang_tr():
         "inventoryWalletText": "Cuzdan",
         "inventoryWalleinfoText1": "Oyun oynayarak ",
         "inventoryWalleinfoText2": " kazanabilirsin.",
+        "inventoryModalHeaderText": "Öğeyi Ayarla",
+        "inventoryModalSaveButton": "Kaydet",
+        "inventoryModalCloseButton": "Kapat",
+        "inventoryItemKeyboardInfoText": "Yetenek kullanmak için",
+        "inventoryItemKeyboardInfoText2": "tuşunu kullan. Ve unutma, bu yetenekleri kullanabilmek için bunları donatmalısın.",
+        "inventoryItemKeyboardInfoText3": "Bu öğe için özel bir tuş takımı yok, otomatik olarak kullanılır.",
+
         
         #Search
         "searchPageTittle": "Arama",
@@ -720,6 +733,13 @@ def get_lang_pt():
         "inventoryWalletText": "Carteira",
         "inventoryWalleinfoText1": "Você pode ganhar ",
         "inventoryWalleinfoText2": " jogando.",
+        "inventoryModalHeaderText": "Definir Item",
+        "inventoryModalSaveButton": "Salvar",
+        "inventoryModalCloseButton": "Fechar",
+        "inventoryItemKeyboardInfoText": "Pressione a tecla",
+        "inventoryItemKeyboardInfoText2": "para usar a habilidade. E lembre-se, você deve equipar esses itens para usá-los",
+        "inventoryItemKeyboardInfoText3": "Este item não tem um teclado personalizado, é usado automaticamente.",
+
         
         #Search
         "searchPageTittle": "Procurar",
@@ -750,6 +770,11 @@ def get_lang_pt():
         "profileGameStats4": "Taxa de Vitória:",
         "profileGameStats5": "Sequência de Vitórias:",
         "profileGameStats6": "Duração Média do Jogo:",
+
+        #Friends
+        "friendsPageTittle": "Amigos",
+        "friendsMessageButtonText": "Mensagem",
+        "friendsNoResultFoundText": "Nenhum resultado encontrado.",
 
         #ProfileSettings
         "profileSettingsPageTittle": "Configurações do Perfil",
@@ -971,6 +996,13 @@ def get_lang_hi():
         "inventoryWalletText": "वॉलेट",
         "inventoryWalleinfoText1": "खेल खेलकर ",
         "inventoryWalleinfoText2": " जीत सकते हैं।",
+        "inventoryModalHeaderText": "आइटम खरीदें",
+        "inventoryModalSaveButton": "खरीदें",
+        "inventoryModalCloseButton": "बंद करें",
+        "inventoryItemKeyboardInfoText": "उपयोग",
+        "inventoryItemKeyboardInfoText2": "इस आइटम के लिए कोई विशेष कीपैड नहीं है, यह स्वचालित रूप से उपयोग किया जाता है।",
+        "inventoryItemKeyboardInfoText3": "इस आइटम के लिए कोई विशेष कीपैड नहीं है, यह स्वचालित रूप से उपयोग किया जाता है।",
+
         
         #Search
         "searchPageTittle": "खोजें",
@@ -1001,6 +1033,12 @@ def get_lang_hi():
         "profileGameStats4": "जीतने की दर:",
         "profileGameStats5": "औसत अंक जीते:",
         "profileGameStats6": "औसत अंक हारे:",
+
+        #Friends
+        "friendsPageTittle": "मित्र",
+        "friendsMessageButtonText": "संदेश",
+        "friendsNoResultFoundText": "कोई परिणाम नहीं मिला।",
+
 
         #ProfileSettings
         "profileSettingsPageTittle": "प्रोफ़ाइल सेटिंग्स",

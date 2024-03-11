@@ -123,9 +123,14 @@
 
 }
 
+.ai-game {
+    overflow: hidden;
+}
+
 .slider-container {
     position: absolute;
-    left: 530px;
+    width: 100%;
+    left: 510px;
     top: -25px;
 }
 
