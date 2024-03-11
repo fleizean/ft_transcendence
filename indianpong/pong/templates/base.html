@@ -6,7 +6,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>{% block title %}Indian-Pong{% endblock  %}</title>
+        <title>{% block title %}{{context.basePageTittle}}{% endblock  %}</title>
         <link rel="icon" type="image/x-icon" href="{% static "assets/favicon.ico" %}">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
@@ -22,7 +22,7 @@
                 {% if not request.user.is_anonymous %}
                 {% include "_nav.html" %}
                 {% endif %}
-                <div class="app" id="app">
+                <div class="app" id="app" >
                     {% if not user.is_authenticated %}
                         <div class="top-nav-infos">
                             <div class="info-menu">
@@ -36,24 +36,24 @@
                                     <i class="bi bi-flag-fill"></i>       
                                 </div>
                                 <div class="language-submenu">
-                                    <form id="language-form" method="post" {% comment %} action="{% url 'set_language' %}" {% endcomment %}>
-                                      {% csrf_token %}
-                                      <a href="#" onclick="setLanguage('tr'); return false;">
-                                          <img style="margin-right: 5px;" src="{% static "assets/flags/turkey.png" %}" alt="Türkçe">
-                                          <span style="margin-top: 3px;">Türkçe</span>
-                                      </a>
-                                      <a href="#" onclick="setLanguage('hi'); return false;">
-                                          <img style="margin-right: 5px;" src="{% static "assets/flags/hindi.png" %}" alt="हिंदी">
-                                          <span style="margin-top: 3px;">हिंदी</span>
-                                      </a>
-                                      <a href="#" onclick="setLanguage('en'); return false;">
-                                          <img style="margin-right: 5px;" src="{% static "assets/flags/english.png" %}" alt="English">
-                                          <span style="margin-top: 3px;">English</span>
-                                      </a>
-                                      <a href="#" onclick="setLanguage('pt'); return false;">
-                                          <img style="margin-right: 5px;" src="{% static "assets/flags/portugal.png" %}" alt="Português">
-                                          <span style="margin-top: 3px;">Português</span>
-                                      </a>
+                                    <form id="language-form" method="post" action="{% url 'set_language' %}">
+                                        {% csrf_token %}
+                                        <a href="#" onclick="setLanguage('tr'); return false;">
+                                            <img style="margin-right: 5px;" src="{% static "assets/flags/turkey.png" %}" alt="Türkçe">
+                                            <span style="margin-top: 3px;">Türkçe</span>
+                                        </a>
+                                        <a href="#" onclick="setLanguage('hi'); return false;">
+                                            <img style="margin-right: 5px;" src="{% static "assets/flags/hindi.png" %}" alt="हिंदी">
+                                            <span style="margin-top: 3px;">हिंदी</span>
+                                        </a>
+                                        <a href="#" onclick="setLanguage('en'); return false;">
+                                            <img style="margin-right: 5px;" src="{% static "assets/flags/english.png" %}" alt="English">
+                                            <span style="margin-top: 3px;">English</span>
+                                        </a>
+                                        <a href="#" onclick="setLanguage('pt'); return false;">
+                                            <img style="margin-right: 5px;" src="{% static "assets/flags/portugal.png" %}" alt="Português">
+                                            <span style="margin-top: 3px;">Português</span>
+                                        </a>
                                     </form>
                                 </div>
                             </div>
@@ -63,9 +63,9 @@
                         <div class="cursor">
                             <div class="container">
                                 <div class="HeaderArea" id="HeaderArea">
-                                    <div class="big-text">Indian-Pong</div>
-                                    <div class="small-text">Indian-Pong created for 42 school by Indian Dev!</div>
-                                    <a href="/login" data-link><button type="button" class="PixellButton">Get Started!</button></a>
+                                    <div class="big-text">{{context.baseHeaderText}}</div>
+                                    <div class="small-text">{{context.baseSubHeaderText}}</div>
+                                    <a href="/login" data-link><button type="button" class="PixellButton">{{context.basePlayButtonText}}</button></a>
                                 </div>
                             </div>
                         </div>
@@ -77,24 +77,23 @@
                 <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h2 class="modal-title fs-2" id="exampleModalLabel">Pong'a hoş geldiniz!</h2>
+                            <h4 class="modal-title fs-4 text-info" id="exampleModalLabel">{{context.baseInfoHeaderText}}</h4>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            
-                            <p>Pong, klasik masa tenisi oyununun heyecanını ve rekabetini internet ortamına taşıyor. Bu platformda hem eğlenebilir hem de yeteneğini konuşturabilir, sıralamada yükselip en iyiler arasına girebilirsin.</p>
-                            
-                            <h3>Oyna ve Kazan</h3>
-                            <p>Her oyun kazandığında Pong Point kazanarak sıralamada yüksel.</p>
-                            <p>Kazançlarınla mağazadan yeni eşyalar, raket ve masalar satın alarak oyun deneyimini geliştir.</p>
+                            <p>{{context.baseInfoHeaderDescription}}</p>
+    
+                            <h3>{{context.baseInfoSubHeaderText}}</h3>
+                            <p>{{context.baseInfoSubHeaderDescription1}}</p>
+                            <p>{{context.baseInfoSubHeaderDescription2}}</p>
 
-                            <h3>Hemen Başla</h3>
-                            <p>Hesap oluşturarak profilini kişiselleştir, istatistiklerini takip et ve sıralamadaki yerini gör.</p>
+                            <h3>{{context.baseInfoSubHeaderText2}}</h3>
+                            <p>{{context.baseInfoSubHeaderDescription3}}</p>
 
-                            <h3>Daha Fazlası</h3>
-                            <p>Turnuvalara katılarak rakiplerinle yüzleş.</p>
-                            <p>Arkadaşlarınla özel oyunlar kurarak keyifli vakit geçir.</p>
-                            <p>Diğer oyuncularla sohbet et, taktikler paylaş ve Pong topluluğuna katıl.</p>
+                            <h3>{{context.baseInfoSubHeaderText3}}</h3>
+                            <p>{{context.baseInfoSubHeaderDescription4}}</p>
+                            <p>{{context.baseInfoSubHeaderDescription5}}</p>
+                            <p>{{context.baseInfoSubHeaderDescription6}}</p>
                         </div>
                     </div>
                 </div>
@@ -102,14 +101,14 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"></script>
         <script>
             function setLanguage(language) {
-                var form = document.getElementById('language-form');
-                var input = document.createElement('input');
-                input.type = 'hidden';
-                input.name = 'language';
-                input.value = language;
-                form.appendChild(input);
-                form.submit();
-            }
+            var form = document.getElementById('language-form');
+            var input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = 'language';
+            input.value = language;
+            form.appendChild(input);
+            form.submit();
+        }
         </script>
         {% comment %} <script src="{% static "js/bootstrap.min.js" %}"></script> {% endcomment %}
     </body>

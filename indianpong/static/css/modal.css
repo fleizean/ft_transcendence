@@ -21,4 +21,19 @@
 
 .modal-body h3 {
     border-bottom: 1px solid;
+    font-size: 1.5rem;
+}
+
+.modal-controls {
+    padding: 1rem 0px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.modal-keys{
+
+    padding: 0.1em 0.5em;
+    background-color: rgb(75, 73, 73);
+    border: 3px solid rgb(49, 49, 49);
+    color: rgb(224, 224, 224);
 }

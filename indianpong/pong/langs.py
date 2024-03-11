@@ -16,6 +16,18 @@ def get_lang_en():
         "baseSubHeaderText": "Indian-Pong created for 42 school by Indian Dev!",
         "basePlayButtonText": "Get Started!",
 
+        "baseInfoHeaderText": "Welcome to Indian-Pong!",
+        "baseInfoHeaderDescription": "Pong brings the excitement and competition of classic table tennis to the internet. On this platform, you can have fun, showcase your skills, and rise in the rankings to become one of the best.",
+        "baseInfoSubHeaderText": "Play and Win",
+        "baseInfoSubHeaderDescription1": "Gain Pong Points with each game you win to climb the ranks.",
+        "baseInfoSubHeaderDescription2": "Use your earnings to purchase new items, rackets, and tables from the store to enhance your gaming experience.",
+        "baseInfoSubHeaderText2": "Get Started Now",
+        "baseInfoSubHeaderDescription3": "Create an account to personalize your profile, track your statistics, and see where you stand in the rankings.",
+        "baseInfoSubHeaderText3": "More Features",
+        "baseInfoSubHeaderDescription4": "Participate in tournaments to face off against your opponents.",
+        "baseInfoSubHeaderDescription5": "Enjoy quality time with your friends by hosting private games.",
+        "baseInfoSubHeaderDescription6": "Chat with other players, share tactics, and join the Pong community.",
+        
         #Login
         "loginHeaderText1": "Welcome,",
         "loginHeaderText2": "sign in to continue",
@@ -35,6 +47,13 @@ def get_lang_en():
         "signupInputConfirmPasswordText": "Password (again)",
         "signupImageUploadText": "Upload Image",
         "signupButtonSignup": "Let's shine!",
+
+        #ForgotPassword
+        "forgotPasswordHeaderText": "Forgot Password",
+        "forgotPasswordInputEmailText": "Email",
+        "forgotPasswordButtonSend": "Send Email",
+        "forgotPasswordLinkText": "Don't have an account?",
+        "forgotPasswordLinkButtonText": "Join Us",
 
 
         #Dashboard
@@ -58,6 +77,27 @@ def get_lang_en():
         "pongGameLocalButtonText": "Local Game",
         "pongGameTournamentButtonText": "Tournament",
 
+            #AI-Game
+            "aiGameReactionDelayText": "Reaction Delay",
+            "aiGameGetReadyText": "Get Ready",
+            "aiGamePresSpaceText": "Press 'Space' to start",
+            "aiGameCountdownText": "Starting in",
+
+            "aiGameGameOverText": "Game Over",
+            "aiGameRestartButtonText": "Restart",
+            "aiGameExitButtonText": "Exit",
+
+            "aiGameInfoHeaderText": "About the Game",
+            "aiGameInfoSubHeaderText": "How to Play the Game?",
+            "aiGameInfoSubHeaderDescription1": "In Pong game, players engage in a table tennis match against their opponents. The W-A-S-D keys (or up-down-left-right arrow keys) are used to control the ball.",
+            "aiGameInfoSubHeaderText2": "Win and Improve",
+            "aiGameInfoSubHeaderDescription2": "You earn Pong Points with every game you win. With these points, you can purchase new items, rackets, and tables from the store to enhance your gaming experience.",
+            "aiGameInfoSubHeaderText3": "Get Started Now",
+            "aiGameInfoSubHeaderDescription3": "You can create an account to personalize your gaming experience. With an account, you can track your statistics and see your position in the rankings.",
+            "aiGameInfoSubHeaderText4": "More Features",
+            "aiGameInfoSubHeaderDescription4": "You can participate in tournaments to face off against your opponents and test your skills. Additionally, you can create private games with your friends and join the Pong community.",
+
+
             #Local-Game
             "localGameHeaderText": "1v1 Local Game",
             "localGamePlayer1Text": "Player1 Name",
@@ -67,6 +107,21 @@ def get_lang_en():
             "localGameChooseModeText1": "Vanilla",
             "localGameChooseModeText2": "Abilities",
             "localGameButtonStart": "Start",
+
+            #Local-Tournament
+            "localTournamentGameHeaderText": "Local Tournament",
+            "localTournamentPlayer1Text": "Player1 Name",
+            "localTournamentPlayer2Text": "Player2 Name",
+            "localTournamentPlayer3Text": "Player3 Name",
+            "localTournamentPlayer4Text": "Player4 Name",
+            "localTournamentMaxScoreText": "Max Score",
+            "localTournamentGameModeText": "Game Mode",
+            "localTournamentChooseModeText1": "Vanilla",
+            "localTournamentChooseModeText2": "Abilities",
+            "localTournamentButtonStart": "Start & Bracket",
+            "localTournamentBracketTitle": "Tournament Bracket",
+            "localTournamentBracketStartButtonText": "Start Tournament",
+
 
             #Tournament
             "tournamentHeaderText": "Welcome to Tournament Lobby for Pong",
@@ -198,32 +253,56 @@ def get_lang_en():
 def get_lang_tr():
     context = {
         #index
+        "basePageTittle": "Indian-Pong",
         "baseHeaderText": "Indian-Pong",
-        "baseSubHeaderText": "Indian-Pong Hintli gelistiriciler tarafindan 42 okulu icin gelistirildi!",
-        "basePlayButtonText": "Baslayin!",
+        "baseSubHeaderText": "Indian-Pong Hintli geliştiriciler tarafından 42 okulu için geliştirilmiştir!",
+        "basePlayButtonText": "YOLCULUĞA BAŞLA!",
+
+        "baseInfoHeaderText": "Indian-Pong'a hoş geldiniz!",
+        "baseInfoHeaderDescription": "Pong, klasik masa tenisi oyununun heyecanını ve rekabetini internet ortamına taşıyor. Bu platformda hem eğlenebilir hem de yeteneğini konuşturabilir, sıralamada yükselip en iyiler arasına girebilirsin.",
+        "baseInfoSubHeaderText": "Oyna ve Kazan",
+        "baseInfoSubHeaderDescription1": "Her oyun kazandığında Pong Point kazanarak sıralamada yüksel.",
+        "baseInfoSubHeaderDescription2": "Kazançlarınla mağazadan yeni eşyalar, raket ve masalar satın alarak oyun deneyimini geliştir.",
+        "baseInfoSubHeaderText2": "Hemen Başla",
+        "baseInfoSubHeaderDescription3": "Hesap oluşturarak profilini kişiselleştir, istatistiklerini takip et ve sıralamadaki yerini gör.",
+        "baseInfoSubHeaderText3": "Daha Fazlası",
+        "baseInfoSubHeaderDescription4": "Turnuvalara katılarak rakiplerinle yüzleş.",
+        "baseInfoSubHeaderDescription5": "Arkadaşlarınla özel oyunlar kurarak keyifli vakit geçir.",
+        "baseInfoSubHeaderDescription6": "Diğer oyuncularla sohbet et, taktikler paylaş ve Pong topluluğuna katıl.",
 
         #Login
-        "loginHeaderText1": "Hos geldiniz,",
-        "loginHeaderText2": "devam etmek icin giris yapin",
-        "loginInputUsernameText": "Kullanici Adi",
-        "loginInputPasswordText": "Sifre",
-        "loginForgotPasswordText": "Sifremi Unuttum?",
-        "loginButtonLogin": "Giris Yap",
-        "loginButtonJoin": "Uye Ol",
+        "loginPageTittle": "Giriş Yap",
+        "loginHeaderText1": "Hoş geldiniz,",
+        "loginHeaderText2": "devam etmek için giriş yapın",
+        "loginInputUsernameText": "Kullanıcı Adı",
+        "loginInputPasswordText": "Şifre",
+        "loginForgotPasswordText": "Şifremi Unuttum?",
+        "loginButtonLogin": "Giriş Yap",
+        "loginButtonJoin": "Üye Ol",
         
         #Signup
-        "signupHeaderText1": "Hos geldiniz,",
-        "signupHeaderText2": "devam etmek icin kaydolun",
-        "signupInputUsernameText": "Kullanici Adi",
-        "signupInputDisplayNameText": "Gorunen Ad",
+        "signupPageTittle": "Kayıt Ol",
+        "signupHeaderText1": "Hoş geldiniz,",
+        "signupHeaderText2": "devam etmek için kayıt olun",
+        "signupInputUsernameText": "Kullanıcı Adı",
+        "signupInputDisplayNameText": "Görünen Ad",
         "signupInputEmailText": "E-posta",
-        "signupInputPasswordText": "Sifre",
-        "signupInputConfirmPasswordText": "Sifreyi Onayla",
-        "signupImageUploadText": "Resim Yukle",
-        "signupButtonSignup": "Parlayalim!",
+        "signupInputPasswordText": "Şifre",
+        "signupInputConfirmPasswordText": "Şifreyi Onayla",
+        "signupImageUploadText": "Resim Yükle",
+        "signupButtonSignup": "Kayıt Ol",
+
+        #ForgotPassword
+        "forgotPasswordPageTittle": "Şifremi Unuttum",
+        "forgotPasswordHeaderText": "Şifremi Unuttum",
+        "forgotPasswordInputEmailText": "E-posta",
+        "forgotPasswordButtonSend": "E-posta Gönder",
+        "forgotPasswordLinkText": "Hesabınız yok mu?",
+        "forgotPasswordLinkButtonText": "Kayıt Ol",
 
 
         #Dashboard
+        "dashboardPageTittle": "Ana Sayfa",
         "dashboardText1": "Hos geldiniz, ",
         "dashboardText2": "Indian Pong, 42 okulu toplulugu icin gelistirilmis bir isbirligi projesidir ve klasik Atari oyunu Ping-Pong ile nostaljik bir oyun deneyimi sunar. Bu platform, kullanicilarin birbirleriyle Ping-Pong maclari yapmalarina olanak tanir ve dostane rekabet ortami olusturur. Oyun deneyimi disinda, Indian Pong, kullanicilarin birbirleriyle iletisim kurabilecegi ve baglanti kurabilecegi sohbet odalarini iceren bir sosyal boyut sunar. Platform ayrica, kullanicilarin 42 okulu toplulugunda arkadas ekleyerek aglarini genisletmelerine olanak tanir. Genel olarak, Indian Pong, retro oyun keyfini modern sosyal etkilesimle birlestirerek, 42 okulu toplulugu icin canli ve etkilesimli bir deneyim sunar.",
 
@@ -238,13 +317,36 @@ def get_lang_tr():
 
         
         #Pong-Game
+        "pongGamePageTittle": "Pong Oyunu",
         "pongGameHeaderText": "Pong Lobisine Hos Geldiniz",
         "pongGameSubHeaderText": "Yapay Zeka ile oynayarak kendinizi gelistirebilir ve istatistiklerinize yansitmadan isinma gibi davranabilirsiniz. Gercek bir kisiyle oynamak istiyorsaniz, diger secenegi dusunun; 5 dakika icinde eslesecek birini bulamazsak, eslesme iptal edilecektir. Unutmadan once iyi sanslar!",
         "pongGameAIButtonText": "Yapay Zeka ile Oyna",
         "pongGameLocalButtonText": "Yerel Oyun",
         "pongGameTournamentButtonText": "Turnuva",
 
+            #AI-Game
+            "aiGamePageTittle": "Yapay Zeka Oyunu",
+            "aiGameReactionDelayText": "Tepki Gecikmesi",
+            "aiGameGetReadyText": "Hazir Ol",
+            "aiGamePresSpaceText": "'Space' tusuna basarak basla",
+            "aiGameCountdownText": "Basliyor",
+
+            "aiGameGameOverText": "Oyun Bitti",
+            "aiGameRestartButtonText": "Yeniden Baslat",
+            "aiGameExitButtonText": "Cikis",
+
+            "aiGameInfoHeaderText": "Oyun Hakkında",
+            "aiGameInfoSubHeaderText": "Oyunu Nasıl Oynarım?",
+            "aiGameInfoSubHeaderDescription1": "Pong oyununda oyuncular rakiplerine karsı bir masa tenisi macı yaparlar. W-A-S-D tusları (veya yukarı-asagı-sol-sag ok tusları) topu kontrol etmek icin kullanılır.",
+            "aiGameInfoSubHeaderText2": "Kazan ve Geliş",
+            "aiGameInfoSubHeaderDescription2": "Her oyun kazandığında Pong Puan kazanırsın. Bu puanlarla mağazadan yeni eşyalar, raket ve masalar satın alarak oyun deneyimini geliştirebilirsin.",
+            "aiGameInfoSubHeaderText3": "Hemen Başla",
+            "aiGameInfoSubHeaderDescription3": "Hesap oluşturarak oyun deneyimini kişiselleştirebilirsin. Bir hesapla istatistiklerini takip edebilir ve sıralamandaki yerini görebilirsin.",
+            "aiGameInfoSubHeaderText4": "Daha Fazlası",
+            "aiGameInfoSubHeaderDescription4": "Rakiplerinle yüzleşmek ve becerilerini test etmek icin turnuvalara katılabilirsin. Ayrıca arkadaşlarınla özel oyunlar oluşturabilir ve Pong topluluğuna katılabilirsin.",
+
             #Local-Game
+            "localGamePageTittle": "Yerel Oyun",
             "localGameHeaderText": "1v1 Yerel Oyun",
             "localGamePlayer1Text": "1. Oyuncu Adi",
             "localGamePlayer2Text": "2. Oyuncu Adi",
@@ -255,12 +357,14 @@ def get_lang_tr():
             "localGameButtonStart": "Basla",
 
             #Tournament
+            "tournamentPageTittle": "Turnuva",
             "tournamentHeaderText": "Pong icin Turnuva Lobisine Hos Geldiniz",
             "tournamentSubHeaderText": "Burada bir turnuva lobisine katilabilir veya kendi turnuva lobinizi olusturabilirsiniz. Odanizi olusturduktan sonra davet kodunu paylasarak arkadaslarinizi davet edebilirsiniz. Unutmadan once iyi sanslar!",
             "tournamentJoinButtonText": "Turnuvaya Katil",
             "tournamentCreateButtonText": "Turnuva Olustur",
 
             #Tournament-Create
+            "tournamentCreatePageTittle": "Turnuva Oluştur",
             "tournamentCreateHeaderText": "TURNUVA OLUSTUR",
             "tournamentCreateSubHeaderText": "Bir turnuva olusturmak icin bir turnuva adina ve her oyunun maksimum kac puan alacagina ihtiyacim var. Unutmadan once iyi sanslar!",
             "tournamentCreateNameText": "Turnuva Adi",
@@ -271,12 +375,14 @@ def get_lang_tr():
             "tournamentCreateButtonCreate": "Turnuva Olustur",
 
             #Joined-Tournament-Room
+            "tournamentroomPageTittle": "Turnuva Odası",
             "tournamentroomHeaderText": "Turnuva Odasi",
             "tournamentroomLeaveButtonText": "ODADAN AYRIL",
             "tournamentroomStartButtonText": "ODAYI BASLAT",
             "tournamentCheckBracketButtonText": "ESLESMEYE BAK",
 
         #RPS Game
+        "rpsGamePageTittle": "Taş Kağıt Makas",
         "rpsGameText1": "Tas Kagit Makas Lobisine Hos Geldiniz",
         "rpsGameText2": "Yapay Zeka ile oynayarak kendinizi gelistirebilir ve istatistiklerinize yansitmadan isinma gibi davranabilirsiniz. Gercek bir kisiyle oynamak istiyorsaniz, diger secenegi dusunun; 5 dakika icinde eslesecek birini bulamazsak, eslesme iptal edilecektir. Unutmadan once iyi sanslar!",
         "rpsGameAIButtonText": "Yapay Zeka ile Oyna",
@@ -284,6 +390,7 @@ def get_lang_tr():
         "rpsGameSearchOpponentButtonText": "Rakip Arayin ",
 
         #Rankings
+        "rankingsPageTittle": "Sıralamalar",
         "rankingsTableRankText": "Sira",
         "rankingsTableNameText": "Ad",
         "rankingsTableUsernameText": "Kullanici Adi",
@@ -293,13 +400,15 @@ def get_lang_tr():
         "rankingsTablePongPointsText": "Pong Puanlari",
 
         #Store
-        "storeText": "Magaza",
-        "storeTagText": "Tumu",
-        "storeWalletText": "Cuzdan",
+        "storePageTittle": "Mağaza",
+        "storeText": "Mağaza",
+        "storeTagText": "Tümü",
+        "storeWalletText": "Cüzdan",
         "storeWalleinfoText1": "Oyun oynayarak ",
         "storeWalleinfoText2": " kazanabilirsin.",
 
         #Inventory
+        "inventoryPageTittle": "Envanter",
         "inventoryText": "Envanter",
         "inventoryTagText": "Tumu",
         "inventoryWalletText": "Cuzdan",
@@ -307,6 +416,7 @@ def get_lang_tr():
         "inventoryWalleinfoText2": " kazanabilirsin.",
         
         #Search
+        "searchPageTittle": "Arama",
         "searchInputText": "E-posta veya Kullanici Adi veya Gorunen Ad Ara...",
         "searchMessageButtonText": "Mesaj",
         "searchFollowButtonText": "Takip Et",
@@ -314,6 +424,7 @@ def get_lang_tr():
         "searchNoResultFoundText": "Sonuc bulunamadi.",
         
         #Profile
+        "profilePageTittle": "Profili",
         "profileRankAIText": "SADECE ROBOTUM",
         "profileRankUserText1": " SIRALAMADA",
         "profileRankUserText2": " SIRALAMA YOK",
@@ -337,10 +448,12 @@ def get_lang_tr():
         "profileGameStats6": "Ortalama Oyun Suresi:",
         
         #Friends
+        "friendsPageTittle": "Arkadaşlar",
         "friendsMessageButtonText": "Mesaj",
         "friendsNoResultFoundText": "Sonuc bulunamadi.",
         
         #ProfileSettings
+        "profileSettingsPageTittle": "Profil Ayarlari",
         "profileSettingsNavbar1": "Profili Duzenle",
         "profileSettingsNavbar2": "Sifre Degistir",
         "profileSettingsNavbar3": "Sosyal Medya Ekle",
@@ -389,6 +502,18 @@ def get_lang_pt():
         "baseSubHeaderText": "A versão indiana do clássico jogo Pong",
         "basePlayButtonText": "Vamos Comecar!",
 
+        "baseInfoHeaderText": "Bem-vindo ao Indian-Pong!",
+        "baseInfoHeaderDescription": "Pong traz a emoção e a competição do tênis de mesa clássico para a internet. Nesta plataforma, você pode se divertir, mostrar suas habilidades e subir no ranking para se tornar um dos melhores.",
+        "baseInfoSubHeaderText": "Jogue e Ganhe",
+        "baseInfoSubHeaderDescription1": "Ganhe Pong Points a cada jogo que vencer para subir no ranking.",
+        "baseInfoSubHeaderDescription2": "Use seus ganhos para comprar novos itens, raquetes e mesas da loja para aprimorar sua experiência de jogo.",
+        "baseInfoSubHeaderText2": "Comece Agora",
+        "baseInfoSubHeaderDescription3": "Crie uma conta para personalizar seu perfil, acompanhar suas estatísticas e ver onde você está no ranking.",
+        "baseInfoSubHeaderText3": "Mais Recursos",
+        "baseInfoSubHeaderDescription4": "Participe de torneios para enfrentar seus oponentes.",
+        "baseInfoSubHeaderDescription5": "Divirta-se com seus amigos hospedando jogos privados.",
+        "baseInfoSubHeaderDescription6": "Converse com outros jogadores, compartilhe táticas e participe da comunidade Pong.",
+
         #Login
         "loginHeaderText1": "Bem-vindo,",
         "loginHeaderText2": "faca login para continuar",
@@ -408,6 +533,13 @@ def get_lang_pt():
         "signupInputConfirmPasswordText": "Senha (novamente)",
         "signupImageUploadText": "Carregar Imagem",
         "signupButtonSignup": "Vamos Brilhar!",
+
+        #ForgotPassword
+        "forgotPasswordHeaderText": "Esqueceu a Senha",
+        "forgotPasswordInputEmailText": "E-mail",
+        "forgotPasswordButtonSend": "Enviar E-mail",
+        "forgotPasswordLinkText": "Não tem uma conta?",
+        "forgotPasswordLinkButtonText": "Junte-se a Nós",
 
 
         #Dashboard
@@ -430,6 +562,27 @@ def get_lang_pt():
         "pongGameAIButtonText": "Jogar com a IA",
         "pongGameLocalButtonText": "Jogo Local",
         "pongGameTournamentButtonText": "Torneio",
+
+            #AI-Game
+            "aiGameReactionDelayText": "Atraso na Reacão",
+            "aiGameGetReadyText": "Prepare-se",
+            "aiGamePresSpaceText": "Pressione 'Espaco' para iniciar",
+            "aiGameCountdownText": "Iniciando em",
+
+            "aiGameGameOverText": "Fim de Jogo",
+            "aiGameRestartButtonText": "Reiniciar",
+            "aiGameExitButtonText": "Sair",
+
+            "aiGameInfoHeaderText": "Sobre o Jogo",
+            "aiGameInfoSubHeaderText": "Como Jogar o Jogo?",
+            "aiGameInfoSubHeaderDescription1": "No jogo Pong, os jogadores participam de uma partida de tênis de mesa contra seus oponentes. As teclas W-A-S-D (ou as setas cima-baixo-esquerda-direita) são usadas para controlar a bola.",
+            "aiGameInfoSubHeaderText2": "Ganhe e Melhore",
+            "aiGameInfoSubHeaderDescription2": "Você ganha Pong Points a cada jogo que vence. Com esses pontos, você pode comprar novos itens, raquetes e mesas da loja para aprimorar sua experiência de jogo.",
+            "aiGameInfoSubHeaderText3": "Comece Agora",
+            "aiGameInfoSubHeaderDescription3": "Você pode criar uma conta para personalizar sua experiência de jogo. Com uma conta, você pode acompanhar suas estatísticas e ver sua posição no ranking.",
+            "aiGameInfoSubHeaderText4": "Mais Recursos",
+            "aiGameInfoSubHeaderDescription4": "Você pode participar de torneios para enfrentar seus oponentes e testar suas habilidades. Além disso, você pode criar jogos privados com seus amigos e se juntar à comunidade Pong.",
+            
 
             #Local-Game
             "localGameHeaderText": "Jogo Local 1v1",
@@ -517,6 +670,18 @@ def get_lang_hi():
         "baseSubHeaderText": "प्रसिद्ध खेल पॉन्ग का भारतीय संस्करण",
         "basePlayButtonText": "शुरू करें!",
 
+        "baseInfoHeaderText": "इंडियन-पॉन्ग में आपका स्वागत है!",
+        "baseInfoHeaderDescription": "पॉन्ग इंटरनेट पर क्लासिक टेबल टेनिस खेल के उत्साह और प्रतिस्पर्धा को लाता है। इस प्लेटफ़ॉर्म पर आप मजा कर सकते हैं, अपने कौशल का परिचय दे सकते हैं और शीर्ष में आने के लिए रैंकिंग में चढ़ सकते हैं।",
+        "baseInfoSubHeaderText": "खेलें और जीतें",
+        "baseInfoSubHeaderDescription1": "जीतने पर प्रत्येक खेल से पॉन्ग पॉइंट्स कमाकर रैंकिंग में चढ़ें।",
+        "baseInfoSubHeaderDescription2": "अपनी जीत से नए आइटम, रैकेट और टेबल्स खरीदने के लिए दुकान से खर्च करें।",
+        "baseInfoSubHeaderText2": "अभी शुरू करें",
+        "baseInfoSubHeaderDescription3": "प्रोफ़ाइल को व्यक्तिगत बनाने, अपने स्टैटिस्टिक्स को ट्रैक करने और रैंकिंग में अपनी जगह देखने के लिए खाता बनाएं।",
+        "baseInfoSubHeaderText3": "अधिक सुविधाएं",
+        "baseInfoSubHeaderDescription4": "अपने प्रतिद्वंद्वियों के साथ टूर्नामेंट में भाग लेने के लिए।",
+        "baseInfoSubHeaderDescription5": "अपने दोस्तों के साथ निजी खेल खेलकर मजा करें।",
+        "baseInfoSubHeaderDescription6": "अन्य खिलाड़ियों के साथ चैट करें, रणनीतियाँ साझा करें और पॉन्ग समुदाय में शामिल हों।",
+
         #Login
         "loginHeaderText1": "स्वागत है,",
         "loginHeaderText2": "जारी रखने के लिए साइन इन करें",
@@ -536,6 +701,13 @@ def get_lang_hi():
         "signupInputConfirmPasswordText": "पासवर्ड (फिर से)",
         "signupImageUploadText": "छवि अपलोड करें",
         "signupButtonSignup": "चमकाओ!",
+
+        #ForgotPassword
+        "forgotPasswordHeaderText": "पासवर्ड भूल गए",
+        "forgotPasswordInputEmailText": "ईमेल",
+        "forgotPasswordButtonSend": "ईमेल भेजें",
+        "forgotPasswordLinkText": "खाता नहीं है?",
+        "forgotPasswordLinkButtonText": "हमारे साथ शामिल हों",
 
 
         #Dashboard
@@ -558,6 +730,27 @@ def get_lang_hi():
         "pongGameAIButtonText": "ए.आई. के साथ खेलें",
         "pongGameLocalButtonText": "स्थानीय खेल",
         "pongGameTournamentButtonText": "टूर्नामेंट",
+
+            #AI-Game
+
+            "aiGameReactionDelayText": "प्रतिक्रिया में देरी",
+            "aiGameGetReadyText": "तैयार हो जाओ",
+            "aiGamePresSpaceText": "शुरू करने के लिए 'स्पेस' दबाएं",
+            "aiGameCountdownText": "में शुरू हो रहा है",
+
+            "aiGameGameOverText": "खेल समाप्त हो गया",
+            "aiGameRestartButtonText": "पुनः आरंभ करें",
+            "aiGameExitButtonText": "निकास",
+
+            "aiGameInfoHeaderText": "खेल के बारे में",
+            "aiGameInfoSubHeaderText": "खेल कैसे खेलें?",
+            "aiGameInfoSubHeaderDescription1": "पॉन्ग खेल में खिलाड़ी अपने प्रतिद्वंद्वी के खिलाफ एक टेनिस की मैच खेलते हैं। W-A-S-D (या ऊपर-नीचे-बाएं-दाएं तीर) तीरों को नियंत्रित करने के लिए उपयोग किया जाता है।",
+            "aiGameInfoSubHeaderText2": "जीतें और सुधारें",
+            "aiGameInfoSubHeaderDescription2": "आप हर जीते खेल के बाद पॉन्ग पॉइंट्स कमाते हैं। इन पॉइंट्स के साथ आप खेल का अनुभव बेहतर बनाने के लिए दुकान से नए आइटम, रैकेट और टेबल खरीद सकते हैं।",
+            "aiGameInfoSubHeaderText3": "अभी शुरू करें",
+            "aiGameInfoSubHeaderDescription3": "आप अपने खेल का अनुभव व्यक्तिगत करने के लिए एक खाता बना सकते हैं। एक खाते के साथ, आप अपने स्टैटिस्टिक्स को ट्रैक कर सकते हैं और रैंकिंग में अपनी जगह देख सकते हैं।",
+            "aiGameInfoSubHeaderText4": "अधिक सुविधाएं",
+            "aiGameInfoSubHeaderDescription4": "आप अपने प्रतिद्वंद्वियों के साथ टूर्नामेंट में भाग लेने के लिए और अपने कौशल का परीक्षण करने के लिए टूर्नामेंट में भाग ले सकते हैं। इसके अलावा, आप अपने दोस्तों के साथ निजी खेल बना सकते हैं और पॉन्ग समुदाय में शामिल हो सकते हैं।",
 
             #Local-Game
             "localGameHeaderText": "1v1 स्थानीय खेल",

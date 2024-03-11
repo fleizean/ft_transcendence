@@ -150,11 +150,11 @@ of the project.</b>
       <summary> <b> Add Another Game with User History and Matchmaking. ❓</b></summary>
       In this major module, the objective is to introduce a new game, distinct  from Pong, and incorporate features such as user history tracking and  matchmaking. Key features and goals include:
           <ul>
-          <li>❓ Develop a new, engaging game to   diversify the platform’s offerings and entertain users. </li>
-          <li>❓ Implement user history tracking   to record and display individual user’s gameplay statistics. </li>
+          <li>✅ Develop a new, engaging game to   diversify the platform’s offerings and entertain users. </li>
+          <li>✅ Implement user history tracking   to record and display individual user’s gameplay statistics. </li>
           <li>❓ Create a matchmaking system to  allow users to find opponents and participate in fair and balanced   matches. </li>
-          <li>❓ Ensure that user game history   and matchmaking data are stored securely and remain up-to-date. </li>
-          <li>❓ Optimize the performance and  responsiveness of the new game to provide an enjoyable user  experience. Regularly update and maintain the game to fix bugs, add  new features, and enhance gameplay. </li>
+          <li>✅ Ensure that user game history   and matchmaking data are stored securely and remain up-to-date. </li>
+          <li>✅ Optimize the performance and  responsiveness of the new game to provide an enjoyable user  experience. Regularly update and maintain the game to fix bugs, add  new features, and enhance gameplay. </li>
           </ul>
           This major module aims to expand your platform by introducing a new   game, enhancing user engagement with gameplay history, and  facilitating matchmaking for an enjoyable gaming experience.
   </details>
@@ -208,15 +208,15 @@ of the project.</b>
   </details>
   
   <details>
-      <summary> <b> Multiple language supports. ⌛</b></summary>
+      <summary> <b> Multiple language supports. ✅</b></summary>
       In this minor module, the objective is to ensure that your website  supports multiple languages to cater to a diverse user base. Key features  and goals include:
           <ul>
-          <li>⌛ Implement support for a minimum   of three languages on the website to accommodate a broad audience. </li>
-          <li>⌛ Provide a language switcher or  selector that allows users to easily change the website’s language   based on their preferences. </li>
-          <li>⌛ Translate essential website   content, such as navigation menus, headings, and key information, into  the supported languages. </li>
-          <li>⌛ Ensure that users can navigate  and interact with the website seamlessly, regardless of the selected   language. </li>
-          <li>⌛ Consider using language packs or  localization libraries to simplify the translation process and   maintain consistency across different languages. </li>
-          <li>⌛ Allow users to set their  preferred language as a default choice for subsequent visits to the  website. </li>
+          <li>✅ Implement support for a minimum   of three languages on the website to accommodate a broad audience. </li>
+          <li>✅ Provide a language switcher or  selector that allows users to easily change the website’s language   based on their preferences. </li>
+          <li>✅ Translate essential website   content, such as navigation menus, headings, and key information, into  the supported languages. </li>
+          <li>✅ Ensure that users can navigate  and interact with the website seamlessly, regardless of the selected   language. </li>
+          <li>✅ Consider using language packs or  localization libraries to simplify the translation process and   maintain consistency across different languages. </li>
+          <li>✅ Allow users to set their  preferred language as a default choice for subsequent visits to the  website. </li>
           </ul>
           This minor module aims to enhance the accessibility and inclusivity of  your website by offering content in multiple languages, making it more   user-friendly for a diverse international audience.
   </details>
