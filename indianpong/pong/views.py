@@ -85,8 +85,9 @@ def aboutus(request):
 
 
 def handler404(request, exception):
-    return render(request, "404.html", status=404)
-
+    lang = request.session.get('language', 'en')
+    context = langs.get_langs(lang)
+    return render(request, "404.html", {"context": context}, status=404)
 
 ### User Authentication ###
 @never_cache
@@ -237,8 +238,10 @@ def auth_callback(request):
 def set_language(request):
     if request.method == 'POST':
         selected_language = request.POST.get('language')
-        # Burada seçilen dil bilgisini oturum verilerine kaydedebilirsiniz
-        request.session['language'] = selected_language
+        # Seçilen dil bilgisini çerez olarak sakla
+        response = redirect(request.META.get('HTTP_REFERER'))
+        response.set_cookie('selectedLanguage', selected_language)
+        return response
     return redirect(request.META.get('HTTP_REFERER'))
 
 ### Login and Logout ###
@@ -279,6 +282,8 @@ def logout_view(request):
 @login_required()
 def profile_view(request, username):
     profile = get_object_or_404(UserProfile, username=username)
+    lang = request.session.get('language', 'en')
+    context = langs.get_langs(lang)
     game_records = Game.objects.filter(
         Q(player1=profile) | Q(player2=profile),
         game_kind='pong'
@@ -317,6 +322,7 @@ def profile_view(request, username):
             "history_page_obj": history_page_obj,
             "is_friend": is_friend,
             "game_records_rps": game_records_rps,
+            "context": context,
         },
     )
 
@@ -325,14 +331,18 @@ def profile_view(request, username):
 @never_cache
 @login_required()
 def rps_game_find(request):
-    return render(request, "rps-game-find.html")
+    lang = request.session.get('language', 'en')
+    context = langs.get_langs(lang)
+    return render(request, "rps-game-find.html", {"context": context})
 
 
 ## Pong Game ##
 @never_cache
 @login_required()
 def pong_game_find(request):
-    return render(request, "pong-game-find.html")
+    lang = request.session.get('language', 'en')
+    context = langs.get_langs(lang)
+    return render(request, "pong-game-find.html", {"context": context})
 
 
 
@@ -342,6 +352,8 @@ def pong_game_find(request):
 def profile_settings(request, username):
     if request.user.username != username:
         return JsonResponse({"error": "Unauthorized"}, status=401)
+    lang = request.session.get('language', 'en')
+    context = langs.get_langs(lang)
     if request.method == "POST":
         data = request.POST
         if "avatar_form" in data:
@@ -418,6 +430,7 @@ def profile_settings(request, username):
                 "password_form": password_form,
                 "social_form": social_form,
                 "delete_account_form": delete_account_form,
+                "context": context,
             },
         )
 
@@ -517,7 +530,9 @@ def set_password(request, uidb64, token):
 @login_required()
 def dashboard(request):
     profile = get_object_or_404(UserProfile, username=request.user.username)
-    return render(request, "dashboard.html", {"profile": profile})
+    lang = request.session.get('language', 'en')
+    context = langs.get_langs(lang)
+    return render(request, "dashboard.html", {"profile": profile, "context": context})
 
 
 @never_cache
@@ -527,6 +542,8 @@ def rankings(request):
         game_stats__total_win_rate_pong__isnull=False
     ).exclude(username='IndianAI').order_by("-elo_point")[:3]
 
+    lang = request.session.get('language', 'en')
+    context = langs.get_langs(lang)
     # Her bir kullanıcıya sıra numarası eklemek için döngü
     for index, user in enumerate(top_users, start=1):
         user.rank = index
@@ -549,13 +566,15 @@ def rankings(request):
 
     # Add rank attribute to each user in the page
 
-    return render(request, "rankings.html", {"top_users": top_users, "users_page_obj": users_page_obj})
+    return render(request, "rankings.html", {"top_users": top_users, "users_page_obj": users_page_obj, "context": context})
 
 
 @login_required()
 def store(request, username):  # store_view
     if request.user.username != username:
         return redirect(reverse("store", kwargs={"username": request.user.username}))
+    lang = request.session.get('language', 'en')
+    context = langs.get_langs(lang)
     profile = get_object_or_404(UserProfile, username=username)
     bought_items = UserItem.objects.filter(user=profile, is_bought=True).values_list(
         "item", flat=True
@@ -596,9 +615,8 @@ def store(request, username):  # store_view
     return render(
         request,
         "store.html",
-        {"store_items": store_items, "profile": profile, "form": form},
+        {"store_items": store_items, "profile": profile, "form": form, "context": context, "selected_language": lang,},
     )
-
 
 @never_cache
 @login_required

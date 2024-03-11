@@ -1,31 +1,21 @@
 {% extends "base.html" %}
 
-{% block title %}Dashboard{% endblock title %}
+{% block title %}{{context.dashboardPageTittle}}{% endblock title %}
 
 {% block app %}
 
 <div class="container-top">
   <div class="dashboard-card">
     <div class="page-rotation">
-      <h1>Welcome, <span style="color: orange;">{{ username }}!</span></h1>
+      <h1>{{context.dashboardText1}}, <span style="color: orange;">{{ username }}!</span></h1>
       <p>
-        Indian Pong is a collaborative project developed for the 42 school
-        community, offering a nostalgic gaming experience through the classic
-        Atari game, Ping-Pong. This platform allows users to engage in Ping-Pong
-        matches with each other, fostering a sense of friendly competition. In
-        addition to the gaming aspect, Indian Pong provides a social dimension,
-        featuring chat rooms where users can communicate and connect with one
-        another. The platform also enables users to expand their network by
-        adding friends within the 42 school community. Overall, Indian Pong
-        combines the joy of retro gaming with modern social interaction,
-        creating a vibrant and interactive experience for the 42 school
-        community.
+        {{context.dashboardText2}}
       </p>
       <div class="row">
         <div class="col-md-4 col-xl-3">
           <div class="card-stat bg-c-blue order-card">
             <div class="card-block">
-              <h6 class="m-b-20">Games Played</h6>
+              <h6 class="m-b-20">{{context.dashboardGamesPlayed}}</h6>
               <h2 class="text-right">
                 <i class="bi bi-dice-1-fill"></i><span>{% if profile.game_stats.total_games_pong %} {{ profile.game_stats.total_games_pong }} {% else %} 0 {% endif %}</span>
               </h2>
@@ -36,7 +26,7 @@
         <div class="col-md-4 col-xl-3">
           <div class="card-stat bg-c-green order-card">
             <div class="card-block">
-              <h6 class="m-b-20">Win Count</h6>
+              <h6 class="m-b-20">{{context.dashboardWinCount}}</h6>
               <h2 class="text-right">
                 <i class="bi bi-trophy-fill"></i><span>{% if profile.game_stats.total_win_pong %} {{ profile.game_stats.total_win_pong }} {% else %} 0 {% endif %}</span>
               </h2>
@@ -47,7 +37,7 @@
         <div class="col-md-4 col-xl-3">
           <div class="card-stat bg-c-yellow order-card">
             <div class="card-block">
-              <h6 class="m-b-20">Win Streak</h6>
+              <h6 class="m-b-20">{{context.dashboardWinStreak}}</h6>
               <h2 class="text-right">
                 <i class="bi bi-emoji-wink-fill"></i><span>{% if profile.game_stats.total_win_streak_pong %} {{ profile.game_stats.total_win_streak_pong }} {% else %} 0 {% endif %}</span>
               </h2>
@@ -58,7 +48,7 @@
         <div class="col-md-4 col-xl-3">
           <div class="card-stat bg-c-pink order-card">
             <div class="card-block">
-              <h6 class="m-b-20">Lose Streak</h6>
+              <h6 class="m-b-20">{{context.dashboardLoseStreak}}</h6>
               <h2 class="text-right">
                 <i class="bi bi-emoji-frown-fill"></i><span> {% if profile.game_stats.total_lose_streak_pong %} {{ profile.game_stats.total_lose_streak_pong }} {% else %} 0 {% endif %} </span>
               </h2>
@@ -69,7 +59,7 @@
         <div class="col-md-4 col-xl-3">
           <div class="card-stat bg-c-gold order-card">
             <div class="card-block">
-              <h6 class="m-b-20">Win Rate %</h6>
+              <h6 class="m-b-20">{{context.dashboardWinRate}} %</h6>
               <h2 class="text-right">
                 <i class="bi bi-award-fill"></i><span> {% if profile.game_stats.formatted_win_rate %} {{ profile.game_stats.formatted_win_rate }} {% else %} 0 {% endif %}</span>
               </h2>
@@ -80,7 +70,7 @@
         <div class="col-md-4 col-xl-3">
           <div class="card-stat bg-c-navy order-card">
             <div class="card-block">
-              <h6 class="m-b-20">Average Game Duration</h6>
+              <h6 class="m-b-20">{{context.dashboardAverageGameDuration}}</h6>
               <h2 class="text-right">
                 <i class="bi bi-clock-fill"></i>
                 <span class="big">{% if profile.game_stats.formatted_game_duration %} {{ profile.game_stats.formatted_game_duration }} {% else %} 0 {% endif %}</span> 
@@ -92,7 +82,7 @@
         <div class="col-md-4 col-xl-3">
           <div class="card-stat bg-c-light-green order-card">
             <div class="card-block">
-              <h6 class="m-b-20">Average Points Won</h6>
+              <h6 class="m-b-20">{{context.dashboardAveragePointsWon}}</h6>
               <h2 class="text-right">
                 <i class="bi bi-star-fill"></i><span>{% if profile.game_stats.formatted_avg_points_won %} {{ profile.game_stats.formatted_avg_points_won }} {% else %} 0 {% endif %}</span>
               </h2>
@@ -103,7 +93,7 @@
         <div class="col-md-4 col-xl-3">
           <div class="card-stat bg-c-purple order-card">
             <div class="card-block">
-              <h6 class="m-b-20">Average Points Lost</h6>
+              <h6 class="m-b-20">{{context.dashboardAveragePointsLost}}</h6>
               <h2 class="text-right">
                 <i class="bi bi-bucket-fill"></i><span> {% if profile.game_stats.formatted_avg_points_lost %} {{ profile.game_stats.formatted_avg_points_lost }} {% else %} 0 {% endif %}</span>
               </h2>

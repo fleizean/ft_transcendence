@@ -12,6 +12,7 @@ def get_langs(lang):
 def get_lang_en():
     context = {
         #index
+        "basePageTittle": "Indian-Pong",
         "baseHeaderText": "Indian-Pong",
         "baseSubHeaderText": "Indian-Pong created for 42 school by Indian Dev!",
         "basePlayButtonText": "Get Started!",
@@ -29,6 +30,7 @@ def get_lang_en():
         "baseInfoSubHeaderDescription6": "Chat with other players, share tactics, and join the Pong community.",
         
         #Login
+        "loginPageTittle": "Login",
         "loginHeaderText1": "Welcome,",
         "loginHeaderText2": "sign in to continue",
         "loginInputUsernameText": "Username",
@@ -36,8 +38,14 @@ def get_lang_en():
         "loginForgotPasswordText": "Forgot Password?",
         "loginButtonLogin": "Let's go",
         "loginButtonJoin": "Join Us",
+
+        #404
+        "notFoundPageTittle": "404 Not Found",
+        "notFoundHeaderText": "404 ERROR",
+        "notFoundSubHeaderText": "Probably you lost in our website!",
         
         #Signup
+        "signupPageTittle": "Sign Up",
         "signupHeaderText1": "Welcome,",
         "signupHeaderText2": "sign up to continue",
         "signupInputUsernameText": "Username",
@@ -49,14 +57,20 @@ def get_lang_en():
         "signupButtonSignup": "Let's shine!",
 
         #ForgotPassword
+        "forgotPasswordPageTittle": "Forgot Password",
         "forgotPasswordHeaderText": "Forgot Password",
         "forgotPasswordInputEmailText": "Email",
         "forgotPasswordButtonSend": "Send Email",
         "forgotPasswordLinkText": "Don't have an account?",
         "forgotPasswordLinkButtonText": "Join Us",
 
+        #ChangePassword
+        "changePasswordPageTittle": "Change Password",
+        "changePasswordHeaderText": "Change Password",
+        "changePassswordSubHeaderText": "change your password",
 
         #Dashboard
+        "dashboardPageTittle": "Dashboard",
         "dashboardText1": "Welcome, ",
         "dashboardText2": "Indian Pong is a collaborative project developed for the 42 school community, offering a nostalgic gaming experience through the classic Atari game, Ping-Pong. This platform allows users to engage in Ping-Pong matches with each other, fostering a sense of friendly competition. In addition to the gaming aspect, Indian Pong provides a social dimension, featuring chat rooms where users can communicate and connect with one another. The platform also enables users to expand their network by adding friends within the 42 school community. Overall, Indian Pong combines the joy of retro gaming with modern social interaction, creating a vibrant and interactive experience for the 42 school community.",
 
@@ -71,13 +85,17 @@ def get_lang_en():
 
         
         #Pong-Game
+        "pongGamePageTittle": "Pong Game",
         "pongGameHeaderText": "Welcome to Pong Lobby",
         "pongGameSubHeaderText": "You can play with the AI and improve yourself without reflecting it in your stats, as if you were just warming up. If you want to play with a real person, consider the other option, remember that if we don't find someone to match you within 5 minutes, the match will be canceled. Good luck before I forget!",
         "pongGameAIButtonText": "Play with AI",
         "pongGameLocalButtonText": "Local Game",
+        "pongGameRemoteButtonText": "Remote Player",
+        "pongGameLocalTournamentButtonText": "Local Tournament",
         "pongGameTournamentButtonText": "Tournament",
 
             #AI-Game
+            "aiGamePageTittle": "AI Game",
             "aiGameReactionDelayText": "Reaction Delay",
             "aiGameGetReadyText": "Get Ready",
             "aiGamePresSpaceText": "Press 'Space' to start",
@@ -99,6 +117,7 @@ def get_lang_en():
 
 
             #Local-Game
+            "localGamePageTittle": "Local Game",
             "localGameHeaderText": "1v1 Local Game",
             "localGamePlayer1Text": "Player1 Name",
             "localGamePlayer2Text": "Player2 Name",
@@ -109,6 +128,7 @@ def get_lang_en():
             "localGameButtonStart": "Start",
 
             #Local-Tournament
+            "localTournamentPageTittle": "Local Tournament",
             "localTournamentGameHeaderText": "Local Tournament",
             "localTournamentPlayer1Text": "Player1 Name",
             "localTournamentPlayer2Text": "Player2 Name",
@@ -124,12 +144,14 @@ def get_lang_en():
 
 
             #Tournament
+            "tournamentPageTittle": "Tournament",
             "tournamentHeaderText": "Welcome to Tournament Lobby for Pong",
             "tournamentSubHeaderText": "Here you can join a tournament lobby or create your own tournament lobby. You can invite your friends by sharing the invite code after creating the room. Good luck before I forget!",
             "tournamentJoinButtonText": "Join Tournament",
             "tournamentCreateButtonText": "Create Tournament",
 
             #Tournament-Create
+            "tournamentCreatePageTittle": "Create Tournament",
             "tournamentCreateHeaderText": "CREATE TOURNAMENT",
             "tournamentCreateSubHeaderText": "To create a tournament I need a tournament name, how many max points each game will have. Good luck before I forget!",
             "tournamentCreateNameText": "Tournament Name",
@@ -140,12 +162,14 @@ def get_lang_en():
             "tournamentCreateButtonCreate": "Create Tournament",
 
             #Joined-Tournament-Room
+            "tournamentroomPageTittle": "Tournament Room",
             "tournamentroomHeaderText": "Tournament Room",
             "tournamentroomLeaveButtonText": "LEAVE ROOM",
             "tournamentroomStartButtonText": "START ROOM",
             "tournamentCheckBracketButtonText": "CHECK BRACKET",
 
         #RPS Game
+        "rpsGamePageTittle": "Rock Paper Scissors",
         "rpsGameText1": "Welcome to RPS Lobby",
         "rpsGameText2": "You can play with the AI and improve yourself without reflecting it in your stats, as if you were just warming up. If you want to play with a real person, consider the other option, remember that if we don't find someone to match you within 5 minutes, the match will be canceled. Good luck before I forget!",
         "rpsGameAIButtonText": "Play with AI",
@@ -153,15 +177,17 @@ def get_lang_en():
         "rpsGameSearchOpponentButtonText": "Search Opponent ",
 
         #Rankings
+        "rankingsPageTittle": "Rankings",
         "rankingsTableRankText": "Rank",
         "rankingsTableNameText": "Name",
         "rankingsTableUsernameText": "Username",
         "rankingsTableWinsText": "Wins",
         "rankingsTableLossesText": "Losses",
         "rankingsTableWinRateText": "Win Rate",
-        "rankingsTablePongPointsText": "Pong Points",
+        "rankingsTablePongPointsText": "Pong Point",
 
         #Store
+        "storePageTittle": "Store",
         "storeText": "Store",
         "storeTagText": "All",
         "storeWalletText": "Wallet",
@@ -169,6 +195,7 @@ def get_lang_en():
         "storeWalleinfoText2": " kazanabilirsin.",
 
         #Inventory
+        "inventoryPageTittle": "Inventory",
         "inventoryText": "Inventory",
         "inventoryTagText": "All",
         "inventoryWalletText": "Wallet",
@@ -176,6 +203,7 @@ def get_lang_en():
         "inventoryWalleinfoText2": " kazanabilirsin.",
         
         #Search
+        "searchPageTittle": "Search",
         "searchInputText": "Email or Username or Displayname Search...",
         "searchMessageButtonText": "Message",
         "searchFollowButtonText": "Follow",
@@ -183,6 +211,7 @@ def get_lang_en():
         "searchNoResultFoundText": "No result found.",
         
         #Profile
+        "profilePageTittle": "Profile",
         "profileRankAIText": "I'M JUST ROBOT",
         "profileRankUserText1": " IN RANKINGS",
         "profileRankUserText2": " NO RANKING",
@@ -195,21 +224,25 @@ def get_lang_en():
         "profileMatchHistoryText2": "Result",
         "profileMatchHistoryText3": "Score",
         "profileMatchHistoryText4": "Duration",
+        "profileMatchHistoryWinText": "Win",
+        "profileMatchHistoryLoseText": "Lose",
 
         "profileRankText1": "Rank",
 
         "profileGameStats1": "Games Played:",
-        "profileGameStats2": "Loses:",
-        "profileGameStats3": "Win Rate:",
-        "profileGameStats4": "Win Streak:",
-        "profileGameStats5": "Lose Streak:",
+        "profileGameStats2": "Wins:",
+        "profileGameStats3": "Loses:",
+        "profileGameStats4": "Win Rate:",
+        "profileGameStats5": "Win Streak:",
         "profileGameStats6": "Average Game Duration:",
         
         #Friends
+        "friendsPageTittle": "Friends",
         "friendsMessageButtonText": "Message",
         "friendsNoResultFoundText": "No result found.",
         
         #ProfileSettings
+        "profileSettingsPageTittle": "Profile Settings",
         "profileSettingsNavbar1": "Edit Profile",
         "profileSettingsNavbar2": "Change Password",
         "profileSettingsNavbar3": "Add Socials",
@@ -228,6 +261,7 @@ def get_lang_en():
             "changePasswordCurrentPasswordText": "Current Password",
             "changePasswordNewPasswordText": "New Password",
             "changePasswordNewConfirmPasswordText": "Confirm New Password",
+            "changePassword42Text": "Since you are logged in with 42, your password setting feature is disabled.",
             "changePasswordSaveButtonText": "Save Password",
             
             #Add-Socials
@@ -240,9 +274,11 @@ def get_lang_en():
             #Blocked-Users
             "blockedUsersHeaderText": "Blocked Accounts",
             "blockedUsersSubHeaderText": "You can unblock the accounts you have blocked here.",
+            "blockedStatusText": "Blocked",
 
             #Close-Account
             "closeAccountHeaderText": "Close Account",
+            "closeAccountInputText": "Email",
             "closeAccountSubHeaderText": "You can delete your account here. This action is irreversible.",
             "closeAccountButton": "Close Account",
             
@@ -279,6 +315,11 @@ def get_lang_tr():
         "loginForgotPasswordText": "Şifremi Unuttum?",
         "loginButtonLogin": "Giriş Yap",
         "loginButtonJoin": "Üye Ol",
+
+        #404
+        "notFoundPageTittle": "Sayfa Bulunamadı",
+        "notFoundHeaderText": "404 HATA",
+        "notFoundSubHeaderText": "Muhtemelen sitemizde kayboldunuz!",
         
         #Signup
         "signupPageTittle": "Kayıt Ol",
@@ -300,6 +341,10 @@ def get_lang_tr():
         "forgotPasswordLinkText": "Hesabınız yok mu?",
         "forgotPasswordLinkButtonText": "Kayıt Ol",
 
+        #ChangePassword
+        "changePasswordPageTittle": "Şifre Değiştir",
+        "changePasswordHeaderText": "Şifre Değiştir",
+        "changePassswordSubHeaderText": "şifreni değiştir",
 
         #Dashboard
         "dashboardPageTittle": "Ana Sayfa",
@@ -322,6 +367,8 @@ def get_lang_tr():
         "pongGameSubHeaderText": "Yapay Zeka ile oynayarak kendinizi gelistirebilir ve istatistiklerinize yansitmadan isinma gibi davranabilirsiniz. Gercek bir kisiyle oynamak istiyorsaniz, diger secenegi dusunun; 5 dakika icinde eslesecek birini bulamazsak, eslesme iptal edilecektir. Unutmadan once iyi sanslar!",
         "pongGameAIButtonText": "Yapay Zeka ile Oyna",
         "pongGameLocalButtonText": "Yerel Oyun",
+        "pongGameRemoteButtonText": "Uzak Oyuncu",
+        "pongGameLocalTournamentButtonText": "Yerel Turnuva",
         "pongGameTournamentButtonText": "Turnuva",
 
             #AI-Game
@@ -433,18 +480,16 @@ def get_lang_tr():
         "profileTitleText1": "42 Kocaeli ogrencisi",
         "profileTitleText2": "Yazilim Gelistirici",
 
-        "profileMatchHistoryText1": "Rakip",
-        "profileMatchHistoryText2": "Sonuc",
-        "profileMatchHistoryText3": "Skor",
-        "profileMatchHistoryText4": "Sure",
+        "profileMatchHistoryWinText": "Kazandı",
+        "profileMatchHistoryLoseText": "Kaybetti",
 
         "profileRankText1": "Sira",
 
         "profileGameStats1": "Oynanan Oyunlar:",
-        "profileGameStats2": "Kayiplar:",
-        "profileGameStats3": "Kazanma Orani:",
-        "profileGameStats4": "Kazanma Serisi:",
-        "profileGameStats5": "Kaybetme Serisi:",
+        "profileGameStats2": "Kazanmalar:",
+        "profileGameStats3": "Kayiplar:",
+        "profileGameStats4": "Kazanma Orani:",
+        "profileGameStats5": "Kazanma Serisi:",
         "profileGameStats6": "Ortalama Oyun Suresi:",
         
         #Friends
@@ -472,6 +517,7 @@ def get_lang_tr():
             "changePasswordCurrentPasswordText": "Mevcut Sifre",
             "changePasswordNewPasswordText": "Yeni Sifre",
             "changePasswordNewConfirmPasswordText": "Yeni Sifreyi Onayla",
+            "changePassword42Text": "42 ile oturum actiginiz icin sifre ayarlama ozelligi devre disi birakilmistir.",
             "changePasswordSaveButtonText": "Sifreyi Kaydet",
             
             #Add-Socials
@@ -484,9 +530,11 @@ def get_lang_tr():
             #Blocked-Users
             "blockedUsersHeaderText": "Engellenen Hesaplar",
             "blockedUsersSubHeaderText": "Burada engellediginiz hesaplari acabilirsiniz.",
+            "blockedStatusText": "Engellendi",
 
             #Close-Account
             "closeAccountHeaderText": "Hesabi Kapat",
+            "closeAccountInputText": "E-posta",
             "closeAccountSubHeaderText": "Burada hesabinizi silebilirsiniz. Bu islem geri alinamaz.",
             "closeAccountButton": "Hesabi Kapat",
             
@@ -498,6 +546,7 @@ def get_lang_tr():
 def get_lang_pt():
     context = {
         #index
+        "basePageTittle": "Indian-Pong",
         "baseHeaderText": "Indian-Pong",
         "baseSubHeaderText": "A versão indiana do clássico jogo Pong",
         "basePlayButtonText": "Vamos Comecar!",
@@ -515,15 +564,22 @@ def get_lang_pt():
         "baseInfoSubHeaderDescription6": "Converse com outros jogadores, compartilhe táticas e participe da comunidade Pong.",
 
         #Login
+        "loginPageTittle": "Iniciar sessão",
         "loginHeaderText1": "Bem-vindo,",
         "loginHeaderText2": "faca login para continuar",
         "loginInputUsernameText": "Nome de Usuário",
         "loginInputPasswordText": "Senha",
         "loginForgotPasswordText": "Esqueceu a Senha?",
         "loginButtonLogin": "Vamos lá",
-        "loginButtonJoin": "Junte-se a Nós",
+        "loginButtonJoin": "Junte-se",
+
+        #404
+        "notFoundPageTittle": "Página não encontrada",
+        "notFoundHeaderText": "404 ERRO",
+        "notFoundSubHeaderText": "Você provavelmente se perdeu em nosso site!",
         
         #Signup
+        "signupPageTittle": "Inscreva-se",
         "signupHeaderText1": "Bem-vindo,",
         "signupHeaderText2": "inscreva-se para continuar",
         "signupInputUsernameText": "Nome de Usuário",
@@ -531,18 +587,25 @@ def get_lang_pt():
         "signupInputEmailText": "E-mail",
         "signupInputPasswordText": "Senha",
         "signupInputConfirmPasswordText": "Senha (novamente)",
-        "signupImageUploadText": "Carregar Imagem",
-        "signupButtonSignup": "Vamos Brilhar!",
+        "signupImageUploadText": "Imagem",
+        "signupButtonSignup": "Vamos!",
 
         #ForgotPassword
+        "forgotPasswordPageTittle": "Esqueceu a Senha",
         "forgotPasswordHeaderText": "Esqueceu a Senha",
         "forgotPasswordInputEmailText": "E-mail",
         "forgotPasswordButtonSend": "Enviar E-mail",
         "forgotPasswordLinkText": "Não tem uma conta?",
         "forgotPasswordLinkButtonText": "Junte-se a Nós",
 
+        #ChangePassword
+        "changePasswordPageTittle": "Mudar Senha",
+        "changePasswordHeaderText": "Mudar Senha",
+        "changePassswordSubHeaderText": "alterar a sua palavra-passe",
+
 
         #Dashboard
+        "dashboardPageTittle": "Painel",
         "dashboardText1": "Bem-vindo, ",
         "dashboardText2": "O Indian Pong é um projeto colaborativo desenvolvido para a comunidade da escola 42, oferecendo uma experiência de jogo nostálgica através do clássico jogo Atari, Ping-Pong. Esta plataforma permite que os usuários participem de partidas de Ping-Pong uns com os outros, promovendo uma sensacão de competicão amigável. Além do aspecto de jogo, o Indian Pong oferece uma dimensão social, apresentando salas de bate-papo onde os usuários podem se comunicar e se conectar uns com os outros. A plataforma também permite que os usuários expandam sua rede adicionando amigos dentro da comunidade da escola 42. No geral, o Indian Pong combina a alegria dos jogos retrô com a interacão social moderna, criando uma experiência vibrante e interativa para a comunidade da escola 42.",
 
@@ -557,13 +620,17 @@ def get_lang_pt():
 
         
         #Pong-Game
+        "pongGamePageTittle": "Jogo de Pong",
         "pongGameHeaderText": "Bem-vindo ao Lobby de Pong",
         "pongGameSubHeaderText": "Você pode jogar com a IA e se aprimorar sem refletir em suas estatísticas, como se estivesse apenas se aquecendo. Se você quiser jogar com uma pessoa real, considere a outra opcão, lembre-se que se não encontrarmos alguém para combinar com você dentro de 5 minutos, a partida será cancelada. Boa sorte antes que eu esqueca!",
         "pongGameAIButtonText": "Jogar com a IA",
         "pongGameLocalButtonText": "Jogo Local",
+        "pongGameRemoteButtonText": "Jogador Remoto",
+        "pongGameLocalTournamentButtonText": "Locais Torneio",
         "pongGameTournamentButtonText": "Torneio",
 
             #AI-Game
+            "aiGamePageTittle": "Jogo de Pong com a IA",
             "aiGameReactionDelayText": "Atraso na Reacão",
             "aiGameGetReadyText": "Prepare-se",
             "aiGamePresSpaceText": "Pressione 'Espaco' para iniciar",
@@ -585,6 +652,7 @@ def get_lang_pt():
             
 
             #Local-Game
+            "localGamePageTittle": "Jogo Local",
             "localGameHeaderText": "Jogo Local 1v1",
             "localGamePlayer1Text": "Nome do Jogador 1",
             "localGamePlayer2Text": "Nome do Jogador 2",
@@ -595,12 +663,14 @@ def get_lang_pt():
             "localGameButtonStart": "Iniciar",
 
             #Tournament
+            "tournamentPageTittle": "Torneio",
             "tournamentHeaderText": "Bem-vindo ao Lobby do Torneio de Pong",
             "tournamentSubHeaderText": "Aqui você pode entrar em um lobby de torneio ou criar seu próprio lobby de torneio. Você pode convidar seus amigos compartilhando o código de convite após criar a sala. Boa sorte antes que eu esqueca!",
             "tournamentJoinButtonText": "Entrar no Torneio",
             "tournamentCreateButtonText": "Criar Torneio",
 
             #Tournament-Create
+            "tournamentCreatePageTittle": "Criar Torneio",
             "tournamentCreateHeaderText": "CRIAR TORNEIO",
             "tournamentCreateSubHeaderText": "Para criar um torneio, eu preciso de um nome de torneio, quantos pontos máximos cada jogo terá. Boa sorte antes que eu esqueca!",
             "tournamentCreateNameText": "Nome do Torneio",
@@ -611,12 +681,14 @@ def get_lang_pt():
             "tournamentCreateButtonCreate": "Criar Torneio",
 
             #Joined-Tournament-Room
+            "tournamentroomPageTittle": "Sala de Torneio",
             "tournamentroomHeaderText": "Sala de Torneio",
             "tournamentroomLeaveButtonText": "SAIR DA SALA",
             "tournamentroomStartButtonText": "INICIAR SALA",
             "tournamentCheckBracketButtonText": "VER SUPORTE",
 
         #RPS Game
+        "rpsGamePageTittle": "Pedra, Papel e Tesoura",
         "rpsGameText1": "Bem-vindo ao Lobby de Pedra, Papel e Tesoura",
         "rpsGameText2": "Você pode jogar com a IA e se aprimorar sem refletir em suas estatísticas, como se estivesse apenas se aquecendo. Se você quiser jogar com uma pessoa real, considere a outra opcão, lembre-se que se não encontrarmos alguém para combinar com você dentro de 5 minutos, a partida será cancelada. Boa sorte antes que eu esqueca!",
         "rpsGameAIButtonText": "Jogar com a IA",
@@ -624,6 +696,7 @@ def get_lang_pt():
         "rpsGameSearchOpponentButtonText": "Buscar Oponente ",
 
         #Rankings
+        "rankingsPageTittle": "Classificacão",
         "rankingsTableRankText": "Classificacão",
         "rankingsTableNameText": "Nome",
         "rankingsTableUsernameText": "Nome de Usuário",
@@ -633,6 +706,7 @@ def get_lang_pt():
         "rankingsTablePongPointsText": "Pontos Pong",
 
         #Store
+        "storePageTittle": "Loja",
         "storeText": "Loja",
         "storeTagText": "Tudo",
         "storeWalletText": "Carteira",
@@ -640,6 +714,7 @@ def get_lang_pt():
         "storeWalleinfoText2": " jogando.",
 
         #Inventory
+        "inventoryPageTittle": "Inventário",
         "inventoryText": "Inventário",
         "inventoryTagText": "Tudo",
         "inventoryWalletText": "Carteira",
@@ -647,6 +722,7 @@ def get_lang_pt():
         "inventoryWalleinfoText2": " jogando.",
         
         #Search
+        "searchPageTittle": "Procurar",
         "searchInputText": "Procurar por e-mail, nome de usuário ou nome de exibicão...",
         "searchMessageButtonText": "Mensagem",
         "searchFollowButtonText": "Seguir",
@@ -654,18 +730,75 @@ def get_lang_pt():
         "searchNoResultFoundText": "Nenhum resultado encontrado.",
         
         #Profile
-        "profileRankAIText": "Eu sou apenas um robô",
-        "profileRankUserText1": "Classificado em ",
-        "profileRankUserText2": " Nenhuma classificacão ainda",
+        "profilePageTittle": "Perfil",
+        "profileRankAIText": "APENAS ROBÔ",
+        "profileRankUserText1": " RANKING",
+        "profileRankUserText2": " SEM RANKING",
         "profileFollowButton": "Seguir",
         "profileFollowingButton": "Seguindo",
-        "profileTitleText1": "Comunidade 42, "
+        "profileTitleText1": "Estudante da 42 Kocaeli",
+        "profileTitleText2": "Desenvolvedor de Software",
+
+        "profileMatchHistoryWinText": "Venceu",
+        "profileMatchHistoryLoseText": "Perdeu",
+
+        "profileRankText1": "Classificacão",
+
+        "profileGameStats1": "Jogos Jogados:",
+        "profileGameStats2": "Vitórias:",
+        "profileGameStats3": "Derrotas:",
+        "profileGameStats4": "Taxa de Vitória:",
+        "profileGameStats5": "Sequência de Vitórias:",
+        "profileGameStats6": "Duração Média do Jogo:",
+
+        #ProfileSettings
+        "profileSettingsPageTittle": "Configurações do Perfil",
+        "profileSettingsNavbar1": "Editar Perfil",
+        "profileSettingsNavbar2": "Alterar Senha",
+        "profileSettingsNavbar3": "Adicionar Redes Sociais",
+        "profileSettingsNavbar4": "Usuários Bloqueados",
+        "profileSettingsNavbar5": "Fechar Conta",
+
+            #Edit-Profile
+            "editProfileChangeImageText": "Alterar Imagem",
+            "editProfileUsernameText": "Nome de usuário (como seu nome aparecerá para outros usuários no site)",
+            "editProfileEmailText": "Email",
+            "editProfile42EmailText": "Como você está logado com 42, o recurso de configuração de e-mail está desativado.",
+            "editProfileDisplayNameText": "Nome de Exibição",
+            "editProfileSaveButtonText": "Salvar Alterações",
+
+            #Change-Password
+            "changePasswordCurrentPasswordText": "Senha Atual",
+            "changePasswordNewPasswordText": "Nova Senha",
+            "changePasswordNewConfirmPasswordText": "Confirmar Nova Senha",
+            "changePassword42Text": "Como você está logado com 42, o recurso de configuração de senha está desativado.",
+            "changePasswordSaveButtonText": "Salvar Senha",
+
+            #Add-Socials
+            "addSocialsLinkedinInputText": "Insira seu nome de usuário do LinkedIn",
+            "addSocialsTwitterInputText": "Insira seu nome de usuário do Twitter",
+            "addSocialsGithubInputText": "Insira seu nome de usuário do Github",
+            "addSocialsIntraInputText": "Insira seu nome de usuário do 42 Intra",
+            "addSocialsSaveButtonText": "Salvar Redes Sociais",
+
+            #Blocked-Users
+            "blockedUsersHeaderText": "Contas Bloqueadas",
+            "blockedUsersSubHeaderText": "Você pode desbloquear as contas que bloqueou aqui.",
+            "blockedStatusText": "Bloqueado",
+
+
+            #Close-Account
+            "closeAccountHeaderText": "Fechar Conta",
+            "closeAccountInputText": "E-mail",
+            "closeAccountSubHeaderText": "Você pode excluir sua conta aqui. Esta ação é irreversível.",
+            "closeAccountButton": "Fechar Conta",
     }
     return context
 
 def get_lang_hi():
     context = {
         #index
+        "basePageTittle": "इंडियन-पॉन्ग",
         "baseHeaderText": "इंडियन-पॉन्ग",
         "baseSubHeaderText": "प्रसिद्ध खेल पॉन्ग का भारतीय संस्करण",
         "basePlayButtonText": "शुरू करें!",
@@ -683,15 +816,22 @@ def get_lang_hi():
         "baseInfoSubHeaderDescription6": "अन्य खिलाड़ियों के साथ चैट करें, रणनीतियाँ साझा करें और पॉन्ग समुदाय में शामिल हों।",
 
         #Login
+        "loginPageTittle": "लॉग इन करें",
         "loginHeaderText1": "स्वागत है,",
         "loginHeaderText2": "जारी रखने के लिए साइन इन करें",
         "loginInputUsernameText": "उपयोगकर्ता नाम",
         "loginInputPasswordText": "पासवर्ड",
         "loginForgotPasswordText": "पासवर्ड भूल गए?",
         "loginButtonLogin": "चलो चलते हैं",
-        "loginButtonJoin": "हमारे साथ शामिल हों",
+        "loginButtonJoin": "हमारे साथ",
+
+        #404
+        "notFoundPageTittle": "पृष्ठ नहीं मिला",
+        "notFoundHeaderText": "404 त्रुटि",
+        "notFoundSubHeaderText": "आप शायद हमारी वेबसाइट में खो गए हैं!",
         
         #Signup
+        "signupPageTittle": "साइन अप करें",
         "signupHeaderText1": "स्वागत है,",
         "signupHeaderText2": "जारी रखने के लिए साइन अप करें",
         "signupInputUsernameText": "उपयोगकर्ता नाम",
@@ -703,14 +843,21 @@ def get_lang_hi():
         "signupButtonSignup": "चमकाओ!",
 
         #ForgotPassword
+        "forgotPasswordPageTittle": "पासवर्ड भूल गए",
         "forgotPasswordHeaderText": "पासवर्ड भूल गए",
         "forgotPasswordInputEmailText": "ईमेल",
         "forgotPasswordButtonSend": "ईमेल भेजें",
         "forgotPasswordLinkText": "खाता नहीं है?",
         "forgotPasswordLinkButtonText": "हमारे साथ शामिल हों",
 
+        #ChangePassword
+        "changePasswordPageTittle": "पासवर्ड बदलें",
+        "changePasswordHeaderText": "पासवर्ड बदलें",
+        "changePassswordSubHeaderText": "अपना पासवर्ड बदलें",
+
 
         #Dashboard
+        "dashboardPageTittle": "डैशबोर्ड",
         "dashboardText1": "स्वागत, ",
         "dashboardText2": "इंडियन पॉन्ग एक सहयोगी परियोजना है जो 42 स्कूल समुदाय के लिए विकसित की गई है, जो शास्त्रीय खेल पिंग-पोंग के माध्यम से नोस्टाल्जिक गेमिंग अनुभव प्रदान करता है। यह प्लेटफ़ॉर्म प्रतिद्वंद्वियों के साथ पिंग-पोंग मैच खेलने की अनुमति देता है, जो एक दूसरे के साथ दोस्ताना प्रतिस्पर्धा का मूल्यांकन करता है। खेल के पहले पहल में, इंडियन पॉन्ग को सामाजिक आयाम प्रदान करता है, जिसमें उपयोगकर्ताओं को एक-दूसरे के साथ संवाद करने और जुड़ने का अवसर प्रदान किया जाता है। प्लेटफ़ॉर्म उपयोगकर्ताओं को 42 स्कूल समुदाय के भीतर दोस्तों को जोड़ने की सुविधा भी प्रदान करता है। समग्र रूप में, इंडियन पॉन्ग पुराने गेमिंग का आनंद और आधुनिक सामाजिक आक्रोश जोड़ते हैं, 42 स्कूल समुदाय के लिए एक जीवंत और अंतर्क्रियात्मक अनुभव बनाते हैं।",
 
@@ -725,14 +872,17 @@ def get_lang_hi():
 
         
         #Pong-Game
+        "pongGamePageTittle": "पॉन्ग खेल",
         "pongGameHeaderText": "पॉन्ग लॉबी में आपका स्वागत है",
         "pongGameSubHeaderText": "आप ए.आई. के साथ खेल सकते हैं और खुद को सुधार सकते हैं बिना अपने स्टैट्स में इसे प्रकट करने के, जैसे कि आप बस गरम कर रहे थे। यदि आप किसी वास्तविक व्यक्ति के साथ खेलना चाहते हैं, तो दूसरा विकल्प विचार करें, याद रखें कि अगर हमे 5 मिनट के भीतर आपको बंधक मिलाने वाला व्यक्ति नहीं मिलता है, तो मैच रद्द कर दिया जाएगा। भूलने से पहले शुभकामनाएं!",
         "pongGameAIButtonText": "ए.आई. के साथ खेलें",
         "pongGameLocalButtonText": "स्थानीय खेल",
+        "pongGameRemoteButtonText": "दूरस्थ खिलाड़ी",
+        "pongGameLocalTournamentButtonText": "स्थानीय टूर्नामेंट",
         "pongGameTournamentButtonText": "टूर्नामेंट",
 
             #AI-Game
-
+            "aiGamePageTittle": "ए.आई. के साथ पॉन्ग खेल",
             "aiGameReactionDelayText": "प्रतिक्रिया में देरी",
             "aiGameGetReadyText": "तैयार हो जाओ",
             "aiGamePresSpaceText": "शुरू करने के लिए 'स्पेस' दबाएं",
@@ -753,6 +903,7 @@ def get_lang_hi():
             "aiGameInfoSubHeaderDescription4": "आप अपने प्रतिद्वंद्वियों के साथ टूर्नामेंट में भाग लेने के लिए और अपने कौशल का परीक्षण करने के लिए टूर्नामेंट में भाग ले सकते हैं। इसके अलावा, आप अपने दोस्तों के साथ निजी खेल बना सकते हैं और पॉन्ग समुदाय में शामिल हो सकते हैं।",
 
             #Local-Game
+            "localGamePageTittle": "स्थानीय खेल",
             "localGameHeaderText": "1v1 स्थानीय खेल",
             "localGamePlayer1Text": "प्लेयर1 नाम",
             "localGamePlayer2Text": "प्लेयर2 नाम",
@@ -763,12 +914,14 @@ def get_lang_hi():
             "localGameButtonStart": "प्रारंभ करें",
 
             #Tournament
+            "tournamentPageTittle": "टूर्नामेंट",
             "tournamentHeaderText": "पॉन्ग के टूर्नामेंट लॉबी में आपका स्वागत है",
             "tournamentSubHeaderText": "यहां आप एक टूर्नामेंट लॉबी में शामिल हो सकते हैं या अपनी खुद की टूर्नामेंट लॉबी बना सकते हैं। आप अपने दोस्तों को रुम बनाने के बाद इनवाइट कोड साझा करके इन्वाइट कर सकते हैं। भूलने से पहले शुभकामनाएं!",
             "tournamentJoinButtonText": "टूर्नामेंट में शामिल हों",
             "tournamentCreateButtonText": "टूर्नामेंट बनाएं",
 
             #Tournament-Create
+            "tournamentCreatePageTittle": "टूर्नामेंट बनाएं",
             "tournamentCreateHeaderText": "टूर्नामेंट बनाएं",
             "tournamentCreateSubHeaderText": "एक टूर्नामेंट बनाने के लिए मुझे एक टूर्नामेंट का नाम, हर खेल के लिए कितना अधिकतम स्कोर होगा। भूलने से पहले शुभकामनाएं!",
             "tournamentCreateNameText": "टूर्नामेंट का नाम",
@@ -779,12 +932,14 @@ def get_lang_hi():
             "tournamentCreateButtonCreate": "टूर्नामेंट बनाएं",
 
             #Joined-Tournament-Room
+            "tournamentroomPageTittle": "टूर्नामेंट रूम",
             "tournamentroomHeaderText": "टूर्नामेंट रूम",
             "tournamentroomLeaveButtonText": "रूम छोड़ें",
             "tournamentroomStartButtonText": "रूम शुरू करें",
             "tournamentCheckBracketButtonText": "ब्रैकेट देखें",
 
         #RPS Game
+        "rpsGamePageTittle": "रॉक-पेपर-सैंड खेल",
         "rpsGameText1": "रॉक-पेपर-सैंड लॉबी में आपका स्वागत है",
         "rpsGameText2": "आप ए.आई. के साथ खेल सकते हैं और खुद को सुधार सकते हैं बिना अपने स्टैट्स में इसे प्रकट करने के, जैसे कि आप बस गरम कर रहे थे। यदि आप किसी वास्तविक व्यक्ति के साथ खेलना चाहते हैं, तो दूसरा विकल्प विचार करें, याद रखें कि अगर हमे 5 मिनट के भीतर आपको बंधक मिलाने वाला व्यक्ति नहीं मिलता है, तो मैच रद्द कर दिया जाएगा। भूलने से पहले शुभकामनाएं!",
         "rpsGameAIButtonText": "ए.आई. के साथ खेलें",
@@ -792,6 +947,7 @@ def get_lang_hi():
         "rpsGameSearchOpponentButtonText": "विरोधी खोजें ",
 
         #Rankings
+        "rankingsPageTittle": "रैंकिंग",
         "rankingsTableRankText": "रैंक",
         "rankingsTableNameText": "नाम",
         "rankingsTableUsernameText": "उपयोगकर्ता नाम",
@@ -801,6 +957,7 @@ def get_lang_hi():
         "rankingsTablePongPointsText": "पॉन्ग अंक",
 
         #Store
+        "storePageTittle": "दुकान",
         "storeText": "दुकान",
         "storeTagText": "सभी",
         "storeWalletText": "वॉलेट",
@@ -808,6 +965,7 @@ def get_lang_hi():
         "storeWalleinfoText2": " जीत सकते हैं।",
 
         #Inventory
+        "inventoryPageTittle": "इन्वेंटरी",
         "inventoryText": "इन्वेंटरी",
         "inventoryTagText": "सभी",
         "inventoryWalletText": "वॉलेट",
@@ -815,6 +973,7 @@ def get_lang_hi():
         "inventoryWalleinfoText2": " जीत सकते हैं।",
         
         #Search
+        "searchPageTittle": "खोजें",
         "searchInputText": "ईमेल या उपयोगकर्ता नाम या डिस्प्ले नाम खोजें...",
         "searchMessageButtonText": "संदेश",
         "searchFollowButtonText": "फॉलो करें",
@@ -822,11 +981,67 @@ def get_lang_hi():
         "searchNoResultFoundText": "कोई परिणाम नहीं मिला।",
         
         #Profile
-        "profileRankAIText": "मैं बस रोबोट हूं",
-        "profileRankUserText1": " में रैंकिंग में",
-        "profileRankUserText2": " कोई रैंकिंग नहीं",
+        "profilePageTittle": "प्रोफ़ाइल",
+        "profileRankAIText": "ए.आई. रैंक",
+        "profileRankUserText1": " उपयोगकर्ता रैंक",
+        "profileRankUserText2": " रैंक",
         "profileFollowButton": "फॉलो करें",
         "profileFollowingButton": "फॉलोइंग",
-        "profileTitleText1": "42 कोकाइली"
+        "profileTitleText1": "42 स्कूल समुदाय",
+        "profileTitleText2": "पॉन्ग खिलाड़ी",
+
+        "profileMatchHistoryWinText": "जीता",
+        "profileMatchHistoryLoseText": "हारा",
+
+        "profileRankText1": "रैंक",
+
+        "profileGameStats1": "खेल खेले गए:",
+        "profileGameStats2": "जीतें:",
+        "profileGameStats3": "हारें:",
+        "profileGameStats4": "जीतने की दर:",
+        "profileGameStats5": "औसत अंक जीते:",
+        "profileGameStats6": "औसत अंक हारे:",
+
+        #ProfileSettings
+        "profileSettingsPageTittle": "प्रोफ़ाइल सेटिंग्स",
+        "profileSettingsNavbar1": "प्रोफ़ाइल संपादित करें",
+        "profileSettingsNavbar2": "पासवर्ड बदलें",
+        "profileSettingsNavbar3": "सोशल्स जोड़ें",
+        "profileSettingsNavbar4": "अवरुद्ध उपयोगकर्ता",
+        "profileSettingsNavbar5": "खाता बंद करें",
+
+        #Edit-Profile
+        "editProfileChangeImageText": "छवि बदलें",
+        "editProfileUsernameText": "उपयोगकर्ता नाम (आपका नाम साइट पर अन्य उपयोगकर्ताओं के लिए कैसे दिखाई देगा)",
+        "editProfileEmailText": "ईमेल",
+        "editProfile42EmailText": "चूंकि आप 42 के साथ लॉग इन हैं, आपकी ईमेल सेटिंग सुविधा अक्षम है।",
+        "editProfileDisplayNameText": "प्रदर्शन नाम",
+        "editProfileSaveButtonText": "परिवर्तन सहेजें",
+
+            #Change-Password
+            "changePasswordCurrentPasswordText": "वर्तमान पासवर्ड",
+            "changePasswordNewPasswordText": "नया पासवर्ड",
+            "changePasswordNewConfirmPasswordText": "नया पासवर्ड पुष्टि करें",
+            "changePassword42Text": "चूंकि आप 42 के साथ लॉग इन हैं, आपकी पासवर्ड सेटिंग सुविधा अक्षम है।",
+            "changePasswordSaveButtonText": "पासवर्ड सहेजें",
+
+            #Add-Socials
+            "addSocialsLinkedinInputText": "अपना LinkedIn उपयोगकर्ता नाम दर्ज करें",
+            "addSocialsTwitterInputText": "अपना Twitter उपयोगकर्ता नाम दर्ज करें",
+            "addSocialsGithubInputText": "अपना Github उपयोगकर्ता नाम दर्ज करें",
+            "addSocialsIntraInputText": "अपना 42 Intra उपयोगकर्ता नाम दर्ज करें",
+            "addSocialsSaveButtonText": "सोशल्स सहेजें",
+
+            #Blocked-Users
+            "blockedUsersHeaderText": "अवरुद्ध खाते",
+            "blockedUsersSubHeaderText": "आप यहां अपने द्वारा अवरुद्ध किए गए खातों को अनवरोधित कर सकते हैं।",
+            "blockedStatusText": "अवरुद्ध",
+
+            #Close-Account
+            "closeAccountHeaderText": "खाता बंद करें",
+            "closeAccountInputText": "ईमेल",
+            "closeAccountSubHeaderText": "आप यहां अपना खाता हटा सकते हैं। यह कार्रवाई अपरिवर्तनीय है।",
+            "closeAccountButton": "खाता बंद करें",
+            
     }
     return context

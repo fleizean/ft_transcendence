@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}{{ username }} Store{% endblock title %}
+{% block title %}{{ username }} {{context.storePageTittle}}{% endblock title %}
 
 {% load static %}
 
@@ -12,11 +12,11 @@
       
        <div class="top-store">
         <div class="store-left">
-          <h3>{{username}} / Store</h3>
+          <h3>{{username}} / {{context.storeText}}</h3>
         </div>
         <div class="store-mid">
           <div class="category-field">
-            <h5 class="category-text"><a href="?category_name=All">#All</a></h5>
+            <h5 class="category-text"><a href="?category_name=All">#{{context.storeTagText}}</a></h5>
           </div>
           <div class="category-field">
             <h5 class="category-text"><a href="?category_name=Pong">#Pong</a></h5>
@@ -34,7 +34,7 @@
           <div class="store-right">
                 <i class="bi bi-piggy-bank-fill flip-horizontal"></i> 
                 <div class="store-text-fields">
-                  <span class="small-wallet-name">Wallet:</span>
+                  <span class="small-wallet-name">{{context.storeWalletText}}:</span>
                   <span class="wallet-amount">{{profile.indian_wallet}}N₩</span>
                 </div>
           </div>
@@ -42,7 +42,7 @@
       </div>
       
       <div class="store-info">
-        <span class="tooltiptext">Oyun oynayarak <span style="font-weight: bold;">N₩</span> kazanabilirsin.</span>
+        <span class="tooltiptext">{{context.storeWalleinfoText1}} <span style="font-weight: bold;">N₩</span> {{context.storeWalleinfoText2}}.</span>
       </div>
         <div class="store-list">
 
@@ -51,11 +51,11 @@
             {% if item.show_status %}
               <div class="product-card" id="product-card-{{ item.id }}">
                 <img src="{% static 'assets/stores/'|add:item.image_url %}" alt="" />
-                <h2 class="card__title">{{ item.name }}</h2>
+                <h2 class="card__title">{% if selected_language == 'hi' and item.name_hi %} {{item.name_hi}} {% elif selected_language == 'pt' and item.name_pt %}{{item.name_pt}} {% elif selected_language == 'tr' and item.name_tr %}{{ item.name_tr }} {% else %} {{item.name}} {% endif %}</h2>
                 <h4 {% if item.category_name == "Pong" %} class="card__category pong" {% elif item.category_name == "RPS" %} class="card__category rps" {% else %} class="card__category all" {% endif %}>
-                  <a href="?category_name={{item.category_name}}">#{{ item.category_name }}</a>
+                  <a href="?category_name={{item.category_name}}">#{% if item.category_name == 'All' %}{{context.storeTagText }}{% else %}{{item.category_name}}{%endif%}</a>
                 </h4>
-                <span class="card__description">{{item.description}}</span>
+                <span class="card__description">{% if selected_language == 'hi' and item.description_hi %} {{item.description_hi}} {% elif selected_language == 'pt' and item.description_pt %}{{item.description_pt}} {% elif selected_language == 'tr' and item.description_tr %}{{ item.description_tr }} {% else %} {{item.description}} {% endif %}</span>
                 <div class="card__shop">
                   <span class="card__shop__price">{{item.price}}N₩</span>
                   <form id="store_item_form{{ item.id }}" method="POST">
@@ -141,7 +141,6 @@ function submitStoreItemForm(itemName, formId, price) {
       console.error('Error:', error);
     });
 }
-
 
 document.addEventListener('DOMContentLoaded', (event) => {
     const storeInfos = document.getElementsByClassName('store-info'); // .store-info'ya erişim

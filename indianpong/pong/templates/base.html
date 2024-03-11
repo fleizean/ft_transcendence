@@ -20,7 +20,7 @@
     <body>
             <div class="backgroundimage">
                 {% if not request.user.is_anonymous %}
-                {% include "_nav.html" %}
+                    {% include "_nav.html" %}
                 {% endif %}
                 <div class="app" id="app" >
                     {% if not user.is_authenticated %}

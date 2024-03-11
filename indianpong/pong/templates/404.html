@@ -1,11 +1,11 @@
 
 {% extends "base.html" %}
 
-{% block title %}Not Found{% endblock %}
+{% block title %}{{context.notFoundPageTittle}}{% endblock %}
 
 {% block app %}
 <div class="HeaderArea" id="HeaderArea">
-    <div class="big-text">404 ERROR</div>
-    <div class="small-text">Probably you lost in our website!</div>
+    <div class="big-text">{{context.notFoundHeaderText}}</div>
+    <div class="small-text">{{context.notFoundSubHeaderText}}</div>
 </div>
 {% endblock app %}

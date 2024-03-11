@@ -2,7 +2,7 @@
 {% load static %}
 {% load status %}
 
-{% block title %}{{ profile.username }}{% endblock title %}
+{% block title %}{{ profile.username }} - {{context.profilePageTittle}}{% endblock title %}
 
 {% block stylesheet %}
 <link rel="stylesheet" href="{% static "css/profile.css" %}">
@@ -21,11 +21,11 @@
             <div class="card mb-4" style="background-color:white !important">
                 <!-- Profil Kartı içeriği -->
                 {% if profile.is_indianai %}
-                    <span class="pro-profile"><i class="bi bi-robot"></i> I'M JUST ROBOT</span>
+                    <span class="pro-profile"><i class="bi bi-robot"></i> {{context.profileRankAIText}}</span>
                 {% elif profile.rank is not None %}
-                    <span class="pro-profile"><i class="bi bi-award-fill"></i> {{ profile.rank }} IN RANKINGS</span>
+                    <span class="pro-profile"><i class="bi bi-award-fill"></i> {{ profile.rank }} {{context.profileRankUserText1}}</span>
                 {% else %}
-                    <span class="pro-profile"><i class="bi bi-exclamation-diamond-fill"></i> NO RANKING</span>
+                    <span class="pro-profile"><i class="bi bi-exclamation-diamond-fill"></i> {{context.profileRankUserText2}}</span>
                 {% endif %}
                 <div class="card-body text-center">
                     <!-- Avatar -->
@@ -37,17 +37,17 @@
                     <h7 class="my-5" style="margin-top: -3em !important; margin-bottom: 10px !important;">{{profile.displayname}}</h7>
                     <!-- Meslek -->
                     {% if profile.social.github and not profile.is_42student %}
-                        <p class="text-muted mb-1" style="color: orange !important;margin-top: -5px;font-size: 15px; font-weight: 600;">Software Developer</p>
+                        <p class="text-muted mb-1" style="color: orange !important;margin-top: -5px;font-size: 15px; font-weight: 600;">{{context.profileTitleText2}}</p>
                     {% elif profile.is_42student %}
-                        <p class="text-muted mb-1" style="color: #00ff1e !important;margin-top: -5px;font-size: 15px; font-weight: 600;">42 Kocaeli Student</p>
+                        <p class="text-muted mb-1" style="color: #00ff1e !important;margin-top: -5px;font-size: 15px; font-weight: 600;">{{context.profileTitleText1}}</p>
                     {% endif %}
                     <div class="d-flex justify-content-center mb-2" style="margin-top: 30px;">
                         {% if request.user.username != profile.username %}
                             {% csrf_token %}
                             {% if is_friend %}
-                                <button data-username="{{ profile.username }}" class="unfollow-btn" style="margin-top: -15px;"><i class="bi bi-heartbreak-fill"></i> Unfollow</button>
+                                <button data-username="{{ profile.username }}" class="unfollow-btn" style="margin-top: -15px;"><i class="bi bi-heartbreak-fill"></i> {{context.profileFollowingButton}}</button>
                             {% else %}
-                                <button data-username="{{ profile.username }}" class="btn btn-danger" style="margin-top: -10px;"><i class="bi bi-heart-fill"></i> Follow</button>
+                                <button data-username="{{ profile.username }}" class="btn btn-danger" style="margin-top: -10px;"><i class="bi bi-heart-fill"></i> {{context.profileFollowButton}}</button>
                             {% endif %}
                         {% endif %}
                     </div>
@@ -112,10 +112,10 @@
                         <table class="card-mhistory-table">
                             <thead>
                                 <tr>
-                                    <th>Opponent</th>
-                                    <th>Result</th>
-                                    <th>Score</th>
-                                    <th>Duration</th>
+                                    <th>{{context.profileMatchHistoryText1}}</th>
+                                    <th>{{context.profileMatchHistoryText2}}</th>
+                                    <th>{{context.profileMatchHistoryText3}}</th>
+                                    <th>{{context.profileMatchHistoryText4}}</th>
                             </thead>
                             <tbody>
                                 {% for game in history_page_obj %}
@@ -179,10 +179,10 @@
                         <table class="card-mhistory-table">
                             <thead>
                                 <tr>
-                                    <th>Opponent</th>
-                                    <th>Result</th>
-                                    <th>Score</th>
-                                    <th>Duration</th>
+                                    <th>{{context.profileMatchHistoryText1}}</th>
+                                    <th>{{context.profileMatchHistoryText2}}</th>
+                                    <th>{{context.profileMatchHistoryText3}}</th>
+                                    <th>{{context.profileMatchHistoryText4}}</th>
                             </thead>
                             <tbody>
                                 {% for game_rps in game_records_rps %}
@@ -194,15 +194,15 @@
                                         {% endif %}
                                         {% if profile.username == game_rps.player1.username %}
                                             {% if game_rps.winner.username == game_rps.player1.username %}
-                                                <td class="won">Win</td>
+                                                <td class="won">{{context.profileMatchHistoryWinText}}</td>
                                             {% else %}
-                                                <td class="lose">Lost</td>
+                                                <td class="lose">{{context.profileMatchHistoryLoseText}}</td>
                                             {% endif %}
                                         {% else %}
                                             {% if game_rps.winner.username == game_rps.player2.username %}
-                                                <td class="won">Win</td>
+                                                <td class="won">{{context.profileMatchHistoryWinText}}</td>
                                             {% else %}
-                                                <td class="lose">Lost</td>
+                                                <td class="lose">{{context.profileMatchHistoryLoseText}}</td>
                                             {% endif %}
                                         {% endif %}
                                         <td>
@@ -230,7 +230,7 @@
                     <div class="card mb-4 mb-md-0" style="background-color:white !important; margin-top:10px">
                         <div class="card-body">
                             <!-- Proje Durumu Başlığı -->
-                            <p class="mb-4"><span class="text-primary font-italic me-1">{{profile.username}} </span>/ Rank</p>
+                            <p class="mb-4"><span class="text-primary font-italic me-1">{{profile.username}} </span>/ {{context.profileRankText1}}</p>
                             <div class="rank-img">
                                 <img src="{% static "assets/ranks/" %}{{ profile.get_rank_image }}" alt="Rank Image">
                             </div>
@@ -254,54 +254,54 @@
                             <p class="mb-4"><span class="text-primary font-italic me-1">{{profile.username}} </span>/ Stats</p>
                             <div class="stats-info-pong" id="stats-info-pong">
                                 <div class="stats">
-                                    <p class="stats-p"><i class="bi bi-dice-1-fill"></i> Games Played:</p>
+                                    <p class="stats-p"><i class="bi bi-dice-1-fill"></i> {{context.profileGameStats1}}</p>
                                     <p class="stats-result-p">{% if profile.game_stats.total_games_pong %} {{profile.game_stats.total_games_pong}} {% else %} 0 {% endif %}</p>
                                 </div>
                                 <div class="stats">
-                                    <p class="stats-p"><i class="bi bi-trophy-fill"></i> Wins:</p>
+                                    <p class="stats-p"><i class="bi bi-trophy-fill"></i> {{context.profileGameStats2}}</p>
                                     <p class="stats-result-p">{% if profile.game_stats.total_win_pong %} {{profile.game_stats.total_win_pong}} {% else %} 0 {% endif %}</p>
                                 </div>
                                 <div class="stats">
-                                    <p class="stats-p"><i class="bi bi-emoji-frown-fill"></i> Loses:</p>
+                                    <p class="stats-p"><i class="bi bi-emoji-frown-fill"></i> {{context.profileGameStats3}}</p>
                                     <p class="stats-result-p">{% if profile.game_stats.total_lose_pong %} {{profile.game_stats.total_lose_pong}} {% else %} 0 {% endif %}</p>
                                 </div>
                                 <div class="stats">
-                                    <p class="stats-p"><i class="bi bi-award-fill"></i> Win Rate:</p>
+                                    <p class="stats-p"><i class="bi bi-award-fill"></i> {{context.profileGameStats4}}</p>
                                     <p class="stats-result-p">{% if profile.game_stats.formatted_win_rate %} {{profile.game_stats.formatted_win_rate}} {% else %} 0 {% endif %}</p>
                                 </div>
                                 <div class="stats">
-                                    <p class="stats-p"><i class="bi bi-emoji-wink-fill"></i> Win Streak:</p>
+                                    <p class="stats-p"><i class="bi bi-emoji-wink-fill"></i> {{context.profileGameStats5}}</p>
                                     <p class="stats-result-p">{% if profile.game_stats.total_win_streak_pong %} {{profile.game_stats.total_win_streak_pong}} {% else %} 0 {% endif %}</p>
                                 </div>
                                 <div class="stats">
-                                    <p class="stats-p"><i class="bi bi-clock-fill"></i> Average Game Duration:</p>
+                                    <p class="stats-p"><i class="bi bi-clock-fill"></i> {{context.profileGameStats6}}</p>
                                     <p class="stats-result-p">{% if profile.game_stats.formatted_game_duration %} {{profile.game_stats.formatted_game_duration}} {% else %} 0 {% endif %}</p>
                                 </div>
                             </div>
 
                             <div class="stats-info-rps" id="stats-info-rps">
                                 <div class="stats">
-                                    <p class="stats-p"><i class="bi bi-dice-1-fill"></i> Games Played:</p>
+                                    <p class="stats-p"><i class="bi bi-dice-1-fill"></i> {{context.profileGameStats1}}</p>
                                     <p class="stats-result-p">{% if profile.game_stats_rps.total_games_rps %} {{profile.game_stats_rps.total_games_rps }} {% else %} 0 {% endif %}</p>
                                 </div>
                                 <div class="stats">
-                                    <p class="stats-p"><i class="bi bi-trophy-fill"></i> Wins:</p>
+                                    <p class="stats-p"><i class="bi bi-trophy-fill"></i> {{context.profileGameStats2}}</p>
                                     <p class="stats-result-p">{% if profile.game_stats_rps.total_win_rps %} {{profile.game_stats_rps.total_win_rps }} {% else %} 0 {% endif %}</p>
                                 </div>
                                 <div class="stats">
-                                    <p class="stats-p"><i class="bi bi-emoji-frown-fill"></i> Loses:</p>
+                                    <p class="stats-p"><i class="bi bi-emoji-frown-fill"></i> {{context.profileGameStats3}}</p>
                                     <p class="stats-result-p">{% if profile.game_stats_rps.total_lose_rps %} {{profile.game_stats_rps.total_lose_rps}} {% else %} 0 {% endif %}</p>
                                 </div>
                                 <div class="stats">
-                                    <p class="stats-p"><i class="bi bi-award-fill"></i> Win Rate:</p>
+                                    <p class="stats-p"><i class="bi bi-award-fill"></i> {{context.profileGameStats4}}</p>
                                     <p class="stats-result-p">{% if profile.game_stats_rps.formatted_win_rate %} {{profile.game_stats_rps.formatted_win_rate}} {% else %} 0 {% endif %}</p>
                                 </div>
                                 <div class="stats">
-                                    <p class="stats-p"><i class="bi bi-emoji-wink-fill"></i> Win Streak:</p>
+                                    <p class="stats-p"><i class="bi bi-emoji-wink-fill"></i> {{context.profileGameStats5}}</p>
                                     <p class="stats-result-p">{% if profile.game_stats_rps.total_win_streak_rps %} {{profile.game_stats_rps.total_win_streak_rps}} {% else %} 0 {% endif %}</p>
                                 </div> 
                                 <div class="stats">
-                                    <p class="stats-p"><i class="bi bi-clock-fill"></i> Average Game Duration:</p>
+                                    <p class="stats-p"><i class="bi bi-clock-fill"></i> {{context.profileGameStats6}}</p>
                                     <p class="stats-result-p">{% if profile.game_stats_rps.formatted_game_duration %} {{profile.game_stats_rps.formatted_game_duration}} {% else %} 0 {% endif %}</p>
                                 </div>
                             </div>

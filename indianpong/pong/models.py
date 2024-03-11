@@ -94,23 +94,24 @@ class UserProfile(AbstractUser):
                 return rank_image
         return "unranked.webp"
 
-    def get_rank_name(self):
-        ranks = {
-            (1, 150): "Iron",
-            (150, 200): "Bronze",
-            (200, 250): "Silver",
-            (250, 310): "Gold",
-            (310, 360): "Platinum",
-            (360, 420): "Emerald",
-            (420, 500): "Diamond",
-            (500, 550): "Master",
-            (550, 600): "Grandmaster",
-            (600, float('inf')): "Challenger"
-        }
-        for rank_range, rank_name in ranks.items():
-            if rank_range[0] <= self.elo_point <= rank_range[1]:
-                return rank_name
-        return "Unranked"
+        def get_rank_name(self):
+            ranks = {
+                (1, 150): "Lumina",
+                (150, 200): "Vexal",
+                (200, 250): "Sylan",
+                (250, 310): "Verdan",
+                (310, 360): "Fiora",
+                (360, 420): "Zoral",
+                (420, 500): "Lysar",
+                (500, 550): "Aerion",
+                (550, 600): "Eclis",
+                (600, float('inf')): "Noctis"
+            }
+            for rank_range, rank_name in ranks.items():
+                if rank_range[0] <= self.elo_point <= rank_range[1]:
+                    return rank_name
+            return "Solvia"
+
 
 
 class UserItem(models.Model):

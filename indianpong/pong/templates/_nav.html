@@ -73,6 +73,62 @@
             console.log('User is online');
         }
     };
+
+    function translateMenu(selectedLanguage) {
+      const menuItems = document.querySelectorAll('li a[data-link]');
+      menuItems.forEach(item => {
+          const href = item.getAttribute('href');
+          switch (href) {
+            case '/dashboard':
+                  item.innerHTML = '<i class="bi bi-house-door-fill"></i>' + (selectedLanguage === 'en' ? 'Dashboard' : selectedLanguage === 'tr' ? 'Panel' : selectedLanguage === 'pt' ? 'Painel' : selectedLanguage === 'hi' ? 'डैशबोर्ड' : 'Translation not available');
+                  break;
+              case '/chat':
+                  item.innerHTML = '<i class="bi bi-chat-fill"></i>' + (selectedLanguage === 'en' ? 'Chat' : selectedLanguage === 'tr' ? 'Sohbet' : selectedLanguage === 'pt' ? 'Chat' : selectedLanguage === 'hi' ? 'चैट' : 'Translation not available');
+                  break;
+              case '/pong-game-find':
+                  item.innerHTML = '<i class="bi bi-play-circle-fill"></i>' + (selectedLanguage === 'en' ? 'Pong Game' : selectedLanguage === 'tr' ? 'Pong Oyunu' : selectedLanguage === 'pt' ? 'Jogo de Pong' : selectedLanguage === 'hi' ? 'पोंग खेल' : 'Translation not available');
+                  break;
+              case '/rps-game-find':
+                  item.innerHTML = '<i class="bi bi-scissors"></i>' + (selectedLanguage === 'en' ? 'RPS Game' : selectedLanguage === 'tr' ? 'TKM Oyunu' : selectedLanguage === 'pt' ? 'Jogo de PPT' : selectedLanguage === 'hi' ? 'टिकमटक खेल' : 'Translation not available');
+                  break;
+              case '/rankings':
+                  item.innerHTML = '<i class="bi bi-bar-chart-fill"></i>' + (selectedLanguage === 'en' ? 'Rankings' : selectedLanguage === 'tr' ? 'Sıralamalar' : selectedLanguage === 'pt' ? 'Classificações' : selectedLanguage === 'hi' ? 'अंक' : 'Translation not available');
+                  break;
+              case '/store/{{username}}':
+                  item.innerHTML = '<i class="bi bi-basket2"></i>' + (selectedLanguage === 'en' ? 'Store' : selectedLanguage === 'tr' ? 'Mağaza' : selectedLanguage === 'pt' ? 'Loja' : selectedLanguage === 'hi' ? 'स्टोर' : 'Translation not available');
+                  break;
+              case '/search':
+                  item.innerHTML = '<i class="bi bi-search"></i>' + (selectedLanguage === 'en' ? 'Search' : selectedLanguage === 'tr' ? 'Ara' : selectedLanguage === 'pt' ? 'Pesquisar' : selectedLanguage === 'hi' ? 'खोज' : 'Translation not available');
+                  break;
+              case '/about-us':
+                  item.innerHTML = '<i class="bi bi-person-raised-hand"></i>' + (selectedLanguage === 'en' ? 'About Us' : selectedLanguage === 'tr' ? 'Hakkımızda' : selectedLanguage === 'pt' ? 'Sobre nós' : selectedLanguage === 'hi' ? 'हमारे बारे में' : 'Translation not available');
+                  break;
+              case '/profile/{{username}}':
+                  item.innerHTML = '<i class="bi bi-person-fill"></i>' + (selectedLanguage === 'en' ? 'Profile' : selectedLanguage === 'tr' ? 'Profil' : selectedLanguage === 'pt' ? 'Perfil' : selectedLanguage === 'hi' ? 'प्रोफ़ाइल' : 'Translation not available');
+                  break;
+              case '/friends/{{username}}':
+                  item.innerHTML = '<i class="bi bi-people-fill"></i>' + (selectedLanguage === 'en' ? 'Friends' : selectedLanguage === 'tr' ? 'Arkadaşlar' : selectedLanguage === 'pt' ? 'Amigos' : selectedLanguage === 'hi' ? 'दोस्त' : 'Translation not available');
+                  break;
+              case '/profile/{{username}}/settings':
+                  item.innerHTML = '<i class="bi bi-gear-fill"></i>' + (selectedLanguage === 'en' ? 'Settings' : selectedLanguage === 'tr' ? 'Ayarlar' : selectedLanguage === 'pt' ? 'Configurações' : selectedLanguage === 'hi' ? 'सेटिंग्स' : 'Translation not available');
+                  break;
+              case '/logout':
+                  item.innerHTML = '<i class="bi bi-box-arrow-right"></i>' + (selectedLanguage === 'en' ? 'Logout' : selectedLanguage === 'tr' ? 'Çıkış' : selectedLanguage === 'pt' ? 'Sair' : selectedLanguage === 'hi' ? 'लॉग आउट' : 'Translation not available');
+                  break;
+              default:
+                  item.innerHTML = 'Translation not available';
+          }
+      });
+  }
+    
+    function getCookie(name) {
+        const cookieValue = document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)');
+        return cookieValue ? cookieValue.pop() : '';
+    }
+
+    const selectedLanguage = getCookie('selectedLanguage');
+
+    translateMenu(selectedLanguage);
     </script>
   {% endif %}
 <script >

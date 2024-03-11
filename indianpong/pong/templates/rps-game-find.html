@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block title %}
-  Rps Game Find
+  {{context.rpsGamePageTittle}}
 {% endblock %}
 
 {% block stylesheet %}<link rel="stylesheet" href="{% static "css/game-find.css" %}">{% endblock stylesheet %}
@@ -10,20 +10,20 @@
 {% block app %}
   <div class="container-top">
     <div class="card">
-      <h3 class="pong-game-text">Welcome to RPS Lobby</h3>
-      <div class="custom-text">You can play with the AI and improve yourself without reflecting it in your stats, as if you were just warming up. If you want to play with a real person, consider the other option, remember that if we don't find someone to match you within 5 minutes, the match will be canceled. Good luck before I forget!</div>
+      <h3 class="pong-game-text">{{context.rpsGameText1}}</h3>
+      <div class="custom-text">{{context.rpsGameText2}}</div>
       <div class="pong-buttons">
         <div class="ai-btn">
           <a href="/play-rps-ai">
             <div class="ponggamebtn-ai">
-              Play With AI <i class="bi bi-robot"></i>
+              {{context.rpsGameAIButtonText}} <i class="bi bi-robot"></i>
             </div>
           </a>
           </div>
           <div class="ai-btn">
             <a href="/play-rps">
               <div class="ponggamebtn-remote">
-                Remote Player <i class="bi bi-wifi"></i>
+                {{context.rpsGameSearchOpponentButtonText}} <i class="bi bi-wifi"></i>
               </div>
             </a>
           </div>
