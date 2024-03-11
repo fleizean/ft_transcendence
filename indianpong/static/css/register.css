@@ -67,7 +67,7 @@
   .title {
     color: var(--font-color);
     font-weight: 900;
-    font-size: 20px;
+    font-size: 22px;
     margin-bottom: -10px;
     margin-top: -20px;
   }
@@ -75,7 +75,7 @@
   .titlebottom {
     color: var(--font-color-sub);
     font-weight: 600;
-    font-size: 16px;
+    font-size: 17px;
   }
   
   .input {
