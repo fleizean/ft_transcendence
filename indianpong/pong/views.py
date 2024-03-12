@@ -799,6 +799,8 @@ def play_rps_ai(request):
 @login_required()
 def local_game(request):
     user_items = UserItem.objects.filter(user=request.user)
+    lang = request.COOKIES.get('selectedLanguage', 'en')
+    context = langs.get_langs(lang)
     
     # Just Customizations - PONG
     player2name = "Player 2"
@@ -811,17 +813,19 @@ def local_game(request):
     fastandfurious = get_equipped_item_value(user_items, "Fast and Furious", "None")
     rageoffire = get_equipped_item_value(user_items, "Rage of Fire", "None")
     frozenball = get_equipped_item_value(user_items, "Frozen Ball", "None")
-    return render(request, "local-game.html", {"player2name": player2name, "paddlecolor": paddlecolor, "playgroundcolor": playgroundcolor, "giantman": giantman, "likeacheater": likeacheater, "fastandfurious": fastandfurious, "rageoffire": rageoffire, "frozenball": frozenball})
+    return render(request, "local-game.html", {"player2name": player2name, "paddlecolor": paddlecolor, "playgroundcolor": playgroundcolor, "giantman": giantman, "likeacheater": likeacheater, "fastandfurious": fastandfurious, "rageoffire": rageoffire, "frozenball": frozenball, "context": context})
 
 @never_cache
 @login_required()
 def local_tournament(request):
+    lang = request.COOKIES.get('selectedLanguage', 'en')
+    context = langs.get_langs(lang)
     user_items = UserItem.objects.filter(user=request.user)
 
     paddlecolor = get_equipped_item_value(user_items, "My Beautiful Paddle", "black")
     playgroundcolor = get_equipped_item_value(user_items, "My Playground", "lightgrey")
 
-    return render(request, "local-tournament.html")
+    return render(request, "local-tournament.html", {"paddlecolor": paddlecolor, "playgroundcolor": playgroundcolor, "context": context})
 
 def remote_game(request, game_type, game_id):
     return render(request, "remote-game.html")

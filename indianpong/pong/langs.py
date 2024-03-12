@@ -148,6 +148,10 @@ def get_lang_en():
             "localTournamentButtonStart": "Start & Bracket",
             "localTournamentBracketTitle": "Tournament Bracket",
             "localTournamentBracketStartButtonText": "Start Tournament",
+            "localTournamentTournamentOverText": "Tournament Over",
+            "localTournamentOverButtonText": "Over",
+
+            "localTournamentNextButtonText": "Next",
 
 
             #Tournament
@@ -437,6 +441,25 @@ def get_lang_tr():
             "localGameChooseModeText2": "Yetenekler",
             "localGameButtonStart": "Basla",
 
+            #Local-Tournament
+            "localTournamentPageTittle": "Yerel Turnuva",
+            "localTournamentGameHeaderText": "Yerel Turnuva",
+            "localTournamentPlayer1Text": "1. Oyuncu Adi",
+            "localTournamentPlayer2Text": "2. Oyuncu Adi",
+            "localTournamentPlayer3Text": "3. Oyuncu Adi",
+            "localTournamentPlayer4Text": "4. Oyuncu Adi",  
+            "localTournamentMaxScoreText": "Maksimum Skor",
+            "localTournamentGameModeText": "Oyun Modu",
+            "localTournamentChooseModeText1": "Klasik",
+            "localTournamentChooseModeText2": "Yetenekler",
+            "localTournamentButtonStart": "Baslat & Eslesme",
+            "localTournamentBracketTitle": "Turnuva Eslesmesi",
+            "localTournamentBracketStartButtonText": "Turnuvayi Baslat",
+            "localTournamentTournamentOverText": "Turnuva Bitti",
+            "localTournamentOverButtonText": "Bitti",
+
+            "localTournamentNextButtonText": "Sonraki",
+
             #Tournament
             "tournamentPageTittle": "Turnuva",
             "tournamentHeaderText": "Pong için Turnuva Lobisine Hoş Geldiniz",
@@ -724,6 +747,25 @@ def get_lang_pt():
             "localGameChooseModeText2": "Habilidades",
             "localGameButtonStart": "Iniciar",
 
+            #Local-Tournament
+            "localTournamentPageTittle": "Torneio Local",
+            "localTournamentGameHeaderText": "Torneio Local",
+            "localTournamentPlayer1Text": "Nome do Jogador 1",
+            "localTournamentPlayer2Text": "Nome do Jogador 2",
+            "localTournamentPlayer3Text": "Nome do Jogador 3",
+            "localTournamentPlayer4Text": "Nome do Jogador 4",  
+            "localTournamentMaxScoreText": "Pontuacão Máxima",
+            "localTournamentGameModeText": "Modo de Jogo",
+            "localTournamentChooseModeText1": "Vanilla",
+            "localTournamentChooseModeText2": "Habilidades",
+            "localTournamentButtonStart": "Iniciar & Empar.",
+            "localTournamentBracketTitle": "Empar. Torneio",
+            "localTournamentBracketStartButtonText": "Iniciar Torneio",
+            "localTournamentTournamentOverText": "Torneio Terminado",
+            "localTournamentOverButtonText": "Terminado",
+
+            "localTournamentNextButtonText": "Próximo",
+
             #Tournament
             "tournamentPageTittle": "Torneio",
             "tournamentHeaderText": "Bem-vindo ao Lobby do Torneio de Pong",
@@ -976,7 +1018,7 @@ def get_lang_hi():
             "aiGameCountdownText": "में शुरू हो रहा है",
 
             "aiGameGameOverText": "खेल समाप्त हो गया",
-            "aiGameRestartButtonText": "पुनः आरंभ करें",
+            "aiGameRestartButtonText": "पुनः आरंभ",
             "aiGameExitButtonText": "निकास",
 
             "aiGameInfoHeaderText": "खेल के बारे में",
@@ -1007,6 +1049,26 @@ def get_lang_hi():
             "localGameChooseModeText1": "वनिला",
             "localGameChooseModeText2": "क्षमताएँ",
             "localGameButtonStart": "प्रारंभ करें",
+
+            #Local-Tournament
+            "localTournamentPageTittle": "स्थानीय टूर्नामेंट",
+            "localTournamentGameHeaderText": "स्थानीय टूर्नामेंट",
+            "localTournamentPlayer1Text": "1. खिलाड़ी नाम",
+            "localTournamentPlayer2Text": "2. खिलाड़ी नाम",
+            "localTournamentPlayer3Text": "3. खिलाड़ी नाम",
+            "localTournamentPlayer4Text": "4. खिलाड़ी नाम",  
+            "localTournamentMaxScoreText": "अधिकतम स्कोर",
+            "localTournamentGameModeText": "खेल मोड",
+            "localTournamentChooseModeText1": "वनिला",
+            "localTournamentChooseModeText2": "क्षमताएँ",
+            "localTournamentButtonStart": "टूर्नामेंट शुरू करें",
+            "localTournamentBracketTitle": "ब्रैकेट",
+            "localTournamentBracketStartButtonText": "टूर्नामेंट शुरू करें",
+            "localTournamentTournamentOverText": "टूर्नामेंट खत्म हो गया",
+            "localTournamentOverButtonText": "खत्म करें",
+
+
+            "localTournamentNextButtonText": "अगला",
 
             #Tournament
             "tournamentPageTittle": "टूर्नामेंट",
