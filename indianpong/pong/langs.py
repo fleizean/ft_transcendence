@@ -87,7 +87,7 @@ def get_lang_en():
         #Pong-Game
         "pongGamePageTittle": "Pong Game",
         "pongGameHeaderText": "Welcome to Pong Lobby",
-        "pongGameSubHeaderText": "You can play with the AI and improve yourself without reflecting it in your stats, as if you were just warming up. If you want to play with a real person, consider the other option, remember that if we don't find someone to match you within 5 minutes, the match will be canceled. Good luck before I forget!",
+        "pongGameSubHeaderText": "You can improve yourself by playing with Artificial Intelligence. If you want to play with a real person, consider the other option; if we don't find someone to match with in 5 minutes, the match will be canceled. Good luck before we forget!",
         "pongGameAIButtonText": "Play with AI",
         "pongGameLocalButtonText": "Local Game",
         "pongGameRemoteButtonText": "Remote Player",
@@ -178,7 +178,7 @@ def get_lang_en():
         #RPS Game
         "rpsGamePageTittle": "Rock Paper Scissors",
         "rpsGameText1": "Welcome to RPS Lobby",
-        "rpsGameText2": "You can play with the AI and improve yourself without reflecting it in your stats, as if you were just warming up. If you want to play with a real person, consider the other option, remember that if we don't find someone to match you within 5 minutes, the match will be canceled. Good luck before I forget!",
+        "rpsGameText2": "You can improve yourself by playing with Artificial Intelligence. If you want to play with a real person, consider the other option; if we don't find someone to match with in 5 minutes, the match will be canceled. Good luck before we forget!",
         "rpsGameAIButtonText": "Play with AI",
         "rpsGameLocalButtonText": "Local Game",
         "rpsGameSearchOpponentButtonText": "Search Opponent ",
@@ -376,16 +376,16 @@ def get_lang_tr():
         
         #Pong-Game
         "pongGamePageTittle": "Pong Oyunu",
-        "pongGameHeaderText": "Pong Lobisine Hos Geldiniz",
-        "pongGameSubHeaderText": "Yapay Zeka ile oynayarak kendinizi gelistirebilir ve istatistiklerinize yansitmadan isinma gibi davranabilirsiniz. Gercek bir kisiyle oynamak istiyorsaniz, diger secenegi dusunun; 5 dakika icinde eslesecek birini bulamazsak, eslesme iptal edilecektir. Unutmadan once iyi sanslar!",
-        "pongGameAIButtonText": "Yapay Zeka Oyun",
+        "pongGameHeaderText": "Pong Lobisine Hoş Geldiniz",
+        "pongGameSubHeaderText": "Yapay Zeka ile oynayarak kendinizi geliştirebilir. Gerçek bir kişiyle oynamak istiyorsanız, diğer seçeneği düşünün; 5 dakika içinde eşleşecek birini bulamazsak, eşleşme iptal edilecektir. Unutmadan önce iyi şanslar!",
+        "pongGameAIButtonText": "Yapay Zeka Oyunu",
         "pongGameLocalButtonText": "Yerel Oyun",
         "pongGameRemoteButtonText": "Uzak Oyuncu",
         "pongGameLocalTournamentButtonText": "Yerel Turnuva",
         "pongGameTournamentButtonText": "Turnuva",
 
             #AI-Game
-            "aiGamePageTittle": "Yapay Zeka Oyunu",
+            "aiGamePageTittle": "Pong Yapay Zeka Oyunu",
             "aiGameReactionDelayText": "Tepki Gecikmesi",
             "aiGameGetReadyText": "Hazir Ol",
             "aiGamePresSpaceText": "'Space' tusuna basarak basla",
@@ -426,7 +426,7 @@ def get_lang_tr():
 
             #Tournament
             "tournamentPageTittle": "Turnuva",
-            "tournamentHeaderText": "Pong icin Turnuva Lobisine Hos Geldiniz",
+            "tournamentHeaderText": "Pong için Turnuva Lobisine Hoş Geldiniz",
             "tournamentSubHeaderText": "Burada bir turnuva lobisine katilabilir veya kendi turnuva lobinizi olusturabilirsiniz. Odanizi olusturduktan sonra davet kodunu paylasarak arkadaslarinizi davet edebilirsiniz. Unutmadan once iyi sanslar!",
             "tournamentJoinButtonText": "Turnuvaya Katil",
             "tournamentCreateButtonText": "Turnuva Olustur",
@@ -451,11 +451,25 @@ def get_lang_tr():
 
         #RPS Game
         "rpsGamePageTittle": "Taş Kağıt Makas",
-        "rpsGameText1": "Tas Kagit Makas Lobisine Hos Geldiniz",
-        "rpsGameText2": "Yapay Zeka ile oynayarak kendinizi gelistirebilir ve istatistiklerinize yansitmadan isinma gibi davranabilirsiniz. Gercek bir kisiyle oynamak istiyorsaniz, diger secenegi dusunun; 5 dakika icinde eslesecek birini bulamazsak, eslesme iptal edilecektir. Unutmadan once iyi sanslar!",
-        "rpsGameAIButtonText": "Yapay Zeka ile Oyna",
+        "rpsGameText1": "Taş Taş Kağıt Makas Lobisine Hoş Geldiniz",
+        "rpsGameText2": "Yapay Zeka ile oynayarak kendinizi geliştirebilir. Gerçek bir kişiyle oynamak istiyorsanız, diğer seçeneği düşünün; 5 dakika içinde eşleşecek birini bulamazsak, eşleşme iptal edilecektir. Unutmadan önce iyi şanslar!",
+        "rpsGameAIButtonText": "Yapay Zeka Oyunu",
         "rpsGameLocalButtonText": "Yerel Oyun",
-        "rpsGameSearchOpponentButtonText": "Rakip Arayin ",
+        "rpsGameSearchOpponentButtonText": "Rakip Arayın ",
+            
+            #AI-Game
+            "rpsGamePageTittle": "RPS Yapay Zeka Oyunu",
+            "rpsGameScoreText": "skor",
+            "rpsGameRockText": "TAŞ",
+            "rpsGamePaperText": "KAĞIT",
+            "rpsGameScissorsText": "MAKAS",
+            "rpsGamePickedText": "seçtin",
+            "rpsGamePickedText2": "rakibin seçti",
+            "rpsGameAgainText": "tekrar oyna",
+            "rpsGameGameOverText": "Oyun Bitti",
+            "rpsGameRestartButtonText": "Yeniden",
+            "rpsGameExitButtonText": "Çıkış",
+
 
         #Rankings
         "rankingsPageTittle": "Sıralamalar",
@@ -650,7 +664,7 @@ def get_lang_pt():
         #Pong-Game
         "pongGamePageTittle": "Jogo de Pong",
         "pongGameHeaderText": "Bem-vindo ao Lobby de Pong",
-        "pongGameSubHeaderText": "Você pode jogar com a IA e se aprimorar sem refletir em suas estatísticas, como se estivesse apenas se aquecendo. Se você quiser jogar com uma pessoa real, considere a outra opcão, lembre-se que se não encontrarmos alguém para combinar com você dentro de 5 minutos, a partida será cancelada. Boa sorte antes que eu esqueca!",
+        "pongGameSubHeaderText": "Podes melhorar o teu desempenho jogando com a Inteligência Artificial. Se quiseres jogar com uma pessoa real, considera a outra opção; se não encontrarmos alguém com quem jogar no espaço de 5 minutos, o jogo será cancelado. Boa sorte antes que nos esqueçamos!",
         "pongGameAIButtonText": "Jogar com a IA",
         "pongGameLocalButtonText": "Jogo Local",
         "pongGameRemoteButtonText": "Jogador Remoto",
@@ -725,7 +739,7 @@ def get_lang_pt():
         #RPS Game
         "rpsGamePageTittle": "Pedra, Papel e Tesoura",
         "rpsGameText1": "Bem-vindo ao Lobby de Pedra, Papel e Tesoura",
-        "rpsGameText2": "Você pode jogar com a IA e se aprimorar sem refletir em suas estatísticas, como se estivesse apenas se aquecendo. Se você quiser jogar com uma pessoa real, considere a outra opcão, lembre-se que se não encontrarmos alguém para combinar com você dentro de 5 minutos, a partida será cancelada. Boa sorte antes que eu esqueca!",
+        "rpsGameText2": "Podes melhorar o teu desempenho jogando com a Inteligência Artificial. Se quiseres jogar com uma pessoa real, considera a outra opção; se não encontrarmos alguém com quem jogar no espaço de 5 minutos, o jogo será cancelado. Boa sorte antes que nos esqueçamos!",
         "rpsGameAIButtonText": "Jogar com a IA",
         "rpsGameLocalButtonText": "Jogo Local",
         "rpsGameSearchOpponentButtonText": "Buscar Oponente ",
@@ -921,7 +935,7 @@ def get_lang_hi():
         #Pong-Game
         "pongGamePageTittle": "पॉन्ग खेल",
         "pongGameHeaderText": "पॉन्ग लॉबी में आपका स्वागत है",
-        "pongGameSubHeaderText": "आप ए.आई. के साथ खेल सकते हैं और खुद को सुधार सकते हैं बिना अपने स्टैट्स में इसे प्रकट करने के, जैसे कि आप बस गरम कर रहे थे। यदि आप किसी वास्तविक व्यक्ति के साथ खेलना चाहते हैं, तो दूसरा विकल्प विचार करें, याद रखें कि अगर हमे 5 मिनट के भीतर आपको बंधक मिलाने वाला व्यक्ति नहीं मिलता है, तो मैच रद्द कर दिया जाएगा। भूलने से पहले शुभकामनाएं!",
+        "pongGameSubHeaderText": "आप आर्टिफिशियल इंटेलिजेंस के साथ खेलकर खुद को बेहतर बना सकते हैं। यदि आप किसी वास्तविक व्यक्ति के साथ खेलना चाहते हैं, तो दूसरे विकल्प पर विचार करें; यदि हमें 5 मिनट के भीतर मैच के लिए कोई नहीं मिल सका, तो मैच रद्द कर दिया जाएगा। इससे पहले कि मैं भूल जाऊँ, शुभकामनाएँ!",
         "pongGameAIButtonText": "ए.आई. के साथ खेलें",
         "pongGameLocalButtonText": "स्थानीय खेल",
         "pongGameRemoteButtonText": "दूरस्थ खिलाड़ी",
@@ -996,7 +1010,7 @@ def get_lang_hi():
         #RPS Game
         "rpsGamePageTittle": "रॉक-पेपर-सैंड खेल",
         "rpsGameText1": "रॉक-पेपर-सैंड लॉबी में आपका स्वागत है",
-        "rpsGameText2": "आप ए.आई. के साथ खेल सकते हैं और खुद को सुधार सकते हैं बिना अपने स्टैट्स में इसे प्रकट करने के, जैसे कि आप बस गरम कर रहे थे। यदि आप किसी वास्तविक व्यक्ति के साथ खेलना चाहते हैं, तो दूसरा विकल्प विचार करें, याद रखें कि अगर हमे 5 मिनट के भीतर आपको बंधक मिलाने वाला व्यक्ति नहीं मिलता है, तो मैच रद्द कर दिया जाएगा। भूलने से पहले शुभकामनाएं!",
+        "rpsGameText2": "आप आर्टिफिशियल इंटेलिजेंस के साथ खेलकर खुद को बेहतर बना सकते हैं। यदि आप किसी वास्तविक व्यक्ति के साथ खेलना चाहते हैं, तो दूसरे विकल्प पर विचार करें; यदि हमें 5 मिनट के भीतर मैच के लिए कोई नहीं मिल सका, तो मैच रद्द कर दिया जाएगा। इससे पहले कि मैं भूल जाऊँ, शुभकामनाएँ!",
         "rpsGameAIButtonText": "ए.आई. के साथ खेलें",
         "rpsGameLocalButtonText": "स्थानीय खेल",
         "rpsGameSearchOpponentButtonText": "विरोधी खोजें ",

@@ -3,7 +3,7 @@
 {% load static %}
 
 {% block title %}
-  Play with AI
+  {{context.rpsGamePageTittle}}
 {% endblock %}
 
 {% block stylesheet %}<link rel="stylesheet" href="{% static 'css/rps.css' %}" />{% endblock %}
@@ -14,13 +14,13 @@
       <div class="header">
         <div class="score" style="margin-right: 15px;">
           <div class="player1_name">{{request.user.username}}</div>
-          <div class="score__title">score</div>
+          <div class="score__title">{{context.rpsGameScoreText}}</div>
           <div class="score__number1">0</div>
         </div>
-        <h3 class="rps-header-text">ROCK<br />PAPER<br />SCISSORS</h3>
+        <h3 class="rps-header-text">{{context.rpsGameRockText}}<br />{{context.rpsGamePaperText}}<br />{{context.rpsGameScissorsText}}</h3>
         <div class="score" style="margin-left: 15px;">
           <div class="player2_name">{% if not ainametag %} IndianAI {% else %} {{ainametag}} {% endif %}</div>
-          <div class="score__title">score</div>
+          <div class="score__title">{{context.rpsGameScoreText}}</div>
           <div class="score__number2">0</div>
         </div>
       </div>
@@ -59,21 +59,21 @@
   </div>
 
   <section class="results hidden">
-    <h2 class="results__heading">you picked</h2>
-    <h2 class="results__heading">the house picked</h2>
+    <h2 class="results__heading">{{context.rpsGamePickedText}}</h2>
+    <h2 class="results__heading">{{context.rpsGamePickedText2}}</h2>
     <div class="results__result"></div>
     <div class="results__winner hidden">
       <h3 class="results__text"></h3>
-      <button class="play-again">play again</button>
+      <button class="play-again">{{context.rpsGameAgainText}}</button>
     </div>
     <div class="results__result"></div>
   </section>
 
   <div id="gameOverScreen" class="game-over">
     <h1 id="winnerText" class="winnerName"></h1>
-    <h2 style="color: white;">Game Over</h2>
-    <button id="restartButton">Restart</button>
-    <button id="exitButton">Exit</button>
+    <h2 style="color: white;">{{context.rpsGameGameOverText}}</h2>
+    <button id="restartButton">{{context.rpsGameRestartButtonText}}</button>
+    <button id="exitButton">{{context.rpsGameExitButtonText}}</button>
   </div>
 
   <script src="{% static 'js/rps.js' %}"></script>
