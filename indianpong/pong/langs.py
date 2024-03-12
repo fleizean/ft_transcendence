@@ -254,6 +254,7 @@ def get_lang_en():
         "profileMatchHistoryText2": "Result",
         "profileMatchHistoryText3": "Score",
         "profileMatchHistoryText4": "Duration",
+
         "profileMatchHistoryWinText": "Win",
         "profileMatchHistoryLoseText": "Lose",
 
@@ -558,10 +559,15 @@ def get_lang_tr():
         "profileTitleText1": "42 Kocaeli ogrencisi",
         "profileTitleText2": "Yazilim Gelistirici",
 
+        "profileMatchHistoryText1": "Rakip",
+        "profileMatchHistoryText2": "Sonuç",
+        "profileMatchHistoryText3": "Puan",
+        "profileMatchHistoryText4": "Süre",
+
         "profileMatchHistoryWinText": "Kazandı",
         "profileMatchHistoryLoseText": "Kaybetti",
 
-        "profileRankText1": "Sira",
+        "profileRankText1": "Sıra",
 
         "profileGameStats1": "Oynanan Oyunlar:",
         "profileGameStats2": "Kazanmalar:",
@@ -862,6 +868,11 @@ def get_lang_pt():
         "profileFollowingButton": "Deixar",
         "profileTitleText1": "Estudante da 42 Kocaeli",
         "profileTitleText2": "Desenvolvedor de Software",
+
+        "profileMatchHistoryText1": "Oponente",
+        "profileMatchHistoryText2": "Resultado",
+        "profileMatchHistoryText3": "Pontos",
+        "profileMatchHistoryText4": "Tempo",
 
         "profileMatchHistoryWinText": "Venceu",
         "profileMatchHistoryLoseText": "Perdeu",
@@ -1167,6 +1178,11 @@ def get_lang_hi():
         "profileFollowingButton": "करें",
         "profileTitleText1": "42 स्कूल समुदाय",
         "profileTitleText2": "पॉन्ग खिलाड़ी",
+
+        "profileMatchHistoryText1": "प्रतिद्वंद्वी",
+        "profileMatchHistoryText2": "परिणाम",
+        "profileMatchHistoryText3": "अंक",
+        "profileMatchHistoryText4": "अवधि",
 
         "profileMatchHistoryWinText": "जीता",
         "profileMatchHistoryLoseText": "हारा",
