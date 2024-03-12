@@ -18,7 +18,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path
-from pong.views import play_rps, local_tournament, set_language, play_rps_ai, aboutus, follow_unfollow, remote_game, tournament_room, tournament_create, local_game, tournament, tournament_room_list, update_winner, inventory, store, activate_account, play_ai, pong_game_find, rps_game_find, auth_callback, chat, friends, password_change, password_reset, password_reset_done, rankings, dashboard, game, index, auth, chat_room, profile_view, search, set_password, signup, login_view, logout_view, profile_settings, setup_two_factor_auth, generate_jwt_token, start_chat, room
+from pong.views import play_rps, local_tournament, gametest, set_language, play_rps_ai, aboutus, follow_unfollow, remote_game, tournament_room, tournament_create, local_game, tournament, tournament_room_list, update_winner, inventory, store, activate_account, play_ai, pong_game_find, rps_game_find, auth_callback, chat, friends, password_change, password_reset, password_reset_done, rankings, dashboard, game, index, auth, chat_room, profile_view, search, set_password, signup, login_view, logout_view, profile_settings, setup_two_factor_auth, generate_jwt_token, start_chat, room
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -64,6 +64,7 @@ urlpatterns = [
     path('set-language/', set_language, name='set_language'),
     path('play-rps-ai', play_rps_ai, name='play_rps_ai'),
     path('play-rps', play_rps, name='play-rps'),
+    path('gametest', gametest, name='gametest'),
 ]
 
 handler404 = 'pong.views.handler404'

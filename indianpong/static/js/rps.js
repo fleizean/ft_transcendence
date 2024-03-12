@@ -68,7 +68,7 @@ let nowChoice = "";
 
 let aicheater = "inactive";
 
-const MAX_SCORE_RPS = 10;
+const MAX_SCORE_RPS = 3;
 let score = 0;
 
 const ICON_PATH = document.querySelector('.container-top').dataset.iconpath;

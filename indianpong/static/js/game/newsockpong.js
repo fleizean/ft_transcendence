@@ -1,3 +1,13 @@
+// Extract game_id and game_type from the URL
+const pathArray = window.location.pathname.split('/');
+const gameType = pathArray[2]; // Assuming game_type is the third segment of the URL
+const gameId = pathArray[3]; // Assuming game_id is the fourth segment of the URL
+
+
+// Connect to the WebSocket server using the extracted game_id and game_type
+const matchsocket = new WebSocket(`ws://${window.location.host}/ws/remote-game/${gameType}/${gameId}/`); //? Maybe we need to pass game type and game id here
+
+
 const canvas = document.getElementById('pongCanvas');
 var ctx = canvas.getContext("2d");
 canvas.width = 800;
@@ -128,28 +138,24 @@ function scoreUpdate(player1_score, player2_score) {
 
 
 
-
-// Socket Code
-const socket = new WebSocket('ws://' + window.location.host + '/ws/pong/'); //? Maybe we need to pass game type and game id here
-
-socket.onopen = function (e) {
+matchsocket.onopen = function (e) {
     // Show some greeting message
     console.log('WebSocket connection established');
 }
 
-socket.onclose = function (e) {
+matchsocket.onclose = function (e) {
     clearInterval(BallRequest);
     stopGame();
     console.error('WebSocket connection closed');
 }
 
-socket.onerror = function (e) {
+matchsocket.onerror = function (e) {
     console.error('Error: ' + e.data);
     clearInterval(BallRequest);
     stopGame();
 }
 
-socket.onmessage = function (e) {
+matchsocket.onmessage = function (e) {
     const data = JSON.parse(e.data);
     console.log(data);
     switch (data.type) {
@@ -160,44 +166,52 @@ socket.onmessage = function (e) {
                 my.username = data.user;
             }
             // Take online users usernames and display them
+            addUsersToTable(data.users);
             console.log('Online users', data.users);
             break;
-
+            
         case 'user.inlobby':
             // Send others i joined the lobby
             console.log('User in lobby', data.user);
             // Add user to online users list
-            break;
+            if (data.user !== my.username) {
+                addUsersToTable([data.user]);
+            }
+            showToast(data.user + ' joined!', 'text-bg-success', 'bi bi-check-circle-fill')
+        break;
 
         case 'user.outlobby':
             // Send others user left the lobby
             console.log('User out lobby', data.user);
             // Remove user from online users list
+            removeUserFromTable(data.user);
+            showToast(data.user + ' left!', 'text-bg-danger', 'bi bi-check-circle-fill')
             break;
 
         case 'game.invite':
             // Tell user that he/she is invited to a game
             console.log('Game invite', data.inviter);
+            console.log('data: ', data.invitee + " " + my.username)
             // Display the modal for accepting or declining the invitation
-            if (data.inviter !== my.username)  {
-                invitationMessage.textContent = `You received a game invitation from ${data.inviter}`;
-                invitationModal.style.display = 'block';
-            }
-            else {
-                invitationMessage.textContent = `You send a game invitation to ${data.invitee}`;
+            if (data.invitee === my.username)  {
+                showToast(`You received a game invitation from ${data.inviter}`, 'text-bg-success', 'bi bi-check-circle-fill')
+                document.getElementById(`acceptButton${data.inviter}`).style.display = 'flex';
+                document.getElementById(`declineButton${data.inviter}`).style.display = 'flex';
             }
 
-            acceptButton.onclick = function () {
+            document.getElementById(`acceptButton${data.inviter}`).onclick = function () {
                 accept(data.inviter);
-                invitationModal.style.display = 'none';
+                document.getElementById(`acceptButton${data.inviter}`).style.display = 'none';
+                document.getElementById(`declineButton${data.inviter}`).style.display = 'none';
             };
 
-            declineButton.onclick = function () {
+            document.getElementById(`declineButton${data.inviter}`).onclick = function () {
                 decline(data.inviter);
-                invitationModal.style.display = 'none';
+                document.getElementById(`acceptButton${data.inviter}`).style.display = 'none';
+                document.getElementById(`declineButton${data.inviter}`).style.display = 'none';
             };
 
-            console.log(`Invited Group: ${data.inviter} vs ${data.invited}`);
+            console.log(`Invited Group: ${data.inviter} vs ${data.invitee}`);
             break;
         
         case 'game.accept':
@@ -366,30 +380,56 @@ socket.onmessage = function (e) {
     }};
 
 
-socket.sendJSON = function (data) {
-    socket.send(JSON.stringify(data));
+matchsocket.sendJSON = function (data) {
+    matchsocket.send(JSON.stringify(data));
+}
+
+function addUsersToTable(usersArray) {
+    var tableBody = document.querySelector('.custom-table tbody');
+
+    usersArray.forEach(function(username) {
+        var row = document.createElement('tr');
+        var usernameCell = document.createElement('td');
+        usernameCell.textContent = username;
+        var actionsCell = document.createElement('td');
+        actionsCell.innerHTML = `
+        <div class="btn-group" style="display:flex; justify-content:center;">
+            <button type="button" class="invite-button" onclick="invite('false', '${username}')"><i class="bi bi-plus-circle-fill"></i></button>
+            <button type"button" class="accept-button" id="acceptButton${username}"><i class="bi bi-patch-check-fill"></i></button>
+            <button type="button" class="decline-button" id="declineButton${username}"><i class="bi bi-x-circle-fill"></i></button>
+        </div>
+            `;
+        row.appendChild(usernameCell);
+        row.appendChild(actionsCell);
+        tableBody.appendChild(row);
+    });
+}
+
+function removeUserFromTable(username) {
+    var tableBody = document.querySelector('.custom-table tbody');
+    var rows = tableBody.querySelectorAll('tr');
+
+    rows.forEach(function(row) {
+        var usernameCell = row.querySelector('td:first-child');
+        if (usernameCell.textContent.trim() === username.trim()) {
+            tableBody.removeChild(row);
+        }
+    });
 }
 
 //----------------------------------------------
-
-// Add an event listener for the "Invite" button
-inviteButton.onclick = function () {
-    invitationMessage.style.display = 'block';
-    invite();
-}
-
 // Add an event listener for the "Matchmaking" button
-inviteButton.onclick = function () {
-    invitationMessage.style.display = 'block';
+/* inviteButton.onclick = function () {
     invite('true');
-}
+} */
 
-function invite(matchmaking = 'false') {
+function invite(matchmaking = 'false', username) {
     // Get necessary data and call socket.sendJSON
-    socket.sendJSON({
+    showToast(`You invited ${username} to a game`, 'text-bg-success', 'bi bi-check-circle-fill')
+    matchsocket.sendJSON({
         action: 'invite',
         matchmaking: matchmaking,
-        invited: inviteInput.value,
+        invitee_username: username,
     });
 }
 
@@ -397,7 +437,7 @@ function invite(matchmaking = 'false') {
 
 function accept(inviter) {
     // Get necessary data and call socket.sendJSON
-    socket.sendJSON({
+    matchsocket.sendJSON({
         action: 'accept',
         inviter_username: inviter,
     });
@@ -405,7 +445,7 @@ function accept(inviter) {
 
 function decline(inviter) {
     // Get necessary data and call socket.sendJSON
-    socket.sendJSON({
+    matchsocket.sendJSON({
         action: 'decline',
         inviter_username: inviter,
     });
@@ -418,7 +458,7 @@ function startRequest(player1, player2) {
     if (my.vote == -1){
         myCheckMark.style.display = 'none';
     }
-    socket.sendJSON({
+    matchsocket.sendJSON({
         action: 'start.request',
         game_id: my.game_id,
         opponent: my.opponent_username,
@@ -428,7 +468,7 @@ function startRequest(player1, player2) {
 
 
 function leaveGame() {
-    socket.sendJSON({
+    matchsocket.sendJSON({
         action: 'leave.game',
         game_id: my.game_id,
         left: my.username,
@@ -439,7 +479,7 @@ function leaveGame() {
 // send this in keydown event
 function PaddleRequest(direction) {
     // Get necessary data and call socket.sendJSON
-    socket.sendJSON({
+    matchsocket.sendJSON({
         action: 'paddle',
         game_id: my.game_id,
         direction: direction
@@ -449,7 +489,7 @@ function PaddleRequest(direction) {
 // send this in setInterval(update, 16) this ll be game state
 function BallRequest() {
     // Get necessary data and call socket.sendJSON
-    socket.sendJSON({
+    matchsocket.sendJSON({
         action: 'ball',
         game_id: my.game_id,
     });

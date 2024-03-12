@@ -268,6 +268,10 @@ def login_view(request):
         form = AuthenticationUserForm()
     return render(request,"login.html", {"form": form, "context": context})
 
+@never_cache
+@login_required()
+def gametest(request):
+    return render(request, "remote-game.html")
 
 @never_cache
 @login_required()

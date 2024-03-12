@@ -1,0 +1,100 @@
+.pongCanvas {
+    display: block;
+    border: 1px solid white;
+    width: 800px;
+    height: 600px;
+    margin-top: 30px;
+    background-color: gray;
+}
+
+.matchmaking-button {
+    display: flex; 
+    text-align: center;
+    margin-bottom: 1em;
+}
+
+.left-card {
+    width: 300px;
+    height: 600px;
+    background-color: #ddd;
+    padding: 10px;
+    margin-right: 2em; /* İstediğiniz boşluk değerini ayarlayabilirsiniz */
+    margin-left: 1em;
+    float: left;
+}
+
+.invite-button {
+    border-color: #26b948;
+    color: #28a745;
+    text-align: center;
+    border-radius: 6px;
+    background-color: transparent;
+    width: 32px;
+    height: 32px;
+}
+
+.invite-button:hover {
+    background-color: #28a745;
+    color: white;
+}
+
+.accept-button {
+    display: none;
+    border-color: #007bff;
+    margin-left: 5px;
+    color: #007bff;
+    text-align: center;
+    border-radius: 6px;
+    background-color: transparent;
+    width: 32px;
+    height: 32px;
+}
+
+.accept-button:hover {
+    background-color: #007bff;
+    color: white;
+}
+
+.decline-button {
+    display: none;
+    border-color: #dc3545;
+    margin-left: 5px;
+    color: #dc3545;
+    text-align: center;
+    border-radius: 6px;
+    background-color: transparent;
+    width: 32px;
+    height: 32px;
+}
+
+.decline-button:hover {
+    background-color: #dc3545;
+    color: white;
+}
+
+
+.custom-table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.custom-table th, .custom-table td {
+    border: 1px solid #ddd;
+    padding: 3px;
+    text-align: center;
+}
+
+.custom-table tr:hover {
+    background-color: #b6b6b6;
+}
+
+
+.canvas-container {
+    float: left;
+}
+
+
+.toast-close:hover {
+    cursor: pointer;
+    color: #000;
+}

@@ -30,7 +30,7 @@ class PongConsumer(AsyncWebsocketConsumer):
         await USER_STATUS.set(self.user.username, "lobby")
         # Get the list of online users usernames
         lobby_users_usernames = await USER_STATUS.get_keys_with_value('lobby')
-
+        lobby_users_usernames.remove(self.user.username)
         await self.send(text_data=json.dumps({
             'type': 'inlobby',
             'user': self.user.username,
@@ -300,9 +300,11 @@ class PongConsumer(AsyncWebsocketConsumer):
 
     async def game_invite(self, event):
         inviter = event['inviter']
+        invitee = event['invitee']
         await self.send(text_data=json.dumps({
             'type': 'game.invite',
             'inviter': inviter,
+            'invitee': invitee,
         }))
 
     async def game_accept(self, event):
