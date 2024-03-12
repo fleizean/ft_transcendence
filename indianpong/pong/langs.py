@@ -509,13 +509,13 @@ def get_lang_tr():
 
         #Rankings
         "rankingsPageTittle": "Sıralamalar",
-        "rankingsTableRankText": "Sira",
+        "rankingsTableRankText": "Sıra",
         "rankingsTableNameText": "Ad",
         "rankingsTableUsernameText": "Kullanici Adi",
         "rankingsTableWinsText": "Kazanmalar",
         "rankingsTableLossesText": "Kayiplar",
         "rankingsTableWinRateText": "Kazanma Orani",
-        "rankingsTablePongPointsText": "Pong Puanlari",
+        "rankingsTablePongPointsText": "Pong Puanı",
 
         #Store
         "storePageTittle": "Mağaza",
@@ -536,13 +536,13 @@ def get_lang_tr():
         "inventoryModalSaveButton": "Kaydet",
         "inventoryModalCloseButton": "Kapat",
         "inventoryItemKeyboardInfoText": "Yetenek kullanmak için",
-        "inventoryItemKeyboardInfoText2": "tuşunu kullan. Ve unutma, bu yetenekleri kullanabilmek için bunları donatmalısın.",
+        "inventoryItemKeyboardInfoText2": "tuşunu kullan. Unutma, bu yeteneği kullanabilmek için kuşanmalısın.",
         "inventoryItemKeyboardInfoText3": "Bu öğe için özel bir tuş takımı yok, otomatik olarak kullanılır.",
 
         
         #Search
         "searchPageTittle": "Arama",
-        "searchInputText": "E-posta veya Kullanici Adi veya Gorunen Ad Ara...",
+        "searchInputText": "E-posta, kullanıcı adı veya görünen ad ara...",
         "searchMessageButtonText": "Mesaj Gönder",
         "searchFollowButtonText": "Takip Et",
         "searchFollowingButtonText": "Takipten Cik",
@@ -840,8 +840,8 @@ def get_lang_pt():
         "inventoryModalHeaderText": "Definir Item",
         "inventoryModalSaveButton": "Salvar",
         "inventoryModalCloseButton": "Fechar",
-        "inventoryItemKeyboardInfoText": "Pressione a tecla",
-        "inventoryItemKeyboardInfoText2": "para usar a habilidade. E lembre-se, você deve equipar esses itens para usá-los",
+        "inventoryItemKeyboardInfoText": "Use a tecla",
+        "inventoryItemKeyboardInfoText2": "para usar essa habilidade. E lembre-se, você deve equipar essa habilidade.",
         "inventoryItemKeyboardInfoText3": "Este item não tem um teclado personalizado, é usado automaticamente.",
 
         
