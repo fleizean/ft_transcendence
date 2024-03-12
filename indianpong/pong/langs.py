@@ -77,7 +77,7 @@ def get_lang_en():
         "dashboardGamesPlayed": "Games Played",
         "dashboardWinCount": "Win Count",
         "dashboardWinStreak": "Win Streak",
-        "dashboardLoseStreak": "LoseStreak",
+        "dashboardLoseStreak": "Lose Streak",
         "dashboardWinRate": "Win Rate",
         "dashboardAverageGameDuration": "Average Game Duration",
         "dashboardAveragePointsWon": "Average Points Won",
@@ -182,6 +182,19 @@ def get_lang_en():
         "rpsGameAIButtonText": "Play with AI",
         "rpsGameLocalButtonText": "Local Game",
         "rpsGameSearchOpponentButtonText": "Search Opponent ",
+
+        #AI-Game
+            "rpsGamePageTittle": "RPS Game with Artificial Intelligence",
+            "rpsGameScoreText": "score",
+            "rpsGameRockText": "ROCK",
+            "rpsGamePaperText": "PAPER",
+            "rpsGameScissorsText": "SCISSORS",
+            "rpsGamePickedText": "you picked",
+            "rpsGamePickedText2": "the house picked",
+            "rpsGameAgainText": "Play again",
+            "rpsGameGameOverText": "Game Over",
+            "rpsGameRestartButtonText": "Restart",
+            "rpsGameExitButtonText": "Exit",
 
         #Rankings
         "rankingsPageTittle": "Rankings",
@@ -744,6 +757,19 @@ def get_lang_pt():
         "rpsGameLocalButtonText": "Jogo Local",
         "rpsGameSearchOpponentButtonText": "Buscar Oponente ",
 
+        #AI-Game
+            "rpsGamePageTittle": "Jogo de Pedra, Papel e Tesoura com Inteligência Artificial",
+            "rpsGameScoreText": "pontuação",
+            "rpsGameRockText": "PEDRA",
+            "rpsGamePaperText": "PAPEL",
+            "rpsGameScissorsText": "TESOURA",
+            "rpsGamePickedText": "escolheste",
+            "rpsGamePickedText2": "o adversário escolheu",
+            "rpsGameAgainText": "jogar novamente",
+            "rpsGameGameOverText": "Jogo Terminado",
+            "rpsGameRestartButtonText": "Reiniciar",
+            "rpsGameExitButtonText": "Sair",
+
         #Rankings
         "rankingsPageTittle": "Classificacão",
         "rankingsTableRankText": "Classificacão",
@@ -1014,6 +1040,20 @@ def get_lang_hi():
         "rpsGameAIButtonText": "ए.आई. के साथ खेलें",
         "rpsGameLocalButtonText": "स्थानीय खेल",
         "rpsGameSearchOpponentButtonText": "विरोधी खोजें ",
+
+        #AI-Game
+            "rpsGamePageTittle": "रॉक कागज कैंची आर्टिफिशियल इंटेलिजेंस गेम",
+            "rpsGameScoreText": "स्कोर",
+            "rpsGameRockText": "पत्थर",
+            "rpsGamePaperText": "कागज",
+            "rpsGameScissorsText": "कैंची",
+            "rpsGamePickedText": "तुमने चुना",
+            "rpsGamePickedText2": "विरोधी चुना",
+            "rpsGameAgainText": "फिर से खेलें",
+            "rpsGameGameOverText": "खेल समाप्त",
+            "rpsGameRestartButtonText": "फिर से शुरू करें",
+            "rpsGameExitButtonText": "बाहर जाएं",
+
 
         #Rankings
         "rankingsPageTittle": "रैंकिंग",
