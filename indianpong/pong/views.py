@@ -739,9 +739,10 @@ def follow_unfollow(request, username):
     profile = get_object_or_404(UserProfile, username=username)
     data = json.loads(request.body)
     action = data.get("action", "")
-    if action == "Follow" or action == "Seguir" or action == "अनुसरण करना" or action == "Takip Et":
+    print(action)
+    if action == "follow":
         request.user.friends.add(profile)
-    elif action == "Unfollow" or action == "Deixar" or action == "करें" or action == "Takipten Cik":
+    elif action == "unfollow":
         request.user.friends.remove(profile)
     else:
         return JsonResponse({"status": "error", "message": "Invalid action"})

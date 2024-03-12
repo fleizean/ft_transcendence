@@ -478,7 +478,7 @@ def get_lang_tr():
         #Search
         "searchPageTittle": "Arama",
         "searchInputText": "E-posta veya Kullanici Adi veya Gorunen Ad Ara...",
-        "searchMessageButtonText": "Mesaj",
+        "searchMessageButtonText": "Mesaj Gönder",
         "searchFollowButtonText": "Takip Et",
         "searchFollowingButtonText": "Takipten Cik",
         "searchNoResultFoundText": "Sonuc bulunamadi.",
@@ -507,7 +507,7 @@ def get_lang_tr():
         
         #Friends
         "friendsPageTittle": "Arkadaşlar",
-        "friendsMessageButtonText": "Mesaj",
+        "friendsMessageButtonText": "Mesaj Gönder",
         "friendsNoResultFoundText": "Sonuc bulunamadi.",
         
         #ProfileSettings

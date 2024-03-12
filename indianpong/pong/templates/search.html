@@ -51,21 +51,21 @@
                     </div>
                     {% if not person.social.stackoverflow and not person.social.twitter and not person.social.github and not person.social.instagram %}
                       <div class="buttons" style="margin-top: 60px !important;">
-                        {% if person.is_person %}
-                        <button data-username="{{ person.username }}" class="button-follow">{{context.searchFollowButtonText}}</button>
+                      {% if person.is_person %}
+                        <button data-username="{{ person.username }}" class="button-follow"><i class="bi bi-heart-fill"></i> {{context.searchFollowButtonText}}</button>
                       {% else %}
-                        <button data-username="{{ person.username }}" class="button-follow">{{context.searchFollowingButtonText}}</button>
+                        <button data-username="{{ person.username }}" class="button-unfollow"><i class="bi bi-heartbreak-fill"></i> {{context.searchFollowingButtonText}}</button>
                       {% endif %}
-                      {% comment %} <a href="/start_chat/{{person.username}}"> <button class="button-message">{{context.searchMessageButtonText}}</button></a> {% endcomment %}
+                      {% comment %} <a href="/start_chat/{{person.username}}"> <button class="button-message"><i class="bi bi-chat-left-text-fill"></i> {{context.searchMessageButtonText}}</button></a> {% endcomment %}
                       </div>
                     {% else %}
                       <div class="buttons">
                         {% if person.is_person %}
-                        <button data-username="{{ person.username }}" class="button-follow">{{context.searchFollowButtonText}}</button>
+                        <button data-username="{{ person.username }}" class="button-follow"><i class="bi bi-heart-fill"></i> {{context.searchFollowButtonText}}</button>
                       {% else %}
-                        <button data-username="{{ person.username }}" class="button-follow">{{context.searchFollowingButtonText}}</button>
+                        <button data-username="{{ person.username }}" class="button-unfollow"><i class="bi bi-heartbreak-fill"></i> {{context.searchFollowingButtonText}}</button>
                       {% endif %}
-                      {% comment %} <a href="/start_chat/{{person.username}}"> <button class="button-message">{{context.searchMessageButtonText}}</button></a> {% endcomment %}
+                      {% comment %} <a href="/start_chat/{{person.username}}"> <button class="button-message"><i class="bi bi-chat-left-text-fill"></i> {{context.searchMessageButtonText}}</button></a> {% endcomment %}
                       </div>
                     {% endif %}
                   
@@ -116,7 +116,12 @@
   followButtons.forEach((button) => {
     button.addEventListener('click', (e) => {
       const username = e.target.getAttribute('data-username');
-      const action = e.target.innerHTML.trim();
+      let action = e.target.innerHTML.trim();
+      if (action == "अनुसरण करना" || action == "Seguir" || action == "Takip Et" || action == "Follow") {
+        action = "follow"
+      } else if (action == "करें" || action == "Deixar" || action == "Takipten Cik" || action == "Unfollow") {
+        action = "unfollow"
+      }
       fetch(`/follow_unfollow/${username}`, {
         method: 'POST',
         headers: {
@@ -128,10 +133,43 @@
       .then(response => response.json())
       .then(data => {
         if (data['status'] === 'ok') {
-          e.target.innerHTML = action === 'follow' ? 'Unfollow' : 'Follow';
+          if (action == "follow") 
+            translateContent(selectedLanguage, false);
+          else
+            translateContent(selectedLanguage, true);
         }
       });
+      function translateContent(selectedLanguage, isfollow) {
+          // Örnek olarak 'follow' ve 'unfollow' metinlerini çevirelim
+          const followText = {
+              'hi': 'अनुसरण करना',
+              'pt': 'Seguir',
+              'tr': 'Takip Et',
+              'en': 'Follow'
+          };
+          const unfollowText = {
+              'hi': 'करें',
+              'pt': 'Deixar',
+              'tr': 'Takipten Cik',
+              'en': 'Unfollow'
+            };
+
+          // Elementi seçelim (örneğin, followButton id'li bir buton olduğunu varsayalım)
+            const followButton = document.getElementById('followButton');
+
+          if (isfollow) {
+              newText = followText[selectedLanguage];
+          } else {
+              newText = unfollowText[selectedLanguage];
+            }
+
+          e.target.innerHTML = newText;
+          e.target.style.backgroundColor = isfollow ? 'black' : 'red';
+      }
     });
+    
   });
+
+ 
 </script>
 {% endblock app %}
