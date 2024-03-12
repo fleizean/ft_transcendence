@@ -116,7 +116,7 @@
   followButtons.forEach((button) => {
     button.addEventListener('click', (e) => {
       const username = e.target.getAttribute('data-username');
-      const action = e.target.innerHTML.trim().toLowerCase();
+      const action = e.target.innerHTML.trim();
       fetch(`/follow_unfollow/${username}`, {
         method: 'POST',
         headers: {

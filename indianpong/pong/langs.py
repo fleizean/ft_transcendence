@@ -213,7 +213,7 @@ def get_lang_en():
         "searchInputText": "Email or Username or Displayname Search...",
         "searchMessageButtonText": "Message",
         "searchFollowButtonText": "Follow",
-        "searchFollowingButtonText": "Following",
+        "searchFollowingButtonText": "Unfollow",
         "searchNoResultFoundText": "No result found.",
         
         #Profile
@@ -222,7 +222,7 @@ def get_lang_en():
         "profileRankUserText1": " IN RANKINGS",
         "profileRankUserText2": " NO RANKING",
         "profileFollowButton": "Follow",
-        "profileFollowingButton": "Following",
+        "profileFollowingButton": "Unfollow",
         "profileTitleText1": "42 Kocaeli Student",
         "profileTitleText2": "Software Developer",
 
@@ -480,7 +480,7 @@ def get_lang_tr():
         "searchInputText": "E-posta veya Kullanici Adi veya Gorunen Ad Ara...",
         "searchMessageButtonText": "Mesaj",
         "searchFollowButtonText": "Takip Et",
-        "searchFollowingButtonText": "Takip Ediliyor",
+        "searchFollowingButtonText": "Takipten Cik",
         "searchNoResultFoundText": "Sonuc bulunamadi.",
         
         #Profile
@@ -489,7 +489,7 @@ def get_lang_tr():
         "profileRankUserText1": " SIRALAMADA",
         "profileRankUserText2": " SIRALAMA YOK",
         "profileFollowButton": "Takip Et",
-        "profileFollowingButton": "Takip Ediliyor",
+        "profileFollowingButton": "Takipten Cik",
         "profileTitleText1": "42 Kocaeli ogrencisi",
         "profileTitleText2": "Yazilim Gelistirici",
 
@@ -746,7 +746,7 @@ def get_lang_pt():
         "searchInputText": "Procurar por e-mail, nome de usuário ou nome de exibicão...",
         "searchMessageButtonText": "Mensagem",
         "searchFollowButtonText": "Seguir",
-        "searchFollowingButtonText": "Seguindo",
+        "searchFollowingButtonText": "Deixar",
         "searchNoResultFoundText": "Nenhum resultado encontrado.",
         
         #Profile
@@ -755,7 +755,7 @@ def get_lang_pt():
         "profileRankUserText1": " RANKING",
         "profileRankUserText2": " SEM RANKING",
         "profileFollowButton": "Seguir",
-        "profileFollowingButton": "Seguindo",
+        "profileFollowingButton": "Deixar",
         "profileTitleText1": "Estudante da 42 Kocaeli",
         "profileTitleText2": "Desenvolvedor de Software",
 
@@ -1008,8 +1008,8 @@ def get_lang_hi():
         "searchPageTittle": "खोजें",
         "searchInputText": "ईमेल या उपयोगकर्ता नाम या डिस्प्ले नाम खोजें...",
         "searchMessageButtonText": "संदेश",
-        "searchFollowButtonText": "फॉलो करें",
-        "searchFollowingButtonText": "फॉलोइंग",
+        "searchFollowButtonText": "अनुसरण करना",
+        "searchFollowingButtonText": "करें",
         "searchNoResultFoundText": "कोई परिणाम नहीं मिला।",
         
         #Profile
@@ -1017,8 +1017,8 @@ def get_lang_hi():
         "profileRankAIText": "ए.आई. रैंक",
         "profileRankUserText1": " उपयोगकर्ता रैंक",
         "profileRankUserText2": " रैंक",
-        "profileFollowButton": "फॉलो करें",
-        "profileFollowingButton": "फॉलोइंग",
+        "profileFollowButton": "अनुसरण करना",
+        "profileFollowingButton": "करें",
         "profileTitleText1": "42 स्कूल समुदाय",
         "profileTitleText2": "पॉन्ग खिलाड़ी",
 
