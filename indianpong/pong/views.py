@@ -739,7 +739,6 @@ def follow_unfollow(request, username):
     profile = get_object_or_404(UserProfile, username=username)
     data = json.loads(request.body)
     action = data.get("action", "")
-    print(action)
     if action == "follow":
         request.user.friends.add(profile)
     elif action == "unfollow":
@@ -756,6 +755,8 @@ def game(request):
 
 @login_required()
 def play_ai(request, game_type, game_id):
+    lang = request.COOKIES.get('selectedLanguage', 'en')
+    context = langs.get_langs(lang)
     user_items = UserItem.objects.filter(user=request.user)
     
     # Just Customizations - PONG
@@ -772,7 +773,7 @@ def play_ai(request, game_type, game_id):
     frozenball = get_equipped_item_value(user_items, "Frozen Ball", "None")
     givemethemusic = get_equipped_item_value(user_items, "DJ Give Me The Music", "None")
 
-    return render(request, "play-ai.html", {"ainametag": ainametag, "paddlecolor": paddlecolor, "playgroundcolor": playgroundcolor, "giantman": giantman, "likeacheater": likeacheater, "fastandfurious": fastandfurious, "rageoffire": rageoffire, "frozenball": frozenball, "givemethemusic": givemethemusic})
+    return render(request, "play-ai.html", {"ainametag": ainametag, "paddlecolor": paddlecolor, "playgroundcolor": playgroundcolor, "giantman": giantman, "likeacheater": likeacheater, "fastandfurious": fastandfurious, "rageoffire": rageoffire, "frozenball": frozenball, "givemethemusic": givemethemusic, "context": context})
 
 
 @never_cache

@@ -2,10 +2,12 @@
 
 {% load static %}
 
-{% block title %}Play with AI{% endblock title %}
+{% block title %}{{context.aiGamePageTittle}}{% endblock title %}
 
-{% block stylesheet %}<link rel="stylesheet" href="{% static "css/in-game.css" %}"
-<link rel="stylesheet" href="{% static "css/modal.css" %}">{% endblock %}
+{% block stylesheet %}
+<link rel="stylesheet" href="{% static "css/in-game.css" %}">
+<link rel="stylesheet" href="{% static "css/modal.css" %}">
+{% endblock %}
 
 {% block app %}
 
@@ -24,23 +26,23 @@
     </div>
 		<div id="countdownContainer">
 			<div class="slider-container">
-				<label for="reactionDelay" style="color: white;">Reaction Delay:</label>
+				<label for="reactionDelay" style="color: white;">{{context.aiGameReactionDelayText}}:</label>
 				<span id="delayValue" style="color: white;">200</span>
 				<input type="range" id="reactionDelay" name="reactionDelay" min="1000" max="10000" value="2000" step="1000">
 			</div>
 			<canvas id="pongCanvas" width="800" height="600"></canvas>
 			<div id="countdown" class="countdown">
-				<h1>Get Ready!</h1>
-				<p>Press 'Space' to start</p>
-				<h2 class="countdown-numbers">Starting in</h2>
+				<h1>{{context.aiGameGetReadyText}}!</h1>
+				<p>{{context.aiGamePresSpaceText}}</p>
+				<h2 class="countdown-numbers">{{context.aiGameCountdownText}}</h2>
 				<div id="countdownTimer" class="countdown-timer"></div>
 			</div>
 			<div id="gameOverScreen" class="game-over">
 				<h1 id="winnerText" class="winnerName"></h1>
 				<h1 id="loserText" class="loserName"></h1>
-				<h2>Game Over</h2>
-				<button id="restartButton">Restart</button>
-				<button id="exitButton">Exit</button>
+				<h2>{{context.aiGameGameOverText}}</h2>
+				<button id="restartButton">{{context.aiGameRestartButtonText}}</button>
+				<button id="exitButton">{{context.aiGameExitButtonText}}</button>
 			</div>
 		</div>
     </div>
@@ -48,39 +50,39 @@
 		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
 			<div class="modal-content">
 				<div class="modal-header" style="z-index: 100;">
-					<h2 class="modal-title fs-2" id="exampleModalLabel">About the Game</h2>
+					<h2 class="modal-title fs-2" id="exampleModalLabel">{{context.aiGameInfoHeaderText}}</h2>
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
-					<h3>How to Play the Game?</h3>
-					<p>In Pong game, players engage in a table tennis match against their opponents. The W-S keys (or up-down arrow keys) are used to control the ball.</p>
+					<h3>{{context.aiGameInfoSubHeaderText}}</h3>
+					<p>{{context.aiGameInfoSubHeaderDescription1}}</p>
 
-					<h3>Win and Improve</h3>
-					<p>You earn Pong Points with every game you win. With these points, you can purchase new items, rackets, and tables from the store to enhance your gaming experience.</p>
+					<h3>{{context.aiGameInfoSubHeaderText2}}</h3>
+					<p>{{context.aiGameInfoSubHeaderDescription2}}</p>
 
-					<h3>Get Started Now</h3>
-					<p>You can create an account to personalize your gaming experience. With an account, you can track your statistics and see your position in the rankings.</p>
+					<h3>{{context.aiGameInfoSubHeaderText3}}</h3>
+					<p>{{context.aiGameInfoSubHeaderDescription3}}</p>
 
-					<h3>More Features</h3>
-					<p>You can participate in tournaments to face off against your opponents and test your skills. Additionally, you can create private games with your friends and join the Pong community.</p>
+					<h3>{{context.aiGameInfoSubHeaderText4}}</h3>
+					<p>{{context.aiGameInfoSubHeaderDescription4}}</p>
 
-					<h3>Controls</h3>
+					<h3>{{context.aiGameInfoSubHeaderText5}}</h3>
 					<div class="modal-controls">
-						<div class="col">Up</div>
+						<div class="col">{{context.aiGameInfoSubHeaderDescription5}}</div>
 						<div class="col">
 							<span class="modal-keys">W</span>
 						</div>
 					</div>
 					<div class="modal-controls">
-						<div class="col">Down</div>
+						<div class="col">{{context.aiGameInfoSubHeaderDescription6}}</div>
 						<div class="col">
 							<span class="modal-keys">S</span>
 						</div>
 					</div>
-					<h3>Skils</h3>
+					<h3>{{context.aiGameInfoSubHeaderText6}}</h3>
 					<div class="modal-controls">
 						<div class="col">
-							<b>Like a Cheater</b>
+							<b>{{context.aiGameInfoSubHeaderDescription7}}</b>
 						</div>
 						<div class="col">
 							<span class="modal-keys">1</span>
@@ -88,7 +90,7 @@
 					</div>
 					<div class="modal-controls">
 						<div class="col">
-							<b>Fast and Furious</b>
+							<b>{{context.aiGameInfoSubHeaderDescription8}}</b>
 						</div>
 						<div class="col">
 							<span class="modal-keys">2</span>
@@ -96,7 +98,7 @@
 					</div>
 					<div class="modal-controls">
 						<div class="col">
-							<b>Frozen Ball</b>
+							<b>{{context.aiGameInfoSubHeaderDescription9}}</b>
 						</div>
 						<div class="col">
 							<span class="modal-keys">3</span>

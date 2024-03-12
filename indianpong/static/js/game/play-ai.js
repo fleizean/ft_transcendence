@@ -625,12 +625,37 @@ function resetGame() {
     resetAbilities();
 }
 
+function getOutcomeMessage(selectedLanguage, outcome) {
+    // Dil çevirilerini içeren bir sözlük oluşturalım
+    const translations = {
+        'hi': {
+            'win': 'आप जीत गए',
+            'lose': 'आप हार गए'
+        },
+        'pt': {
+            'win': 'Você ganhou',
+            'lose': 'Você perdeu'
+        },
+        'en': {
+            'win': 'YOU WIN',
+            'lose': 'YOU LOSE'
+        },
+        'tr': {
+            'win': 'KAZANDINIZ',
+            'lose': 'KAYBETTINIZ'
+        }
+    };
+    // Seçilen dil ve sonucu kullanarak uygun metni belirleyelim
+    const message = translations[selectedLanguage] ? translations[selectedLanguage][outcome] : translations['en'][outcome];
+    return message;
+}
 
 // Oyun bitiş ekranını gösteren fonksiyon
 function showGameOverScreen() {
     //var winnerText = (score1 == MAX_SCORE) ? username + " wins!" : ainame + " wins!";
-    var winnerText = (score1 == MAX_SCORE) ? "YOU WIN!": "";
-    var loserText = (score2 == MAX_SCORE) ? "YOU LOSE!": "";
+    
+    var winnerText = (score1 == MAX_SCORE) ? getOutcomeMessage(selectedLanguage, "win") : "";
+    var loserText = (score2 == MAX_SCORE) ? getOutcomeMessage(selectedLanguage, "lose") : "";
     if (score1 == MAX_SCORE) {
         playResultSound(true); // Zafer durumu
     } else {

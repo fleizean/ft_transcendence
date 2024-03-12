@@ -115,6 +115,13 @@ def get_lang_en():
             "aiGameInfoSubHeaderText4": "More Features",
             "aiGameInfoSubHeaderDescription4": "You can participate in tournaments to face off against your opponents and test your skills. Additionally, you can create private games with your friends and join the Pong community.",
 
+            "aiGameInfoSubHeaderText5": "Controls",
+            "aiGameInfoSubHeaderDescription5": "Up",
+            "aiGameInfoSubHeaderDescription6": "Down",
+            "aiGameInfoSubHeaderText6": "Skills",
+            "aiGameInfoSubHeaderDescription7": "Like a Cheater",
+            "aiGameInfoSubHeaderDescription8": "Fast and Furious",
+            "aiGameInfoSubHeaderDescription9": "Frozen Ball",
 
             #Local-Game
             "localGamePageTittle": "Local Game",
@@ -371,7 +378,7 @@ def get_lang_tr():
         "pongGamePageTittle": "Pong Oyunu",
         "pongGameHeaderText": "Pong Lobisine Hos Geldiniz",
         "pongGameSubHeaderText": "Yapay Zeka ile oynayarak kendinizi gelistirebilir ve istatistiklerinize yansitmadan isinma gibi davranabilirsiniz. Gercek bir kisiyle oynamak istiyorsaniz, diger secenegi dusunun; 5 dakika icinde eslesecek birini bulamazsak, eslesme iptal edilecektir. Unutmadan once iyi sanslar!",
-        "pongGameAIButtonText": "Yapay Zeka ile Oyna",
+        "pongGameAIButtonText": "Yapay Zeka Oyun",
         "pongGameLocalButtonText": "Yerel Oyun",
         "pongGameRemoteButtonText": "Uzak Oyuncu",
         "pongGameLocalTournamentButtonText": "Yerel Turnuva",
@@ -385,7 +392,7 @@ def get_lang_tr():
             "aiGameCountdownText": "Basliyor",
 
             "aiGameGameOverText": "Oyun Bitti",
-            "aiGameRestartButtonText": "Yeniden Baslat",
+            "aiGameRestartButtonText": "Yeniden",
             "aiGameExitButtonText": "Cikis",
 
             "aiGameInfoHeaderText": "Oyun Hakkında",
@@ -397,6 +404,14 @@ def get_lang_tr():
             "aiGameInfoSubHeaderDescription3": "Hesap oluşturarak oyun deneyimini kişiselleştirebilirsin. Bir hesapla istatistiklerini takip edebilir ve sıralamandaki yerini görebilirsin.",
             "aiGameInfoSubHeaderText4": "Daha Fazlası",
             "aiGameInfoSubHeaderDescription4": "Rakiplerinle yüzleşmek ve becerilerini test etmek icin turnuvalara katılabilirsin. Ayrıca arkadaşlarınla özel oyunlar oluşturabilir ve Pong topluluğuna katılabilirsin.",
+
+            "aiGameInfoSubHeaderText5": "Kontroller",
+            "aiGameInfoSubHeaderDescription5": "Yukarı",
+            "aiGameInfoSubHeaderDescription6": "Aşağı",
+            "aiGameInfoSubHeaderText6": "Yetenekler",
+            "aiGameInfoSubHeaderDescription7": "Bir Hilekar Gibi",
+            "aiGameInfoSubHeaderDescription8": "Hızlı ve Öfkeli",
+            "aiGameInfoSubHeaderDescription9": "Dondurulmuş Top",
 
             #Local-Game
             "localGamePageTittle": "Yerel Oyun",
@@ -663,6 +678,13 @@ def get_lang_pt():
             "aiGameInfoSubHeaderText4": "Mais Recursos",
             "aiGameInfoSubHeaderDescription4": "Você pode participar de torneios para enfrentar seus oponentes e testar suas habilidades. Além disso, você pode criar jogos privados com seus amigos e se juntar à comunidade Pong.",
             
+            "aiGameInfoSubHeaderText5": "Controles",
+            "aiGameInfoSubHeaderDescription5": "Cima",
+            "aiGameInfoSubHeaderDescription6": "Baixo",
+            "aiGameInfoSubHeaderText6": "Habilidades",
+            "aiGameInfoSubHeaderDescription7": "Como um Trapaceiro",
+            "aiGameInfoSubHeaderDescription8": "Veloz e Furioso",
+            "aiGameInfoSubHeaderDescription9": "Bola Congelada",
 
             #Local-Game
             "localGamePageTittle": "Jogo Local",
@@ -926,6 +948,14 @@ def get_lang_hi():
             "aiGameInfoSubHeaderDescription3": "आप अपने खेल का अनुभव व्यक्तिगत करने के लिए एक खाता बना सकते हैं। एक खाते के साथ, आप अपने स्टैटिस्टिक्स को ट्रैक कर सकते हैं और रैंकिंग में अपनी जगह देख सकते हैं।",
             "aiGameInfoSubHeaderText4": "अधिक सुविधाएं",
             "aiGameInfoSubHeaderDescription4": "आप अपने प्रतिद्वंद्वियों के साथ टूर्नामेंट में भाग लेने के लिए और अपने कौशल का परीक्षण करने के लिए टूर्नामेंट में भाग ले सकते हैं। इसके अलावा, आप अपने दोस्तों के साथ निजी खेल बना सकते हैं और पॉन्ग समुदाय में शामिल हो सकते हैं।",
+
+            "aiGameInfoSubHeaderText5": "नियंत्रण",
+            "aiGameInfoSubHeaderDescription5": "ऊपर",
+            "aiGameInfoSubHeaderDescription6": "नीचे",
+            "aiGameInfoSubHeaderText6": "कौशल",
+            "aiGameInfoSubHeaderDescription7": "जैसे एक धोखेबाज",
+            "aiGameInfoSubHeaderDescription8": "तेज और उत्तेजित",
+            "aiGameInfoSubHeaderDescription9": "जमीन गेंद",
 
             #Local-Game
             "localGamePageTittle": "स्थानीय खेल",
