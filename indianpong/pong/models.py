@@ -420,3 +420,29 @@ class Message(models.Model):
 
     def get_short_date(self):
         return str(self.created_date.strftime("%H:%M"))
+
+class RPSGame(models.Model):
+    MOVE_CHOICES = [
+        ('R', 'Rock'),
+        ('P', 'Paper'),
+        ('S', 'Scissors'),
+    ]
+
+    room_id = models.UUIDField(primary_key=True, default=uuid.uuid4)
+    player1 = models.ForeignKey(UserProfile, related_name="rps_player1", on_delete=models.CASCADE)
+    player2 = models.ForeignKey(UserProfile, related_name="rps_player2", on_delete=models.CASCADE)
+    player1_move = models.CharField(max_length=1, choices=MOVE_CHOICES, null=True)
+    player2_move = models.CharField(max_length=1, choices=MOVE_CHOICES, null=True)
+    is_over = models.BooleanField(default=False)
+    winner = models.ForeignKey(UserProfile, related_name="rps_winner", on_delete=models.SET_NULL, null=True)
+
+    def check_winner(self):
+        if self.player1_move and self.player2_move:
+            if self.player1_move == self.player2_move:
+                self.winner = None
+            elif (self.player1_move, self.player2_move) in [('R', 'S'), ('P', 'R'), ('S', 'P')]:
+                self.winner = self.player1
+            else:
+                self.winner = self.player2
+            self.is_over = True
+            self.save()
