@@ -100,6 +100,7 @@ ASGI_APPLICATION = 'indianpong.asgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -107,8 +108,8 @@ DATABASES = {
     }
 }
 
-""" 
-DATABASES = {
+
+""" DATABASES = {
     'default': {
         'ENGINE': os.getenv('DB_ENGINE', default='django.db.backends.postgresql'),
         'NAME': os.getenv('DB_NAME', default='pong'), 
