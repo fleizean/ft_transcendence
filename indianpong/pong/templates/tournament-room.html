@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Tournament Room{% endblock %}
+{% block title %}{{tournament.name}} {{context.tournamentroomPageTittle}}{% endblock %}
 {% block stylesheet %}<link rel="stylesheet" href="{% static "css/tournament-room.css" %}">{% endblock stylesheet %}
 
 {% block app %}
@@ -11,7 +11,7 @@
             <img class="logo-indian" src="{% static "assets/logo-dark.png" %}">
         </div>
         <div class="pong-game-text">
-            <h3 class="pong-game-text">Room #{{tournament.id}} - Ping Pong Tournament Room {{tournament.name}}</h3>
+            <h3 class="pong-game-text" style="text-align: center; color:white">{{context.tournamentroomRoomText}} #{{tournament.id}} - Ping Pong {{context.tournamentroomPageTittle}} {{tournament.name}}</h3>
         </div>
         <div class="game-room-buttons">
             {% if tournament.status == "open" %}
@@ -19,28 +19,28 @@
                     <form method="POST">
                         {% csrf_token %}
                         <input type="hidden" name="leave_tournament" value="true">
-                        <button class="leave-button" type="submit"><i class="bi bi-x-circle-fill"></i>Leave Tournament</button>
+                        <button class="leave-button" type="submit"><i class="bi bi-x-circle-fill"></i>{{context.tournamentroomLeaveButtonText}}</button>
                     </form>
                 {% endif %}
                 {% if not is_participants %}
                     <form method="POST">
                         {% csrf_token %}
                         <input type="hidden" name="join_tournament" value="true">
-                        <button class="leave-button" type="submit"><i class="bi bi-plus-circle-fill"></i>Join Tournament</button>
+                        <button class="leave-button" type="submit"><i class="bi bi-plus-circle-fill"></i>{{context.tournamentroomJoinButtonText}}</button>
                     </form>
                 {% endif %}
                 {% if tournament.creator == user %}
                     <form method="POST">
                         {% csrf_token %}
                         <input type="hidden" name="start_tournament" value="true">
-                        <button class="leave-button" type="submit"><i class="bi bi-flag-fill"></i>Start Tournament</button>
+                        <button class="leave-button" type="submit"><i class="bi bi-flag-fill"></i>{{context.tournamentroomStartButtonText}}</button>
                     </form>
                 {% endif %}
             {% endif %}
             <button class="leave-button" id="checkbracket" href="#check-bracket" onclick="displaySectionGame('game-bracket-section')"
-                type="button"><i class="bi bi-calendar-check-fill"></i> CHECK BRACKET</button>
+                type="button"><i class="bi bi-calendar-check-fill"></i> {{context.tournamentCheckBracketButtonText}}</button>
             <button class="leave-button" id="gameroombracket" href="#check-room" onclick="displaySectionGame('game-room-section')"
-                type="button"><i class="bi bi-4-square-fill"></i> TOURNAMENT ROOM</button>
+                type="button"><i class="bi bi-4-square-fill"></i> {{context.tournamentroomTournamentRoomButton}}</button>
         </div>
         <!-- Show winner avatar name and redirect to profile-->
         {% if tournament.winner %}
@@ -88,8 +88,8 @@
                                         alt="Avatar" class="game-room-avatar-none">
                                 </div>
                                 <div class="clash-info free-info">
-                                    <div class="waitLabel">
-                                        <p>Waiting <br> for player... </p>
+                                    <div class="waitLabel" style="color: white; font-size: bold;">
+                                        <p>{{context.tournamentroomWaitingText}} <br> {{context.tournamentroomForPlayerText}} </p>
                                     </div>
                                 </div>
                             </div>

@@ -975,12 +975,16 @@ def game_warning(request, opponent_id):
 @never_cache
 @login_required()
 def tournament(request):
-    return render(request, "tournament.html")
+    lang = request.COOKIES.get('selectedLanguage', 'en')
+    context = langs.get_langs(lang)
+    return render(request, "tournament.html", {"context": context})
 
 @never_cache
 @login_required()
 def tournament_room(request, id):
     # Get tournament with id
+    lang = request.COOKIES.get('selectedLanguage', 'en')
+    context = langs.get_langs(lang)
     tournament = Tournament.objects.filter(id=id).first()
     if not tournament:
         return redirect('tournament_room_list')
@@ -1030,7 +1034,7 @@ def tournament_room(request, id):
     else:
         empty_slots = range(0, 4)
         is_participants = False
-    return render(request, "tournament-room.html", {"tournament": tournament, 'user': request.user, 'is_participants': is_participants, 'empty_slots': empty_slots})
+    return render(request, "tournament-room.html", {"tournament": tournament, 'user': request.user, 'is_participants': is_participants, 'empty_slots': empty_slots, "context": context})
 
 @never_cache
 @login_required()
@@ -1038,7 +1042,8 @@ def tournament_room_list(request):
     tournaments_list = Tournament.objects.all()
     paginator = Paginator(tournaments_list, 4)  # Show 4 tournaments per page.
     page_number = request.GET.get('page')
-
+    lang = request.COOKIES.get('selectedLanguage', 'en')
+    context = langs.get_langs(lang)
     try:
         tournament_page_obj = paginator.page(page_number)
     except PageNotAnInteger:
@@ -1047,12 +1052,14 @@ def tournament_room_list(request):
     except EmptyPage:
         # Geçersiz bir sayfa numarası istenirse, son sayfayı al
         tournament_page_obj = paginator.page(paginator.num_pages)
-    return render(request, "tournament-room-list.html", {"tournaments": tournament_page_obj})
+    return render(request, "tournament-room-list.html", {"tournaments": tournament_page_obj, "context": context})
 
 
 @never_cache
 @login_required()
 def tournament_create(request):
+    lang = request.COOKIES.get('selectedLanguage', 'en')
+    context = langs.get_langs(lang)
     if request.method == "POST":
         form = TournamentForm(request.POST, request=request)
         if form.is_valid():
@@ -1065,7 +1072,7 @@ def tournament_create(request):
             print(form.errors)
     else:
         form = TournamentForm(request=request)
-    return render(request, "tournament-create.html", {"form": form})
+    return render(request, "tournament-create.html", {"form": form, "context": context})
 
 
 """ @never_cache

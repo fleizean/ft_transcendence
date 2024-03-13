@@ -5,13 +5,13 @@
 <link rel="stylesheet" href="{% static 'css/room-list.css' %}">
 {% endblock stylesheet %}
 
-{% block title %} Tournament Room List {% endblock title %}
+{% block title %} {{context.tournamentRoomListPageTittle}} {% endblock title %}
 
 {% block app %}
 
 <div class="container-top">
     <div class="card">
-            <h3 class="pong-game-text">Tournament Room List</h3>
+            <h3 class="pong-game-text" style="text-align: center; color: white;">{{context.tournamentRoomListHeaderText}}</h3>
             
             <div class="room-wrapper">
               {% for tournament in tournaments %}

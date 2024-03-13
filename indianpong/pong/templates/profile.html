@@ -127,15 +127,15 @@
                                         {% endif %}
                                         {% if profile.username == game.player1.username %}
                                             {% if game.winner.username == game.player1.username %}
-                                                <td class="won">Win</td>
+                                                <td class="won">{{context.profileMatchHistoryWinText}}</td>
                                             {% else %}
-                                                <td class="lose">Lost</td>
+                                                <td class="lose">{{context.profileMatchHistoryLoseText}}</td>
                                             {% endif %}
                                         {% else %}
                                             {% if game.winner.username == game.player2.username %}
-                                                <td class="won">Win</td>
+                                                <td class="won">{{context.profileMatchHistoryWinText}}</td>
                                             {% else %}
-                                                <td class="lose">Lost</td>
+                                                <td class="lose">{{context.profileMatchHistoryLoseText}}</td>
                                             {% endif %}
                                         {% endif %}
                                         <td>
