@@ -51,7 +51,7 @@ class RPSConsumer(AsyncWebsocketConsumer):
             player1=player1,
             player2=player2
         )
-        # Yeni oluşturulan oyunun kimlik numarasını al
+        # Yeni oluşturulan oyunun kimlik numarasını  al
         print("game_start")
         game_id = game.room_id
         # Oyunculara oyunun kimlik numarasını gönder

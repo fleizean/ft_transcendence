@@ -446,3 +446,4 @@ class RPSGame(models.Model):
                 self.winner = self.player2
             self.is_over = True
             self.save()
+        
