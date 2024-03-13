@@ -682,6 +682,7 @@ def search(request):
         search_query = request.session.get("search_query", "")
     lang = request.COOKIES.get('selectedLanguage', 'en')
     context = langs.get_langs(lang)
+    
     if search_query:
         search_query_email = search_query.split("@")[0]
         results = UserProfile.objects.filter(
@@ -743,6 +744,7 @@ def follow_unfollow(request, username):
     profile = get_object_or_404(UserProfile, username=username)
     data = json.loads(request.body)
     action = data.get("action", "")
+    print(action)
     if action == "follow":
         request.user.friends.add(profile)
     elif action == "unfollow":
