@@ -388,16 +388,16 @@ def get_lang_tr():
 
         #Dashboard
         "dashboardPageTittle": "Ana Sayfa",
-        "dashboardText1": "Hos geldiniz, ",
-        "dashboardText2": "Indian Pong, 42 okulu toplulugu icin gelistirilmis bir isbirligi projesidir ve klasik Atari oyunu Ping-Pong ile nostaljik bir oyun deneyimi sunar. Bu platform, kullanicilarin birbirleriyle Ping-Pong maclari yapmalarina olanak tanir ve dostane rekabet ortami olusturur. Oyun deneyimi disinda, Indian Pong, kullanicilarin birbirleriyle iletisim kurabilecegi ve baglanti kurabilecegi sohbet odalarini iceren bir sosyal boyut sunar. Platform ayrica, kullanicilarin 42 okulu toplulugunda arkadas ekleyerek aglarini genisletmelerine olanak tanir. Genel olarak, Indian Pong, retro oyun keyfini modern sosyal etkilesimle birlestirerek, 42 okulu toplulugu icin canli ve etkilesimli bir deneyim sunar.",
+        "dashboardText1": "HOŞ GELDİNİZ, ",
+        "dashboardText2": "Indian Pong, 42 okulu toplulugu için geliştirilmiş bir takım projesidir ve klasik Atari oyunu Ping-Pong ile nostaljik bir oyun deneyimi sunar. Bu platform, kullanıcıların birbirleriyle Ping-Pong maçlari yapmalarina olanak tanır ve dostane rekabet ortamı oluşturur. Oyun deneyimi dışında, Indian Pong, kullanıcıların birbirleriyle iletişim kurabileceği ve bağlanti kurabilecegi sohbet odalarını içeren bir sosyal boyut sunar. Platform ayrıca, kullanicilarin 42 okulu topluluğunda arkadaş ekleyerek ağlarını genişletmelerine olanak tanır. Genel olarak, Indian Pong, retro oyun keyfini modern sosyal etkileşimle birleştirerek, 42 okulu topluluğu icin canlı ve etkileşimli bir deneyim sunar.",
 
         "dashboardGamesPlayed": "Oynanan Oyunlar",
-        "dashboardWinCount": "Kazanma Sayisi",
+        "dashboardWinCount": "Kazanma Sayısı",
         "dashboardWinStreak": "Kazanma Serisi",
         "dashboardLoseStreak": "Kaybetme Serisi",
-        "dashboardWinRate": "Kazanma Orani",
-        "dashboardAverageGameDuration": "Ortalama Oyun Suresi",
-        "dashboardAveragePointsWon": "Ortalama Kazanilan Puanlar",
+        "dashboardWinRate": "Kazanma Oranı",
+        "dashboardAverageGameDuration": "Ortalama Oyun Süresi",
+        "dashboardAveragePointsWon": "Ortalama Kazanılan Puanlar",
         "dashboardAveragePointsLost": "Ortalama Kaybedilen Puanlar",
 
         
@@ -534,7 +534,7 @@ def get_lang_tr():
         "rankingsTableUsernameText": "Kullanıcı Adı",
         "rankingsTableWinsText": "Kazanmalar",
         "rankingsTableLossesText": "Kayıplar",
-        "rankingsTableWinRateText": "Kazanma %",
+        "rankingsTableWinRateText": "Kazanma Yüzdesi",
         "rankingsTablePongPointsText": "Pong Puanı",
 
         #Store
@@ -591,7 +591,7 @@ def get_lang_tr():
         "profileGameStats1": "Oynanan Oyunlar:",
         "profileGameStats2": "Kazanmalar:",
         "profileGameStats3": "Kayıplar:",
-        "profileGameStats4": "Kazanma Orani:",
+        "profileGameStats4": "Kazanma Oranı:",
         "profileGameStats5": "Kazanma Serisi:",
         "profileGameStats6": "Ortalama Oyun Süresi:",
         
