@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 from pathlib import Path
 from os import environ, path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -99,11 +100,23 @@ ASGI_APPLICATION = 'indianpong.asgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
-
+""" 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}
+"""
+
+DATABASES = {
+    'default': {
+        'ENGINE': os.getenv('DB_ENGINE', default='django.db.backends.postgresql'),
+        'NAME': os.getenv('DB_NAME', default='pong'), 
+        'USER': os.getenv('DB_USER', default='indianpong'),
+        'PASSWORD': os.getenv('DB_PASSWORD', default='indianpong123'),
+        'HOST': 'db',  # Değişiklik burada
+        'PORT': os.getenv('DB_PORT', default='5432'),
     }
 }
 
