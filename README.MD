@@ -168,7 +168,7 @@ of the project.</b>
   </details>
   
   <details>
-      <summary> <b> Use a database for the backend -and more. ⌛</b></summary>
+      <summary> <b> Use a database for the backend -and more. ✅</b></summary>
       The designated database for all DB instances in your project is   <code>PostgreSQL</code>. This choice guarantees data consistency and  compatibility across all project components and may be a prerequisite for  other modules, such as the <b>backend Framework module</b>.
   </details>
   

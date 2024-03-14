@@ -175,9 +175,18 @@ def get_lang_en():
             #Joined-Tournament-Room
             "tournamentroomPageTittle": "Tournament Room",
             "tournamentroomHeaderText": "Tournament Room",
-            "tournamentroomLeaveButtonText": "LEAVE ROOM",
-            "tournamentroomStartButtonText": "START ROOM",
+            "tournamentroomRoomText": "Room",
+            "tournamentroomLeaveButtonText": "LEAVE TOURNAMENT",
+            "tournamentroomStartButtonText": "START TOURNAMENT",
+            "tournamentroomJoinButtonText": "JOIN TOURNAMENT",
             "tournamentCheckBracketButtonText": "CHECK BRACKET",
+            "tournamentroomTournamentRoomButton": "TOURNAMENT ROOM",
+            "tournamentroomWaitingText": "Waiting",
+            "tournamentroomForPlayerText": "for player...",
+
+            #Tournament Room List
+            "tournamentRoomListPageTittle": "Tournament Rooms",
+            "tournamentRoomListHeaderText": "Tournament Rooms",
 
         #RPS Game
         "rpsGamePageTittle": "Rock Paper Scissors",
@@ -379,16 +388,16 @@ def get_lang_tr():
 
         #Dashboard
         "dashboardPageTittle": "Ana Sayfa",
-        "dashboardText1": "Hos geldiniz, ",
-        "dashboardText2": "Indian Pong, 42 okulu toplulugu icin gelistirilmis bir isbirligi projesidir ve klasik Atari oyunu Ping-Pong ile nostaljik bir oyun deneyimi sunar. Bu platform, kullanicilarin birbirleriyle Ping-Pong maclari yapmalarina olanak tanir ve dostane rekabet ortami olusturur. Oyun deneyimi disinda, Indian Pong, kullanicilarin birbirleriyle iletisim kurabilecegi ve baglanti kurabilecegi sohbet odalarini iceren bir sosyal boyut sunar. Platform ayrica, kullanicilarin 42 okulu toplulugunda arkadas ekleyerek aglarini genisletmelerine olanak tanir. Genel olarak, Indian Pong, retro oyun keyfini modern sosyal etkilesimle birlestirerek, 42 okulu toplulugu icin canli ve etkilesimli bir deneyim sunar.",
+        "dashboardText1": "HOŞ GELDİNİZ, ",
+        "dashboardText2": "Indian Pong, 42 okulu toplulugu için geliştirilmiş bir takım projesidir ve klasik Atari oyunu Ping-Pong ile nostaljik bir oyun deneyimi sunar. Bu platform, kullanıcıların birbirleriyle Ping-Pong maçlari yapmalarina olanak tanır ve dostane rekabet ortamı oluşturur. Oyun deneyimi dışında, Indian Pong, kullanıcıların birbirleriyle iletişim kurabileceği ve bağlanti kurabilecegi sohbet odalarını içeren bir sosyal boyut sunar. Platform ayrıca, kullanicilarin 42 okulu topluluğunda arkadaş ekleyerek ağlarını genişletmelerine olanak tanır. Genel olarak, Indian Pong, retro oyun keyfini modern sosyal etkileşimle birleştirerek, 42 okulu topluluğu icin canlı ve etkileşimli bir deneyim sunar.",
 
         "dashboardGamesPlayed": "Oynanan Oyunlar",
-        "dashboardWinCount": "Kazanma Sayisi",
+        "dashboardWinCount": "Kazanma Sayısı",
         "dashboardWinStreak": "Kazanma Serisi",
         "dashboardLoseStreak": "Kaybetme Serisi",
-        "dashboardWinRate": "Kazanma Orani",
-        "dashboardAverageGameDuration": "Ortalama Oyun Suresi",
-        "dashboardAveragePointsWon": "Ortalama Kazanilan Puanlar",
+        "dashboardWinRate": "Kazanma Oranı",
+        "dashboardAverageGameDuration": "Ortalama Oyun Süresi",
+        "dashboardAveragePointsWon": "Ortalama Kazanılan Puanlar",
         "dashboardAveragePointsLost": "Ortalama Kaybedilen Puanlar",
 
         
@@ -464,27 +473,37 @@ def get_lang_tr():
             #Tournament
             "tournamentPageTittle": "Turnuva",
             "tournamentHeaderText": "Pong için Turnuva Lobisine Hoş Geldiniz",
-            "tournamentSubHeaderText": "Burada bir turnuva lobisine katilabilir veya kendi turnuva lobinizi olusturabilirsiniz. Odanizi olusturduktan sonra davet kodunu paylasarak arkadaslarinizi davet edebilirsiniz. Unutmadan once iyi sanslar!",
-            "tournamentJoinButtonText": "Turnuvaya Katil",
-            "tournamentCreateButtonText": "Turnuva Olustur",
+            "tournamentSubHeaderText": "Burada bir turnuva lobisine katılabilir veya kendi turnuva lobinizi oluşturabilirsiniz. Odanızı oluşturduktan sonra davet kodunu paylaşarak arkadaşlarınızı davet edebilirsiniz. Unutmadan önce iyi şanslar!",
+            "tournamentJoinButtonText": "Turnuvaya Katıl",
+            "tournamentCreateButtonText": "Turnuva Oluştur",
 
             #Tournament-Create
             "tournamentCreatePageTittle": "Turnuva Oluştur",
-            "tournamentCreateHeaderText": "TURNUVA OLUSTUR",
-            "tournamentCreateSubHeaderText": "Bir turnuva olusturmak icin bir turnuva adina ve her oyunun maksimum kac puan alacagina ihtiyacim var. Unutmadan once iyi sanslar!",
-            "tournamentCreateNameText": "Turnuva Adi",
-            "tournamentCreateMaxPointsText": "Oyun Basina Maksimum Skor",
+            "tournamentCreateHeaderText": "TURNUVA OLUŞTUR",
+            "tournamentCreateSubHeaderText": "Bir turnuva oluşturmak için bir turnuva adına ve her oyunun maksimum kaç puan alacağına ihtiyacım var. Unutmadan önce iyi şanslar!",
+            "tournamentCreateNameText": "Turnuva Adı",
+            "tournamentCreateMaxPointsText": "Oyun Başına Maksimum Skor",
             "tournamentCreateGameModeText": "Oyun Modu",
             "tournamentCreateChooseModeText1": "Klasik",
             "tournamentCreateChooseModeText2": "Yetenekler",
-            "tournamentCreateButtonCreate": "Turnuva Olustur",
+            "tournamentCreateButtonCreate": "Turnuva Oluştur",
 
             #Joined-Tournament-Room
             "tournamentroomPageTittle": "Turnuva Odası",
-            "tournamentroomHeaderText": "Turnuva Odasi",
-            "tournamentroomLeaveButtonText": "ODADAN AYRIL",
-            "tournamentroomStartButtonText": "ODAYI BASLAT",
-            "tournamentCheckBracketButtonText": "ESLESMEYE BAK",
+            "tournamentroomHeaderText": "Turnuva Odası",
+            "tournamentroomRoomText": "Oda",
+            "tournamentroomLeaveButtonText": "TURNUVADAN AYRIL",
+            "tournamentroomStartButtonText": "TURNUVAYI BAŞLAT",
+            "tournamentroomJoinButtonText": "TURNUVAYA KATIL",
+            "tournamentCheckBracketButtonText": "BRAKETI GÖRÜNTÜLE",
+            "tournamentroomTournamentRoomButton": "TURNUVA ODASI",
+            "tournamentroomWaitingText": "Bekleniyor,",
+            "tournamentroomForPlayerText": " oyuncu...",
+
+            #Tournament Room List
+            "tournamentRoomListPageTittle": "Turnuva Odaları",
+            "tournamentRoomListHeaderText": "Turnuva Odaları",
+
 
         #RPS Game
         "rpsGamePageTittle": "Taş Kağıt Makas",
@@ -512,10 +531,10 @@ def get_lang_tr():
         "rankingsPageTittle": "Sıralamalar",
         "rankingsTableRankText": "Sıra",
         "rankingsTableNameText": "Ad",
-        "rankingsTableUsernameText": "Kullanici Adi",
+        "rankingsTableUsernameText": "Kullanıcı Adı",
         "rankingsTableWinsText": "Kazanmalar",
-        "rankingsTableLossesText": "Kayiplar",
-        "rankingsTableWinRateText": "Kazanma Orani",
+        "rankingsTableLossesText": "Kayıplar",
+        "rankingsTableWinRateText": "Kazanma Yüzdesi",
         "rankingsTablePongPointsText": "Pong Puanı",
 
         #Store
@@ -529,8 +548,8 @@ def get_lang_tr():
         #Inventory
         "inventoryPageTittle": "Envanter",
         "inventoryText": "Envanter",
-        "inventoryTagText": "Tumu",
-        "inventoryWalletText": "Cuzdan",
+        "inventoryTagText": "Tümü",
+        "inventoryWalletText": "Cüzdan",
         "inventoryWalleinfoText1": "Oyun oynayarak ",
         "inventoryWalleinfoText2": " kazanabilirsin.",
         "inventoryModalHeaderText": "Öğeyi Ayarla",
@@ -546,8 +565,8 @@ def get_lang_tr():
         "searchInputText": "E-posta, kullanıcı adı veya görünen ad ara...",
         "searchMessageButtonText": "Mesaj Gönder",
         "searchFollowButtonText": "Takip Et",
-        "searchFollowingButtonText": "Takipten Cik",
-        "searchNoResultFoundText": "Sonuc bulunamadi.",
+        "searchFollowingButtonText": "Takipten Çık",
+        "searchNoResultFoundText": "Sonuç bulunamadı.",
         
         #Profile
         "profilePageTittle": "Profili",
@@ -555,9 +574,9 @@ def get_lang_tr():
         "profileRankUserText1": " SIRALAMADA",
         "profileRankUserText2": " SIRALAMA YOK",
         "profileFollowButton": "Takip Et",
-        "profileFollowingButton": "Takipten Cik",
-        "profileTitleText1": "42 Kocaeli ogrencisi",
-        "profileTitleText2": "Yazilim Gelistirici",
+        "profileFollowingButton": "Takipten Çık",
+        "profileTitleText1": "42 Kocaeli Öğrencisi",
+        "profileTitleText2": "Yazılım Geliştirici",
 
         "profileMatchHistoryText1": "Rakip",
         "profileMatchHistoryText2": "Sonuç",
@@ -571,56 +590,56 @@ def get_lang_tr():
 
         "profileGameStats1": "Oynanan Oyunlar:",
         "profileGameStats2": "Kazanmalar:",
-        "profileGameStats3": "Kayiplar:",
-        "profileGameStats4": "Kazanma Orani:",
+        "profileGameStats3": "Kayıplar:",
+        "profileGameStats4": "Kazanma Oranı:",
         "profileGameStats5": "Kazanma Serisi:",
-        "profileGameStats6": "Ortalama Oyun Suresi:",
+        "profileGameStats6": "Ortalama Oyun Süresi:",
         
         #Friends
         "friendsPageTittle": "Arkadaşlar",
         "friendsMessageButtonText": "Mesaj Gönder",
-        "friendsNoResultFoundText": "Sonuc bulunamadi.",
+        "friendsNoResultFoundText": "Sonuç bulunamadı.",
         
         #ProfileSettings
-        "profileSettingsPageTittle": "Profil Ayarlari",
-        "profileSettingsNavbar1": "Profili Duzenle",
-        "profileSettingsNavbar2": "Sifre Degistir",
+        "profileSettingsPageTittle": "Profil Ayarları",
+        "profileSettingsNavbar1": "Profili Düzenle",
+        "profileSettingsNavbar2": "Şifre Değişitr",
         "profileSettingsNavbar3": "Sosyal Medya Ekle",
-        "profileSettingsNavbar4": "Engellenen Kullanicilar",
-        "profileSettingsNavbar5": "Hesabi Kapat",
+        "profileSettingsNavbar4": "Engellenen Kullanıcılar",
+        "profileSettingsNavbar5": "Hesabı Kapat",
 
             #Edit-Profile
-            "editProfileChangeImageText": "Resmi Degistir",
-            "editProfileUsernameText": "Kullanici Adi (sitenin diger kullanicilari tarafindan nasil gorunecegi)",
+            "editProfileChangeImageText": "Resmi Değiştir",
+            "editProfileUsernameText": "Kullanıcı Adı (sitenin diğer kullanıcıları tarafından nasık görüneceği)",
             "editProfileEmailText": "E-posta",
-            "editProfile42EmailText": "42 ile oturum actiginiz icin e-posta ayarlama ozelligi devre disi birakilmistir.",
-            "editProfileDisplayNameText": "Gorunen Ad",
-            "editProfileSaveButtonText": "Degisiklikleri Kaydet",
+            "editProfile42EmailText": "42 ile oturum açtığınız için e-posta ayarlama özelliği devre dışı bırakılmıştır.",
+            "editProfileDisplayNameText": "Görünen Ad",
+            "editProfileSaveButtonText": "Değişiklikleri Kaydet",
             
             #Change-Passwordg
-            "changePasswordCurrentPasswordText": "Mevcut Sifre",
-            "changePasswordNewPasswordText": "Yeni Sifre",
-            "changePasswordNewConfirmPasswordText": "Yeni Sifreyi Onayla",
-            "changePassword42Text": "42 ile oturum actiginiz icin sifre ayarlama ozelligi devre disi birakilmistir.",
-            "changePasswordSaveButtonText": "Sifreyi Kaydet",
+            "changePasswordCurrentPasswordText": "Mevcut Şifre",
+            "changePasswordNewPasswordText": "Yeni Şifre",
+            "changePasswordNewConfirmPasswordText": "Yeni Şifreyi Onayla",
+            "changePassword42Text": "42 ile oturum açtığınız için şifre ayarlama özelliği devre dışı bırakılmıştır.",
+            "changePasswordSaveButtonText": "Şifreyi Kaydet",
             
             #Add-Socials
-            "addSocialsLinkedinInputText": "LinkedIn kullanici adinizi girin",
-            "addSocialsTwitterInputText": "Twitter kullanici adinizi girin",
-            "addSocialsGithubInputText": "Github kullanici adinizi girin",
-            "addSocialsIntraInputText": "42 Intra kullanici adinizi girin",
-            "addSocialsSaveButtonText": "Sosyal Medyalari Kaydet",
+            "addSocialsLinkedinInputText": "LinkedIn kullanıcı adınızı girin",
+            "addSocialsTwitterInputText": "Twitter kullanıcı adınızı girin",
+            "addSocialsGithubInputText": "Github kullanıcı adınızı girin",
+            "addSocialsIntraInputText": "42 Intra kullanıcı adınızı girin",
+            "addSocialsSaveButtonText": "Sosyal Medyaları Kaydet",
 
             #Blocked-Users
             "blockedUsersHeaderText": "Engellenen Hesaplar",
-            "blockedUsersSubHeaderText": "Burada engellediginiz hesaplari acabilirsiniz.",
+            "blockedUsersSubHeaderText": "Burada engellediğiniz hesapları açabilirsiniz.",
             "blockedStatusText": "Engellendi",
 
             #Close-Account
-            "closeAccountHeaderText": "Hesabi Kapat",
+            "closeAccountHeaderText": "Hesabı Kapat",
             "closeAccountInputText": "E-posta",
-            "closeAccountSubHeaderText": "Burada hesabinizi silebilirsiniz. Bu islem geri alinamaz.",
-            "closeAccountButton": "Hesabi Kapat",
+            "closeAccountSubHeaderText": "Burada hesabınızı silebilirsiniz. Bu işlem geri alinamaz.",
+            "closeAccountButton": "Hesabı Kapat",
             
 
     }
@@ -793,9 +812,18 @@ def get_lang_pt():
             #Joined-Tournament-Room
             "tournamentroomPageTittle": "Sala de Torneio",
             "tournamentroomHeaderText": "Sala de Torneio",
-            "tournamentroomLeaveButtonText": "SAIR DA SALA",
-            "tournamentroomStartButtonText": "INICIAR SALA",
-            "tournamentCheckBracketButtonText": "VER SUPORTE",
+            "tournamentroomRoomText": "Sala",
+            "tournamentroomLeaveButtonText": "SAIR DO TORNEIO",
+            "tournamentroomStartButtonText": "INICIAR TORNEIO",
+            "tournamentroomJoinButtonText": "ENTRAR NO TORNEIO",
+            "tournamentCheckBracketButtonText": "VER BRACKET",
+            "tournamentroomTournamentRoomButton": "SALA DE TORNEIO",
+            "tournamentroomWaitingText": "Aguardando,",
+            "tournamentroomForPlayerText": "jogadores...",
+
+            #Tournament Room List
+            "tournamentRoomListPageTittle": "Salas de Torneio",
+            "tournamentRoomListHeaderText": "Salas de Torneio",
 
         #RPS Game
         "rpsGamePageTittle": "Pedra, Papel e Tesoura",
@@ -1102,9 +1130,18 @@ def get_lang_hi():
             #Joined-Tournament-Room
             "tournamentroomPageTittle": "टूर्नामेंट रूम",
             "tournamentroomHeaderText": "टूर्नामेंट रूम",
-            "tournamentroomLeaveButtonText": "रूम छोड़ें",
-            "tournamentroomStartButtonText": "रूम शुरू करें",
+            "tournamentroomLeaveButtonText": "छोड़ें",
+            "tournamentroomRoomText": "रूम",
+            "tournamentroomStartButtonText": "शुरू करें",
+            "tournamentroomJoinButtonText": "शामिल हों",
             "tournamentCheckBracketButtonText": "ब्रैकेट देखें",
+            "tournamentroomTournamentRoomButton": "टूर्नामेंट रूम",
+            "tournamentroomWaitingText": "इंतजार कर",
+            "tournamentroomForPlayerText": "खिलाड़ी ",
+
+            #Tournament Room List
+            "tournamentRoomListPageTittle": "टूर्नामेंट रूम सूची",
+            "tournamentRoomListHeaderText": "टूर्नामेंट रूम सूची",
 
         #RPS Game
         "rpsGamePageTittle": "रॉक-पेपर-सैंड खेल",
