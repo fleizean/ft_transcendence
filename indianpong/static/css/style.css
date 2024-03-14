@@ -198,8 +198,8 @@ body {
 }
 
 .nav-links li {
-  font-family: 'Pixeboy-z8XGD';
-  
+  font-family: "VT323", monospace;  
+  font-weight: bold;
 }
 
 .nav-links li a i {
@@ -1036,6 +1036,11 @@ body {
   margin-top: 25px;
   font-size: 16px;
   color: rgb(255, 140, 0);
+}
+
+.info-icon i {
+  cursor: pointer;
+  user-select: none;
 }
 
 .language-submenu {

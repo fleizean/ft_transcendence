@@ -19,6 +19,12 @@
     width: 100%;
 }
 
+.game-info-menu-local {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
 .custom-table th, .custom-table td {
     border: 1px solid #ddd;
     padding: 8px;
@@ -123,9 +129,14 @@
 
 }
 
+.ai-game {
+    overflow: hidden;
+}
+
 .slider-container {
     position: absolute;
-    left: 530px;
+    width: 100%;
+    left: 510px;
     top: -25px;
 }
 

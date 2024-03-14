@@ -6,7 +6,7 @@
 {% endblock stylesheet %}
 
 {% block title %}
-Rankings
+{{context.rankingsPageTittle}}
 {% endblock title %}
 
 {% block app %}
@@ -26,13 +26,13 @@ Rankings
                     <footer class="leaderboard-winner-footer">
                         <ul>
                             <li>
-                                <small>Rank</small>
+                                <small>{{context.rankingsTableRankText}}</small>
                                 {% if user.rank %}
                                 <strong>#{{ user.rank }}</strong>
                                 {% endif %}
                             </li>
                             <li>
-                                <small>Pong Point</small>
+                                <small>{{context.rankingsTablePongPointsText}}</small>
                                 <strong>{{ user.elo_point }}</strong>
                             </li>
                         </ul>
@@ -52,25 +52,25 @@ Rankings
                                     <div class="data-filter"></div>
                                 </div>
                                 <div class="data-cell data-cell--sm">
-                                    <div class="data-filter">Rank</div>
+                                    <div class="data-filter">{{context.rankingsTableRankText}}</div>
                                 </div>
                                 <div class="data-cell">
-                                    <div class="data-filter">Name</div>
+                                    <div class="data-filter">{{context.rankingsTableNameText}}</div>
                                 </div>
                                 <div class="data-cell">
-                                    <div class="data-filter">User Name</div>
+                                    <div class="data-filter">{{context.rankingsTableUsernameText}}</div>
                                 </div>
                                 <div class="data-cell data-cell--sm">
-                                    <div class="data-filter">Wins</div>
+                                    <div class="data-filter">{{context.rankingsTableWinsText}}</div>
                                 </div>
                                 <div class="data-cell data-cell--sm">
-                                    <div class="data-filter">Losses</div>
+                                    <div class="data-filter">{{context.rankingsTableLossesText}}</div>
                                 </div>
                                 <div class="data-cell data-cell--sm">
-                                    <div class="data-filter">Win Rate</div>
+                                    <div class="data-filter">{{context.rankingsTableWinRateText}}</div>
                                 </div>
                                 <div class="data-cell data-cell--sm">
-                                    <div class="data-filter">Pong Point</div>
+                                    <div class="data-filter">{{context.rankingsTablePongPointsText}}</div>
                                 </div>
                             </div>
                         </div>

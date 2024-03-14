@@ -2,7 +2,7 @@
 
 {% load static %}
 
-{% block title %}{{ username }} Inventory{% endblock title %}
+{% block title %}{{ username }} {{context.inventoryPageTittle}}{% endblock title %}
 
 {% block stylesheet %}<link rel="stylesheet" href="{% static "css/inventory.css" %}">{% endblock stylesheet %}
 
@@ -13,11 +13,11 @@
       
        <div class="top-inventory">
         <div class="inventory-left">
-          <h3>{{username}} / Inventory</h3>
+          <h3>{{username}} / {{context.inventoryText}}</h3>
         </div>
         <div class="inventory-mid">
             <div class="category-field">
-              <h5 class="category-text"><a href="?category_name=All">#All</a></h5>
+              <h5 class="category-text"><a href="?category_name=All">#{{context.inventoryTagText}}</a></h5>
             </div>
             <div class="category-field">
               <h5 class="category-text"><a href="?category_name=Pong">#Pong</a></h5>
@@ -35,7 +35,7 @@
           <div class="inventory-right">
                 <i class="bi bi-piggy-bank-fill flip-horizontal"></i> 
                 <div class="inventory-text-fields">
-                  <span class="small-wallet-name">Wallet:</span>
+                  <span class="small-wallet-name">{{context.inventoryWalletText}}:</span>
                   <span class="wallet-amount">{{profile.indian_wallet}}N₩</span>
                 </div>
           </div>
@@ -43,7 +43,7 @@
       </div>
       
       <div class="inventory-info">
-        <span class="tooltiptext">Oyun oynayarak <span style="font-weight: bold;">N₩</span> kazanabilirsin.</span>
+        <span class="tooltiptext">{{context.inventoryWalleinfoText1}} <span style="font-weight: bold;">N₩</span> {{context.inventoryWalleinfoText2}}</span>
       </div>
         <div class="inventory-list">
 
@@ -53,7 +53,7 @@
                   <form id="store_item_form{{ item.id }}"  method="POST">
                     {% csrf_token %}
                     <div class="modal-header">
-                        <h5 class="modal-title" id="setPropertyModalLabel">Özelliği Ayarla</h5>
+                        <h5 class="modal-title" id="setPropertyModalLabel">{{context.inventoryModalHeaderText}}</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body" id="modalBody">         
@@ -64,8 +64,8 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary" onclick="event.preventDefault(); saveProperty(`{{item.id}}`)">Kaydet</button>
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
+                        <button type="submit" class="btn btn-primary" onclick="event.preventDefault(); saveProperty(`{{item.id}}`)">{{context.inventoryModalSaveButton}}</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{context.inventoryModalCloseButton}}</button>
                     </div>
                   </div>
               </form>
@@ -75,15 +75,15 @@
                 
               <div class="product-card-inventory">
                 <img src="{% static 'assets/stores/'|add:item.item.image_url %}" alt="" />
-                <h2 class="card__title">{{ item.item.name }}</h2>
+                <h2 class="card__title">{% if selected_language == 'hi' and item.item.name_hi %} {{item.item.name_hi}} {% elif selected_language == 'pt' and item.item.name_pt %}{{item.item.name_pt}} {% elif selected_language == 'tr' and item.item.name_tr %}{{ item.item.name_tr }} {% else %} {{item.item.name}} {% endif %}</h2>
                 <h4 {% if item.item.category_name == "Pong" %} class="card__category pong" {% elif item.item.category_name == "RPS" %} class="card__category rps"  {% else %} class="card__category all" {% endif %}>
-                  <a href="?category_name={{item.item.category_name}}">#{{ item.item.category_name }}</a>
+                  <a href="?category_name={{item.item.category_name}}">#{% if item.item.category_name == 'All' %}{{context.storeTagText }}{% else %}{{item.item.category_name}}{%endif%}</a>
                 </h4>
-                <span class="card__description">{{item.item.description}}</span>
+                <span class="card__description">{% if selected_language == 'hi' and item.item.description_hi %} {{item.item.description_hi}} {% elif selected_language == 'pt' and item.item.description_pt %}{{item.item.description_pt}} {% elif selected_language == 'tr' and item.item.description_tr %}{{ item.item.description_tr }} {% else %} {{item.item.description}} {% endif %}</span>
                 {% if item.item.name != "My Playground" and item.item.name != "My Beautiful AI" and item.item.name != "My Beautiful Paddle" and item.item.name != "Giant-Man" and item.item.name != "Rage of Fire" and item.item.name != "DJ Give Me The Music" %}
-                  <span class="card__key-info"><span class="red">Use the <span style="font-weight: 500;">"{{item.item.keypress}}" </span> key to use this ability. And remember, you must equip this ability</span></span>
+                  <span class="card__key-info"><span class="red">{{context.inventoryItemKeyboardInfoText}} <span style="font-weight: 500;">"{{item.item.keypress}}" </span> {{context.inventoryItemKeyboardInfoText2}}</span></span>
                 {% else %}
-                  <span class="card__key-info orange">There is no special keypad for this item, it is used automatically.</span>
+                  <span class="card__key-info orange">{{context.inventoryItemKeyboardInfoText3}}</span>
                 {% endif %}
                 <div class="card__shop">
                   <span class="card__shop__price">{{item.item.price}}N₩</span>

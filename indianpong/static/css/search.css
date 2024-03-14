@@ -203,7 +203,7 @@
   font-size: 14px;
   font-weight: 400;
   border: none;
-  border-radius: 24px;
+  border-radius: 12px;
   margin: 0 10px;
   padding: 8px 24px;
   background-color: #4070f4;
@@ -216,7 +216,7 @@
   font-size: 14px;
   font-weight: 400;
   border: none;
-  border-radius: 24px;
+  border-radius: 12px;
   margin: 0 10px;
   padding: 8px 24px;
   background-color: #dc3545;
@@ -228,12 +228,30 @@
   background-color: #b90618;
 }
 
+.buttons .button-unfollow {
+  color: #fff;
+  font-size: 14px;
+  font-weight: 400;
+  border: none;
+  border-radius: 12px;
+  margin: 0 10px;
+  padding: 8px 24px;
+  background-color: #333333;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.buttons .button-unfollow:hover {
+  background-color: #666666;
+}
+
 .buttons .button-message:hover {
   background-color: #0e4bf1;
 }
 
 .buttons .button-follow,
-.buttons .button-message {
+.buttons .button-message,
+.buttons .button-unfollow {
   flex: 1; /* Butonların esnekliğini sağlar */
   margin: 0 5px;
 }

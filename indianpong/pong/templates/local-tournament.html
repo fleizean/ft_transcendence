@@ -2,7 +2,7 @@
 
 {% load static %}
 
-{% block title %}Local Tournament{% endblock title %}
+{% block title %}{{context.localTournamentPageTittle}}{% endblock title %}
 
 
 {% block app %}
@@ -15,22 +15,22 @@
             </div>
           </div>
         <div id="tournament-start-info" class="tournament-start-info">
-            <h1 class="tournamentLocalGameText">Local Tournament</h1>
+            <h1 class="tournamentLocalGameText">{{context.localTournamentGameHeaderText}}</h1>
             <div class="input-box">
-              <label class="tournamentLocalGamePlayerText" for="player1Name">Player1 Name</label>
+              <label class="tournamentLocalGamePlayerText" for="player1Name">{{context.localTournamentPlayer1Text}}</label>
               <input class="input-style" type="text" id="player1Name">
 
-              <label class="tournamentLocalGamePlayerText" for="player2Name">Player2 Name</label>
+              <label class="tournamentLocalGamePlayerText" for="player2Name">{{context.localTournamentPlayer2Text}}</label>
               <input class="input-style" type="text" id="player2Name">
 
-              <label class="tournamentLocalGamePlayerText" for="player3Name">Player3 Name</label>
+              <label class="tournamentLocalGamePlayerText" for="player3Name">{{context.localTournamentPlayer3Text}}</label>
               <input class="input-style" type="text" id="player3Name">
 
-              <label class="tournamentLocalGamePlayerText" for="player4Name">Player4 Name</label>
+              <label class="tournamentLocalGamePlayerText" for="player4Name">{{context.localTournamentPlayer4Text}}</label>
               <input class="input-style" type="text" id="player4Name">
 
               <div class="selectorGame">
-                <label class="tournamentLocalGamePlayerText" for="maxScore">Max Score</label>
+                <label class="tournamentLocalGamePlayerText" for="maxScore">{{context.localTournamentMaxScoreText}}</label>
                 <select class="form-select" id="maxScore">
                   <option selected value="3">3</option>
                   <option value="5">5</option>
@@ -40,17 +40,17 @@
               </div>
 
               <div class="selectorGame">
-                <label class="tournamentLocalGamePlayerText" for="gameMode">Game Mode</label>
+                <label class="tournamentLocalGamePlayerText" for="gameMode">{{context.localTournamentGameModeText}}</label>
                 <select class="form-select" id="gameMode">
-                  <option selected value="Vanilla">Vanilla</option>
-                  <option value="Abilities">Abilities</option>
+                  <option selected value="Vanilla">{{context.localTournamentChooseModeText1}}</option>
+                  <option value="Abilities">{{context.localTournamentChooseModeText2}}</option>
                 </select>
               </div>
             </div>
-            <button class="btn btn-outline-success" id="startButton">Start & Bracket</button>
+            <button class="btn btn-outline-success" id="startButton">{{context.localTournamentButtonStart}}</button>
         </div>
         <div class="showbracket" id="show-bracket">
-            <h1 class="tournament-bracket-title">Tournament Bracket</h1>
+            <h1 class="tournament-bracket-title">{{context.localTournamentBracketTitle}}</h1>
                 <div class="game-bracket-area">
                     <div class="bracket-area">
                         <div class="bracket disable-image">
@@ -112,48 +112,86 @@
                         </div>
                     </div>
                 </div>
-                <button class="btn btn-outline-success" id="startTournament">Start Tournament</button>
+                <button class="btn btn-outline-success" id="startTournament">{{context.localTournamentBracketStartButtonText}}</button>
 
         </div>
         
         <canvas id="pongCanvas" width="800" height="600" style="display: none;"></canvas>
         <div id="gameOverScreen" class="game-over">
             <h1 id="winnerText" class="winnerName"></h1>
-            <h2>Game Over</h2>
-            <button id="restartButton">Next</button>
-            <button id="exitButton">Exit</button>
+            <h2>{{context.aiGameGameOverText}}</h2>
+            <button id="restartButton">{{context.localTournamentNextButtonText}}</button>
+            <button id="exitButton">{{context.aiGameExitButtonText}}</button>
         </div>
         
         <div id="gameOverScreenTournament" class="game-over">
             <h1 id="winnerTextTournament" class="winnerName"></h1>
-            <h2>Tournament Over</h2>
-            <button id="restartButtonTournament">Over</button>
-            <button id="exitButton">Exit</button>
+            <h2>{{context.localTournamentTournamentOverText}}</h2>
+            <button id="restartButtonTournament">{{context.}}</button>
+            <button id="exitButton">{{context.aiGameExitButtonText}}</button>
         </div>
     </div>
-  </div>
-  <div class="modal fade" id="exampleModalGame" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  </div><div class="modal fade" id="exampleModalGame" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header" style="z-index: 100;">
-                <h2 class="modal-title fs-2" id="exampleModalLabel">About the Game</h2>
+                <h2 class="modal-title fs-2" id="exampleModalLabel">{{context.aiGameInfoHeaderText}}</h2>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-              <h4>How to Play the Game?</h4>
-              <p>In Pong game, players engage in a table tennis match against their opponents. The W-A-S-D keys (or up-down-left-right arrow keys) are used to control the ball.</p>
-          
-              <h4>Win and Improve</h4>
-              <p>You earn Pong Points with every game you win. With these points, you can purchase new items, rackets, and tables from the store to enhance your gaming experience.</p>
-          
-              <h4>Get Started Now</h4>
-              <p>You can create an account to personalize your gaming experience. With an account, you can track your statistics and see your position in the rankings.</p>
-          
-              <h4>More Features</h4>
-              <p>You can participate in tournaments to face off against your opponents and test your skills. Additionally, you can create private games with your friends and join the Pong community.</p>
+                <h3>{{context.aiGameInfoSubHeaderText}}</h3>
+                <p>{{context.aiGameInfoSubHeaderDescription1}}</p>
+
+                <h3>{{context.aiGameInfoSubHeaderText2}}</h3>
+                <p>{{context.aiGameInfoSubHeaderDescription2}}</p>
+
+                <h3>{{context.aiGameInfoSubHeaderText3}}</h3>
+                <p>{{context.aiGameInfoSubHeaderDescription3}}</p>
+
+                <h3>{{context.aiGameInfoSubHeaderText4}}</h3>
+                <p>{{context.aiGameInfoSubHeaderDescription4}}</p>
+
+                <h3>{{context.aiGameInfoSubHeaderText5}}</h3>
+                <div class="modal-controls">
+                    <div class="col">{{context.aiGameInfoSubHeaderDescription5}}</div>
+                    <div class="col">
+                        <span class="modal-keys">W</span>
+                    </div>
+                </div>
+                <div class="modal-controls">
+                    <div class="col">{{context.aiGameInfoSubHeaderDescription6}}</div>
+                    <div class="col">
+                        <span class="modal-keys">S</span>
+                    </div>
+                </div>
+                <h3>{{context.aiGameInfoSubHeaderText6}}</h3>
+                <div class="modal-controls">
+                    <div class="col">
+                        <b>{{context.aiGameInfoSubHeaderDescription7}}</b>
+                    </div>
+                    <div class="col">
+                        <span class="modal-keys">1</span>
+                    </div>
+                </div>
+                <div class="modal-controls">
+                    <div class="col">
+                        <b>{{context.aiGameInfoSubHeaderDescription8}}</b>
+                    </div>
+                    <div class="col">
+                        <span class="modal-keys">2</span>
+                    </div>
+                </div>
+                <div class="modal-controls">
+                    <div class="col">
+                        <b>{{context.aiGameInfoSubHeaderDescription9}}</b>
+                    </div>
+                    <div class="col">
+                        <span class="modal-keys">3</span>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-  </div>
+</div>
   <script type=module src="{% static "js/game/localTournament.js" %}"></script>
 {% endblock %}

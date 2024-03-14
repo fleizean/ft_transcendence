@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib import admin
-from .models import OAuthToken, Social, UserItem, StoreItem, UserProfile, Tournament, Room, Message, Game, UserGameStat
+from .models import RPSGame, OAuthToken, Social, UserItem, StoreItem, UserProfile, Tournament, Room, Message, Game, UserGameStat
 from django.utils.html import format_html
 from django.forms import ModelChoiceField
 
@@ -102,6 +102,12 @@ class MessageAdmin(admin.ModelAdmin):
 class OAuthTokenAdmin(admin.ModelAdmin):
     list_display = ('user', 'access_token', 'refresh_token', 'expires_in', 'created_at', 'secret_valid_until')
     search_fields = ('user__username',) 
+
+@admin.register(RPSGame)
+class RPSGameAdmin(admin.ModelAdmin):
+    list_display = ('player1', 'player2')
+    list_filter = ('player1', 'player2')
+    search_fields = ('player1__username', 'player2__username')
 
 """ @admin.register(TwoFactorAuth)
 class TwoFactorAuthAdmin(admin.ModelAdmin):

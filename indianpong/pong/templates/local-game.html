@@ -2,7 +2,7 @@
 
 {% load static %}
 
-{% block title %}Local Game{% endblock title %}
+{% block title %}{{context.localGamePageTittle}}{% endblock title %}
 
 {% block stylesheet %}<link rel="stylesheet" href="{% static "css/in-game.css" %}">{% endblock %}
 
@@ -10,22 +10,23 @@
 
   <div class="container-top" data-paddlecolor="{{paddlecolor}}" data-playgroundcolor="{{playgroundcolor}}">
     <div class="ai-game">
-      <div class="game-info-menu">
-        <div class="info-icon" style="color: rgb(255, 140, 0); margin-right: 3em; margin-bottom: -1em;">
-          <i class="bi bi-info-circle-fill" data-bs-toggle="modal" data-bs-target="#exampleModalGame"></i>
-        </div>
-      </div>
+      
       <div id="gameStartInfos" class="game-start-info">
-        <h1 class="localGameText">1v1 Local Game</h1>
+        <div class="game-info-menu-local">
+          <div class="info-icon" style="color: rgb(255, 140, 0); margin-right: 3em; margin-bottom: -1em;">
+            <i class="bi bi-info-circle-fill" data-bs-toggle="modal" data-bs-target="#exampleModalGame"></i>
+          </div>
+        </div>
+        <h1 class="localGameText">{{context.localGameHeaderText}}</h1>
         <div class="input-box">
-          <label class="localGamePlayerText" for="player1Name">Player1 Name</label>
+          <label class="localGamePlayerText" for="player1Name">{{context.localGamePlayer1Text}}</label>
           <input class="input-style" type="text" id="player1Name">
 
-          <label class="localGamePlayerText" for="player1Name">Player2 Name</label>
+          <label class="localGamePlayerText" for="player1Name">{{context.localGamePlayer2Text}}</label>
           <input class="input-style" type="text" id="player2Name">
 
           <div class="selectorGame">
-            <label class="localGamePlayerText" for="maxScore">Max Score</label>
+            <label class="localGamePlayerText" for="maxScore">{{context.localGameMaxScoreText}}</label>
             <select class="form-select" id="maxScore">
               <option selected value="3">3</option>
               <option value="5">5</option>
@@ -35,48 +36,87 @@
           </div>
 
           <div class="selectorGame">
-            <label class="localGamePlayerText" for="gameMode">Game Mode</label>
+            <label class="localGamePlayerText" for="gameMode">{{context.localGameGameModeText}}</label>
             <select class="form-select" id="gameMode">
-              <option selected value="Vanilla">Vanilla</option>
-              <option value="Abilities">Abilities</option>
+              <option selected value="Vanilla">{{context.localGameChooseModeText1}}</option>
+              <option value="Abilities">{{context.localGameChooseModeText2}}</option>
             </select>
           </div>
         </div>
         
         
-        <button class="btn btn-outline-success" id="startButton">Start</button>
+        <button class="btn btn-outline-success" id="startButton">{{context.localGameButtonStart}}</button>
       </div>
       <canvas id="pongCanvas" width="800" height="600" style="display: none;"></canvas>
       <div id="gameOverScreen" class="game-over">
         <h1 id="winnerText" class="winnerName"></h1>
-        <h2>Game Over</h2>
-        <button id="restartButton">Restart</button>
-        <button id="exitButton">Exit</button>
+        <h2>{{context.aiGameGameOverText}}</h2>
+        <button id="restartButton">{{context.aiGameRestartButtonText}}</button>
+        <button id="exitButton">{{context.aiGameExitButtonText}}</button>
       </div>
     </div>
   </div>
   <div class="modal fade" id="exampleModalGame" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-        <div class="modal-content">
-            <div class="modal-header" style="z-index: 100;">
-                <h2 class="modal-title fs-2" id="exampleModalLabel">About the Game</h2>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-              <h4>How to Play the Game?</h4>
-              <p>In Pong game, players engage in a table tennis match against their opponents. The W-A-S-D keys (or up-down-left-right arrow keys) are used to control the ball.</p>
-          
-              <h4>Win and Improve</h4>
-              <p>You earn Pong Points with every game you win. With these points, you can purchase new items, rackets, and tables from the store to enhance your gaming experience.</p>
-          
-              <h4>Get Started Now</h4>
-              <p>You can create an account to personalize your gaming experience. With an account, you can track your statistics and see your position in the rankings.</p>
-          
-              <h4>More Features</h4>
-              <p>You can participate in tournaments to face off against your opponents and test your skills. Additionally, you can create private games with your friends and join the Pong community.</p>
-            </div>
-        </div>
+		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+			<div class="modal-content">
+				<div class="modal-header" style="z-index: 100;">
+					<h2 class="modal-title fs-2" id="exampleModalLabel">{{context.aiGameInfoHeaderText}}</h2>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<h3>{{context.aiGameInfoSubHeaderText}}</h3>
+					<p>{{context.aiGameInfoSubHeaderDescription1}}</p>
+
+					<h3>{{context.aiGameInfoSubHeaderText2}}</h3>
+					<p>{{context.aiGameInfoSubHeaderDescription2}}</p>
+
+					<h3>{{context.aiGameInfoSubHeaderText3}}</h3>
+					<p>{{context.aiGameInfoSubHeaderDescription3}}</p>
+
+					<h3>{{context.aiGameInfoSubHeaderText4}}</h3>
+					<p>{{context.aiGameInfoSubHeaderDescription4}}</p>
+
+					<h3>{{context.aiGameInfoSubHeaderText5}}</h3>
+					<div class="modal-controls">
+						<div class="col">{{context.aiGameInfoSubHeaderDescription5}}</div>
+						<div class="col">
+							<span class="modal-keys">W</span>
+						</div>
+					</div>
+					<div class="modal-controls">
+						<div class="col">{{context.aiGameInfoSubHeaderDescription6}}</div>
+						<div class="col">
+							<span class="modal-keys">S</span>
+						</div>
+					</div>
+					<h3>{{context.aiGameInfoSubHeaderText6}}</h3>
+					<div class="modal-controls">
+						<div class="col">
+							<b>{{context.aiGameInfoSubHeaderDescription7}}</b>
+						</div>
+						<div class="col">
+							<span class="modal-keys">1</span>
+						</div>
+					</div>
+					<div class="modal-controls">
+						<div class="col">
+							<b>{{context.aiGameInfoSubHeaderDescription8}}</b>
+						</div>
+						<div class="col">
+							<span class="modal-keys">2</span>
+						</div>
+					</div>
+					<div class="modal-controls">
+						<div class="col">
+							<b>{{context.aiGameInfoSubHeaderDescription9}}</b>
+						</div>
+						<div class="col">
+							<span class="modal-keys">3</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
     </div>
-  </div>
   <script type=module src="{% static "js/game/local-game.js" %}"></script>
 {% endblock %}

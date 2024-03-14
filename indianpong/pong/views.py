@@ -74,7 +74,7 @@ from . import langs
 def index(request):
     if request.user.is_authenticated:
         return redirect("dashboard")
-    lang = request.session.get('language', 'en')
+    lang = request.COOKIES.get('selectedLanguage', 'en')
     context = langs.get_langs(lang)
     return render(request, "base.html", {"context": context})
 
@@ -85,16 +85,17 @@ def aboutus(request):
 
 
 def handler404(request, exception):
-    return render(request, "404.html", status=404)
-
+    lang = request.COOKIES.get('selectedLanguage', 'en')
+    context = langs.get_langs(lang)
+    return render(request, "404.html", {"context": context}, status=404)
 
 ### User Authentication ###
 @never_cache
 def signup(request):
-    language = request.session.get('language', 'en')
+    language = request.COOKIES.get('selectedLanguage', 'en')
     context = langs.get_langs(language)
     if request.method == "POST":
-        form = UserProfileForm(request.POST, request.FILES, lang=request.session.get('language', 'en'))
+        form = UserProfileForm(request.POST, request.FILES, lang=request.COOKIES.get('selectedLanguage', 'en'))
         if form.is_valid():
             user = form.save()
             obj = VerifyToken.objects.create(
@@ -104,7 +105,7 @@ def signup(request):
             messages.success(request, "Please check your email to verify your account.")
             return HttpResponseRedirect("login")
     else:
-        form = UserProfileForm(lang=request.session.get('language', 'en'))
+        form = UserProfileForm(lang=request.COOKIES.get('selectedLanguage', 'en'))
     return render(request, "signup.html", {"form": form, "context": context})
 
 
@@ -237,8 +238,10 @@ def auth_callback(request):
 def set_language(request):
     if request.method == 'POST':
         selected_language = request.POST.get('language')
-        # Burada seçilen dil bilgisini oturum verilerine kaydedebilirsiniz
-        request.session['language'] = selected_language
+        # Seçilen dil bilgisini çerez olarak sakla
+        response = redirect(request.META.get('HTTP_REFERER'))
+        response.set_cookie('selectedLanguage', selected_language)
+        return response
     return redirect(request.META.get('HTTP_REFERER'))
 
 ### Login and Logout ###
@@ -248,7 +251,7 @@ def set_language(request):
 def login_view(request):
     if request.user.is_authenticated:
         return HttpResponseRedirect("dashboard")
-    lang = request.session.get('language', 'en')
+    lang = request.COOKIES.get('selectedLanguage', 'en')
     context = langs.get_langs(lang)
     if request.method == "POST":
         form = AuthenticationUserForm(request, request.POST)
@@ -265,6 +268,10 @@ def login_view(request):
         form = AuthenticationUserForm()
     return render(request,"login.html", {"form": form, "context": context})
 
+@never_cache
+@login_required()
+def gametest(request):
+    return render(request, "remote-game.html")
 
 @never_cache
 @login_required()
@@ -279,6 +286,8 @@ def logout_view(request):
 @login_required()
 def profile_view(request, username):
     profile = get_object_or_404(UserProfile, username=username)
+    lang = request.COOKIES.get('selectedLanguage', 'en')
+    context = langs.get_langs(lang)
     game_records = Game.objects.filter(
         Q(player1=profile) | Q(player2=profile),
         game_kind='pong'
@@ -317,6 +326,7 @@ def profile_view(request, username):
             "history_page_obj": history_page_obj,
             "is_friend": is_friend,
             "game_records_rps": game_records_rps,
+            "context": context,
         },
     )
 
@@ -325,14 +335,18 @@ def profile_view(request, username):
 @never_cache
 @login_required()
 def rps_game_find(request):
-    return render(request, "rps-game-find.html")
+    lang = request.COOKIES.get('selectedLanguage', 'en')
+    context = langs.get_langs(lang)
+    return render(request, "rps-game-find.html", {"context": context})
 
 
 ## Pong Game ##
 @never_cache
 @login_required()
 def pong_game_find(request):
-    return render(request, "pong-game-find.html")
+    lang = request.COOKIES.get('selectedLanguage', 'en')
+    context = langs.get_langs(lang)
+    return render(request, "pong-game-find.html", {"context": context})
 
 
 
@@ -342,6 +356,8 @@ def pong_game_find(request):
 def profile_settings(request, username):
     if request.user.username != username:
         return JsonResponse({"error": "Unauthorized"}, status=401)
+    lang = request.COOKIES.get('selectedLanguage', 'en')
+    context = langs.get_langs(lang)
     if request.method == "POST":
         data = request.POST
         if "avatar_form" in data:
@@ -418,6 +434,7 @@ def profile_settings(request, username):
                 "password_form": password_form,
                 "social_form": social_form,
                 "delete_account_form": delete_account_form,
+                "context": context,
             },
         )
 
@@ -517,7 +534,9 @@ def set_password(request, uidb64, token):
 @login_required()
 def dashboard(request):
     profile = get_object_or_404(UserProfile, username=request.user.username)
-    return render(request, "dashboard.html", {"profile": profile})
+    lang = request.COOKIES.get('selectedLanguage', 'en')
+    context = langs.get_langs(lang)
+    return render(request, "dashboard.html", {"profile": profile, "context": context})
 
 
 @never_cache
@@ -527,6 +546,8 @@ def rankings(request):
         game_stats__total_win_rate_pong__isnull=False
     ).exclude(username='IndianAI').order_by("-elo_point")[:3]
 
+    lang = request.COOKIES.get('selectedLanguage', 'en')
+    context = langs.get_langs(lang)
     # Her bir kullanıcıya sıra numarası eklemek için döngü
     for index, user in enumerate(top_users, start=1):
         user.rank = index
@@ -549,13 +570,16 @@ def rankings(request):
 
     # Add rank attribute to each user in the page
 
-    return render(request, "rankings.html", {"top_users": top_users, "users_page_obj": users_page_obj})
+    return render(request, "rankings.html", {"top_users": top_users, "users_page_obj": users_page_obj, "context": context})
 
 
 @login_required()
 def store(request, username):  # store_view
     if request.user.username != username:
         return redirect(reverse("store", kwargs={"username": request.user.username}))
+    lang = request.COOKIES.get('selectedLanguage', 'en')
+    
+    context = langs.get_langs(lang)
     profile = get_object_or_404(UserProfile, username=username)
     bought_items = UserItem.objects.filter(user=profile, is_bought=True).values_list(
         "item", flat=True
@@ -596,15 +620,16 @@ def store(request, username):  # store_view
     return render(
         request,
         "store.html",
-        {"store_items": store_items, "profile": profile, "form": form},
+        {"store_items": store_items, "profile": profile, "form": form, "context": context, "selected_language": lang,},
     )
-
 
 @never_cache
 @login_required
 def inventory(request, username):
     if request.user.username != username:
         return redirect(reverse("store", kwargs={"username": request.user.username}))
+    lang = request.COOKIES.get('selectedLanguage', 'en')
+    context = langs.get_langs(lang)
     profile = get_object_or_404(UserProfile, username=username)
     inventory_items = UserItem.objects.filter(user=profile).all()
 
@@ -645,7 +670,7 @@ def inventory(request, username):
     return render(
         request,
         "inventory.html",
-        {"profile": profile, "inventory_items": inventory_items}
+        {"profile": profile, "inventory_items": inventory_items, "context": context, "selected_language": lang},
     )
 
 @login_required()
@@ -655,7 +680,8 @@ def search(request):
         request.session["search_query"] = search_query
     else:
         search_query = request.session.get("search_query", "")
-
+    lang = request.COOKIES.get('selectedLanguage', 'en')
+    context = langs.get_langs(lang)
     if search_query:
         search_query_email = search_query.split("@")[0]
         results = UserProfile.objects.filter(
@@ -688,13 +714,15 @@ def search(request):
         except EmptyPage:
             # If page number is out of range, deliver the last page
             results = paginator.page(paginator.num_pages)
-        return render(request, "search.html", {"results": results})
-    return render(request, "search.html")
+        return render(request, "search.html", {"results": results, "context": context})
+    return render(request, "search.html", {"context": context})
 
 
 
 @login_required()
 def friends(request, profile):
+    lang = request.COOKIES.get('selectedLanguage', 'en')
+    context = langs.get_langs(lang)
     profile = get_object_or_404(UserProfile, username=profile)
     friends = profile.friends.all().exclude(username=profile)
     friends = Paginator(friends, 8)
@@ -707,7 +735,7 @@ def friends(request, profile):
     except EmptyPage:
         # Geçersiz bir sayfa numarası istenirse, son sayfayı al
         friends = friends.page(friends.num_pages)
-    return render(request, "friends.html", {"friends": friends, "profile": profile})
+    return render(request, "friends.html", {"friends": friends, "profile": profile, "context": context})
 
 
 @login_required()
@@ -731,6 +759,8 @@ def game(request):
 
 @login_required()
 def play_ai(request, game_type, game_id):
+    lang = request.COOKIES.get('selectedLanguage', 'en')
+    context = langs.get_langs(lang)
     user_items = UserItem.objects.filter(user=request.user)
     
     # Just Customizations - PONG
@@ -747,7 +777,7 @@ def play_ai(request, game_type, game_id):
     frozenball = get_equipped_item_value(user_items, "Frozen Ball", "None")
     givemethemusic = get_equipped_item_value(user_items, "DJ Give Me The Music", "None")
 
-    return render(request, "play-ai.html", {"ainametag": ainametag, "paddlecolor": paddlecolor, "playgroundcolor": playgroundcolor, "giantman": giantman, "likeacheater": likeacheater, "fastandfurious": fastandfurious, "rageoffire": rageoffire, "frozenball": frozenball, "givemethemusic": givemethemusic})
+    return render(request, "play-ai.html", {"ainametag": ainametag, "paddlecolor": paddlecolor, "playgroundcolor": playgroundcolor, "giantman": giantman, "likeacheater": likeacheater, "fastandfurious": fastandfurious, "rageoffire": rageoffire, "frozenball": frozenball, "givemethemusic": givemethemusic, "context": context})
 
 
 @never_cache
@@ -760,17 +790,21 @@ def play_rps(request):
 @never_cache
 @login_required()
 def play_rps_ai(request):
+    lang = request.COOKIES.get('selectedLanguage', 'en')
+    context = langs.get_langs(lang)
     user_items = UserItem.objects.filter(user=request.user)
     ainametag = get_equipped_item_value(user_items, "My Beautiful AI", "IndianAI")
     cheater_rps = get_equipped_item_value(user_items, "Cheater", "None")
     godthings_rps = get_equipped_item_value(user_items, "God Things", "None")
 
-    return render(request, "play-rps-ai.html" , {"cheater_rps": cheater_rps, "godthings_rps": godthings_rps, "ainametag": ainametag})
+    return render(request, "play-rps-ai.html" , {"cheater_rps": cheater_rps, "godthings_rps": godthings_rps, "ainametag": ainametag, "context": context})
 
 @never_cache
 @login_required()
 def local_game(request):
     user_items = UserItem.objects.filter(user=request.user)
+    lang = request.COOKIES.get('selectedLanguage', 'en')
+    context = langs.get_langs(lang)
     
     # Just Customizations - PONG
     player2name = "Player 2"
@@ -783,17 +817,19 @@ def local_game(request):
     fastandfurious = get_equipped_item_value(user_items, "Fast and Furious", "None")
     rageoffire = get_equipped_item_value(user_items, "Rage of Fire", "None")
     frozenball = get_equipped_item_value(user_items, "Frozen Ball", "None")
-    return render(request, "local-game.html", {"player2name": player2name, "paddlecolor": paddlecolor, "playgroundcolor": playgroundcolor, "giantman": giantman, "likeacheater": likeacheater, "fastandfurious": fastandfurious, "rageoffire": rageoffire, "frozenball": frozenball})
+    return render(request, "local-game.html", {"player2name": player2name, "paddlecolor": paddlecolor, "playgroundcolor": playgroundcolor, "giantman": giantman, "likeacheater": likeacheater, "fastandfurious": fastandfurious, "rageoffire": rageoffire, "frozenball": frozenball, "context": context})
 
 @never_cache
 @login_required()
 def local_tournament(request):
+    lang = request.COOKIES.get('selectedLanguage', 'en')
+    context = langs.get_langs(lang)
     user_items = UserItem.objects.filter(user=request.user)
 
     paddlecolor = get_equipped_item_value(user_items, "My Beautiful Paddle", "black")
     playgroundcolor = get_equipped_item_value(user_items, "My Playground", "lightgrey")
 
-    return render(request, "local-tournament.html")
+    return render(request, "local-tournament.html", {"paddlecolor": paddlecolor, "playgroundcolor": playgroundcolor, "context": context})
 
 def remote_game(request, game_type, game_id):
     return render(request, "remote-game.html")
@@ -808,13 +844,6 @@ def chat(request):
 @login_required()
 def aboutus(request):
     return render(request, "aboutus.html")
-
-
-@login_required()
-def match_history(request, profile):
-    profile = get_object_or_404(UserProfile, username=profile)
-    
-    return render(request, "match-history.html", {"profile": profile})
 
 
 ### New Chat ###

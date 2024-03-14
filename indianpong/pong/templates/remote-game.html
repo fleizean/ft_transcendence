@@ -1,65 +1,90 @@
+{% extends 'base.html' %}
 {% load static %}
 
-<html lang='en'>
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Add assets/favicon.ico to the page -->
-    <link rel="shortcut icon" href="{% static "assets/favicon.ico" %}" type="image/x-icon">
-    <title>Socket Actions</title>
-    <style>
-        canvas {
-            display: block;
-            margin: 20px auto;
-            border: 1px solid #000;
-        }
-    </style>
-</head>
+{% block title %}
+  Test
+{% endblock %}
 
-<body>
-    <div>
-        <p id="invitationMessage"></p>
+{% block stylesheet %}
+    <link rel="stylesheet" href="{% static "css/in-game.chat.css" %}"/>
+    <link rel="stylesheet" href="{% static "css/remote-player.css" %}"/>
+{% endblock %}
+
+{% block app %}
+
+  <div class="left-card">
+    <table class="custom-table">
+      <thead>
+          <tr>
+              <th>Name</th>
+              <th>Actions</th>
+          </tr>
+      </thead>
+      <tbody>
+          
+          
+      </tbody>
+    </table>
+    <div class="matchmaking-button" >
+      <button type="button" onclick="setCanvasSize()" class="btn btn-outline-primary"><i class="bi bi-patch-check-fill"></i> MATCHMAKING</button>
     </div>
-    <div>
-        <button id="leaveButton">Leave</button>
+
+    <nav aria-label="Page navigation example" class="mt-4">
+      <ul class="pagination justify-content-center">
+          <li class="page-item {% if not results.has_previous %}disabled{% endif %}">
+              <a class="page-link" href="{% if results.has_previous %}?page={{ results.previous_page_number }}{% endif %}" aria-label="Previous">
+                  <span aria-hidden="true">&laquo;</span>
+              </a>
+          </li>
+          {% for page_num in results.paginator.page_range %}
+              <li class="page-item {% if page_num == results.number %}active{% endif %}">
+                  <a class="page-link page-link-search" href="?page={{ page_num }}">{{ page_num }}</a>
+              </li>
+          {% endfor %}
+          <li class="page-item {% if not results.has_next %}disabled{% endif %}">
+              <a class="page-link" href="{% if results.has_next %}?page={{ results.next_page_number }}{% endif %}" aria-label="Next">
+                  <span aria-hidden="true">&raquo;</span>
+              </a>
+          </li>
+      </ul>
+    </nav>        
+</div>
+<canvas id="pongCanvas" class="pongCanvas"></canvas>
+<div class="toast-container position-fixed bottom-0 end-0 p-6" style="margin-right: 20px; margin-bottom: 20px">
+      <div class="toast text-bg-danger" id="liveToast" role="alert">
+          <div class="toast-body">
+              <div class="d-flex gap-4">
+                  <span class="i-class"><i class="bi bi-image"></i></span>
+                  <div class="d-flex flex-grow-1 align-items-center">
+                      <span class="fw-semibold"></span>
+                      <span class="toast-close" style="margin-left: auto;" data-bs-dismiss="toast"><i class="bi bi-x-circle-fill"></i></span>
+                  </div>
+              </div>
+          </div>
+      </div>
     </div>
-    <div>
-        <button id="restartButton">Restart</button>
-    </div>
-{% comment %}     <button onclick="invite()">Invite</button> {% endcomment %}
-    <div>
-        <input type="text" id="inviteInput" placeholder="Enter username">
-        <button id="inviteButton">Invite Opponent</button>
-    </div>
-    <div id="gameInvitationModal">
-        <div>
-            <button id="acceptButton">Accept</button>
-            <button id="declineButton">Decline</button>
-        </div>
-    </div>
-    <!-- Check Mark Emoji-->
-    <p id="myCheckMark">✅</p>
-    <p id="opCheckMark">✅</p>
-    <div id="startModal">
-        <div>
-            <button id="startButton">Vote</button>
-        </div>
-    </div>
-    <div>
-        <!-- Create username list table and get username from connected user and add to table -->
-        <table id="OnlineUsers">
-        </table>
-    </div>
-{% comment %}     <button onclick="move()">Move</button>
-    <button onclick="endGame()">End Game</button>
-    <button onclick="join()">Join Tournament</button>
-    <button onclick="cancel()">Cancel Tournament</button>
-    <button onclick="leave()">Leave Tournament</button>
-    <button onclick="start()">Start Tournament</button>
-    <button onclick="finish()">Finish Match</button>
-    <button onclick="next()">Next Game</button>
- {% endcomment %}
-    <canvas id="pongCanvas" width="800" height="600"></canvas>
-    <script src="{% static "js/game/sockpong.js" %}"></script>
-</body>
-</html>
+<script>
+  
+function showToast(content, status, iconClass) {
+    const liveToast = document.getElementById('liveToast');
+    var toastContent = document.querySelector('#liveToast .fw-semibold');
+    var toastIcon = document.querySelector('.toast-body .i-class i');
+
+    toastIcon.className = iconClass;
+    liveToast.classList.remove('text-bg-danger'); 
+    liveToast.className = 'toast'; 
+    liveToast.classList.add(status);
+
+    toastContent.textContent = content;
+    const toast = new bootstrap.Toast(liveToast);
+    toast.show();
+    setTimeout(function() {
+        toast.hide();
+    }, 8000);
+}
+
+//showToast('Welcome to IndianPong!', 'text-bg-danger', 'bi bi-check-circle-fill')
+</script>
+<script src="{% static "js/game/newsockpong.js" %}"></script>
+
+{% endblock %}

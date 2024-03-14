@@ -4,6 +4,19 @@ setTimeout(() => {
     document.body.classList.remove("preload");
 }, 200);
 
+const translationswin = {
+    'hi': 'आप जीत गए',
+    'pt': 'você ganhou',
+    'tr': 'kazandınız',
+    'en': 'you win' // Varsayılan İngilizce metin
+};
+
+const translationslose = {
+    'hi': 'आप हार गए',
+    'pt': 'você perdeu',
+    'tr': 'kaybettiniz',
+    'en': 'you lose' // Varsayılan İngilizce metin
+};
 
 const CHOICES = [
     {
@@ -55,7 +68,7 @@ let nowChoice = "";
 
 let aicheater = "inactive";
 
-const MAX_SCORE_RPS = 10;
+const MAX_SCORE_RPS = 3;
 let score = 0;
 
 const ICON_PATH = document.querySelector('.container-top').dataset.iconpath;
@@ -164,17 +177,21 @@ function displayWinner(results) {
         const winner = isWinner(results);
         let tempmusicname = "";
         if (winner == "user") {
-            resultText.innerText = "you win";
+            resultText.innerText = selectedLanguage ? translationswin[selectedLanguage] : translationswin['en'] ;
             resultDivs[0].classList.toggle("winner");
             keepScore(1, results[0].name);
             tempmusicname = "winonce";
         } else if (winner == "ai") {
-            resultText.innerText = "you lose";
+            resultText.innerText = selectedLanguage ? translationslose[selectedLanguage] : translationslose['en'] ;
             resultDivs[1].classList.toggle("winner");
             keepScore(-1, results[1].name);
             tempmusicname = "loseonce";
         } else {
-            resultText.innerText = "draw";
+            resultText.innerText = selectedLanguage === "hi" ? "खींचना" :
+                selectedLanguage === "pt" ? "empate" :
+                selectedLanguage === "tr" ? "berabere":
+                "draw";
+
             tempmusicname = "drawonce";
         }
 
@@ -192,7 +209,7 @@ function displayWinner(results) {
 
 function showGameOverScreenRPS() {
     resultsDiv.classList.toggle("show-winner");
-    var winnerText = (scoreNumber1.innerText == MAX_SCORE_RPS) ? "YOU WIN!" : "YOU LOSE!";
+    var winnerText = (selectedLanguage && selectedLanguage in translationswin) ? translationswin[selectedLanguage] : translationslose[selectedLanguage] || translationslose['en'];
     document.getElementById('winnerText').innerText = winnerText;
     const isWin = (scoreNumber1.innerText == MAX_SCORE_RPS) ? true : false;
     const Result = (scoreNumber1.innerText == MAX_SCORE_RPS) ? "win" : "defeat";

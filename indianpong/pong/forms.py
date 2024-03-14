@@ -266,7 +266,7 @@ class SocialForm(forms.ModelForm):
 
 class DeleteAccountForm(forms.Form):
     #password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control'}), help_text="Enter your password to confirm account deletion.")
-    email = forms.EmailField(label='Email', widget=forms.EmailInput(attrs={'class': 'form-control'}), help_text="Enter your email to confirm account deletion.")
+    email = forms.EmailField(label='Email', widget=forms.EmailInput(attrs={'class': 'form-control'}))
 
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user')

@@ -7,6 +7,20 @@ canvas.width = 800;
 canvas.height = 600;
 
 
+const translationswin = {
+    'hi': ' आप जीत गए',
+    'pt': ' você ganhou',
+    'tr': ' kazandınız',
+    'en': ' you win' // Varsayılan İngilizce metin
+};
+
+const translationslose = {
+    'hi': ' आप हार गए',
+    'pt': ' você perdeu',
+    'tr': ' kaybettiniz',
+    'en': ' you lose' // Varsayılan İngilizce metin
+};
+
 const canvasContainer = document.querySelector('.ai-game');
 var player1Name = "Player 1"
 var player2Name = "Player 2"
@@ -370,7 +384,7 @@ function resetGame() {
 // Oyun bitiş ekranını gösteren fonksiyon
 function showGameOverScreen() {
     isPaused = true;
-    var winnerText = (score1 == MAX_SCORE) ? player1Name + " wins!" : player2Name + " wins!";
+    var winnerText = (score1 == MAX_SCORE) ? player1Name + (selectedLanguage && translationswin[selectedLanguage] ? translationswin[selectedLanguage] : translationswin['en']) : player2Name + (selectedLanguage && translationswin[selectedLanguage] ? translationswin[selectedLanguage] : translationswin['en']);
     document.getElementById('winnerText').innerText = winnerText;
     document.getElementById('gameOverScreen').style.display = 'block';
 }

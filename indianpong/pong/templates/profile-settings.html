@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block title %}{{ username }} Profile Settings{% endblock %}
+{% block title %}{{ username }} {{context.profileSettingsPageTittle}}{% endblock %}
 
 {% block stylesheet %}<link rel="stylesheet" href="{% static "css/profilesettings.css" %}">{% endblock %}
 
@@ -19,26 +19,24 @@
                         <ul class="navbar-nav flex-column">
                             <li class="nav-item">
                                 <a class="nav-link" href="#editProfile"
-                                    onclick="displaySection('editProfile')"><i class="bi bi-pencil-fill"></i> Edit
-                                    Profile</a>
+                                    onclick="displaySection('editProfile')"><i class="bi bi-pencil-fill"></i> {{context.profileSettingsNavbar1}}</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="#changePassword"
-                                    onclick="displaySection('changePassword')"><i class="bi bi-lock-fill"></i> Change
-                                    Password</a>
+                                    onclick="displaySection('changePassword')"><i class="bi bi-lock-fill"></i> {{context.profileSettingsNavbar2}}</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="#addSocial" onclick="displaySection('addSocial')"><i
-                                        class="bi bi-bookmark-fill"></i> Add Socials</a>
+                                        class="bi bi-bookmark-fill"></i> {{context.profileSettingsNavbar3}}</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="#blockedUsers"
-                                    onclick="displaySection('blockedUsers')"><i class="bi bi-ban"></i> Blocked Users</a>
+                                    onclick="displaySection('blockedUsers')"><i class="bi bi-ban"></i> {{context.profileSettingsNavbar4}}</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="#closeAccount"
                                     onclick="displaySection('closeAccount')"><i class="bi bi-door-closed-fill"></i>
-                                    Close Account</a>
+                                    {{context.profileSettingsNavbar5}}</a>
                             </li>
                         </ul>
                     </div>
@@ -58,7 +56,7 @@
                                     class="profile-pic">
                                     <div class="change-image-overlay">
                                         <span class="bi bi-image-fill"></span>
-                                        <span class="change-image-text">Change Image</span>
+                                        <span class="change-image-text">{{context.editProfileChangeImageText}}</span>
                                     </div>
                                 </label>
                                 <input type="file" name="avatar" accept="image/*" id="id_avatar" class="file-input">
@@ -67,28 +65,27 @@
                         <form id="profile_form" name="profile_form">
                             <!-- Username textbox -->
                             <div class="mb-3">
-                                <label class="small mb-1" >Username (how your name will appear to other
-                                    users on the site)</label>
+                                <label class="small mb-1" >{{context.editProfileUsernameText}}</label>
                                 <input class="form-control" id="id_username_profile" name="username" required type="text" value="{{ username }}"
                                     placeholder="{{ username }}">
                             </div>
 
                             <!-- Email textbox -->
                             <div class="mb-3">
-                                <label class="small mb-1" >Email</label> 
+                                <label class="small mb-1" >{{context.editProfileEmailText}}</label> 
                                 <input class="form-control" id="id_email_profile" name="email" maxlength="320" value="{{ profile.email }}" required
                                     placeholder="{{ profile.email }}" type="email" {% if profile.is_42student %} readonly style="background-color:#e9ecef" {% endif %}>
-                                {% if profile.is_42student %} <p style="color:red; font-style: italic;">Since you are logged in with 42, your email setting feature is disabled.</p> {% endif %}
+                                {% if profile.is_42student %} <p style="color:red; font-style: italic;">{{context.editProfile42EmailText}}</p> {% endif %}
                             </div>
                             
                             <!-- Displayname textbox -->
                             <div class="mb-3">                           
-                                    <label class="small mb-1">Displayname</label>
+                                    <label class="small mb-1">{{context.editProfileDisplayNameText}}</label>
                                     <input class="form-control" id="id_displayname_profile" name="displayname" required type="text"
                                         placeholder="{{ profile.displayname }}" value="{{ profile.displayname }}">
                             </div>
                             <!-- Submit button -->
-                            <button type="button" id="profile_submit" class="btn btn-success">Save Changes</button>
+                            <button type="button" id="profile_submit" class="btn btn-success">{{context.editProfileSaveButtonText}}</button>
                         </form>
                 </section>
 
@@ -98,30 +95,29 @@
                     <!-- Your code for changing password goes here -->
                     <form id="password_form" name="password_form">
                         <div class="mb-3 position-relative">
-                            <label class="small mb-1" for="id_old_password">Current Password</label>
+                            <label class="small mb-1" for="id_old_password">{{context.changePasswordCurrentPasswordText}}</label>
                             <div class="input-group">
                                 <input class="form-control" name="old_password" id="id_old_password" type="password" autocomplete="off" required {% if profile.is_42student %} readonly style="background-color: #e9ecef"  {% endif %}>
                             </div>
                         </div>
 
                         <div class="mb-3 position-relative">
-                            <label class="small mb-1" for="id_new_password1">New Password</label>
+                            <label class="small mb-1" for="id_new_password1">{{context.changePasswordNewPasswordText}}</label>
                             <div class="input-group">
                                 <input class="form-control" id="id_new_password1" name="new_password1" type="password" autocomplete="off" required {% if profile.is_42student %} readonly style="background-color: #e9ecef"  {% endif %}>
                             </div>
                         </div>
 
                         <div class="mb-3 position-relative">
-                            <label class="small mb-1" for="id_new_password2">Confirm New Password</label>
+                            <label class="small mb-1" for="id_new_password2">{{context.changePasswordNewConfirmPasswordText}}</label>
                             <div class="input-group">
                                 <input class="form-control" id="id_new_password2" name="new_password2" type="password" autocomplete="off" required {% if profile.is_42student %} readonly style="background-color: #e9ecef"  {% endif %}>
                             </div>
                         </div>
                         {% if profile.is_42student %} <label class="small mb-1" style="color:red; font-style: italic;">                                
-                        Since you are logged in with 42, your password setting feature is disabled.
+                        {{context.changePassword42Text}}
                         </label> <br> {% endif %}
-                        <button type="button" id="password_submit" class="btn btn-outline-success"><i class="bi bi-lock-fill"></i> Change
-                            Password</button>
+                        <button type="button" id="password_submit" class="btn btn-outline-success"><i class="bi bi-lock-fill"></i> {{context.changePasswordSaveButtonText}}</button>
                     </form>
                 </section>
 
@@ -133,7 +129,7 @@
                             </label>
                             <div class="input-group">
                                 <input type="text" name="linkedin" class="form-control" id="id_linkedin" 
-                                    placeholder="Enter your Stackoverflow username" value="{{ profile.social.linkedin }}">
+                                    placeholder="{{context.addSocialsLinkedinInputText}}" value="{{ profile.social.linkedin }}">
                             </div>
                         </div>
 
@@ -143,7 +139,7 @@
                             </label>
                             <div class="input-group">
                                 <input type="text" name="twitter" class="form-control" id="id_twitter" 
-                                    placeholder="Enter your Twitter username" value="{{ profile.social.twitter }}">
+                                    placeholder="{{context.addSocialsTwitterInputText}}" value="{{ profile.social.twitter }}">
                             </div>
                         </div>
 
@@ -153,7 +149,7 @@
                             </label>
                             <div class="input-group">
                                 <input type="text" name="intra42" class="form-control" id="id_intra42"
-                                    placeholder="Enter your Instagram username" value="{{ profile.social.intra42 }}">
+                                    placeholder="{{context.addSocialsIntraInputText}}" value="{{ profile.social.intra42 }}">
                             </div>
                         </div>
 
@@ -163,31 +159,30 @@
                             </label>
                             <div class="input-group">
                                 <input type="text" name="github" class="form-control" id="id_github"
-                                    placeholder="Enter your Github username" value="{{ profile.social.github }}">
+                                    placeholder="{{context.addSocialsGithubInputText}}" value="{{ profile.social.github }}">
                             </div>
                         </div>
 
                         <!-- Diğer sosyal medya platformları için benzer şekilde devam edebilirsiniz -->
 
-                        <button type="button" id="social_submit" class="btn btn-primary"><i class="bi bi-save-fill"></i> Save
-                            Changes</button>
+                        <button type="button" id="social_submit" class="btn btn-primary"><i class="bi bi-save-fill"></i> {{context.addSocialsSaveButtonText}}</button>
                     </form>
                 </section>
 
                 <section id="closeAccount">
                     <form id="delete_account_form" name="delete_account_form">
-                        {{ delete_account_form.as_p }}
-                        <button type="button" id="delete_account_submit" class="btn btn-danger">
-                            <i class="bi bi-trash-fill"></i> Delete Account
+                        <h4>{{context.closeAccountHeaderText}}</h4>
+                        <p>{{context.closeAccountSubHeaderText}}</p>
+                        <input type="email" name="email" class="form-control" placeholder="{{context.closeAccountInputText}}" maxlength="320" required="" id="id_email">                        <button type="button" id="delete_account_submit" class="btn btn-danger">
+                            <i class="bi bi-trash-fill"></i> {{context.closeAccountButton}}
                         </button>
                     </form>
                 </section>
 
                 <section id="blockedUsers">
                     <form id="blockedUsersForm">
-                        <h4>Blocked Accounts</h4>
-                        <p class="blocked-users-info">Someone you block cannot follow or message you and you will not
-                            receive notifications from them.</p>
+                        <h4>{{context.blockedUsersHeaderText}}</h4>
+                        <p class="blocked-users-info">{{context.blockedUsersSubHeaderText}}</p>
                         <div class="accounts-list">
                             {% for blocked in blocked_page_obj %}
                                 <div class="account">
@@ -201,7 +196,7 @@
                                             </a>
                                             <p>{{ blocked.username }}</p>
                                         </div>
-                                        <button type="button" class="btn-block" data-username="{{ blocked.username }}">Blocked</button> <!--kişi blockladığı kişiyi çıkarmak için isim karşılığına button -->
+                                        <button type="button" class="btn-block" data-username="{{ blocked.username }}"> {{context.blockedStatusText}}</button> <!--kişi blockladığı kişiyi çıkarmak için isim karşılığına button -->
                                     </div>
                                 </div>
                             {% endfor %}
