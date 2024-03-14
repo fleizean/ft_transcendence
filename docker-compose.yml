@@ -1,7 +1,6 @@
 version: "3.9"
 
 services:
-
   indianpong:
     image: aktas/indianpong:latest
     build:
@@ -10,3 +9,23 @@ services:
     restart: always
     ports:
       - 8000:8000
+    depends_on:
+      - db
+    env_file:
+      - .env
+    networks:
+       - indianpongnet
+
+  db:
+    container_name: db
+    image: db
+    build:
+      context: ./
+      dockerfile: docker.dockerfile
+    restart: always
+    networks:
+      - indianpongnet
+    
+networks:
+  indianpongnet:
+    driver: bridge

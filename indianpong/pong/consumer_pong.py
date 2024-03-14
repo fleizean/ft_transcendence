@@ -251,7 +251,7 @@ class PongConsumer(AsyncWebsocketConsumer):
         )
         await self.exit_handler(game_id, game)
 
-    async def exit_handler(self, game_id, game):
+    async def exit_handler(self, game_id, game): #TODO When user close tab it should discard inside disconnect too
         # Discard both from the game group
         player1_channel_name = await USER_CHANNEL_NAME.get(game.player1.username)
         player2_channel_name = await USER_CHANNEL_NAME.get(game.player2.username)
@@ -259,6 +259,7 @@ class PongConsumer(AsyncWebsocketConsumer):
         await self.channel_layer.group_discard(game.group_name, player2_channel_name)
         # delete the game from the cache
         await GAMES.delete(game_id)
+        
 
     async def end_handler(self, game_id, game):
         # Get scores
@@ -309,18 +310,22 @@ class PongConsumer(AsyncWebsocketConsumer):
 
     async def game_accept(self, event):
         accepter = event['accepter']
+        accepted = event['accepted']
         game_id = event['game_id']
         await self.send(text_data=json.dumps({
             'type': 'game.accept',
             'accepter': accepter,
+            'accepted': accepted,
             'game_id': game_id,
         }))
 
     async def game_decline(self, event):
         decliner = event['decliner']
+        declined = event['declined']
         await self.send(text_data=json.dumps({
             'type': 'game.decline',
             'decliner': decliner,
+            'declined': declined,
         }))
 
     async def game_start(self, event):
@@ -347,12 +352,21 @@ class PongConsumer(AsyncWebsocketConsumer):
         left_score = event['left_score']
         opponent_score = event['opponent_score']
         winner = event['winner']
+        loser  = event['loser']
         await self.send(text_data=json.dumps({
             'type': 'game.leave',
             'game_id': game_id,
             'left_score': left_score,
             'opponent_score': opponent_score,
             'winner': winner,
+            'loser': loser,
+        }))
+
+    async def game_restart(self, event):
+        inviter = event['inviter']
+        await self.send(text_data=json.dumps({
+            'type': 'game.restart',
+            'inviter': inviter,
         }))
 
     async def game_ball(self, event):

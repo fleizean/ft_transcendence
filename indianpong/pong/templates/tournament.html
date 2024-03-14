@@ -1,24 +1,23 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Tournament Lobby{% endblock title %}
+{% block title %}{{context.tournamentPageTittle}}{% endblock title %}
 {% block stylesheet %}<link rel="stylesheet" href="{% static "css/game-find.css" %}">{% endblock stylesheet %}
 
 {% block app %}
 <div class="container-top">
     <div class="card">
-        <h3 class="pong-game-text">Welcome to Tournament Lobby for Pong</h3>
+        <h3 class="pong-game-text">{{context.tournamentHeaderText}}</h3>
         <div class="custom-text">
-            Here you can join a tournament lobby or create your own tournament lobby.
-            You can invite your friends by sharing the invite code after creating the room.
+            {{context.tournamentSubHeaderText}}
         </div>
 
         <div class="tournament-btn">
             <div class="game-btn-container">
-                <a href="/tournament-room-list" class="game-btn"><div class="ponggamebtn-ai">Join Room <i class="bi bi-arrow-down-right-circle-fill"></i></div></a>
+                <a href="/tournament-room-list" class="game-btn"><div class="ponggamebtn-ai">{{context.tournamentJoinButtonText}} <i class="bi bi-arrow-down-right-circle-fill"></i></div></a>
             </div>
             <div class="game-btn-container">
-                <a href="/tournament-create" class="game-btn"><div class="rpsgamebtn-local">Create Room <i class="bi bi-plus-square-fill"></i></div></a>
+                <a href="/tournament-create" class="game-btn"><div class="rpsgamebtn-local">{{context.tournamentCreateButtonText}} <i class="bi bi-plus-square-fill"></i></div></a>
             </div>
         </div>
     </div>

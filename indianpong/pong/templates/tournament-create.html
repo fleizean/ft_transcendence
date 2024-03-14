@@ -1,30 +1,30 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Tournament Create{% endblock title %}
+{% block title %}{{context.tournamentCreatePageTittle}}{% endblock title %}
 {% block stylesheet %}<link rel="stylesheet" href="{% static "css/tournament-room.css" %}">{% endblock stylesheet %}
 
 {% block app %}
 <div class="container-top">
     <div class="card">
       <div class="card-body-tournament">
-        <h3 class="tournament-create-text">CREATE TOURNAMENT</h3>
+        <h3 class="tournament-create-text">{{context.tournamentCreateHeaderText}}</h3>
         <div class="tournament-custom-text">
-            To create a tournament I need a tournament name, how many max points each game will have.
+            {{context.tournamentCreateSubHeaderText}}
         </div>
         <div class="tournament-create">
           <form method="post" action="">
             {% csrf_token %}
             <div id="tournamentInfos" class="tournamentInfos">
                 <div class="input-box">
-                  <label class="tournamentGame-Text" for="id_name">Tournament Name</label>
+                  <label class="tournamentGame-Text" for="id_name">{{context.tournamentCreateNameText}}</label>
                   <input class="input-style" type="text" name="name" maxlength="100" required id="id_name">
                   <span>
                   {% if form.name.errors %}
                     <div class="error-message" style="color: red; font-size: 14px;">{{ form.name.errors }}</div>
                   {% endif %}
                   </span>
-                <label class="tournamentGame-Text" for="id_max_score">Max Score Games</label>
+                <label class="tournamentGame-Text" for="id_max_score">{{context.tournamentCreateMaxPointsText}}</label>
                 <input class="input-style" type="number" name="max_score" value="10" required id="id_max_score">
                 <span>
                 {% if form.max_score.errors %}
@@ -32,14 +32,14 @@
                 {% endif %}
                 </span>
                 <div class="selectorGame">
-                  <label class="tournamentGame-Text" for="id_game_mode">Game Mode</label>
+                  <label class="tournamentGame-Text" for="id_game_mode">{{context.tournamentCreateGameModeText}}</label>
                   <select class="form-select" name="game_mode" id="id_game_mode">
-                    <option selected value="vanilla">Vanilla</option>
-                    <option value="abilities">Abilities</option>
+                    <option selected value="vanilla">{{context.tournamentCreateChooseModeText1}}</option>
+                    <option value="abilities">{{context.tournamentCreateChooseModeText2}}</option>
                   </select>
                 </div>
               </div>
-              <button class="btn btn-outline-success" id="startButton" type="submit">Create Tournament</button>
+              <button class="btn btn-outline-success" id="startButton" type="submit">{{context.tournamentCreateButtonCreate}}</button>
             </div>
           </form>
         </div>
