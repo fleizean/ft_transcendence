@@ -12,6 +12,10 @@ setTimeout(() => {
     document.body.classList.remove("preload");
 }, 500);
 
+
+var game_id = null;
+var opponentChoice = null;
+
 websocket.onmessage = function (e) {
     var data = JSON.parse(e.data)
     if (data.message) {
@@ -23,9 +27,45 @@ websocket.onmessage = function (e) {
             document.getElementById('container-top').style.visibility = 'visible';
         }
     }
+    if (data.type === 'game_id') {
+        console.log(data.game_id)
+        game_id = data.game_id;
+        document.getElementById('ponggamebtn').style.visibility = 'hidden';
+        document.getElementById('container-top').style.visibility = 'visible';
+    }
     if (data.queue_count) {
         document.getElementById('queueCount').innerText = data.queue_count
     }
+    if (data.action === 'choose_hand') {
+        const dataChoice = data.choice;
+        const choiceName = dataChoice;
+        const choice = CHOICES.find((choice) => choice.name === choiceName);
+        opponentChoice = choice;
+    }
+}
+
+function sendChoice(choice) {
+    websocket.send(
+        JSON.stringify({
+            action: 'choose_hand',
+            choice: choice,
+            scoreNumber1: scoreNumber1,
+            scoreNumber2: scoreNumber2,
+        })
+    )
+}
+
+function endGame() {
+    websocket.send(
+        JSON.stringify({
+            action: 'end_game',
+            winner: scoreNumber1.innerText > scoreNumber2.innerText ? 'player1' : 'player2',
+            loser: scoreNumber1.innerText < scoreNumber2.innerText ? 'player1' : 'player2',
+            scoreNumber1: scoreNumber1.innerText,
+            scoreNumber2: scoreNumber2.innerText,
+            gameId: game_id,
+        })
+    )
 }
 
 function joinQueue() {
@@ -73,6 +113,7 @@ choiceButtons.forEach((button) => {
     button.addEventListener("click", () => {
         const choiceName = button.dataset.choice;
         const choice = CHOICES.find((choice) => choice.name === choiceName);
+        sendChoice(choiceName);
         choose(choice);
 
         // Seçimi WebSocket üzerinden gönder
@@ -82,10 +123,12 @@ choiceButtons.forEach((button) => {
 });
 
 
+
 function choose(choice) {
-    const aichoice = data;
+    const aichoice= opponentChoice;
     displayResults([choice, aichoice]);
     displayWinner([choice, aichoice]);
+
 }
 
 
