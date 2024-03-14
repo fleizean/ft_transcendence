@@ -511,7 +511,6 @@ startButton.addEventListener("click", function() {
 
 startTournament.addEventListener("click", function() {
     document.getElementById('show-bracket').style.display = 'none';
-    document.getElementById('gameInfosMenu').style.display = 'flex';
     showCanvas();
 });
 

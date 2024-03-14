@@ -43,6 +43,7 @@ def get_lang_en():
         "notFoundPageTittle": "404 Not Found",
         "notFoundHeaderText": "404 ERROR",
         "notFoundSubHeaderText": "Probably you lost in our website!",
+        "notFoundButtonText": "GO HOME",
         
         #Signup
         "signupPageTittle": "Sign Up",
@@ -64,6 +65,12 @@ def get_lang_en():
         "forgotPasswordLinkText": "Don't have an account?",
         "forgotPasswordLinkButtonText": "Join Us",
 
+        #Password-Reset-Done
+        "passwordResetDonePageTittle": "Email Send Done",
+        "passwordResetDoneHeaderText": "EMAIL SEND DONE",
+        "passwordResetDoneSubHeaderText": "We have emailed your password reset link. Please check your email.",
+        "passwordResetButtonText": "GO LOGIN",
+
         #ChangePassword
         "changePasswordPageTittle": "Change Password",
         "changePasswordHeaderText": "Change Password",
@@ -82,6 +89,15 @@ def get_lang_en():
         "dashboardAverageGameDuration": "Average Game Duration",
         "dashboardAveragePointsWon": "Average Points Won",
         "dashboardAveragePointsLost": "Average Points Lost",
+
+        #Chat
+        "chatPageTittle": "Chat",
+        "chatHeaderText": "Chats",
+        "chatRecentlyText": "Recently",
+        "chatDMText": "Direct Messages",
+        "chatContainerSelectText": "Select a chat to start messaging",
+        "chatTodayText": "Today",
+        "chatTypeHereText": "Type a message here...",
 
         
         #Pong-Game
@@ -360,6 +376,7 @@ def get_lang_tr():
         "notFoundPageTittle": "Sayfa Bulunamadı",
         "notFoundHeaderText": "404 HATA",
         "notFoundSubHeaderText": "Muhtemelen sitemizde kayboldunuz!",
+        "notFoundButtonText": "ANA SAYFA'YA DÖN",
         
         #Signup
         "signupPageTittle": "Kayıt Ol",
@@ -381,6 +398,12 @@ def get_lang_tr():
         "forgotPasswordLinkText": "Hesabınız yok mu?",
         "forgotPasswordLinkButtonText": "Kayıt Ol",
 
+        #Password-Reset-Done
+        "passwordResetDonePageTittle": "E-Posta Gönderildi",
+        "passwordResetDoneHeaderText": "E-POSTA GÖNDERİLDİ",
+        "passwordResetDoneSubHeaderText": "Şifre sıfırlama bağlantınızı e-posta ile gönderdik. Lütfen e-postanızı kontrol edin.",
+        "passwordResetButtonText": "GİRİŞ'E DÖN",
+
         #ChangePassword
         "changePasswordPageTittle": "Şifre Değiştir",
         "changePasswordHeaderText": "Şifre Değiştir",
@@ -400,6 +423,14 @@ def get_lang_tr():
         "dashboardAveragePointsWon": "Ortalama Kazanılan Puanlar",
         "dashboardAveragePointsLost": "Ortalama Kaybedilen Puanlar",
 
+        #Chat
+        "chatPageTittle": "Sohbet",
+        "chatHeaderText": "Sohbetler",
+        "chatRecentlyText": "Son Zamanlar",
+        "chatDMText": "Direkt Mesajlar",
+        "chatContainerSelectText": "Mesajlaşmaya başlamak için bir sohbet seçin",
+        "chatTodayText": "Bugün",
+        "chatTypeHereText": "Bir mesaj yazın...",
         
         #Pong-Game
         "pongGamePageTittle": "Pong Oyunu",
@@ -415,8 +446,8 @@ def get_lang_tr():
             "aiGamePageTittle": "Pong Yapay Zeka Oyunu",
             "aiGameReactionDelayText": "Tepki Gecikmesi",
             "aiGameGetReadyText": "Hazir Ol",
-            "aiGamePresSpaceText": "'Space' tusuna basarak basla",
-            "aiGameCountdownText": "Basliyor",
+            "aiGamePresSpaceText": "'Space' tuşuna basarak başla",
+            "aiGameCountdownText": "Başlıyor",
 
             "aiGameGameOverText": "Oyun Bitti",
             "aiGameRestartButtonText": "Yeniden",
@@ -443,28 +474,28 @@ def get_lang_tr():
             #Local-Game
             "localGamePageTittle": "Yerel Oyun",
             "localGameHeaderText": "1v1 Yerel Oyun",
-            "localGamePlayer1Text": "1. Oyuncu Adi",
-            "localGamePlayer2Text": "2. Oyuncu Adi",
+            "localGamePlayer1Text": "1. Oyuncu Adı",
+            "localGamePlayer2Text": "2. Oyuncu Adı",
             "localGameMaxScoreText": "Maksimum Skor",
             "localGameGameModeText": "Oyun Modu",
             "localGameChooseModeText1": "Klasik",
             "localGameChooseModeText2": "Yetenekler",
-            "localGameButtonStart": "Basla",
+            "localGameButtonStart": "Başla",
 
             #Local-Tournament
             "localTournamentPageTittle": "Yerel Turnuva",
             "localTournamentGameHeaderText": "Yerel Turnuva",
-            "localTournamentPlayer1Text": "1. Oyuncu Adi",
-            "localTournamentPlayer2Text": "2. Oyuncu Adi",
-            "localTournamentPlayer3Text": "3. Oyuncu Adi",
-            "localTournamentPlayer4Text": "4. Oyuncu Adi",  
+            "localTournamentPlayer1Text": "1. Oyuncu Adı",
+            "localTournamentPlayer2Text": "2. Oyuncu Adı",
+            "localTournamentPlayer3Text": "3. Oyuncu Adı",
+            "localTournamentPlayer4Text": "4. Oyuncu Adı",  
             "localTournamentMaxScoreText": "Maksimum Skor",
             "localTournamentGameModeText": "Oyun Modu",
             "localTournamentChooseModeText1": "Klasik",
             "localTournamentChooseModeText2": "Yetenekler",
-            "localTournamentButtonStart": "Baslat & Eslesme",
-            "localTournamentBracketTitle": "Turnuva Eslesmesi",
-            "localTournamentBracketStartButtonText": "Turnuvayi Baslat",
+            "localTournamentButtonStart": "Başlat & Eşleşme",
+            "localTournamentBracketTitle": "Turnuva Eşleşmesi",
+            "localTournamentBracketStartButtonText": "Turnuvayı Başlat",
             "localTournamentTournamentOverText": "Turnuva Bitti",
             "localTournamentOverButtonText": "Bitti",
 
@@ -610,7 +641,7 @@ def get_lang_tr():
 
             #Edit-Profile
             "editProfileChangeImageText": "Resmi Değiştir",
-            "editProfileUsernameText": "Kullanıcı Adı (sitenin diğer kullanıcıları tarafından nasık görüneceği)",
+            "editProfileUsernameText": "Kullanıcı Adı (sitenin diğer kullanıcıları tarafından nasıl görüneceği)",
             "editProfileEmailText": "E-posta",
             "editProfile42EmailText": "42 ile oturum açtığınız için e-posta ayarlama özelliği devre dışı bırakılmıştır.",
             "editProfileDisplayNameText": "Görünen Ad",
@@ -680,7 +711,8 @@ def get_lang_pt():
         "notFoundPageTittle": "Página não encontrada",
         "notFoundHeaderText": "404 ERRO",
         "notFoundSubHeaderText": "Você provavelmente se perdeu em nosso site!",
-        
+        "notFoundButtonText": "VENHA PARA CASA",
+
         #Signup
         "signupPageTittle": "Inscreva-se",
         "signupHeaderText1": "Bem-vindo,",
@@ -701,6 +733,12 @@ def get_lang_pt():
         "forgotPasswordLinkText": "Não tem uma conta?",
         "forgotPasswordLinkButtonText": "Junte-se a Nós",
 
+        #Password-Reset-Done
+        "passwordResetDonePageTittle": "Email Enviado",
+        "passwordResetDoneHeaderText": "EMAIL ENVIADO",
+        "passwordResetDoneSubHeaderText": "Enviamos o link de redefinição de senha para o seu e-mail. Por favor, verifique seu e-mail.",
+        "passwordResetButtonText": "VOLTAR AO LOGIN",
+
         #ChangePassword
         "changePasswordPageTittle": "Mudar Senha",
         "changePasswordHeaderText": "Mudar Senha",
@@ -720,6 +758,15 @@ def get_lang_pt():
         "dashboardAverageGameDuration": "Duracão Média do Jogo",
         "dashboardAveragePointsWon": "Pontos Médios Ganhos",
         "dashboardAveragePointsLost": "Pontos Médios Perdidos",
+
+        #Chat
+        "chatPageTittle": "Bate-papo",
+        "chatHeaderText": "Bate-papos",
+        "chatRecentlyText": "Recentemente",
+        "chatDMText": "Mensagens Diretas",
+        "chatContainerSelectText": "Selecione um bate-papo para começar a conversar",
+        "chatTodayText": "Hoje",
+        "chatTypeHereText": "Digite uma mensagem...",
 
         
         #Pong-Game
@@ -997,6 +1044,7 @@ def get_lang_hi():
         "notFoundPageTittle": "पृष्ठ नहीं मिला",
         "notFoundHeaderText": "404 त्रुटि",
         "notFoundSubHeaderText": "आप शायद हमारी वेबसाइट में खो गए हैं!",
+        "notFoundButtonText": "घर वापस जाओ",
         
         #Signup
         "signupPageTittle": "साइन अप करें",
@@ -1018,6 +1066,12 @@ def get_lang_hi():
         "forgotPasswordLinkText": "खाता नहीं है?",
         "forgotPasswordLinkButtonText": "हमारे साथ शामिल हों",
 
+        #Password-Reset-Done
+        "passwordResetDonePageTittle": "ईमेल भेजा गया",
+        "passwordResetDoneHeaderText": "ईमेल भेजा गया",
+        "passwordResetDoneSubHeaderText": "हमने आपके ईमेल पर पासवर्ड रीसेट लिंक भेज दिया है। कृपया अपने ईमेल की जाँच करें।",
+        "passwordResetButtonText": "ईमेल भेजा गया",
+
         #ChangePassword
         "changePasswordPageTittle": "पासवर्ड बदलें",
         "changePasswordHeaderText": "पासवर्ड बदलें",
@@ -1037,6 +1091,15 @@ def get_lang_hi():
         "dashboardAverageGameDuration": "औसत खेल की अवधि",
         "dashboardAveragePointsWon": "औसत अंक जीते",
         "dashboardAveragePointsLost": "औसत अंक हारे",
+
+        #Chat
+        "chatPageTittle": "चैट",
+        "chatHeaderText": "चैट",
+        "chatRecentlyText": "हाल ही में",
+        "chatDMText": "डायरेक्ट मैसेज",
+        "chatContainerSelectText": "चैट शुरू करने के लिए एक चैट चुनें",
+        "chatTodayText": "आज",
+        "chatTypeHereText": "एक संदेश लिखें...",
 
         
         #Pong-Game

@@ -100,7 +100,7 @@
 }
 
 .countdown p {
-    font-family: 'Pixeboy-z8XGD', sans-serif;
+    font-family: "VT323", monospace;
     font-size: 20px;
     font-weight: bold;
     margin-top: -20px;
@@ -117,7 +117,7 @@
 .countdown h2 {
     font-size: 24px;
     color: #ffffff;
-    font-family: 'Pixeboy-z8XGD', sans-serif;
+    font-family: "VT323", monospace;
     margin-bottom: 20px;
 }
 

@@ -19,6 +19,13 @@
   margin: 0 0 20px;
 }
 
+
+.game-info-menu-local {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
 .tournamentLocalGamePlayerText {
   color: greenyellow;
   font-size: 16px;

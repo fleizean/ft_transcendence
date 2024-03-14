@@ -456,6 +456,8 @@ def password_change(request):
 
 @never_cache
 def password_reset(request):
+    lang = request.COOKIES.get('selectedLanguage', 'en')
+    context = langs.get_langs(lang)
     if request.method == "POST":
         form = PasswordResetUserForm(request.POST or None)
         if form.is_valid():
@@ -467,12 +469,14 @@ def password_reset(request):
             # return redirect('set_password', uidb64=uid, token=token)
     else:
         form = PasswordResetUserForm()
-    return render(request, "password_reset.html", {"form": form})
+    return render(request, "password_reset.html", {"form": form, "context": context})
 
 
 @never_cache
 def password_reset_done(request):
-    return render(request, "password_reset_done.html")
+    lang = request.COOKIES.get('selectedLanguage', 'en')
+    context = langs.get_langs(lang)
+    return render(request, "password_reset_done.html", {"context": context})
 
 
 @never_cache
@@ -839,8 +843,10 @@ def remote_game(request, game_type, game_id):
 @never_cache
 @login_required()
 def chat(request):
-    users = UserProfile.objects.all().exclude(username=request.user)
-    return render(request, "chat.html", {"users": users})
+    users = UserProfile.objects.all().exclude(username=request.user).exclude(username="IndianAI")
+    lang = request.COOKIES.get('selectedLanguage', 'en')
+    context = langs.get_langs(lang)
+    return render(request, "chat.html", {"users": users, "context": context})
 
 
 @login_required()
@@ -851,8 +857,10 @@ def aboutus(request):
 ### New Chat ###
 @login_required()
 def room(request, room_name):
-    users = UserProfile.objects.all().exclude(username=request.user)
+    users = UserProfile.objects.all().exclude(username=request.user).exclude(username="IndianAI")
     room = Room.objects.get(id=room_name)
+    lang = request.COOKIES.get('selectedLanguage', 'en')
+    context = langs.get_langs(lang)
     messages = Message.objects.filter(room=room)
     return render(
         request,
@@ -862,6 +870,7 @@ def room(request, room_name):
             "room": room,
             "users": users,
             "messages": messages,
+            "context": context,
         },
     )
 
