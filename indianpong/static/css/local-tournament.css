@@ -19,6 +19,9 @@
   margin: 0 0 20px;
 }
 
+.game-info-menu-tournament {
+  display: none;
+}
 
 .game-info-menu-local {
   position: absolute;

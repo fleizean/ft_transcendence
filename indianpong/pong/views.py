@@ -256,7 +256,6 @@ def login_view(request):
     if request.method == "POST":
         form = AuthenticationUserForm(request, request.POST)
         if form.is_valid():
-
             user = form.get_user()
             """  if not user.is_verified: #TODO confirm_login_allowed make this unnecessary?
                 messages.error(request, "Account not verified")
@@ -348,9 +347,6 @@ def pong_game_find(request):
     context = langs.get_langs(lang)
     return render(request, "pong-game-find.html", {"context": context})
 
-
-
-
 ### Profile Settings ###
 @login_required()
 def profile_settings(request, username):
@@ -384,8 +380,7 @@ def profile_settings(request, username):
             else:
                 return JsonResponse({"error": profile_form.errors}, status=400)
         elif "password_form" in data:
-            
-            password_form = PasswordChangeUserForm(request.user, data)
+            password_form = PasswordChangeUserForm(request.user, data, lang = request.COOKIES.get('selectedLanguage', 'en'))
             if password_form.is_valid():
                 profile = request.user
                 profile.set_password(password_form.cleaned_data["new_password1"])
@@ -393,9 +388,9 @@ def profile_settings(request, username):
                 update_session_auth_hash(request, profile)  # Important!
                 return JsonResponse({"message": "Your password was successfully updated!"})
             else:
-                return JsonResponse({"error": "Please check your passwords"}, status=400)
+                return JsonResponse({"error": password_form.errors}, status=400)
         elif "social_form" in data:
-            social_form = SocialForm(request.POST, instance=request.user.social)
+            social_form = SocialForm(request.POST, instance=request.user.social, lang = request.COOKIES.get('selectedLanguage', 'en'))
             if social_form.is_valid():
                 social = social_form.save()
                 profile = request.user
@@ -405,7 +400,7 @@ def profile_settings(request, username):
             else:
                 return JsonResponse({"error": social_form.errors}, status=400)
         elif "delete_account_form" in data:
-            delete_account_form = DeleteAccountForm(data, user=request.user)
+            delete_account_form = DeleteAccountForm(data, user=request.user, lang = request.COOKIES.get('selectedLanguage', 'en'))
             if delete_account_form.is_valid():
                 profile = request.user
                 if profile.avatar:

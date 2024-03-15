@@ -232,7 +232,7 @@
                   <span class="i-class"><i class="bi bi-image"></i></span>
                   <div class="d-flex flex-grow-1 align-items-center">
                       <span class="fw-semibold"></span>
-                      <span class="toast-close" data-bs-dismiss="toast"><i class="bi bi-x-circle-fill"></i></span>
+                      <span class="toast-close" data-bs-dismiss="toast" style="margin-left: auto;"><i class="bi bi-x-circle-fill"></i></span>
                   </div>
               </div>
           </div>
@@ -336,10 +336,24 @@ document.getElementById('password_submit').addEventListener('click', function() 
     })
     .then(response => response.json())
     .then(data => {
-        if (data.message)
-            showToast(data.message, 'text-bg-success', 'bi bi-check-circle-fill');
-        else
-            showToast(data.error, 'text-bg-danger', 'bi bi-x-circle-fill');
+        if (data.message) {
+                showToast(data.message, 'text-bg-success', 'bi bi-check-circle-fill');
+            } else if (data.error) {
+                // Hata mesajlarını göster
+                for (let platform in data.error) {
+                    showToast(data.error[platform][0], 'text-bg-danger', 'bi bi-x-circle-fill');
+                }
+            } else {
+                if (selectedLanguage === 'tr') {
+                    showToast('Bir hata oluştu.', 'text-bg-danger', 'bi bi-x-circle-fill');
+                } else if (selectedLanguage === 'hi') {
+                    showToast('कोई त्रुटि हुई।', 'text-bg-danger', 'bi bi-x-circle-fill');
+                } else if (selectedLanguage === 'pt')
+                    showToast('Ocorreu um erro.', 'text-bg-danger', 'bi bi-x-circle-fill');
+                else {
+                    showToast('An error occurred.', 'text-bg-danger', 'bi bi-x-circle-fill');
+                }
+            }
     })
     .catch(error => {
         console.error('Error:', error);
@@ -365,10 +379,16 @@ document.getElementById('social_submit').addEventListener('click', function() {
     .then(data => {
         if (data.message) {
             showToast(data.message, 'text-bg-success', 'bi bi-check-circle-fill');
+        } else if (data.error) {
+            // Hata mesajlarını göster
+            for (let platform in data.error) {
+                showToast(data.error[platform][0], 'text-bg-danger', 'bi bi-x-circle-fill');
+            }
         } else {
-            showToast(data.error, 'text-bg-danger', 'bi bi-x-circle-fill');
+            showToast('An error occurred.', 'text-bg-danger', 'bi bi-x-circle-fill');
         }
-    })
+}   )
+
     .catch(error => {
         console.error('Error:', error);
     });
@@ -391,8 +411,21 @@ document.getElementById('delete_account_submit').addEventListener('click', funct
     .then(data => {
         if (data.message) {
             showToast(data.message, 'text-bg-success', 'bi bi-check-circle-fill');
+        } else if (data.error) {
+            // Hata mesajlarını göster
+            for (let platform in data.error) {
+                showToast(data.error[platform][0], 'text-bg-danger', 'bi bi-x-circle-fill');
+            }
         } else {
-            showToast(data.error, 'text-bg-danger', 'bi bi-x-circle-fill');
+            if (selectedLanguage === 'tr') {
+                showToast('Bir hata oluştu.', 'text-bg-danger', 'bi bi-x-circle-fill');
+            } else if (selectedLanguage === 'hi') {
+                showToast('कोई त्रुटि हुई।', 'text-bg-danger', 'bi bi-x-circle-fill');
+            } else if (selectedLanguage === 'pt')
+                showToast('Ocorreu um erro.', 'text-bg-danger', 'bi bi-x-circle-fill');
+            else {
+                showToast('An error occurred.', 'text-bg-danger', 'bi bi-x-circle-fill');
+            }
         }
     })
     .catch(error => {
@@ -432,10 +465,24 @@ fileInput.addEventListener('change', function(event) {
         })
         .then(response => response.json())
         .then(data => {
-            if (data.message)
+            if (data.message) {
                 showToast(data.message, 'text-bg-success', 'bi bi-check-circle-fill');
-            else
-                showToast(data.error, 'text-bg-danger', 'bi bi-x-circle-fill');
+            } else if (data.error) {
+                // Hata mesajlarını göster
+                for (let platform in data.error) {
+                    showToast(data.error[platform][0], 'text-bg-danger', 'bi bi-x-circle-fill');
+                }
+            } else {
+                if (selectedLanguage === 'tr') {
+                    showToast('Bir hata oluştu.', 'text-bg-danger', 'bi bi-x-circle-fill');
+                } else if (selectedLanguage === 'hi') {
+                    showToast('कोई त्रुटि हुई।', 'text-bg-danger', 'bi bi-x-circle-fill');
+                } else if (selectedLanguage === 'pt')
+                    showToast('Ocorreu um erro.', 'text-bg-danger', 'bi bi-x-circle-fill');
+                else {
+                    showToast('An error occurred.', 'text-bg-danger', 'bi bi-x-circle-fill');
+                }
+            }
         })
         .catch(error => {
             console.error('Error:', error);

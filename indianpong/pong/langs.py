@@ -669,7 +669,7 @@ def get_lang_tr():
             #Close-Account
             "closeAccountHeaderText": "Hesabı Kapat",
             "closeAccountInputText": "E-posta",
-            "closeAccountSubHeaderText": "Burada hesabınızı silebilirsiniz. Bu işlem geri alinamaz.",
+            "closeAccountSubHeaderText": "Burada hesabınızı silebilirsiniz. Bu işlem geri alınamaz.",
             "closeAccountButton": "Hesabı Kapat",
             
 

@@ -1,6 +1,7 @@
 
 const canvas = document.getElementById('pongCanvas');
 var gameStartInfos = document.getElementById("tournament-start-info");
+var gameInfoTournament = document.getElementById("game-info-tournament");
 var startButton = document.getElementById("startButton");
 var startTournament = document.getElementById("startTournament");
 var ctx = canvas.getContext("2d");
@@ -42,7 +43,7 @@ var paddle1 = {x: 0, y: paddleY, width: paddleWidth, height: abilities_paddleHei
 var paddle2 = {x: canvas.width - paddleWidth, y: paddleY, width: paddleWidth, height: abilities_paddleHeight, dy: paddleSpeed};
 
 // Ball object
-var ball = {x: canvas.width / 2, y: canvas.height / 2, radius: 10, speed: 5, dx: 1, dy: 1};
+var ball = {x: canvas.width / 2, y: canvas.height / 2, radius: 10, speed: 10, dx: 1, dy: 1};
 
 // Scores
 var score1 = 0;
@@ -267,7 +268,7 @@ main();
 function resetBall() {
     isScored = true;
     isPaused = true;
-    ball.speed = 5;
+    ball.speed = 10;
     paddleSpeed = 14;
     ball.dx = -ball.dx;
     ball.dy = -ball.dy;
@@ -370,6 +371,7 @@ document.addEventListener("keyup", function(event) {
 function showCanvas() {
     pongCanvas.style.display = "block";
     gameStartInfos.style.display = "none";
+    gameInfoTournament.style.display = "block";
     isPaused = false;
   }
 
@@ -389,6 +391,7 @@ function resetGame() {
 
 // Oyun bitiş ekranını gösteren fonksiyon
 function showGameOverScreen(player1, player2) {
+    gameInfoTournament.style.display = "none";
     var winnerText = (score1 == MAX_SCORE) ? player1 + " wins!" : player2 + " wins!";
     document.getElementById('winnerText').innerText = winnerText;
     document.getElementById('gameOverScreen').style.display = 'block';
@@ -412,8 +415,18 @@ function showGameOverScreen(player1, player2) {
 }
 
 function showGameOverTournament(winner) {
-    
+    gameInfoTournament.style.display = "none";
     var winnerText = winner + " wins the tournament!";
+    if (selectedLanguage === "tr") {
+        winnerText = winner + " turnuvayI kazandI!";
+    }
+    else if (selectedLanguage === 'hi') {
+        winnerText = winner + " टूर्नामेंट जीतता है!";
+    }
+    else if (selectedLanguage === 'pt') {
+        winnerText = winner + " vence o torneio!";
+    }
+     
     document.getElementById('winnerTextTournament').innerText = winnerText;
     document.getElementById('gameOverScreenTournament').style.display = 'block';
 }
@@ -458,6 +471,7 @@ function showBracket() {
 // Oyunu tekrar başlatan fonksiyon
 function restartGame() {
     document.getElementById('gameOverScreen').style.display = 'none';
+    gameInfoTournament.style.display = "block";
     resetGame();
 }
 
