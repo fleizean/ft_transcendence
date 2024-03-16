@@ -852,7 +852,6 @@ body {
 
 .ai-game canvas {
   display: block;
-  margin: 20px auto;
   z-index: 50;
   background: 'lightgrey';/* #ff0000; */
   border: 8px solid #FFFFFF;

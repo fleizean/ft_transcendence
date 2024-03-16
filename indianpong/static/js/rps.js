@@ -246,7 +246,6 @@ function exitGame() {
     window.location.href = '/rps-game-find';
 }
 
-
 function isWinner(results) {
     const player1 = results[0].name;
     const player2 = results[1].name;

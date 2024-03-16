@@ -127,6 +127,7 @@ class UserProfileForm(UserCreationForm):
                 raise forms.ValidationError("Nome de usuário e nome de exibicão não podem ser iguais.")
             else:
                 raise forms.ValidationError("Username and displayname cannot be the same.")
+        return displayname
 
     def clean_email(self):
         email = self.cleaned_data.get("email")

@@ -272,7 +272,9 @@ def login_view(request):
 @never_cache
 @login_required()
 def gametest(request):
-    return render(request, "remote-game.html")
+    lang = request.COOKIES.get('selectedLanguage', 'en')
+    context = langs.get_langs(lang)
+    return render(request, "remote-game.html", {"context": context})
 
 @never_cache
 @login_required()
@@ -795,7 +797,6 @@ def follow_unfollow(request, username):
     profile = get_object_or_404(UserProfile, username=username)
     data = json.loads(request.body)
     action = data.get("action", "")
-    print(action)
     if action == "follow":
         request.user.friends.add(profile)
     elif action == "unfollow":
@@ -884,8 +885,14 @@ def local_tournament(request):
 
     return render(request, "local-tournament.html", {"paddlecolor": paddlecolor, "playgroundcolor": playgroundcolor, "context": context})
 
+
+@never_cache
+@login_required()
 def remote_game(request, game_type, game_id):
-    return render(request, "remote-game.html")
+    lang = request.COOKIES.get('selectedLanguage', 'en')
+    context = langs.get_langs(lang)
+
+    return render(request, "remote-game.html", {"context": context})
 
 @never_cache
 @login_required()
@@ -1183,6 +1190,46 @@ def generate_jwt_token(request):
 
 
 # Game logics #
+
+@csrf_exempt
+def get_useritems(request):
+    lang = request.COOKIES.get('selectedLanguage', 'en')
+    context = langs.get_langs(lang)
+    if request.method == "POST":
+        data = json.loads(request.body)
+        username = data.get("username")
+        
+
+        user_profile = get_object_or_404(UserProfile, username=username)
+        user_items = UserItem.objects.filter(user=user_profile)
+
+        paddlecolor = get_equipped_item_value(user_items, "My Beautiful Paddle", "black")
+        playgroundcolor = get_equipped_item_value(user_items, "My Playground", "lightgrey")
+    
+        giantman = get_equipped_item_value(user_items, "Giant-Man", "None")
+        likeacheater = get_equipped_item_value(user_items, "Like a Cheater", "None")
+        fastandfurious = get_equipped_item_value(user_items, "Fast and Furious", "None")
+        rageoffire = get_equipped_item_value(user_items, "Rage of Fire", "None")
+        frozenball = get_equipped_item_value(user_items, "Frozen Ball", "None")
+    
+        response_data = {
+            "paddlecolor": paddlecolor,
+            "playgroundcolor": playgroundcolor,
+            "giantman": giantman,
+            "likeacheater": likeacheater,
+            "fastandfurious": fastandfurious,
+            "rageoffire": rageoffire,
+            "frozenball": frozenball,
+        }
+        return JsonResponse(response_data)
+    message = "Only POST method is allowed."
+    if (lang == 'tr'):
+        message = "Sadece POST istekleri geçerlidir."
+    elif (lang == 'pt'):
+        message = "Somente o método POST é permitido"
+    elif (lang == 'hi'):
+        message = "केवल POST विधि की अनुमति है"
+    return JsonResponse({"error": message}, status=405)
 
 
 @csrf_exempt

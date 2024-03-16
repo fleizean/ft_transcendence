@@ -14,20 +14,21 @@
     <div class="container-top" data-username="{{ username }}" data-ainame="{{ ainametag }}" data-paddlecolor="{{paddlecolor}}" data-playgroundcolor="{{playgroundcolor}}" data-giantman="{{giantman}}" data-likeacheater="{{likeacheater}}" data-fastandfurious="{{fastandfurious}}" data-rageoffire="{{rageoffire}}" data-frozenball="{{frozenball}}" data-givemethemusic={{givemethemusic}} data-musicpath="{% static "music/" %}">
 		<div class="ai-game">
 			<div class="game-info-menu">
-				<div class="info-icon" style="color: tomato; margin-right: 3em; margin-bottom: -1em;">
+				<div>
 					<i class="bi bi-info-circle-fill" data-bs-toggle="modal" data-bs-target="#exampleModalGame"></i>
 					<i id="volumeIcon" class="bi bi-volume-up-fill"></i>
 					<div id="volumeControl" style="display: inline-block">
-						<input type="range" id="volumeSlider" min="0" max="1" step="0.1" value="1">
+							<input type="range" class="slider" id="volumeSlider" min="0" max="1" step="0.1" value="1">
 					</div>
+				</div>
+				<div>
+					<label for="reactionDelay" style="color: white;">{{context.aiGameReactionDelayText}}:</label>
+					<span id="delayValue" style="color: white;">200</span>
+					<input type="range" id="reactionDelay" name="reactionDelay" min="1000" max="10000" value="2000" step="1000">				
 				</div>
 			</div>
 		<div id="countdownContainer">
-			<div class="slider-container">
-				<label for="reactionDelay" style="color: white;">{{context.aiGameReactionDelayText}}:</label>
-				<span id="delayValue" style="color: white;">200</span>
-				<input type="range" id="reactionDelay" name="reactionDelay" min="1000" max="10000" value="2000" step="1000">
-			</div>
+
 			<canvas id="pongCanvas" width="800" height="600"></canvas>
 			<div id="countdown" class="countdown">
 				<h1>{{context.aiGameGetReadyText}}!</h1>

@@ -25,15 +25,12 @@
           
       </tbody>
     </table>
-    <div class="matchmaking-button" >
-      <button type="button" onclick="setCanvasSize()" class="btn btn-outline-primary"><i class="bi bi-patch-check-fill"></i> MATCHMAKING</button>
-      <button type="button" id="leaveButton" class="btn btn-outline-danger" style="margin-left: 5px;"><i class="bi bi-x-circle-fill"></i> LEAVE</button>
+    <div class="matchmaking-button">
+      <button type="button" id="matchmakingButton" class="btn btn-outline-primary" style="font-size: 12px !important;"><i class="bi bi-patch-check-fill"></i> MATCHMAKING</button>
+      <button type="button" id="leaveButton" class="btn btn-outline-danger" style="margin-left:5px; font-size: 12px !important;"><i class="bi bi-x-circle-fill"></i> LEAVE</button>
       {% comment %}      <button type="button" id="restartButton" class="btn btn-outline-primary"><i class="bi bi-arrow-repeat"></i> RESTART</button>
       <button type="button" id="pauseButton" class="btn btn-outline-primary"><i class="bi bi-pause-fill"></i> PAUSE</button>
       <button type="button" id="resumeButton" class="btn btn-outline-primary"><i class="bi bi-play-fill"></i> RESUME</button> {% endcomment %}
-    </div>
-    <div class="other-button">
-        <button type="button" id="restartButton" class="btn btn-outline-primary"><i class="bi bi-arrow-repeat"></i> RESTART</button>
     </div>
     <nav aria-label="Page navigation example" class="mt-4">
       <ul class="pagination justify-content-center">
@@ -56,6 +53,12 @@
     </nav>        
 </div>
 <canvas id="pongCanvas" class="pongCanvas"></canvas>
+<div id="gameOverScreen" class="game-over">
+    <h1 id="winnerText" class="winnerName" style="font-size: 24px;"></h1>
+    <h1 id="loserText" class="loserName" style="font-size: 16px;"></h1>
+    <h2>{{context.aiGameGameOverText}}</h2>
+    <button id="exitButton">{{context.aiGameExitButtonText}}</button>
+</div>
 <div class="toast-container position-fixed bottom-0 end-0 p-6" style="margin-right: 20px; margin-bottom: 20px">
       <div class="toast text-bg-danger" id="liveToast" role="alert">
           <div class="toast-body">
@@ -92,5 +95,5 @@ function showToast(content, status, iconClass) {
 //showToast('Welcome to IndianPong!', 'text-bg-danger', 'bi bi-check-circle-fill')
 </script>
 <script src="{% static "js/game/newsockpong.js" %}"></script>
-
+{% csrf_token %}
 {% endblock %}

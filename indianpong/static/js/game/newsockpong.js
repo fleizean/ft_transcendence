@@ -31,20 +31,25 @@ var player1 = {username: '', score: 0};
 var player2 = {username: '', score: 0};
 
 var my = {
-    username: '', opponent_username: '', game_id: '', vote: -1, tournament_id: '', 
+    username: '', opponent_username: '', game_id: '', tournament_id: '', 
 };
+
+let upPressed = false;
+let downPressed = false;
 
 //Button
 //const startButton = document.getElementById('startButton');
 const leaveButton = document.getElementById('leaveButton');
-const restartButton = document.getElementById('restartButton');
-//startButton.style.display = 'none';
 leaveButton.style.display = 'none';
-restartButton.style.display = 'none';
+const gameOverScreen = document.getElementById('gameOverScreen');
+const matchmakingButton = document.getElementById('matchmakingButton');
+//const restartButton = document.getElementById('restartButton');
+//startButton.style.display = 'none';
+//restartButton.style.display = 'none';
 
 // Envai
-var textWidth1 = ctx.measureText(my.username + ": " + player1.score).width;
-var textWidth2 = ctx.measureText(my.opponent_username + ": " + player2.score).width;
+var textWidth1 = ctx.measureText(player1.username + ": " + player1.score).width;
+var textWidth2 = ctx.measureText(player2.username + ": " + player2.score).width;
 
 /// Draw everything
 function render() {
@@ -104,16 +109,18 @@ function render() {
     ctx.shadowOffsetX = 0;
     ctx.shadowOffsetY = 0;
 
-    ctx.font = "16px Roboto";
+    ctx.font = "14px Roboto";
     ctx.fillStyle = 'white';
-    ctx.fillText(my.username + ": " + player1.score, 10, 20);
-    ctx.fillText(my.opponent_username + ": " + player2.score, canvas.width - textWidth2 - 40, 20);
+    ctx.fillText(player1.username + ": " + player1.score, 10, 20);
+    ctx.fillText(player2.username + ": " + player2.score, canvas.width - textWidth2 - 50, 20);
 }
 
 var requestId;
 
 // The main game loop
 var startGame = function () {
+    BallRequest();
+    updatePaddlePosition();
     render();
     // Request to do this again ASAP
     requestId = requestAnimationFrame(startGame);
@@ -158,20 +165,20 @@ matchsocket.onopen = function (e) {
 }
 
 matchsocket.onclose = function (e) {
-    clearInterval(BallRequest);
+    //clearInterval(BallRequest);
     stopGame();
     console.error('WebSocket connection closed');
 }
 
 matchsocket.onerror = function (e) {
     console.error('Error: ' + e.data);
-    clearInterval(BallRequest);
+    //clearInterval(BallRequest);
     stopGame();
 }
 
 matchsocket.onmessage = function (e) {
     const data = JSON.parse(e.data);
-    console.log(data);
+    //console.log(data);
     switch (data.type) {
         case 'inlobby':
             // Self send message
@@ -233,8 +240,7 @@ matchsocket.onmessage = function (e) {
         case 'game.accept':
             player1.username = data.accepted;
             player2.username = data.accepter;
-            if (my.game_id === '')
-                my.game_id = data.game_id;
+            my.game_id = data.game_id;
             if (data.accepter === my.username) {
                 showToast(`You accepted the game invitation from ${data.accepted}`, 'text-bg-success', 'bi bi-check-circle-fill');
                 my.opponent_username = data.accepted; // if gerekir mi?
@@ -243,14 +249,12 @@ matchsocket.onmessage = function (e) {
                 showToast(`Your invitation is accepted by ${data.accepter}`, 'text-bg-success', 'bi bi-check-circle-fill');
                 my.opponent_username = data.accepter; // if gerekir mi?
             }
+            getUserItems(my.username);
             render();
             // Show the game screen and start button
-            //startButton.style.display = 'block';
-            document.addEventListener("keydown", function(event) {
-                if (event.code === "Space") {
-                    startRequest(my.username, my.opponent_username);
-                }
-            });
+            //startButton.style.display = 'block';   
+            document.addEventListener("keydown", SpaceKeyDown);
+
 /*             startButton.onclick = function () {
                 // maybe put timeout here for protection against bashing button
                 console.log('Start button clicked');
@@ -260,10 +264,7 @@ matchsocket.onmessage = function (e) {
             break;
 
         case 'game.decline':
-            if (data.decliner === my.username) {
-                showToast(`You declined the game invitation from ${data.declined}`, 'text-bg-success', 'bi bi-check-circle-fill');
-            }
-            else if (data.declined === my.username) {
+            if (data.declined === my.username) {                
                 showToast(`Your invitation is declined by ${data.decliner}`, 'text-bg-danger', 'bi bi-check-circle-fill');
             }
             console.log(`Declined Game => ${data.declined} vs ${data.decliner}`);
@@ -273,30 +274,37 @@ matchsocket.onmessage = function (e) {
             // if they vote for Start, start the game otherwise update votes
             // Start the game
             if (data.vote == 2) {
-                showToast(`Game starting in 3 sec between ${data.player1} and ${data.player2}`, 'text-bg-success', 'bi bi-check-circle-fill');
-                setTimeout(function () {
-
-                }, 3000);
-
+                showToast(`Game starting in 3 sec between ${player1.username} and ${player2.username}`, 'text-bg-success', 'bi bi-check-circle-fill');
+                
                 leaveButton.style.display = 'block';
                 // make invitationMessage disappear after 3 seconds
-
+                
                 leaveButton.onclick = function () {
                     leaveGame();
                     leaveButton.style.display = 'none';
                 }
-
+                
                 // Control paddle1 with w, s keys
                 document.addEventListener("keydown", function(event) {
-                    if (event.key === "w" || event.key === "ArrowUp") {
-                        PaddleRequest("up");
-                    } else if (event.key === "s" || event.key === "ArrowDown") {
-                        PaddleRequest("down");
+                    if (event.key === "w" || event.key === "W" || event.key === "ArrowUp") {
+                        upPressed = true;
+                    } else if (event.key === "s" || event.key === "S"|| event.key === "ArrowDown") {
+                        downPressed = true;
                     }
                 });
+                
+                document.addEventListener("keyup", function(event) {
+                    if (event.key === "w" || event.key === "W" || event.key === "ArrowUp") {
+                        upPressed = false;
+                    } else if (event.key === "s" || event.key === "S"|| event.key === "ArrowDown") {
+                        downPressed = false;
+                    }
+                });
+                setTimeout(function () {
+                    startGame();
+                }, 3000);
                 // Ask ball coordinates every 16 milliseconds
-                startGame();
-                setInterval(BallRequest, 16);
+                //setInterval(BallRequest, 16);
 
                 console.log(`Started Game Id: ${data.game_id} => ${data.player1} vs ${data.player2}`);
             }
@@ -309,39 +317,36 @@ matchsocket.onmessage = function (e) {
             break;
 
         case 'game.leave':
-            clearInterval(BallRequest);
+            //clearInterval(BallRequest);
             stopGame();
             left_score = data.left_score;
             opponent_score = data.opponent_score;
             winner = data.winner;
             loser = data.loser;
+            document.getElementById('winnerText').innerText = winner;
+            document.getElementById('loserText').innerText = loser;
+            gameOverScreen.style.display = 'block';
             // Show some left game message with scores etc.
-            showToast(`${data.left} left the game. Winner is ${data.winner}`, 'text-bg-success', 'bi bi-check-circle-fill');
+            //showToast(`${data.left} left the game. Winner is ${winner}`, 'text-bg-success', 'bi bi-check-circle-fill');
             // maybe put restart
-            restartButton.style.display = 'block';
-            restartButton.onclick = function () {
-                startRequest(my.username, my.opponent_username);
-            };
-
+            leaveButton.style.display = 'none';
             console.log(`Left Game Id: ${data.game_id}`);
             break;
 
         case 'game.end':
-            clearInterval(BallRequest);
+            //clearInterval(BallRequest);
             stopGame();
             player1_score = data.player1_score;
             player2_score = data.player2_score;
             winner = data.winner;
             loser = data.loser;
+            document.getElementById('winnerText').innerText = winner;
+            document.getElementById('loserText').innerText = loser;
+            gameOverScreen.style.display = 'block';
             // Show some game ended message with scores etc.
-            invitationMessage.textContent = `Game is ended. Winner is ${data.winner}`;
-            invitationMessage.style.display = 'block';
+            showToast(`Game is ended. Winner is ${data.winner}`, 'text-bg-success', 'bi bi-check-circle-fill');
             // maybe put restart
-            restartButton.style.display = 'block';
-            restartButton.onclick = function () {
-                //restartRequest(my.username, my.opponent_username);
-                //startRequest(my.username, my.opponent_username);
-            };
+
             console.log(`Ended Game Id: ${data.game_id} => ${data.winner} won`);
             break;
         //? not sure
@@ -441,7 +446,15 @@ function invite(matchmaking = 'false', username) {
     });
 }
 
+matchmakingButton.onclick = function () {
+    invite('true', '');
+}
+
 //----------------------------------------------
+
+function exitGame() {
+    window.location.href = '/pong-game-find';
+}
 
 function accept(inviter) {
     // Get necessary data and call socket.sendJSON
@@ -461,13 +474,20 @@ function decline(inviter) {
 
 // Vote count ll be 1 at start if 
 function startRequest(player1, player2) {
-    my.vote *= -1
     matchsocket.sendJSON({
         action: 'start.request',
         game_id: my.game_id,
         opponent: my.opponent_username,
-        vote: my.vote,
+        vote: 1,
     });
+}
+
+function SpaceKeyDown(event) {
+    if (event.code === "Space") {
+        startRequest(my.username, my.opponent_username);
+        // Remove the event listener after it has been triggered once
+        document.removeEventListener("keydown", SpaceKeyDown);
+    }
 }
 
 
@@ -490,11 +510,52 @@ function PaddleRequest(direction) {
     });
 }
 
+function updatePaddlePosition() {
+    if (upPressed) {
+        PaddleRequest('up');
+    } else if (downPressed) {
+        PaddleRequest('down');
+    }
+}
+
 // send this in setInterval(update, 16) this ll be game state
 function BallRequest() {
     // Get necessary data and call socket.sendJSON
     matchsocket.sendJSON({
         action: 'ball',
         game_id: my.game_id,
+    });
+}
+
+document.getElementById('exitButton').addEventListener('click', exitGame);
+
+
+
+function getUserItems(username) {
+    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    const data = {
+        username: username,
+    };
+
+    fetch('/get_useritems', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': csrfToken,
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log(data); // Örnek olarak konsola yazdırıyoruz
+        // processUserItems(data);
+    })
+    .catch(error => {
+        console.error('There was a problem updating the winner:', error);
     });
 }
