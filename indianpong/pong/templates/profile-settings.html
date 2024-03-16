@@ -67,7 +67,8 @@
                             <div class="mb-3">
                                 <label class="small mb-1" >{{context.editProfileUsernameText}}</label>
                                 <input class="form-control" id="id_username_profile" name="username" required type="text" value="{{ username }}"
-                                    placeholder="{{ username }}">
+                                    placeholder="{{ username }}" {% if changepassword %} readonly style="background-color: #f2f2f2;" {%endif %}>
+                                    {% if changepassword %} <p style="color:red; font-style: italic;">{{context.editProfileUsernameTimeText}}</p> {% endif %}
                             </div>
 
                             <!-- Email textbox -->

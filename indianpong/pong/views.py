@@ -7,6 +7,7 @@ from django.contrib.auth import login, logout
 from django.contrib import messages
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.http import HttpResponseRedirect
+from django.utils import timezone
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 import ssl  # TODO temporary solution
 
@@ -354,6 +355,19 @@ def profile_settings(request, username):
         return JsonResponse({"error": "Unauthorized"}, status=401)
     lang = request.COOKIES.get('selectedLanguage', 'en')
     context = langs.get_langs(lang)
+
+    changepassword = False
+    now = timezone.now()  # Django'nun timezone modülünden zamanı al
+    
+    if request.user.username_change_date:
+        username_change_date = request.user.username_change_date
+    
+        # Son 7 gün içinde mi kontrol et
+        seven_days_ago = now - timedelta(days=7)
+        if username_change_date >= seven_days_ago:
+            changepassword = True
+    else:
+        changepassword = False
     if request.method == "POST":
         data = request.POST
         if "avatar_form" in data:
@@ -373,8 +387,9 @@ def profile_settings(request, username):
             else:
                 return JsonResponse({"error": "No avatar file provided."}, status=400)
         elif "profile_form" in data:
-            profile_form = UpdateUserProfileForm(data, instance=request.user)
+            profile_form = UpdateUserProfileForm(data, instance=request.user, lang = request.COOKIES.get('selectedLanguage', 'en'))
             if profile_form.is_valid():
+                request.user.username_change_date = datetime.now()
                 profile_form.save()
                 return JsonResponse({"message": "Profile updated successfully."})
             else:
@@ -414,10 +429,10 @@ def profile_settings(request, username):
 
     else:
         avatar_form = ProfileAvatarForm(instance=request.user)
-        profile_form = UpdateUserProfileForm(instance=request.user)
-        password_form = PasswordChangeUserForm(request.user)
-        social_form = SocialForm(instance=request.user.social)
-        delete_account_form = DeleteAccountForm(user=request.user)
+        profile_form = UpdateUserProfileForm(instance=request.user, lang = request.COOKIES.get('selectedLanguage', 'en'))
+        password_form = PasswordChangeUserForm(request.user, lang = request.COOKIES.get('selectedLanguage', 'en'))
+        social_form = SocialForm(instance=request.user.social, lang = request.COOKIES.get('selectedLanguage', 'en'))
+        delete_account_form = DeleteAccountForm(user=request.user, lang = request.COOKIES.get('selectedLanguage', 'en'))
 
         return render(
             request,
@@ -430,6 +445,7 @@ def profile_settings(request, username):
                 "social_form": social_form,
                 "delete_account_form": delete_account_form,
                 "context": context,
+                "changepassword": changepassword,
             },
         )
 

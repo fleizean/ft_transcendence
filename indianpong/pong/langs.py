@@ -308,6 +308,7 @@ def get_lang_en():
             #Edit-Profile
             "editProfileChangeImageText": "Change Image",
             "editProfileUsernameText": "Username (how your name will appear to other users on the site)",
+            "editProfileUsernameTimeText": "You can change your username every 7 days.",
             "editProfileEmailText": "Email",
             "editProfile42EmailText": "Since you are logged in with 42, your email setting feature is disabled.",
             "editProfileDisplayNameText": "Display Name",
@@ -642,6 +643,7 @@ def get_lang_tr():
             #Edit-Profile
             "editProfileChangeImageText": "Resmi Değiştir",
             "editProfileUsernameText": "Kullanıcı Adı (sitenin diğer kullanıcıları tarafından nasıl görüneceği)",
+            "editProfileUsernameTimeText": "Kullanıcı adınızı her 7 günde bir değiştirebilirsiniz.",
             "editProfileEmailText": "E-posta",
             "editProfile42EmailText": "42 ile oturum açtığınız için e-posta ayarlama özelliği devre dışı bırakılmıştır.",
             "editProfileDisplayNameText": "Görünen Ad",
@@ -977,6 +979,7 @@ def get_lang_pt():
             #Edit-Profile
             "editProfileChangeImageText": "Alterar Imagem",
             "editProfileUsernameText": "Nome de usuário (como seu nome aparecerá para outros usuários no site)",
+            "editProfileUsernameTimeText": "Você pode alterar seu nome de usuário a cada 7 dias.",
             "editProfileEmailText": "Email",
             "editProfile42EmailText": "Como você está logado com 42, o recurso de configuração de e-mail está desativado.",
             "editProfileDisplayNameText": "Nome de Exibição",
@@ -1313,6 +1316,7 @@ def get_lang_hi():
         #Edit-Profile
         "editProfileChangeImageText": "छवि बदलें",
         "editProfileUsernameText": "उपयोगकर्ता नाम (आपका नाम साइट पर अन्य उपयोगकर्ताओं के लिए कैसे दिखाई देगा)",
+        "editProfileUsernameTimeText": "आप अपना उपयोगकर्ता नाम एक बार बदल सकते हैं।",
         "editProfileEmailText": "ईमेल",
         "editProfile42EmailText": "चूंकि आप 42 के साथ लॉग इन हैं, आपकी ईमेल सेटिंग सुविधा अक्षम है।",
         "editProfileDisplayNameText": "प्रदर्शन नाम",

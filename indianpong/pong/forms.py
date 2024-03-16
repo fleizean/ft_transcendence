@@ -402,6 +402,70 @@ class UpdateUserProfileForm(UserChangeForm):
         model = UserProfile
         fields = ['username', 'email', 'displayname']
         #exclude = ['password']
+    
+    def __init__(self, *args, **kwargs):
+        self.lang = kwargs.pop('lang', 'en')
+        super().__init__(*args, **kwargs)
+    
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        lang = self.lang
+        if not email:
+            if (lang == 'tr'):
+                raise forms.ValidationError("Email zorunludur.")
+            elif (lang == 'en'):
+                raise forms.ValidationError("Email is required.")
+            elif (lang == 'hi'):
+                raise forms.ValidationError("ईमेल आवश्यक है।")
+            elif (lang == 'pt'):
+                raise forms.ValidationError("Email é obrigatório.")
+            else:
+                raise forms.ValidationError("Email is required.")
+        return email
+    
+    def clean_username(self):
+        username = self.cleaned_data.get('username')
+        lang = self.lang
+        if not username:
+            if (lang == 'tr'):
+                raise forms.ValidationError("Kullanici adi zorunludur.")
+            elif (lang == 'en'):
+                raise forms.ValidationError("Username is required.")
+            elif (lang == 'hi'):
+                raise forms.ValidationError("उपयोगकर्ता नाम आवश्यक है।")
+            elif (lang == 'pt'):
+                raise forms.ValidationError("Nome de usuário é obrigatório.")
+            else:
+                raise forms.ValidationError("Username is required.")
+        if not username.isascii():
+            if (lang == 'tr'):
+                raise forms.ValidationError("Kullanici adi ASCII olmayan karakterler icermemelidir.")
+            elif (lang == 'en'):
+                raise forms.ValidationError("Username cannot contain non-ASCII characters.")
+            elif (lang == 'hi'):
+                raise forms.ValidationError("उपयोगकर्ता नाम में अशी नहीं हो सकते।")
+            elif (lang == 'pt'):
+                raise forms.ValidationError("Nome de usuário não pode conter caracteres não ASCII.")
+            else:
+                raise forms.ValidationError("Username cannot contain non-ASCII characters.")
+        return username
+    
+    def clean_displayname(self):
+        displayname = self.cleaned_data.get('displayname')
+        lang = self.lang
+        if not displayname:
+            if (lang == 'tr'):
+                raise forms.ValidationError("Gorunen ad zorunludur.")
+            elif (lang == 'en'):
+                raise forms.ValidationError("Displayname is required.")
+            elif (lang == 'hi'):
+                raise forms.ValidationError("प्रदर्शन नाम आवश्यक है।")
+            elif (lang == 'pt'):
+                raise forms.ValidationError("Nome de exibicão é obrigatório.")
+            else:
+                raise forms.ValidationError("Displayname is required.")
+        return displayname
+    
 
 class ProfileAvatarForm(forms.ModelForm):
     avatar = forms.ImageField(label='Avatar', widget=forms.FileInput(attrs={'class': 'form-control'}))

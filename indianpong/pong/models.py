@@ -56,6 +56,7 @@ class UserProfile(AbstractUser):
     indian_wallet = models.IntegerField(blank=True, null=True, default=0, validators=[MinValueValidator(0), MaxValueValidator(9999)])
     elo_point = models.IntegerField(blank=True, null=True, default=0, validators=[MinValueValidator(0), MaxValueValidator(99999)])
     reconnect_url = models.URLField(blank=True, null=True)
+    username_change_date = models.DateTimeField(blank=True, null=True)
     #is_online = models.BooleanField(default=False)
     #is_playing = models.BooleanField(default=False)
 
