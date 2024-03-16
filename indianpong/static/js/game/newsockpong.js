@@ -13,6 +13,9 @@ var ctx = canvas.getContext("2d");
 canvas.width = 800;
 canvas.height = 600;
 
+// Custom items
+const paddleColor = document.querySelector('.left-card').dataset.paddlecolor;
+
 // Paddle objects
 var paddleWidth = 10;
 var paddleHeight = 100;
@@ -31,6 +34,17 @@ var my = {
     username: '', opponent_username: '', game_id: '', vote: -1, tournament_id: '', 
 };
 
+//Button
+//const startButton = document.getElementById('startButton');
+const leaveButton = document.getElementById('leaveButton');
+const restartButton = document.getElementById('restartButton');
+//startButton.style.display = 'none';
+leaveButton.style.display = 'none';
+restartButton.style.display = 'none';
+
+// Envai
+var textWidth1 = ctx.measureText(my.username + ": " + player1.score).width;
+var textWidth2 = ctx.measureText(my.opponent_username + ": " + player2.score).width;
 
 /// Draw everything
 function render() {
@@ -92,8 +106,8 @@ function render() {
 
     ctx.font = "16px Roboto";
     ctx.fillStyle = 'white';
-    ctx.fillText(username + ": " + score1, usernameX, usernameY);
-    ctx.fillText(ainame + ": " + score2, ainameX, ainameY);
+    ctx.fillText(my.username + ": " + player1.score, 10, 20);
+    ctx.fillText(my.opponent_username + ": " + player2.score, canvas.width - textWidth2 - 40, 20);
 }
 
 var requestId;
@@ -193,22 +207,24 @@ matchsocket.onmessage = function (e) {
             console.log('Game invite', data.inviter);
             console.log('data: ', data.invitee + " " + my.username)
             // Display the modal for accepting or declining the invitation
+            const acceptButton = document.getElementById(`acceptButton${data.inviter}`);
+            const declineButton = document.getElementById(`declineButton${data.inviter}`);
             if (data.invitee === my.username)  {
                 showToast(`You received a game invitation from ${data.inviter}`, 'text-bg-success', 'bi bi-check-circle-fill')
-                document.getElementById(`acceptButton${data.inviter}`).style.display = 'flex';
-                document.getElementById(`declineButton${data.inviter}`).style.display = 'flex';
+                acceptButton.style.display = 'flex';
+                declineButton.style.display = 'flex';
             }
 
-            document.getElementById(`acceptButton${data.inviter}`).onclick = function () {
+            acceptButton.onclick = function () {
                 accept(data.inviter);
-                document.getElementById(`acceptButton${data.inviter}`).style.display = 'none';
-                document.getElementById(`declineButton${data.inviter}`).style.display = 'none';
+                acceptButton.style.display = 'none';
+                declineButton.style.display = 'none';
             };
 
-            document.getElementById(`declineButton${data.inviter}`).onclick = function () {
+            declineButton.onclick = function () {
                 decline(data.inviter);
-                document.getElementById(`acceptButton${data.inviter}`).style.display = 'none';
-                document.getElementById(`declineButton${data.inviter}`).style.display = 'none';
+                acceptButton.style.display = 'none';
+                declineButton.style.display = 'none';
             };
 
             console.log(`Invited Group: ${data.inviter} vs ${data.invitee}`);
@@ -217,36 +233,38 @@ matchsocket.onmessage = function (e) {
         case 'game.accept':
             player1.username = data.accepted;
             player2.username = data.accepter;
+            if (my.game_id === '')
+                my.game_id = data.game_id;
             if (data.accepter === my.username) {
-                invitationMessage.textContent = `You accepted the game invitation from ${data.accepted}`;
-                invitationMessage.style.display = 'block';
+                showToast(`You accepted the game invitation from ${data.accepted}`, 'text-bg-success', 'bi bi-check-circle-fill');
                 my.opponent_username = data.accepted; // if gerekir mi?
             }
             else if (data.accepted === my.username) {
-                invitationMessage.textContent = `Your invitation is accepted by ${data.accepter}`;
-                invitationMessage.style.display = 'block';
+                showToast(`Your invitation is accepted by ${data.accepter}`, 'text-bg-success', 'bi bi-check-circle-fill');
                 my.opponent_username = data.accepter; // if gerekir mi?
             }
-            if (my.game_id === '')
-                my.game_id = data.game_id;
-            // Show the game start screen and start button
-            startModal.style.display = 'block';
-            startButton.onclick = function () {
-                // maybe put timeout here for protection against bashing button
-                startRequest(my.username, my.opponent_username);
-            };
             render();
+            // Show the game screen and start button
+            //startButton.style.display = 'block';
+            document.addEventListener("keydown", function(event) {
+                if (event.code === "Space") {
+                    startRequest(my.username, my.opponent_username);
+                }
+            });
+/*             startButton.onclick = function () {
+                // maybe put timeout here for protection against bashing button
+                console.log('Start button clicked');
+                startRequest(my.username, my.opponent_username);
+            }; */
             console.log(`Accepted Game Id: ${data.game_id} => ${data.accepted} vs ${data.accepter}`);
             break;
 
         case 'game.decline':
             if (data.decliner === my.username) {
-                invitationMessage.textContent = `You declined the game invitation from ${data.declined}`;
-                invitationMessage.style.display = 'block';
+                showToast(`You declined the game invitation from ${data.declined}`, 'text-bg-success', 'bi bi-check-circle-fill');
             }
             else if (data.declined === my.username) {
-                invitationMessage.textContent = `Your invitation is declined by ${data.decliner}`;
-                invitationMessage.style.display = 'block';
+                showToast(`Your invitation is declined by ${data.decliner}`, 'text-bg-danger', 'bi bi-check-circle-fill');
             }
             console.log(`Declined Game => ${data.declined} vs ${data.decliner}`);
             break;
@@ -255,15 +273,10 @@ matchsocket.onmessage = function (e) {
             // if they vote for Start, start the game otherwise update votes
             // Start the game
             if (data.vote == 2) {
-                myCheckMark.style.display = 'block';
-                opCheckMark.style.display = 'block';
-                invitationMessage.textContent = `Game starting in 3 sec between ${data.player1} and ${data.player2}`;
+                showToast(`Game starting in 3 sec between ${data.player1} and ${data.player2}`, 'text-bg-success', 'bi bi-check-circle-fill');
                 setTimeout(function () {
-                  invitationMessage.style.display = "none";
-                  myCheckMark.style.display = "none";
-                  opCheckMark.style.display = "none";
+
                 }, 3000);
-                startModal.style.display = 'none';
 
                 leaveButton.style.display = 'block';
                 // make invitationMessage disappear after 3 seconds
@@ -288,15 +301,10 @@ matchsocket.onmessage = function (e) {
                 console.log(`Started Game Id: ${data.game_id} => ${data.player1} vs ${data.player2}`);
             }
             else if (data.vote == 1) {
-                if (myCheckMark.style.display == 'none')
-                    opCheckMark.style.display = 'block';
-                else if (opCheckMark.style.display == 'none')
-                    myCheckMark.style.display = 'block';
                 console.log(`Waiting for Game Id: ${data.game_id} => ${data.player1} vs ${data.player2}`);
             }
             else if (data.vote == 0) {
-                opCheckMark.style.display = 'none';
-                myCheckMark.style.display = 'none';
+                console.log(`None of the players hit space Game Id: ${data.game_id} => ${data.player1} vs ${data.player2}`);
             }
             break;
 
@@ -306,9 +314,9 @@ matchsocket.onmessage = function (e) {
             left_score = data.left_score;
             opponent_score = data.opponent_score;
             winner = data.winner;
+            loser = data.loser;
             // Show some left game message with scores etc.
-            invitationMessage.textContent = `${data.left} left the game. Winner is ${data.winner}`;
-            invitationMessage.style.display = 'block';
+            showToast(`${data.left} left the game. Winner is ${data.winner}`, 'text-bg-success', 'bi bi-check-circle-fill');
             // maybe put restart
             restartButton.style.display = 'block';
             restartButton.onclick = function () {
@@ -366,13 +374,13 @@ matchsocket.onmessage = function (e) {
             //get ball position and update it
             ballMove(data.x, data.y)
             scoreUpdate(data.player1_score, data.player2_score)
-            console.log(`Moving Ball Id: ${data.game_id} for ball: ${data.x} ${data.y}`);
+            //console.log(`Moving Ball Id: ${data.game_id} for ball: ${data.x} ${data.y}`);
             break;
 
         case 'game.paddle':
             //get paddle position and update it
             paddleMove(data.player, data.y)
-            console.log(`Moving Paddle Id: ${data.game_id} for ${data.player}: ${data.y}`);
+            //console.log(`Moving Paddle Id: ${data.game_id} for ${data.player}: ${data.y}`);
             break;
 
         
@@ -454,10 +462,6 @@ function decline(inviter) {
 // Vote count ll be 1 at start if 
 function startRequest(player1, player2) {
     my.vote *= -1
-    myCheckMark.style.display = 'block';
-    if (my.vote == -1){
-        myCheckMark.style.display = 'none';
-    }
     matchsocket.sendJSON({
         action: 'start.request',
         game_id: my.game_id,

@@ -158,7 +158,7 @@ def auth_callback(request):
         data = {
             "grant_type": "authorization_code",
             "client_id": "u-s4t2ud-4b7a045a7cc7dd977eeafae807bd4947670f273cb30e1dd674f6bfa490ba6c45",  # environ.get("FT_CLIENT_ID"),
-            "client_secret": "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",  # environ.get("FT_CLIENT_SECRET"),
+            "client_secret": "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",  # environ.get("FT_CLIENT_SECRET"),
             "code": code,
             "redirect_uri": "http://localhost:8000/auth_callback",
         }

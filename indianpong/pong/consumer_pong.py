@@ -101,7 +101,7 @@ class PongConsumer(AsyncWebsocketConsumer):
             opponent_username = data.get('opponent')
             game_id = data.get('game_id')
             vote = data.get('vote')
-            self.start_handler(game_id, opponent_username, vote)
+            await self.start_handler(game_id, opponent_username, vote)
 
         elif action == 'leave.game':
             game_id = data.get('game_id')
@@ -187,7 +187,7 @@ class PongConsumer(AsyncWebsocketConsumer):
             # Create a new game instance and save it to the database
             game = await self.create_game(group_name, inviter_username, self.user.username)
             # Create a new game instance and save it to the cache
-            await GAMES.set(game.id, PongGame(inviter_username, self.user.username, group_name, game.id))
+            await GAMES.set(game.id, PongGame(inviter_username, self.user.username, game.id))
 
             await self.channel_layer.group_send(group_name, {
                 'type': 'game.accept',
@@ -216,8 +216,8 @@ class PongConsumer(AsyncWebsocketConsumer):
         if Status(current) == Status.STARTED: # both players voted to start the game
             await USER_STATUS.set(self.user.username, game_id)
             await USER_STATUS.set(opponent_username, game_id)
-            cache.set(f"playing_{self.user.username}")
-            cache.set(f"playing_{opponent_username}")
+            cache.set(f"playing_{self.user.username}", True)
+            cache.set(f"playing_{opponent_username}", True)
             
             """             # Send message to lobby #? Maybe unnecesary bcs playing_username cache
             await self.channel_layer.group_send('lobby', {
