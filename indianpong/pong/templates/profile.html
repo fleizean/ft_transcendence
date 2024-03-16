@@ -36,10 +36,10 @@
                     <h5 class="my-3" style="margin-bottom: 0 !important;">{{profile.username}}</h5>
                     <h7 class="my-5" style="margin-top: -3em !important; margin-bottom: 10px !important;">{{profile.displayname}}</h7>
                     <!-- Meslek -->
-                    {% if profile.social.github and not profile.is_42student %}
+                    {% if profile.is_42student or profile.social.intra42 %}
+                    <p class="text-muted mb-1" style="color: #00ff1e !important;margin-top: -5px;font-size: 15px; font-weight: 600;">{{context.profileTitleText1}}</p>
+                    {% elif profile.social.github and not profile.is_42student or profile.social.intra42 %}
                         <p class="text-muted mb-1" style="color: orange !important;margin-top: -5px;font-size: 15px; font-weight: 600;">{{context.profileTitleText2}}</p>
-                    {% elif profile.is_42student %}
-                        <p class="text-muted mb-1" style="color: #00ff1e !important;margin-top: -5px;font-size: 15px; font-weight: 600;">{{context.profileTitleText1}}</p>
                     {% endif %}
                     <div class="d-flex justify-content-center mb-2" style="margin-top: 30px;">
                         {% if request.user.username != profile.username %}
@@ -59,11 +59,11 @@
                     <ul class="list-group list-group-flush rounded-3">
                         <!-- Website -->
                         <li class="list-group-item d-flex justify-content-between align-items-center p-3">
-                            <i class="bi bi-stack-overflow" style="color: orange"></i>
-                            {% if profile.social.stackoverflow %}
-                                <a href="https://stackoverflow.com/users/{{profile.social.stackoverflow}}" target="_blank" style="text-decoration: none;"><p class="mb-0">{{profile.social.stackoverflow}} - Stackoverflow</p></a>
+                            <i class="bi bi-linkedin" style="color: orange"></i>
+                            {% if profile.social.linkedin %}
+                                <a href="https://www.linkedin.com/in/{{profile.social.linkedin}}" target="_blank" style="text-decoration: none;"><p class="mb-0">{{profile.social.linkedin}} - LinkedIn</p></a>
                             {% else %}
-                                <p class="mb-0">No Stackoverflow</p>
+                                <p class="mb-0">No LinkedIn</p>
                             {% endif %}
                         </li>
                         <!-- GitHub -->
@@ -86,11 +86,11 @@
                         </li>
                         <!-- Instagram -->
                         <li class="list-group-item d-flex justify-content-between align-items-center p-3">
-                            <i class="bi bi-instagram" style="color: #ac2bac;"></i>
-                            {% if profile.social.instagram %}
-                                <a href="https://www.instagram.com/{{profile.social.instagram}}" target="_blank" style="text-decoration: none;"><p class="mb-0">{{profile.social.instagram}} - Instagram</p></a>
+                            <img src="{% static "assets/intra42-logo.svg" %}" width="20px" height="20px">
+                            {% if profile.social.intra42 %}
+                                <a href="https://profile.intra.42.fr/users/{{profile.social.intra42}}" target="_blank" style="text-decoration: none;"><p class="mb-0">{{profile.social.intra42}} - Intra42</p></a>
                             {% else %}
-                                <p class="mb-0">No Instagram</p>
+                                <p class="mb-0">No Intra42</p>
                             {% endif %}
                         </li>
                     </ul>

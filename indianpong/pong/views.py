@@ -7,6 +7,7 @@ from django.contrib.auth import login, logout
 from django.contrib import messages
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.http import HttpResponseRedirect
+from django.http import Http404
 from django.utils import timezone
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 import ssl  # TODO temporary solution
@@ -352,7 +353,7 @@ def pong_game_find(request):
 @login_required()
 def profile_settings(request, username):
     if request.user.username != username:
-        return JsonResponse({"error": "Unauthorized"}, status=401)
+        raise Http404
     lang = request.COOKIES.get('selectedLanguage', 'en')
     context = langs.get_langs(lang)
 
@@ -381,7 +382,14 @@ def profile_settings(request, username):
                         delete_from_media(profile.avatar.path)
                     profile.avatar = avatar_form.cleaned_data["avatar"]
                     profile.save()
-                    return JsonResponse({"message": "Avatar updated successfully."})
+                    if (lang == 'tr'):
+                        return JsonResponse({"message": "Fotoğrafınız başarıyla güncellendi."})
+                    elif (lang == 'hi'):
+                        return JsonResponse({"message": "अवतार सफलतापूर्वक अपडेट किया गया।"})
+                    elif (lang == 'pt'):
+                        return JsonResponse({"message": "Avatar atualizado com sucesso."})
+                    else:
+                        return JsonResponse({"message": "Avatar updated successfully."})
                 else:
                     return JsonResponse({"error": avatar_form.errors}, status=400)
             else:
@@ -391,7 +399,14 @@ def profile_settings(request, username):
             if profile_form.is_valid():
                 request.user.username_change_date = datetime.now()
                 profile_form.save()
-                return JsonResponse({"message": "Profile updated successfully."})
+                if (lang == 'tr'):
+                    return JsonResponse({"message": "Profiliniz başarıyla güncellendi."})
+                elif (lang == 'hi'):
+                    return JsonResponse({"message": "आपकी प्रोफ़ाइल सफलतापूर्वक अपडेट की गई।"})
+                elif (lang == 'pt'):
+                    return JsonResponse({"message": "Seu perfil foi atualizado com sucesso."})
+                else:
+                    return JsonResponse({"message": "Profile updated successfully."})
             else:
                 return JsonResponse({"error": profile_form.errors}, status=400)
         elif "password_form" in data:
@@ -401,7 +416,14 @@ def profile_settings(request, username):
                 profile.set_password(password_form.cleaned_data["new_password1"])
                 profile.save()
                 update_session_auth_hash(request, profile)  # Important!
-                return JsonResponse({"message": "Your password was successfully updated!"})
+                if (lang == 'tr'):
+                    return JsonResponse({"message": "Şifreniz başarıyla güncellendi!"})
+                elif (lang == 'hi'):
+                    return JsonResponse({"message": "आपका पासवर्ड सफलतापूर्वक अपडेट किया गया!"})
+                elif (lang == 'pt'):
+                    return JsonResponse({"message": "Sua senha foi atualizada com sucesso!"})
+                else:
+                    return JsonResponse({"message": "Your password was successfully updated!"})
             else:
                 return JsonResponse({"error": password_form.errors}, status=400)
         elif "social_form" in data:
@@ -411,7 +433,14 @@ def profile_settings(request, username):
                 profile = request.user
                 profile.social = social
                 profile.save()
-                return JsonResponse({"message": "Socials updated successfully."})
+                if (lang == 'tr'):
+                    return JsonResponse({"message": "Sosyal medya bilgileriniz başarıyla güncellendi."})
+                elif (lang == 'hi'):
+                    return JsonResponse({"message": "आपकी सोशल मीडिया जानकारी सफलतापूर्वक अपडेट की गई।"})
+                elif (lang == 'pt'):
+                    return JsonResponse({"message": "Suas informações de mídia social foram atualizadas com sucesso."})
+                else:
+                    return JsonResponse({"message": "Socials updated successfully."})
             else:
                 return JsonResponse({"error": social_form.errors}, status=400)
         elif "delete_account_form" in data:
@@ -421,7 +450,14 @@ def profile_settings(request, username):
                 if profile.avatar:
                     delete_from_media(profile.avatar.path)
                 profile.delete()
-                return JsonResponse({"message": "Account deleted successfully."})
+                if (lang == 'tr'):
+                    return JsonResponse({"message": "Hesabınız başarıyla silindi."})
+                elif (lang == 'hi'):
+                    return JsonResponse({"message": "आपका खाता सफलतापूर्वक हटा दिया गया।"})
+                elif (lang == 'pt'):
+                    return JsonResponse({"message": "Sua conta foi excluída com sucesso."})
+                else:
+                    return JsonResponse({"message": "Account deleted successfully."})
             else:
                 return JsonResponse({"error": delete_account_form.errors}, status=400)
         else:

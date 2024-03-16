@@ -269,69 +269,7 @@ class SocialForm(forms.ModelForm):
         self.lang = kwargs.pop('lang', 'en')  # Varsayılan dil: İngilizce
         super().__init__(*args, **kwargs)
 
-    def clean_intra42(self):
-        intra42 = self.cleaned_data.get('intra42')
-        lang = self.lang
-        if not intra42:
-            if (lang == 'tr'):
-                raise forms.ValidationError("Intra42 linki zorunludur.")
-            elif (lang == 'en'):
-                raise forms.ValidationError("Intra42 link is required.")
-            elif (lang == 'hi'):
-                raise forms.ValidationError("इंट्रा42 लिंक आवश्यक है।")
-            elif (lang == 'pt'):
-                raise forms.ValidationError("Link Intra42 é obrigatório.")
-            else:
-                raise forms.ValidationError("Intra42 link is required.")
-        return intra42
     
-    def clean_linkedin(self):
-        linkedin = self.cleaned_data.get('linkedin')
-        lang = self.lang
-        if not linkedin:
-            if (lang == 'tr'):
-                raise forms.ValidationError("Linkedin linki zorunludur.")
-            elif (lang == 'en'):
-                raise forms.ValidationError("Linkedin link is required.")
-            elif (lang == 'hi'):
-                raise forms.ValidationError("लिंक्डइन लिंक आवश्यक है।")
-            elif (lang == 'pt'):
-                raise forms.ValidationError("Link Linkedin é obrigatório.")
-            else:
-                raise forms.ValidationError("Linkedin link is required.")
-        return linkedin
-
-    def clean_github(self):
-        github = self.cleaned_data.get('github')
-        lang = self.lang
-        if not github:
-            if (lang == 'tr'):
-                raise forms.ValidationError("Github linki zorunludur.")
-            elif (lang == 'en'):
-                raise forms.ValidationError("Github link is required.")
-            elif (lang == 'hi'):
-                raise forms.ValidationError("गिटहब लिंक आवश्यक है।")
-            elif (lang == 'pt'):
-                raise forms.ValidationError("Link Github é obrigatório.")
-            else:
-                raise forms.ValidationError("Github link is required.")
-        return github
-
-    def clean_twitter(self):
-        twitter = self.cleaned_data.get('twitter')
-        lang = self.lang
-        if not twitter:
-            if (lang == 'tr'):
-                raise forms.ValidationError("Twitter linki zorunludur.")
-            elif (lang == 'en'):
-                raise forms.ValidationError("Twitter link is required.")
-            elif (lang == 'hi'):
-                raise forms.ValidationError("ट्विटर लिंक आवश्यक है।")
-            elif (lang == 'pt'):
-                raise forms.ValidationError("Link Twitter é obrigatório.")
-            else:
-                raise forms.ValidationError("Twitter link is required.")
-        return twitter
 
 class DeleteAccountForm(forms.Form):
     #password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control'}), help_text="Enter your password to confirm account deletion.")
