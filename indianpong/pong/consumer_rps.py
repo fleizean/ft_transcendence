@@ -31,9 +31,10 @@ class RPSConsumer(AsyncWebsocketConsumer):
             await self.join_queue()
         elif action == 'choose_hand':
             choices = text_data_json.get('choices')
-            opponent_channel_name = text_data_json.get('opponent_channel_name')
+            print(choices)
+            opponent_channel_name = self.players_queue[0][0]
             await self.channel_layer.send(opponent_channel_name, {
-                'type': 'opponent.choose_hand',
+                'type': 'choose_hand',
                 'choices': choices
             })
         elif action == 'end_game':
@@ -115,7 +116,6 @@ class RPSConsumer(AsyncWebsocketConsumer):
         for i in range(0, len(self.players_queue), 2):
             player1_channel, player1_elo, player1_username = self.players_queue[i]
             player2_channel, player2_elo, player2_username = self.players_queue[i + 1]
-
             player1M = await UserProfile.objects.aget(username=player1_username)
             player2M = await UserProfile.objects.aget(username=player2_username)
 
@@ -133,6 +133,7 @@ class RPSConsumer(AsyncWebsocketConsumer):
                 'group_name': group_name,
                 'game_id': str(game_id),
             })
+
 
     async def remove_from_queue(self):
         # Kuyruktan ayrılan kullanıcıyı kaldırın
