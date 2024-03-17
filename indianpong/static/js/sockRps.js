@@ -13,6 +13,7 @@ setTimeout(() => {
 }, 500);
 
 
+let canChoose = false;
 var game_id = null;
 var opponentChoice = null;
 
@@ -37,10 +38,12 @@ websocket.onmessage = function (e) {
         document.getElementById('queueCount').innerText = data.queue_count
     }
     if (data.action === 'choose_hand') {
-        const dataChoice = data.choice;
+        canChoose = true;
+        const dataChoice = data.opponent_choices;
         const choiceName = dataChoice;
         const choice = CHOICES.find((choice) => choice.name === choiceName);
         opponentChoice = choice;
+        console.log('opponent choice', choice);
     }
 }
 
@@ -48,7 +51,7 @@ function sendChoice(choice) {
     websocket.send(
         JSON.stringify({
             action: 'choose_hand',
-            choice: choice,
+            choices: choice,
             scoreNumber1: scoreNumber1,
             scoreNumber2: scoreNumber2,
         })
@@ -114,7 +117,10 @@ choiceButtons.forEach((button) => {
         const choiceName = button.dataset.choice;
         const choice = CHOICES.find((choice) => choice.name === choiceName);
         sendChoice(choiceName);
-        choose(choice);
+        setTimeout(() => {
+            choose(choice);
+        }, 5000);
+        canChoose = false;
 
         // Seçimi WebSocket üzerinden gönder
         const dataToSend = { choice: choiceName };
