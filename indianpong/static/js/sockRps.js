@@ -1,6 +1,6 @@
 // rps.js
 
-const wsEndpoint = 'ws://' + window.location.host + '/ws/rps/';
+const wsEndpoint = 'wss://' + window.location.hostname + ':8443/ws/rps/';
 const websocket = new WebSocket(wsEndpoint);
 
 websocket.onopen = () => {
