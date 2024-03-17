@@ -204,6 +204,13 @@ def get_lang_en():
             "tournamentRoomListPageTittle": "Tournament Rooms",
             "tournamentRoomListHeaderText": "Tournament Rooms",
 
+            #Remote Pong Game
+            "remotePongGamePageTittle": "Remote Pong Game",
+            "remotePongGameTableName": "Name",
+            "remotePongGameTableActions": "Actions",
+            "remotePongGameMatchmakingButtonText": "MATCHMAKING",
+            "remotePongGameLeaveButtonText": "LEAVE",
+
         #RPS Game
         "rpsGamePageTittle": "Rock Paper Scissors",
         "rpsGameText1": "Welcome to RPS Lobby",
@@ -535,6 +542,13 @@ def get_lang_tr():
             #Tournament Room List
             "tournamentRoomListPageTittle": "Turnuva Odaları",
             "tournamentRoomListHeaderText": "Turnuva Odaları",
+
+            #Remote Pong Game
+            "remotePongGamePageTittle": "Pong Oyunu",
+            "remotePongGameTableName": "Ad",
+            "remotePongGameTableActions": "Eylemler",
+            "remotePongGameMatchmakingButtonText": "EŞLEŞME",
+            "remotePongGameLeaveButtonText": "AYRIL",
 
 
         #RPS Game
@@ -874,6 +888,13 @@ def get_lang_pt():
             "tournamentRoomListPageTittle": "Salas de Torneio",
             "tournamentRoomListHeaderText": "Salas de Torneio",
 
+            #Remote Pong Game
+            "remotePongGamePageTittle": "Jogo de Pong",
+            "remotePongGameTableName": "Nome",
+            "remotePongGameTableActions": "Ações",
+            "remotePongGameMatchmakingButtonText": "MATCHMAKING",
+            "remotePongGameLeaveButtonText": "SAIR",
+
         #RPS Game
         "rpsGamePageTittle": "Pedra, Papel e Tesoura",
         "rpsGameText1": "Bem-vindo ao Lobby de Pedra, Papel e Tesoura",
@@ -1208,6 +1229,16 @@ def get_lang_hi():
             #Tournament Room List
             "tournamentRoomListPageTittle": "टूर्नामेंट रूम सूची",
             "tournamentRoomListHeaderText": "टूर्नामेंट रूम सूची",
+
+            #Remote Pong Game
+            "remotePongGamePageTittle": "दूरस्थ पॉन्ग खेल",
+            "remotePongGameTableName": "नाम",
+            "remotePongGameTableActions": "कार्रवाई",
+            "remotePongGameMatchmakingButtonText": "मैचमेकिंग",
+            "remotePongGameLeaveButtonText": "छोड़ें",
+
+
+            
 
         #RPS Game
         "rpsGamePageTittle": "रॉक-पेपर-सैंड खेल",

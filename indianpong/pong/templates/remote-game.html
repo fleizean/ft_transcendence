@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block title %}
-  Test
+  {{context.remotePongGamePageTittle}}
 {% endblock %}
 
 {% block stylesheet %}
@@ -16,8 +16,8 @@
     <table class="custom-table">
       <thead>
           <tr>
-              <th>Name</th>
-              <th>Actions</th>
+              <th>{{context.remotePongGameTableName}}</th>
+              <th>{{context.remotePongGameTableActions}}</th>
           </tr>
       </thead>
       <tbody>
@@ -26,8 +26,8 @@
       </tbody>
     </table>
     <div class="matchmaking-button">
-      <button type="button" id="matchmakingButton" class="btn btn-outline-primary" style="font-size: 12px !important;"><i class="bi bi-patch-check-fill"></i> MATCHMAKING</button>
-      <button type="button" id="leaveButton" class="btn btn-outline-danger" style="margin-left:5px; font-size: 12px !important;"><i class="bi bi-x-circle-fill"></i> LEAVE</button>
+      <button type="button" id="matchmakingButton" class="btn btn-outline-primary" style="font-size: 12px !important;"><i class="bi bi-patch-check-fill"></i> {{context.remotePongGameMatchmakingButtonText}}</button>
+      <button type="button" id="leaveButton" class="btn btn-outline-danger" style="margin-left:5px; font-size: 12px !important;"><i class="bi bi-x-circle-fill"></i> {{context.remotePongGameLeaveButtonText}}</button>
       {% comment %}      <button type="button" id="restartButton" class="btn btn-outline-primary"><i class="bi bi-arrow-repeat"></i> RESTART</button>
       <button type="button" id="pauseButton" class="btn btn-outline-primary"><i class="bi bi-pause-fill"></i> PAUSE</button>
       <button type="button" id="resumeButton" class="btn btn-outline-primary"><i class="bi bi-play-fill"></i> RESUME</button> {% endcomment %}
