@@ -1,7 +1,7 @@
 from channels.generic.websocket import AsyncWebsocketConsumer
 from django.core.cache import cache
 from .utils import add_to_cache, remove_from_cache
-from .models import UserProfile
+#from .models import UserProfile
 import json
 
 class OnlineStatusConsumer(AsyncWebsocketConsumer):
