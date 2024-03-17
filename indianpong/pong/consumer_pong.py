@@ -5,7 +5,7 @@ from channels.db import database_sync_to_async
 from pong.utils import AsyncLockedDict
 from django.core.cache import cache
 from .utils import add_to_cache, remove_from_cache
-from .models import Game, Tournament, UserProfile, Room, Message#Match, Score, chat
+#from .models import Game, Tournament, UserProfile
 from pong.game import *
 
 USER_CHANNEL_NAME = AsyncLockedDict() # key: id, value: channel_name
@@ -416,6 +416,7 @@ class PongConsumer(AsyncWebsocketConsumer):
 
     # Helper methods to interact with the database #
     async def create_game(self, group_name, player1, player2):
+        from .models import Game, UserProfile
         # Create a new game instance with the given players and an group_name
         accepted = await UserProfile.objects.aget(username=player1)
         accepter = await UserProfile.objects.aget(username=player2)           
@@ -424,6 +425,7 @@ class PongConsumer(AsyncWebsocketConsumer):
     
 
     async def record_game(self, game_id, player1_score, player2_score, winner, loser):
+        from .models import Game, UserProfile
         game = await Game.objects.aget(id=game_id)
         game.player1_score = player1_score
         game.player2_score = player2_score
@@ -433,7 +435,8 @@ class PongConsumer(AsyncWebsocketConsumer):
         # İf the game is a tournament game
         await self.update_tournament(game)
 
-    async def update_tournament(self, game):    
+    async def update_tournament(self, game):
+        from .models import Tournament
         if game.tournament_id: #? Check
             tournament = await Tournament.objects.aget(id=game.tournament_id)
             tournament.played_games_count += 1

@@ -1,11 +1,7 @@
 import json
 from channels.db import database_sync_to_async
 from channels.generic.websocket import AsyncWebsocketConsumer
-from .models import RPSGame, Game, UserProfile
-import json
-from channels.db import database_sync_to_async
-from channels.generic.websocket import AsyncWebsocketConsumer
-from .models import RPSGame, Game, UserProfile
+
 
 class RPSConsumer(AsyncWebsocketConsumer):
     players_queue = []
@@ -24,6 +20,7 @@ class RPSConsumer(AsyncWebsocketConsumer):
         self.remove_from_queue()
 
     async def receive(self, text_data):
+        from .models import RPSGame, UserProfile
         text_data_json = json.loads(text_data)
         action = text_data_json.get('action')
         
@@ -111,6 +108,7 @@ class RPSConsumer(AsyncWebsocketConsumer):
             await self.create_lobby()
 
     async def create_lobby(self):
+        from .models import RPSGame, UserProfile
         # Her iki oyuncu için yeni bir lobi oluştur
         for i in range(0, len(self.players_queue), 2):
             player1_channel, player1_elo, player1_username = self.players_queue[i]
