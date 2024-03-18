@@ -12,7 +12,7 @@
 
 {% block app %}
 
-  <div class="left-card" data-paddleColor="black">
+  <div class="left-card" data-paddlecolor="{{paddlecolor}}" data-playgroundcolor="{{playgroundcolor}}" data-giantman="{{giantman}}" data-likeacheater="{{likeacheater}}" data-fastandfurious="{{fastandfurious}}" data-rageoffire="{{rageoffire}}" data-frozenball="{{frozenball}}">
     <table class="custom-table">
       <thead>
           <tr>
@@ -25,6 +25,36 @@
           
       </tbody>
     </table>
+    <nav aria-label="Page navigation example" class="mt-4">
+        <ul class="pagination justify-content-center">
+            <li class="page-item {% if not results.has_previous %}disabled{% endif %}">
+                <a class="page-link" href="{% if results.has_previous %}?page={{ results.previous_page_number }}{% endif %}" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            {% for page_num in results.paginator.page_range %}
+                <li class="page-item {% if page_num == results.number %}active{% endif %}">
+                    <a class="page-link page-link-search" href="?page={{ page_num }}">{{ page_num }}</a>
+                </li>
+            {% endfor %}
+            <li class="page-item {% if not results.has_next %}disabled{% endif %}">
+                <a class="page-link" href="{% if results.has_next %}?page={{ results.next_page_number }}{% endif %}" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+      </nav> 
+        
+        <div class="form-check form-switch" style="justify-content: center !important; text-align: center !important; display: flex !important;">
+            <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+        </div>
+        <div class="game-mode-info-select" id="gameModeSelect">
+            <label class="selectedmode" id="selectedGameMode">{{context.remotePongSelectedMode}}</label>
+        </div>
+        <div class="game-mode-info">
+            <label class="form-check-label">{{context.remotePongGameStartText}}</label>
+        </div>
+    
     <div class="matchmaking-button">
       <button type="button" id="matchmakingButton" class="btn btn-outline-primary" style="font-size: 12px !important;"><i class="bi bi-patch-check-fill"></i> {{context.remotePongGameMatchmakingButtonText}}</button>
       <button type="button" id="leaveButton" class="btn btn-outline-danger" style="margin-left:5px; font-size: 12px !important;"><i class="bi bi-x-circle-fill"></i> {{context.remotePongGameLeaveButtonText}}</button>
@@ -32,27 +62,10 @@
       <button type="button" id="pauseButton" class="btn btn-outline-primary"><i class="bi bi-pause-fill"></i> PAUSE</button>
       <button type="button" id="resumeButton" class="btn btn-outline-primary"><i class="bi bi-play-fill"></i> RESUME</button> {% endcomment %}
     </div>
-    <nav aria-label="Page navigation example" class="mt-4">
-      <ul class="pagination justify-content-center">
-          <li class="page-item {% if not results.has_previous %}disabled{% endif %}">
-              <a class="page-link" href="{% if results.has_previous %}?page={{ results.previous_page_number }}{% endif %}" aria-label="Previous">
-                  <span aria-hidden="true">&laquo;</span>
-              </a>
-          </li>
-          {% for page_num in results.paginator.page_range %}
-              <li class="page-item {% if page_num == results.number %}active{% endif %}">
-                  <a class="page-link page-link-search" href="?page={{ page_num }}">{{ page_num }}</a>
-              </li>
-          {% endfor %}
-          <li class="page-item {% if not results.has_next %}disabled{% endif %}">
-              <a class="page-link" href="{% if results.has_next %}?page={{ results.next_page_number }}{% endif %}" aria-label="Next">
-                  <span aria-hidden="true">&raquo;</span>
-              </a>
-          </li>
-      </ul>
-    </nav>        
+           
 </div>
 <canvas id="pongCanvas" class="pongCanvas"></canvas>
+
 <div id="gameOverScreen" class="game-over">
     <h1 id="winnerText" class="winnerName" style="font-size: 24px;"></h1>
     <h1 id="loserText" class="loserName" style="font-size: 16px;"></h1>

@@ -1,7 +1,8 @@
 .pongCanvas {
-    display: block;
-    border: 1px solid white;
-    width: 800px;
+    display: flex;
+    border: 8px solid rgb(178, 178, 178);
+    border-style: ridge;
+    width: 900px;
     height: 600px;
     margin-top: 30px;
     background-color: gray;
@@ -29,6 +30,43 @@
     float: left;
 }
 
+.form-check-input[type="checkbox"] {
+    transform: scale(1.2); /* Büyüklüğü istediğiniz oranda ayarlayabilirsiniz */
+}
+
+.selectedmode {
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+    color:tomato;
+}
+
+.game-mode-info {
+    display: none;
+    font-size: 11px !important; 
+    text-align: center; 
+    color: rgb(0, 136, 255);
+}
+
+.game-mode-info-select {
+    display: block; 
+    text-align: center;
+}
+
+.abilitiesInfo {
+    display: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    padding: 20px;
+    background-color: rgba(1, 2, 1, 0.5);
+    width: 700px;
+    height: 500px;
+    border-radius: 10px;
+}
+
 .invite-button {
     border-color: #26b948;
     color: #28a745;
@@ -43,6 +81,7 @@
     background-color: #28a745;
     color: white;
 }
+
 
 .accept-button {
     display: none;

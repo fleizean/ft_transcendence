@@ -13,8 +13,25 @@ var ctx = canvas.getContext("2d");
 canvas.width = 800;
 canvas.height = 600;
 
+const checkbox = document.getElementById('flexSwitchCheckDefault');
+const selectedGameModeLabel = document.getElementById('selectedGameMode');
+
+let gameMode = "Vanilla";
+
 // Custom items
 const paddleColor = document.querySelector('.left-card').dataset.paddlecolor;
+const playgroundColor = document.querySelector('.left-card').dataset.playgroundcolor;
+canvas.style.borderColor = playgroundColor;
+const giantMan = document.querySelector('.left-card').dataset.giantman;
+const likeaCheater = document.querySelector('.left-card').dataset.likeacheater;
+const fastandFurious = document.querySelector('.left-card').dataset.fastandfurious;
+const rageofFire = document.querySelector('.left-card').dataset.rageoffire;
+const frozenBall = document.querySelector('.left-card').dataset.frozenball;
+
+let likeaCheaterCount = 0;
+let fastandFuriousCount = 0;
+let frozenBallCount = 0;
+
 
 // Paddle objects
 var paddleWidth = 10;
@@ -84,8 +101,7 @@ function render() {
     ctx.shadowOffsetX = 5;
     ctx.shadowOffsetY = 5;
     
-    
-    ctx.fillStyle = paddleColor
+    ctx.fillStyle = paddleColor;
     ctx.fillRect(paddle1.x, paddle1.y, paddle1.width, paddle1.height);
     // If paddle2 is on the right, draw the shadow to the left
     ctx.shadowOffsetX = -5;
@@ -111,14 +127,16 @@ function render() {
 
     ctx.font = "14px Roboto";
     ctx.fillStyle = 'white';
-    ctx.fillText(player1.username + ": " + player1.score, 10, 20);
-    ctx.fillText(player2.username + ": " + player2.score, canvas.width - textWidth2 - 50, 20);
+    ctx.fillText(player1.username + ": " + player1.score, 50, 20);
+    ctx.fillText(player2.username + ": " + player2.score, canvas.width - textWidth2 - 80, 20);
 }
 
 var requestId;
 
 // The main game loop
 var startGame = function () {
+    
+    
     BallRequest();
     updatePaddlePosition();
     render();
@@ -130,6 +148,17 @@ var startGame = function () {
 var stopGame = function() {
     cancelAnimationFrame(requestId);
 };
+
+function gameUtilsReset() {
+    likeaCheaterCount = 0;
+    fastandFuriousCount = 0;
+    frozenBallCount = 0;
+
+    if (giantMan == "true")
+        sendAbility("giantMan");
+    if (rageofFire == "true")
+        sendAbility("rageofFire");
+}
 
 // Cross-browser support for requestAnimationFrame
 var w = window;
@@ -156,8 +185,6 @@ function scoreUpdate(player1_score, player2_score) {
     player1.score = player1_score;
     player2.score = player2_score;
 }
-
-
 
 matchsocket.onopen = function (e) {
     // Show some greeting message
@@ -198,7 +225,14 @@ matchsocket.onmessage = function (e) {
             if (data.user !== my.username) {
                 addUsersToTable([data.user]);
             }
-            showToast(data.user + ' joined!', 'text-bg-success', 'bi bi-check-circle-fill')
+            if (selectedLanguage === 'tr')
+                showToast(data.user + ' katıldı!', 'text-bg-success', 'bi bi-check-circle-fill')
+            else if (selectedLanguage === 'hi')  
+                showToast(data.user + ' शामिल हो गया!', 'text-bg-success', 'bi bi-check-circle-fill')
+            else if (selectedLanguage === 'pt')  
+                showToast(data.user + ' entrou!', 'text-bg-success', 'bi bi-check-circle-fill')
+            else
+                showToast(data.user + ' joined!', 'text-bg-success', 'bi bi-check-circle-fill')
         break;
 
         case 'user.outlobby':
@@ -206,7 +240,14 @@ matchsocket.onmessage = function (e) {
             console.log('User out lobby', data.user);
             // Remove user from online users list
             removeUserFromTable(data.user);
-            showToast(data.user + ' left!', 'text-bg-danger', 'bi bi-check-circle-fill')
+            if (selectedLanguage === 'tr')
+                showToast(data.user + ' ayrıldı!', 'text-bg-danger', 'bi bi-check-circle-fill')
+            else if (selectedLanguage === 'hi')
+                showToast(data.user + ' चला गया!', 'text-bg-danger', 'bi bi-check-circle-fill')
+            else if (selectedLanguage === 'pt')
+                showToast(data.user + ' saiu!', 'text-bg-danger', 'bi bi-check-circle-fill')
+            else
+                showToast(data.user + ' left!', 'text-bg-danger', 'bi bi-check-circle-fill')
             break;
 
         case 'game.invite':
@@ -217,7 +258,14 @@ matchsocket.onmessage = function (e) {
             const acceptButton = document.getElementById(`acceptButton${data.inviter}`);
             const declineButton = document.getElementById(`declineButton${data.inviter}`);
             if (data.invitee === my.username)  {
-                showToast(`You received a game invitation from ${data.inviter}`, 'text-bg-success', 'bi bi-check-circle-fill')
+                if (selectedLanguage === 'tr')
+                    showToast(`${data.inviter} tarafından bir oyun daveti aldınız`, 'text-bg-success', 'bi bi-check-circle-fill');
+                else if (selectedLanguage === 'hi')
+                    showToast(`${data.inviter} द्वारा आपको एक खेल आमंत्रण मिला है`, 'text-bg-success', 'bi bi-check-circle-fill');
+                else if (selectedLanguage === 'pt')
+                    showToast(`Você recebeu um convite de jogo de ${data.inviter}`, 'text-bg-success', 'bi bi-check-circle-fill');
+                else
+                    showToast(`You received a game invitation from ${data.inviter}`, 'text-bg-success', 'bi bi-check-circle-fill')
                 acceptButton.style.display = 'flex';
                 declineButton.style.display = 'flex';
             }
@@ -242,14 +290,27 @@ matchsocket.onmessage = function (e) {
             player2.username = data.accepter;
             my.game_id = data.game_id;
             if (data.accepter === my.username) {
-                showToast(`You accepted the game invitation from ${data.accepted}`, 'text-bg-success', 'bi bi-check-circle-fill');
+                if (selectedLanguage === 'tr')
+                    showToast(`Davetiniz ${data.accepted} tarafından kabul edildi`, 'text-bg-success', 'bi bi-check-circle-fill');
+                else if (selectedLanguage === 'hi')
+                    showToast(`आपका निमंत्रण ${data.accepted} द्वारा स्वीकृत किया गया`, 'text-bg-success', 'bi bi-check-circle-fill');
+                else if (selectedLanguage === 'pt')
+                    showToast(`Seu convite foi aceito por ${data.accepted}`, 'text-bg-success', 'bi bi-check-circle-fill');
+                else
+                    showToast(`You accepted the game invitation from ${data.accepted}`, 'text-bg-success', 'bi bi-check-circle-fill');
                 my.opponent_username = data.accepted; // if gerekir mi?
             }
             else if (data.accepted === my.username) {
-                showToast(`Your invitation is accepted by ${data.accepter}`, 'text-bg-success', 'bi bi-check-circle-fill');
+                if (selectedLanguage === 'tr')
+                    showToast(`Davetiniz ${data.accepter} tarafından kabul edildi`, 'text-bg-success', 'bi bi-check-circle-fill');
+                else if (selectedLanguage === 'hi')
+                    showToast(`आपका निमंत्रण ${data.accepter} द्वारा स्वीकृत किया गया`, 'text-bg-success', 'bi bi-check-circle-fill');
+                else if (selectedLanguage === 'pt')
+                    showToast(`Seu convite foi aceito por ${data.accepter}`, 'text-bg-success', 'bi bi-check-circle-fill');
+                else
+                    showToast(`Your invitation is accepted by ${data.accepter}`, 'text-bg-success', 'bi bi-check-circle-fill');
                 my.opponent_username = data.accepter; // if gerekir mi?
             }
-            getUserItems(my.username);
             render();
             // Show the game screen and start button
             //startButton.style.display = 'block';   
@@ -264,8 +325,15 @@ matchsocket.onmessage = function (e) {
             break;
 
         case 'game.decline':
-            if (data.declined === my.username) {                
-                showToast(`Your invitation is declined by ${data.decliner}`, 'text-bg-danger', 'bi bi-check-circle-fill');
+            if (data.declined === my.username) {    
+                if (selectedLanguage === 'tr')
+                    showToast(`Davetiniz ${data.decliner} tarafından reddedildi`, 'text-bg-danger', 'bi bi-check-circle-fill'); 
+                else if (selectedLanguage === 'hi')
+                    showToast(`आपका निमंत्रण ${data.decliner} द्वारा अस्वीकार किया गया`, 'text-bg-danger', 'bi bi-check-circle-fill');
+                else if (selectedLanguage === 'pt')
+                    showToast(`Seu convite foi recusado por ${data.decliner}`, 'text-bg-danger', 'bi bi-check-circle-fill');
+                else            
+                    showToast(`Your invitation is declined by ${data.decliner}`, 'text-bg-danger', 'bi bi-check-circle-fill');
             }
             console.log(`Declined Game => ${data.declined} vs ${data.decliner}`);
             break;
@@ -273,10 +341,20 @@ matchsocket.onmessage = function (e) {
         case 'game.start':
             // if they vote for Start, start the game otherwise update votes
             // Start the game
+            checkbox.disabled = true;
             if (data.vote == 2) {
-                showToast(`Game starting in 3 sec between ${player1.username} and ${player2.username}`, 'text-bg-success', 'bi bi-check-circle-fill');
+                if (selectedLanguage === 'tr')
+                    showToast(`3 saniye içinde ${player1.username} ve ${player2.username} arasında oyun başlıyor`, 'text-bg-success', 'bi bi-check-circle-fill');
+                else if (selectedLanguage === 'hi')
+                    showToast(`3 सेकंड में ${player1.username} और ${player2.username} के बीच खेल शुरू हो रहा है`, 'text-bg-success', 'bi bi-check-circle-fill');
+                else if (selectedLanguage === 'pt')
+                    showToast(`Jogo começando em 3 segundos entre ${player1.username} e ${player2.username}`, 'text-bg-success', 'bi bi-check-circle-fill');
+                else
+                    showToast(`Game starting in 3 sec between ${player1.username} and ${player2.username}`, 'text-bg-success', 'bi bi-check-circle-fill');
                 
                 leaveButton.style.display = 'block';
+                gameUtilsReset();
+                
                 // make invitationMessage disappear after 3 seconds
                 
                 leaveButton.onclick = function () {
@@ -291,6 +369,20 @@ matchsocket.onmessage = function (e) {
                     } else if (event.key === "s" || event.key === "S"|| event.key === "ArrowDown") {
                         downPressed = true;
                     }
+                    if (event.key === '1' && likeaCheaterCount < 1 && likeaCheater == "true" && gameMode === "Abilities") {
+                        console.log("likeaCheater kullanıldı!");
+                        sendAbility("likeaCheater");
+                        likeaCheaterCount += 1;
+                
+                    }
+                    else if (event.key === '2' && fastandFuriousCount < 1 && fastandFurious == "true" && isFrozenBallActive == false && gameMode === "Abilities") {
+                        sendAbility("fastandFurious");
+                        fastandFuriousCount += 1;
+                    }
+                    else if (event.key === '3' && frozenBallCount < 1 && frozenBall == "true" && gameMode === "Abilities") {
+                        sendAbility("frozenBall");
+                        frozenBallCount += 1;
+                    }
                 });
                 
                 document.addEventListener("keyup", function(event) {
@@ -300,6 +392,7 @@ matchsocket.onmessage = function (e) {
                         downPressed = false;
                     }
                 });
+
                 setTimeout(function () {
                     startGame();
                 }, 3000);
@@ -336,6 +429,7 @@ matchsocket.onmessage = function (e) {
         case 'game.end':
             //clearInterval(BallRequest);
             stopGame();
+            checkbox.disabled = false;
             player1_score = data.player1_score;
             player2_score = data.player2_score;
             winner = data.winner;
@@ -343,8 +437,15 @@ matchsocket.onmessage = function (e) {
             document.getElementById('winnerText').innerText = winner;
             document.getElementById('loserText').innerText = loser;
             gameOverScreen.style.display = 'block';
-            // Show some game ended message with scores etc.
-            showToast(`Game is ended. Winner is ${data.winner}`, 'text-bg-success', 'bi bi-check-circle-fill');
+            // Show some game ended message with scores etc
+            if (selectedLanguage === 'tr')
+                showToast(`Oyun bitti. Kazanan ${data.winner}`, 'text-bg-success', 'bi bi-check-circle-fill');
+            else if (selectedLanguage === 'hi')
+                showToast(`खेल समाप्त हो गया। विजेता ${data.winner}`, 'text-bg-success', 'bi bi-check-circle-fill');
+            else if (selectedLanguage === 'pt')
+                showToast(`O jogo acabou. Vencedor é ${data.winner}`, 'text-bg-success', 'bi bi-check-circle-fill');
+            else
+                showToast(`Game is ended. Winner is ${data.winner}`, 'text-bg-success', 'bi bi-check-circle-fill');
             // maybe put restart
 
             console.log(`Ended Game Id: ${data.game_id} => ${data.winner} won`);
@@ -438,7 +539,14 @@ function removeUserFromTable(username) {
 
 function invite(matchmaking = 'false', username) {
     // Get necessary data and call socket.sendJSON
-    showToast(`You invited ${username} to a game`, 'text-bg-success', 'bi bi-check-circle-fill')
+    if (selectedLanguage === 'tr')
+        showToast(`Oyuna ${username} davet ettiniz`, 'text-bg-success', 'bi bi-check-circle-fill')
+    else if (selectedLanguage === 'hi')
+        showToast(`आपने ${username} को एक खेल के लिए आमंत्रित किया`, 'text-bg-success', 'bi bi-check-circle-fill')
+    else if (selectedLanguage === 'pt')
+        showToast(`Você convidou ${username} para um jogo`, 'text-bg-success', 'bi bi-check-circle-fill')
+    else
+        showToast(`You invited ${username} to a game`, 'text-bg-success', 'bi bi-check-circle-fill')
     matchsocket.sendJSON({
         action: 'invite',
         matchmaking: matchmaking,
@@ -518,6 +626,15 @@ function updatePaddlePosition() {
     }
 }
 
+function sendAbility(ability) {
+    matchsocket.sendJSON({
+        abilities: ability,
+        game_id: my.game_id,
+    });
+}
+
+
+
 // send this in setInterval(update, 16) this ll be game state
 function BallRequest() {
     // Get necessary data and call socket.sendJSON
@@ -530,32 +647,37 @@ function BallRequest() {
 document.getElementById('exitButton').addEventListener('click', exitGame);
 
 
+checkbox.addEventListener('change', function() {
+    // Checkbox'un durumuna göre etiketin innerHTML değerini değiştirme
+    if (checkbox.checked) {
+        gameMode = "Abilities";
+        if (selectedLanguage === 'tr')
+            selectedGameModeLabel.innerHTML = "Yetenekler";
+        else if (selectedLanguage === 'hi')
+            selectedGameModeLabel.innerHTML = "क्षमताएँ";
+        else if (selectedLanguage === 'pt')
+            selectedGameModeLabel.innerHTML = "Habilidades";
+        else
+            selectedGameModeLabel.innerHTML = "Abilities";
+    } else {
+        gameMode = "Vanilla";
+        if (selectedLanguage === 'tr')
+            selectedGameModeLabel.innerHTML = "Vanilya";
+        else if (selectedLanguage === 'hi')
+            selectedGameModeLabel.innerHTML = "वैनिला";
+        else if (selectedLanguage === 'pt')
+            selectedGameModeLabel.innerHTML = "Baunilha";
+        else
+            selectedGameModeLabel.innerHTML = "Vanilla";
+    }
+});
 
-function getUserItems(username) {
-    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-    const data = {
-        username: username,
-    };
+const gameModeSelect = document.getElementById("gameModeSelect");
 
-    fetch('/get_useritems', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRFToken': csrfToken,
-        },
-        body: JSON.stringify(data)
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-        return response.json();
-    })
-    .then(data => {
-        console.log(data); // Örnek olarak konsola yazdırıyoruz
-        // processUserItems(data);
-    })
-    .catch(error => {
-        console.error('There was a problem updating the winner:', error);
-    });
-}
+gameModeSelect.addEventListener("mouseenter", function() {
+    document.querySelector(".game-mode-info").style.display = "block";
+});
+
+gameModeSelect.addEventListener("mouseleave", function() {
+    document.querySelector(".game-mode-info").style.display = "none";
+});

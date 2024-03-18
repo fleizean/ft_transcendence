@@ -107,6 +107,9 @@ class PongGame:
     def pauseGame(self):
         self.status = Status.PAUSED
 
+    def resumeGame(self):
+        self.status = Status.PLAYING
+
     def otherPlayer(self, username):
         if username == self.player1.username:
             return self.player2.username

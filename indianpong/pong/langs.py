@@ -210,6 +210,10 @@ def get_lang_en():
             "remotePongGameTableActions": "Actions",
             "remotePongGameMatchmakingButtonText": "MATCHMAKING",
             "remotePongGameLeaveButtonText": "LEAVE",
+            "remotePongGameStartText": "Before to start, u can choose game mode!",
+            "remotePongGameStartButtonText": "START GAME",
+            "remotePongSelectedMode": "Vanilla",
+
 
         #RPS Game
         "rpsGamePageTittle": "Rock Paper Scissors",
@@ -549,6 +553,10 @@ def get_lang_tr():
             "remotePongGameTableActions": "Eylemler",
             "remotePongGameMatchmakingButtonText": "EŞLEŞME",
             "remotePongGameLeaveButtonText": "AYRIL",
+            "remotePongGameStartText": "Başlamadan önce, oyun modunu seçebilirsin!",
+            "remotePongGameStartButtonText": "OYUNU BAŞLAT",
+            "remotePongSelectedMode": "Vanilya",
+
 
 
         #RPS Game
@@ -894,6 +902,9 @@ def get_lang_pt():
             "remotePongGameTableActions": "Ações",
             "remotePongGameMatchmakingButtonText": "MATCHMAKING",
             "remotePongGameLeaveButtonText": "SAIR",
+            "remotePongGameStartText": "Antes de começar, você pode escolher o modo de jogo!",
+            "remotePongGameStartButtonText": "INICIAR JOGO",
+            "remotePongSelectedMode": "Vanilla",
 
         #RPS Game
         "rpsGamePageTittle": "Pedra, Papel e Tesoura",
@@ -1236,7 +1247,9 @@ def get_lang_hi():
             "remotePongGameTableActions": "कार्रवाई",
             "remotePongGameMatchmakingButtonText": "मैचमेकिंग",
             "remotePongGameLeaveButtonText": "छोड़ें",
-
+            "remotePongGameStartText": "शुरू करें",
+            "remotePongGameStartButtonText": "शुरू करें",
+            "remotePongSelectedMode": "चयनित मोड",
 
             
 

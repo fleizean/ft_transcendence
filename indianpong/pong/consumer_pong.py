@@ -74,13 +74,10 @@ class PongConsumer(AsyncWebsocketConsumer):
             matchmaking = data.get('matchmaking')
             invitee_username = data.get('invitee_username')
             if matchmaking == 'true':
-                # Get a list of online users
-                lobby_users_usernames = await USER_STATUS.get_keys_with_value('lobby')
-                lobby_users_usernames.remove(self.user.username) #TODO if user not in lobby
-                invitee_username = random.choice(lobby_users_usernames) #TODO if list is empty
+                invitee_username = await self.matchmaking_handler()
             else:      
-                if not await self.check_is_user_inlobby(invitee_username):
-                    return
+                await self.check_is_user_inlobby(invitee_username)
+
             invitee_channel_name = await USER_CHANNEL_NAME.get(invitee_username)
             if invitee_channel_name:
                 await self.channel_layer.send(invitee_channel_name, {
@@ -124,10 +121,30 @@ class PongConsumer(AsyncWebsocketConsumer):
             await self.exit_handler(game_id, game)
 
         elif action == 'pause.game':
-            pass
+            game_id = data.get('game_id')
+            game = await GAMES.get(game_id)
+            if (game != None):
+                game.pauseGame()
+                await self.channel_layer.group_send(
+                    game.group_name,
+                    {
+                        "type": "game.pause",
+                        "game_id": game_id,
+                    }
+                )
 
         elif action == 'resume.game':
-            pass
+            game_id = data.get('game_id')
+            game = await GAMES.get(game_id)
+            if (game != None):
+                game.resumeGame()
+                await self.channel_layer.group_send(
+                    game.group_name,
+                    {
+                        "type": "game.resume",
+                        "game_id": game_id,
+                    }
+                )
 
         elif action == 'reconnected':
             pass
@@ -250,7 +267,7 @@ class PongConsumer(AsyncWebsocketConsumer):
                 "loser": left,
             }
         )
-        await self.exit_handler(game_id, game, opponent)
+        await self.exit_handler(game_id, game, opponent) #! Invalid channel name error
 
     async def exit_handler(self, game_id, game, opponent): #TODO When user close tab it should discard inside disconnect too
         # Discard both from the game group
@@ -387,6 +404,20 @@ class PongConsumer(AsyncWebsocketConsumer):
             'type': 'game.restart',
             'inviter': inviter,
         }))
+        
+    async def game_pause(self, event):
+        game_id = event['game_id']
+        await self.send(text_data=json.dumps({
+            'type': 'game.pause',
+            'game_id': game_id,
+        }))
+
+    async def game_resume(self, event):
+        game_id = event['game_id']
+        await self.send(text_data=json.dumps({
+            'type': 'game.resume',
+            'game_id': game_id,
+        }))
 
     async def game_ball(self, event):
         game_id = event['game_id']
@@ -461,5 +492,25 @@ class PongConsumer(AsyncWebsocketConsumer):
                 "error": "User is already playing",
             }))
         return answer
+
+    async def matchmaking_handler(self):
+        from .models import UserProfile
+        # Get the current user's elo_point
+        current_user_elo = await UserProfile.objects.aget(username=self.user.username).elo_point
         
+        # Get a list of online users
+        lobby_users_usernames = await USER_STATUS.get_keys_with_value('lobby')
+        lobby_users_usernames.remove(self.user.username) #TODO if user not in lobby
+        
+        # Filter users based on elo_point similarity
+        users = await UserProfile.objects.filter(username__in=users, elo_point__gte=current_user_elo-100, elo_point__lte=current_user_elo+100).aall()
+        similar_users = [user.username for user in users]
+        
+        if similar_users:
+            invitee_username = random.choice(similar_users)
+        else:
+            invitee_username = random.choice(lobby_users_usernames) #TODO if list is empty
+        
+        return invitee_username
+
 
