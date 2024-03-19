@@ -32,6 +32,7 @@ let likeaCheaterCount = 0;
 let fastandFuriousCount = 0;
 let frozenBallCount = 0;
 
+let isFrozenBallActive = false;
 
 // Paddle objects
 var paddleWidth = 10;
@@ -153,10 +154,11 @@ function gameUtilsReset() {
     likeaCheaterCount = 0;
     fastandFuriousCount = 0;
     frozenBallCount = 0;
+    isFrozenBallActive = false;
 
-    if (giantMan == "true")
+    if (giantMan == "true" && gameMode === "Abilities")
         sendAbility("giantMan");
-    if (rageofFire == "true")
+    if (rageofFire == "true" && gameMode === "Abilities")
         sendAbility("rageofFire");
 }
 
@@ -370,17 +372,22 @@ matchsocket.onmessage = function (e) {
                         downPressed = true;
                     }
                     if (event.key === '1' && likeaCheaterCount < 1 && likeaCheater == "true" && gameMode === "Abilities") {
-                        console.log("likeaCheater kullanıldı!");
                         sendAbility("likeaCheater");
+                        showToast('You used like a cheater!', 'text-bg-primary', 'bi bi-exclamation-triangle-fill');
                         likeaCheaterCount += 1;
-                
                     }
                     else if (event.key === '2' && fastandFuriousCount < 1 && fastandFurious == "true" && isFrozenBallActive == false && gameMode === "Abilities") {
                         sendAbility("fastandFurious");
+                        showToast('You used fast and furious!', 'text-bg-primary', 'bi bi-exclamation-triangle-fill');
                         fastandFuriousCount += 1;
                     }
                     else if (event.key === '3' && frozenBallCount < 1 && frozenBall == "true" && gameMode === "Abilities") {
                         sendAbility("frozenBall");
+                        showToast('You used frozen ball!', 'text-bg-primary', 'bi bi-exclamation-triangle-fill');
+                        isFrozenBallActive = true;
+                        setTimeout(function () {
+                            isFrozenBallActive = false;
+                        }, 3000);
                         frozenBallCount += 1;
                     }
                 });
@@ -489,10 +496,18 @@ matchsocket.onmessage = function (e) {
             //console.log(`Moving Paddle Id: ${data.game_id} for ${data.player}: ${data.y}`);
             break;
 
-        
+        case 'game.ability':
+            console.log(data.ability + ' is used!')
+            if (data.ability == 'giantMan' && gameMode === "Abilities") {
+                if (data.player == player1.username)
+                    paddle1.height = 115
+                else if (data.player == player2.username)
+                    paddle2.height = 115
+
+            break;
 
     }};
-
+}
 
 matchsocket.sendJSON = function (data) {
     matchsocket.send(JSON.stringify(data));
@@ -628,6 +643,7 @@ function updatePaddlePosition() {
 
 function sendAbility(ability) {
     matchsocket.sendJSON({
+        action: 'ability',
         abilities: ability,
         game_id: my.game_id,
     });
@@ -645,7 +661,6 @@ function BallRequest() {
 }
 
 document.getElementById('exitButton').addEventListener('click', exitGame);
-
 
 checkbox.addEventListener('change', function() {
     // Checkbox'un durumuna göre etiketin innerHTML değerini değiştirme

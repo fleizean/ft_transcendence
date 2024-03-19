@@ -93,21 +93,108 @@ class UserProfile(AbstractUser):
 
     def get_rank_name(self):
         ranks = {
-            (1, 150): "Lumina",
-            (150, 200): "Vexal",
-            (200, 250): "Sylan",
-            (250, 310): "Verdan",
-            (310, 360): "Fiora",
-            (360, 420): "Zoral",
-            (420, 500): "Lysar",
-            (500, 550): "Aerion",
-            (550, 600): "Eclis",
-            (600, float('inf')): "Noctis"
+            (1, 150): "Warritt",
+            (150, 200): "Kagen",
+            (200, 250): "Larvik",
+            (250, 310): "Deglan",
+            (310, 360): "Letho",
+            (360, 420): "Eskel",
+            (420, 500): "Lambert",
+            (500, 550): "Vesemir",
+            (550, 600): "Geralt of Rivia",
+            (600, float('inf')): "Cirilla Fiona"
         }
         for rank_range, rank_name in ranks.items():
             if rank_range[0] <= self.elo_point <= rank_range[1]:
                 return rank_name
-        return "Solvia"
+        return "Reinald"
+
+
+    def update_wallet_elo(self, winner=True):
+        if winner:
+            self.indian_wallet += random.randint(300, 500)
+            self.elo_point += random.randint(20, 30)
+        else:
+            self.indian_wallet += random.randint(20, 30)
+            lose_elo = random.randint(10, 20)
+            if lose_elo < self.elo_point:
+                self.elo_point -= lose_elo
+        self.save()
+
+
+    def update_stats(self, winnerscore, loserscore, game_duration, winner=True):
+        # Update total games count
+        self.game_stats.total_games_pong += 1
+        
+        if winner:
+            # Update stats for winner
+            self.game_stats.total_win_pong += 1
+            self.game_stats.total_win_streak_pong += 1
+            self.game_stats.total_lose_streak_pong = 0
+            
+            # Update average points won and lost for winner
+            self.game_stats.total_avg_points_won_pong = ((self.game_stats.total_avg_points_won_pong * (self.game_stats.total_win_pong - 1)) + winnerscore) / self.game_stats.total_win_pong
+            self.game_stats.total_avg_points_lost_pong = ((self.game_stats.total_avg_points_lost_pong * (self.game_stats.total_win_pong - 1)) + loserscore) / self.game_stats.total_win_pong
+            
+        else:
+            # Update stats for loser
+            self.game_stats.total_lose_pong += 1
+            self.game_stats.total_win_rate_pong = (self.game_stats.total_win_pong / self.game_stats.total_games_pong)
+            self.game_stats.total_win_streak_pong = 0
+            self.game_stats.total_lose_streak_pong += 1
+            
+            # Update average points won and lost for loser
+            self.game_stats.total_avg_points_won_pong = ((self.game_stats.total_avg_points_won_pong * (self.game_stats.total_lose_pong - 1)) + loserscore) / self.game_stats.total_lose_pong
+            self.game_stats.total_avg_points_lost_pong = ((self.game_stats.total_avg_points_lost_pong * (self.game_stats.total_lose_pong - 1)) + winnerscore) / self.game_stats.total_lose_pong
+        
+        # Update total win rate
+        self.game_stats.total_win_rate_pong = (self.game_stats.total_win_pong / self.game_stats.total_games_pong)
+        
+        # Update total average game duration
+        total_game_duration_seconds = self.game_stats.total_avg_game_duration_pong.total_seconds() * (self.game_stats.total_games_pong - 1)
+        total_game_duration_seconds += game_duration
+        avg_game_duration_seconds = total_game_duration_seconds / self.game_stats.total_games_pong
+        self.game_stats.total_avg_game_duration_pong = timedelta(seconds=avg_game_duration_seconds)
+        # Save updated stats
+        self.game_stats.save()
+
+    
+    def update_stats_rps(self, winnerscore, loserscore, game_duration, winner=True):
+        # Update total games count
+        self.game_stats_rps.total_games_rps += 1
+        
+        if winner:
+            # Update stats for winner
+            self.game_stats_rps.total_win_rps += 1
+            self.game_stats_rps.total_win_streak_rps += 1
+            self.game_stats_rps.total_lose_streak_rps = 0
+            
+            # Update average points won and lost for winner
+            self.game_stats_rps.total_avg_points_won_rps = ((self.game_stats_rps.total_avg_points_won_rps * (self.game_stats_rps.total_win_rps - 1)) + winnerscore) / self.game_stats_rps.total_win_rps
+            self.game_stats_rps.total_avg_points_lost_rps = ((self.game_stats_rps.total_avg_points_lost_rps * (self.game_stats_rps.total_win_rps - 1)) + loserscore) / self.game_stats_rps.total_win_rps
+            
+        else:
+            # Update stats for loser
+            self.game_stats_rps.total_lose_rps += 1
+            self.game_stats_rps.total_win_rate_rps = (self.game_stats_rps.total_win_rps / self.game_stats_rps.total_games_rps)
+            self.game_stats_rps.total_win_streak_rps = 0
+            self.game_stats_rps.total_lose_streak_rps += 1
+            
+            # Update average points won and lost for loser
+            self.game_stats_rps.total_avg_points_won_rps = ((self.game_stats_rps.total_avg_points_won_rps * (self.game_stats_rps.total_lose_rps - 1)) + loserscore) / self.game_stats_rps.total_lose_rps
+            self.game_stats_rps.total_avg_points_lost_rps = ((self.game_stats_rps.total_avg_points_lost_rps * (self.game_stats_rps.total_lose_rps - 1)) + winnerscore) / self.game_stats_rps.total_lose_rps
+        
+        # Update total win rate
+        self.game_stats_rps.total_win_rate_rps = (self.game_stats_rps.total_win_rps / self.game_stats_rps.total_games_rps)
+        
+        # Update total average game duration
+        total_game_duration_seconds = self.game_stats_rps.total_avg_game_duration_rps.total_seconds() * (self.game_stats_rps.total_games_rps - 1)
+        total_game_duration_seconds += game_duration
+        avg_game_duration_seconds = total_game_duration_seconds / self.game_stats_rps.total_games_rps
+        self.game_stats_rps.total_avg_game_duration_rps = timedelta(seconds=avg_game_duration_seconds)
+        
+        # Save updated stats
+        self.game_stats_rps.save()
 
 
 
@@ -156,7 +243,7 @@ class UserGameStat(models.Model):
         return "{:.2f}".format(self.total_avg_points_lost_pong)
 
     def formatted_avg_points_won(self):
-        return "{:.2f}".format(self.total_avg_points_won_pong)
+        return "{:.2f}".format(self.total_avg_points_won_pong)        
 
 
 class UserGameStatRPS(models.Model):

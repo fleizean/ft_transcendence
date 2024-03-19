@@ -42,7 +42,7 @@ var player2nameX = canvas.width - textWidth2 - 10;
 var player2nameY = 20;
 
 // if giantMan abilities equiped
-var abilities_paddleHeight = (gameMode == "Abilities") ? 120 : 100;
+var abilities_paddleHeight = (gameMode == "Abilities") ? 115 : 100;
 var paddleWidth = 10;
 var paddleHeight = 100;
 var paddleSpeed = 15;
@@ -100,7 +100,7 @@ function update() {
         if (ball.x - ball.radius <= paddle1.x + paddle1.width) {
             if (gameMode == "Abilities") {
                 if (Math.random() <= 0.5) {
-                    ball.speed += 1;
+                    ball.speed += 0.25;
                 }
             }
             ball.x = paddle1.x + paddle1.width + ball.radius;
@@ -115,7 +115,7 @@ function update() {
         if (ball.x + ball.radius >= paddle2.x) {
             if (gameMode == "Abilities") {
                 if (Math.random() <= 0.5) {
-                    ball.speed += 1;
+                    ball.speed += 0.25;
                 }
             }
             ball.x = paddle2.x - ball.radius;
