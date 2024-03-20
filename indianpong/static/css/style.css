@@ -889,6 +889,7 @@ body {
   border-radius: 10px;
 }
 
+
 .game-over p {
   font-family: 'Pixeboy-z8XGD', sans-serif;
   font-size: 20px;
@@ -909,6 +910,8 @@ body {
   font-family: 'Pixeboy-z8XGD', sans-serif;
   margin-bottom: 20px;
 }
+
+
 
 #restartButton{
   font-family: 'Pixeboy-z8XGD', sans-serif;

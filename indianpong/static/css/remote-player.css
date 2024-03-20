@@ -20,6 +20,44 @@
     margin-bottom: 1em;
 }
 
+
+.game-over-remote {
+    display: none;
+    position: absolute;
+    width: 300px;
+    top: 50%;
+    left: 55%;
+    transform: translate(-50%, -50%);
+    padding: 20px;
+    background-color: rgba(0, 0, 0, 0.8);
+    text-align: center;
+    font-family: Arial, sans-serif;
+    border-radius: 10px;
+  }
+  
+  
+  .game-over-remote p {
+    font-family: 'Pixeboy-z8XGD', sans-serif;
+    font-size: 20px;
+    font-weight: bold;
+    margin-top: -20px;
+    color: palegreen;
+  }
+  
+  .game-over-remote h1 {
+    font-size: 48px;
+    font-family: 'Pixeboy-z8XGD', sans-serif;
+    margin-bottom: 10px;
+  }
+  
+  .game-over-remote h2 {
+    font-size: 24px;
+    color: #ffffff;
+    font-family: 'Pixeboy-z8XGD', sans-serif;
+    margin-bottom: 20px;
+  }
+  
+
 .left-card {
     width: 300px;
     height: 600px;
