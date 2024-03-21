@@ -7,6 +7,7 @@ from django.core.cache import cache
 from .utils import add_to_cache, remove_from_cache
 #from .models import Game, Tournament, UserProfile
 from pong.game import *
+import datetime
 
 USER_CHANNEL_NAME = AsyncLockedDict() # key: id, value: channel_name
 GAMES = AsyncLockedDict() # key: game_id, value: PongGame object
@@ -482,22 +483,23 @@ class PongConsumer(AsyncWebsocketConsumer):
         game = await Game.objects.acreate(group_name=group_name, player1=accepted, player2=accepter)
         return game
     
+
     #TODO leave için bozuldu Game modelste player1_score winner_score yap
     async def record_game(self, game_id, player1_score, player2_score, winner, loser):
         from .models import Game, UserProfile, UserGameStat
         from asgiref.sync import sync_to_async
+
         # Get the game object from the cache
         game_obj = await GAMES.get(game_id)
         game_duration = game_obj.getDuration()
         winner_score, loser_score = game_obj.getWinnerLoserScore() 
-        
         # db operations
         game = await Game.objects.aget(id=game_id)
         game.player1_score = player1_score
         game.player2_score = player2_score
         game.winner = await UserProfile.objects.aget(username=winner)
         game.loser = await UserProfile.objects.aget(username=loser)
-
+        game.game_duration = datetime.timedelta(seconds=game_duration)
         # Ensure game_stats is not None for winner and loser
         if await sync_to_async(lambda: game.winner.game_stats is None)():
             game.winner.game_stats = await sync_to_async(UserGameStat.objects.create)()
@@ -505,7 +507,6 @@ class PongConsumer(AsyncWebsocketConsumer):
         if await sync_to_async(lambda: game.loser.game_stats is None)():
             game.loser.game_stats = await sync_to_async(UserGameStat.objects.create)()
             await sync_to_async(game.loser.save)()
-        
         await sync_to_async(game.winner.update_wallet_elo)()
         await sync_to_async(game.winner.update_stats)(winner_score, loser_score, game_duration)
         await sync_to_async(game.loser.update_wallet_elo)(False)

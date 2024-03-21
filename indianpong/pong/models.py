@@ -80,7 +80,7 @@ class UserProfile(AbstractUser):
             (200, 250): "silver.webp",
             (250, 310): "gold.webp",
             (310, 360): "platinum.webp",
-            (360, 420): "emerlad.webp",
+            (360, 420): "emerald.webp",
             (420, 500): "diamond.webp",
             (500, 550): "master.webp",
             (550, 600): "grandmaster.webp",
@@ -156,6 +156,7 @@ class UserProfile(AbstractUser):
         avg_game_duration_seconds = total_game_duration_seconds / self.game_stats.total_games_pong
         self.game_stats.total_avg_game_duration_pong = timedelta(seconds=avg_game_duration_seconds)
         # Save updated stats
+        print(self.game_stats.total_avg_game_duration_pong)
         self.game_stats.save()
 
     
