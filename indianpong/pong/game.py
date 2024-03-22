@@ -57,6 +57,7 @@ class PongGame:
         self.player2 = Player(player2)
         self.player1.paddle = Paddle(0, PADDLE_Y, PAD_WIDTH, PAD_HEIGHT, PAD_SPEED)
         self.player2.paddle = Paddle(WIDTH - PAD_WIDTH, PADDLE_Y, PAD_WIDTH, PAD_HEIGHT, PAD_SPEED)
+        self.no_more = False
         self.rageofFire = False
         self.frozenBall = False
         self.start_time = time.time()

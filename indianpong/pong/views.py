@@ -1139,8 +1139,8 @@ def tournament_create(request):
                 request, f'Tournament "{tournament.name}" created successfully.'
             )
             return redirect("tournament-room", tournament.id)
-        else:
-            print(form.errors)
+        #else:
+            #print(form.errors)
     else:
         form = TournamentForm(request=request)
     return render(request, "tournament-create.html", {"form": form, "context": context})
@@ -1256,8 +1256,8 @@ def update_winner_pong(data):
     winner = data.get("winner")
     loser = data.get("loser")
 
-    winner_score = data.get("winnerscore")
-    loser_score = data.get("loserscore")
+    winner_score = int(data.get("winnerscore"))
+    loser_score = int(data.get("loserscore"))
     start_time = data.get("start_time")
     finish_time = data.get("finish_time")
     winner_profile = get_object_or_404(UserProfile, username=winner)
@@ -1281,12 +1281,7 @@ def update_winner_pong(data):
         loser=loser_profile,
         game_duration=game_duration,
     )
-    if winner_profile.game_stats is None:
-        winner_profile.game_stats = UserGameStat.objects.create()
-        winner_profile.save()
-    if loser_profile.game_stats is None:
-        loser_profile.game_stats = UserGameStat.objects.create()
-        loser_profile.save()
+
     # Game Stats #
     # Winner #
     winner_profile.update_stats(winner_score, loser_score, game_duration)
@@ -1330,6 +1325,6 @@ def update_winner_rps(data):
         loser_profile.game_stats_rps = UserGameStatRPS.objects.create()
         loser_profile.save()
     # Game Stats #
-    winner_profile.update_stats_rps(winner_score, loser_score, game_duration)
-    loser_profile.update_stats_rps(winner_score, loser_score, game_duration, winner=False)
+    winner_profile.update_stats_rps(winnerscore, loserscore, game_duration)
+    loser_profile.update_stats_rps(winnerscore, loserscore, game_duration, winner=False)
 

@@ -15,6 +15,7 @@ USER_STATUS = AsyncLockedDict() # key: username, value: game_id or lobby
 
 
 class PongConsumer(AsyncWebsocketConsumer):
+
     async def connect(self):
         self.game_type = self.scope['url_route']['kwargs']['game_type'] # tournament or peer-to-peer
         self.game_id = self.scope['url_route']['kwargs']['game_id'] # new or game_id
@@ -51,7 +52,7 @@ class PongConsumer(AsyncWebsocketConsumer):
     async def disconnect(self, close_code):
         # Remove the user from the 'online' group
         await self.channel_layer.group_discard("lobby", self.channel_name)
-
+        cache.set(f"playing_{self.user.username}", False)
         # Remove the user's channel name
         await USER_CHANNEL_NAME.delete(self.user.username)
 
@@ -171,8 +172,9 @@ class PongConsumer(AsyncWebsocketConsumer):
                                 "player2_score": player2_score,
                             }
                         )
-                    elif (game.status == Status.ENDED):
+                    elif (game.status == Status.ENDED and not game.no_more):
                         await self.end_handler(game_id, game)
+                        game.no_more = True
 
 
         elif action == "paddle": #? Needs validation
@@ -268,7 +270,7 @@ class PongConsumer(AsyncWebsocketConsumer):
         left_score = game.getScore(left) # blocking?
         opponent_score = MAX_SCORE # set max score automaticaly
         # Record the game
-        await self.record_game(game_id, left_score, opponent_score, opponent, left)
+        await self.record_game(game_id, opponent_score, left_score, opponent, left)
         await USER_STATUS.set(game.player1.username, 'lobby') #?
         await USER_STATUS.set(game.player2.username, 'lobby') #?
 
@@ -291,6 +293,8 @@ class PongConsumer(AsyncWebsocketConsumer):
         opponent_channel_name = await USER_CHANNEL_NAME.get(opponent)
         await self.channel_layer.group_discard(game.group_name, self.channel_name)
         await self.channel_layer.group_discard(game.group_name, opponent_channel_name)
+        cache.set(f"playing_{self.user.username}", False)
+        cache.set(f"playing_{opponent}", False)
         # delete the game from the cache
         await GAMES.delete(game_id)
         
@@ -299,10 +303,18 @@ class PongConsumer(AsyncWebsocketConsumer):
         # Get scores
         player1_score = game.player1.score
         player2_score = game.player2.score
-        winner = player1_score > player2_score and game.player1.username or game.player2.username
-        loser = winner == game.player1.username and game.player2.username or game.player1.username
+        if player1_score > player2_score:
+            winner = game.player1.username
+            loser = game.player2.username
+            winner_score = player1_score
+            loser_score = player2_score
+        else:
+            winner = game.player2.username
+            loser = game.player1.username
+            winner_score = player2_score
+            loser_score = player1_score
         # Set the game winner, scores and save it to the database
-        await self.record_game(game_id, player1_score, player2_score, winner, loser)
+        await self.record_game(game_id, winner_score, loser_score, winner, loser)
         await USER_STATUS.set(game.player1.username, 'lobby') #?
         await USER_STATUS.set(game.player2.username, 'lobby') #?
         
@@ -485,49 +497,35 @@ class PongConsumer(AsyncWebsocketConsumer):
     
 
     #TODO leave için bozuldu Game modelste player1_score winner_score yap
-    async def record_game(self, game_id, player1_score, player2_score, winner, loser):
-        from .models import Game, UserProfile, UserGameStat
-        from asgiref.sync import sync_to_async
-
+    async def record_game(self, game_id, winner_score, loser_score, winner, loser): 
         # Get the game object from the cache
         game_obj = await GAMES.get(game_id)
         game_duration = game_obj.getDuration()
-        winner_score, loser_score = game_obj.getWinnerLoserScore() 
         # db operations
-        game = await Game.objects.aget(id=game_id)
-        game.player1_score = player1_score
-        game.player2_score = player2_score
-        game.winner = await UserProfile.objects.aget(username=winner)
-        game.loser = await UserProfile.objects.aget(username=loser)
+        await self.update_stats_elo_wallet(game_id, winner_score, loser_score, winner, loser, game_duration)
+
+
+
+    @database_sync_to_async
+    def update_stats_elo_wallet(self, game_id, winner_score, loser_score, winner, loser, game_duration):
+        from .models import Game, UserProfile
+        from .update import update_wallet_elo, update_stats_pong, update_tournament
+
+        game = Game.objects.get(id=game_id)
+        game.winner_score = winner_score
+        game.loser_score = loser_score
+        game.winner =UserProfile.objects.get(username=winner)
+        game.loser = UserProfile.objects.get(username=loser)
         game.game_duration = datetime.timedelta(seconds=game_duration)
-        # Ensure game_stats is not None for winner and loser
-        if await sync_to_async(lambda: game.winner.game_stats is None)():
-            game.winner.game_stats = await sync_to_async(UserGameStat.objects.create)()
-            await sync_to_async(game.winner.save)()
-        if await sync_to_async(lambda: game.loser.game_stats is None)():
-            game.loser.game_stats = await sync_to_async(UserGameStat.objects.create)()
-            await sync_to_async(game.loser.save)()
-        await sync_to_async(game.winner.update_wallet_elo)()
-        await sync_to_async(game.winner.update_stats)(winner_score, loser_score, game_duration)
-        await sync_to_async(game.loser.update_wallet_elo)(False)
-        await sync_to_async(game.loser.update_stats)(loser_score, winner_score, game_duration, False)
-        await game.asave()
+        game.save()
+
+        update_wallet_elo(game.winner, game.loser)
+        update_stats_pong(game.winner, game.loser, winner_score, loser_score, game_duration)
+
         # İf the game is a tournament game
         if game.tournament_id:   #? Check
-            await self.update_tournament(game)
+            update_tournament(game)
 
-    async def update_tournament(self, game):
-        from .models import Tournament
-
-        tournament = await Tournament.objects.aget(id=game.tournament_id)
-        tournament.played_games_count += 1
-        if tournament.played_games_count == 2:
-            tournament.create_final_round_matches()
-        elif tournament.played_games_count == 3:
-            tournament.status = "ended"
-            tournament.winner = game.winner
-            #? Maybe save end_date
-        await tournament.asave()
 
     async def record_for_disconnected(self, game_id, game):
         if game.player1.username == self.user.username:
