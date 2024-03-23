@@ -42,12 +42,10 @@ class PongConsumer(AsyncWebsocketConsumer):
             'type': 'user.inlobby',
             'user': self.user.username,
         })
-        """if self.game_type == 'tournament':
+        if self.game_type == 'tournament':
+            from .models import Game
             game = await Game.objects.aget(id=self.game_id)
-            self.start_request_handler(game)
-        elif self.game_type == 'peer-to-peer' and self.game_id != 'new':
-            game = await Game.objects.aget(id=self.game_id)
-            self.reconnect_handler(game) """
+            await self.tournament_match_handler(game)
 
     async def disconnect(self, close_code):
         # Remove the user from the 'online' group
@@ -122,6 +120,7 @@ class PongConsumer(AsyncWebsocketConsumer):
             game = await GAMES.get(game_id)
             await self.exit_handler(game_id, game)
 
+        #TODO Maybe remove this
         elif action == 'pause.game':
             game_id = data.get('game_id')
             game = await GAMES.get(game_id)
@@ -135,6 +134,7 @@ class PongConsumer(AsyncWebsocketConsumer):
                     }
                 )
 
+        #TODO Maybe remove this
         elif action == 'resume.game':
             game_id = data.get('game_id')
             game = await GAMES.get(game_id)
@@ -147,9 +147,6 @@ class PongConsumer(AsyncWebsocketConsumer):
                         "game_id": game_id,
                     }
                 )
-
-        elif action == 'reconnected':
-            pass
 
         elif action == "ball": #? Needs validation
                 # Make a move in a game and get the ball coordinates
@@ -214,6 +211,23 @@ class PongConsumer(AsyncWebsocketConsumer):
 
 
     ### HANDLERS ###
+    async def tournament_match_handler(self, game):
+        player1_channel_name = await USER_CHANNEL_NAME.get(game.player1.username)
+        player2_channel_name = await USER_CHANNEL_NAME.get(game.player2.username)
+        await self.channel_layer.group_add(game.group_name, player1_channel_name)
+        await self.channel_layer.group_add(game.group_name, player2_channel_name)
+
+        await GAMES.set(game.id, PongGame(game.player1.username, game.player2.username, game.tourmament_id))
+
+        await self.channel_layer.group_send(game.group_name, {
+            'type': 'tournament.match',
+            'tournament_id': game.tournament_id,
+            'game_id': game.id,
+            'player1': game.player1.username,
+            'player2': game.player2.username,
+        })
+
+
     async def accept_handler(self, inviter_username):
         inviter_channel_name = await USER_CHANNEL_NAME.get(inviter_username)
         group_name = f"{inviter_username}-{self.user.username}"
@@ -354,6 +368,19 @@ class PongConsumer(AsyncWebsocketConsumer):
             'type': 'game.invite',
             'inviter': inviter,
             'invitee': invitee,
+        }))
+
+    async def tournament_match(self, event):
+        tournament_id = event['tournament_id']
+        game_id = event['game_id']
+        player1 = event['player1']
+        player2 = event['player2']
+        await self.send(text_data=json.dumps({
+            'type': 'tournament.match',
+            'tournament_id': tournament_id,
+            'game_id': game_id,
+            'player1': player1,
+            'player2': player2,
         }))
 
     async def game_accept(self, event):

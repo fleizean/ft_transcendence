@@ -287,6 +287,29 @@ matchsocket.onmessage = function (e) {
             console.log(`Invited Group: ${data.inviter} vs ${data.invitee}`);
             break;
         
+        case 'tournament.match':
+            player1.username = data.player1;
+            player2.username = data.player2;
+            my.game_id = data.game_id;
+            my.tournament_id = data.tournament_id;
+            if (selectedLanguage === 'tr')
+                showToast(`Turnuva maçı başladı! ${player1.username} vs ${player2.username}`, 'text-bg-success', 'bi bi-check-circle-fill');
+            else if (selectedLanguage === 'hi')
+                showToast(`टूर्नामेंट मैच शुरू हो गया! ${player1.username} vs ${player2.username}`, 'text-bg-success', 'bi bi-check-circle-fill');
+            else if (selectedLanguage === 'pt')
+                showToast(`Jogo de torneio começou! ${player1.username} vs ${player2.username}`, 'text-bg-success', 'bi bi-check-circle-fill');
+            else
+                showToast(`Tournament match started! ${player1.username} vs ${player2.username}`, 'text-bg-success', 'bi bi-check-circle-fill');
+
+            render();
+            showToast('Press Space to start the game', 'text-bg-primary', 'bi bi-exclamation-triangle-fill')
+
+            document.addEventListener("keydown", SpaceKeyDown);
+
+            console.log(`Tournament Id: ${data.tournament_id}, Match Id: ${data.game_id} => ${data.player1} vs ${data.player2}`);
+            break;
+
+        
         case 'game.accept':
             player1.username = data.accepted;
             player2.username = data.accepter;
@@ -315,15 +338,9 @@ matchsocket.onmessage = function (e) {
             }
             render();
             showToast('Press Space to start the game', 'text-bg-primary', 'bi bi-exclamation-triangle-fill')
-            // Show the game screen and start button
-            //startButton.style.display = 'block';   
+
             document.addEventListener("keydown", SpaceKeyDown);
 
-/*             startButton.onclick = function () {
-                // maybe put timeout here for protection against bashing button
-                console.log('Start button clicked');
-                startRequest(my.username, my.opponent_username);
-            }; */
             console.log(`Accepted Game Id: ${data.game_id} => ${data.accepted} vs ${data.accepter}`);
             break;
 
