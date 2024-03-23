@@ -355,9 +355,7 @@ class Tournament(models.Model):
         return f"{self.name}"
     
     def create_first_round_matches(self):
-        if self.participants.count() % 2 != 0:
-            self.participants.add(UserProfile.objects.get(username="IndianAI"))
-
+        
         participants = list(self.participants.all())
         random.shuffle(participants)
 

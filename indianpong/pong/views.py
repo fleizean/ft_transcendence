@@ -1063,8 +1063,8 @@ def tournament_room(request, id):
 
     if 'start_tournament' in request.POST:
         # Check if there are at least 3 participants
-        if tournament.participants.count() < 3:
-            messages.error(request, 'At least 3 participants are required to start the tournament.')
+        if tournament.participants.count() < 4:
+            messages.error(request, '4 participants are required to start the tournament.')
         else:
             tournament.create_first_round_matches()
             messages.success(request, 'Tournament started successfully.')
