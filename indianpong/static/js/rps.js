@@ -243,7 +243,7 @@ function resetGameRPS() {
 }
 
 function exitGame() {
-    window.location.href = '/rps-game-find';
+    window.location.href = '/rps-game-find';  // ?
 }
 
 function isWinner(results) {

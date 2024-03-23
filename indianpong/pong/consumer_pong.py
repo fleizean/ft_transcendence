@@ -2,6 +2,7 @@ import asyncio
 import json
 from channels.generic.websocket import AsyncWebsocketConsumer
 from channels.db import database_sync_to_async
+from asgiref.sync import sync_to_async, async_to_sync
 from pong.utils import AsyncLockedDict
 from django.core.cache import cache
 from .utils import add_to_cache, remove_from_cache
@@ -17,8 +18,9 @@ USER_STATUS = AsyncLockedDict() # key: username, value: game_id or lobby
 class PongConsumer(AsyncWebsocketConsumer):
 
     async def connect(self):
+
         self.game_type = self.scope['url_route']['kwargs']['game_type'] # tournament or peer-to-peer
-        self.game_id = self.scope['url_route']['kwargs']['game_id'] # new or game_id
+        self.game_id = self.scope['url_route']['kwargs']['game_id'] # game_id or new
         self.user = self.scope['user']
 
         await self.accept()
@@ -48,9 +50,21 @@ class PongConsumer(AsyncWebsocketConsumer):
             await self.tournament_match_handler(game)
 
     async def disconnect(self, close_code):
-        # Remove the user from the 'online' group
+        game_id = await USER_STATUS.get(self.user.username)
+        if game_id != 'lobby':
+            game = await GAMES.get(game_id)
+            await self.record_for_disconnected(game_id, game)
+            await self.exit_handler(game_id, game, game.otherPlayer(self.user.username))
+            other_player_channel_name = await USER_CHANNEL_NAME.get(game.otherPlayer(self.user.username))
+            await self.channel_layer.send(other_player_channel_name, {
+                'type': 'game.disconnect',
+                'game_id': game_id,
+                'disconnected': self.user.username,
+                })
+
+        # Remove the user from the 'lobby' group
         await self.channel_layer.group_discard("lobby", self.channel_name)
-        cache.set(f"playing_{self.user.username}", False)
+
         # Remove the user's channel name
         await USER_CHANNEL_NAME.delete(self.user.username)
 
@@ -171,7 +185,6 @@ class PongConsumer(AsyncWebsocketConsumer):
                         )
                     elif (game.status == Status.ENDED and not game.no_more):
                         await self.end_handler(game_id, game)
-                        game.no_more = True
 
 
         elif action == "paddle": #? Needs validation
@@ -209,23 +222,25 @@ class PongConsumer(AsyncWebsocketConsumer):
                         }
                     )
 
-
     ### HANDLERS ###
     async def tournament_match_handler(self, game):
-        player1_channel_name = await USER_CHANNEL_NAME.get(game.player1.username)
-        player2_channel_name = await USER_CHANNEL_NAME.get(game.player2.username)
-        await self.channel_layer.group_add(game.group_name, player1_channel_name)
-        await self.channel_layer.group_add(game.group_name, player2_channel_name)
+        if await self.check_is_user_inlobby(game.player1.username) and await self.check_is_user_inlobby(game.player2.username):
+            player1_channel_name = await USER_CHANNEL_NAME.get(game.player1.username)
+            player2_channel_name = await USER_CHANNEL_NAME.get(game.player2.username)
 
-        await GAMES.set(game.id, PongGame(game.player1.username, game.player2.username, game.tourmament_id))
+            await self.channel_layer.group_add(game.group_name, player1_channel_name)
+            await self.channel_layer.group_add(game.group_name, player2_channel_name)
 
-        await self.channel_layer.group_send(game.group_name, {
-            'type': 'tournament.match',
-            'tournament_id': game.tournament_id,
-            'game_id': game.id,
-            'player1': game.player1.username,
-            'player2': game.player2.username,
-        })
+            await GAMES.set(game.id, PongGame(game.player1.username, game.player2.username, game.tourmament_id))
+
+            await self.channel_layer.group_send(game.group_name, {
+                'type': 'tournament.match',
+                'tournament_id': game.tournament_id,
+                'game_id': game.id,
+                'player1': game.player1.username,
+                'player2': game.player2.username,
+            })
+        
 
 
     async def accept_handler(self, inviter_username):
@@ -300,7 +315,7 @@ class PongConsumer(AsyncWebsocketConsumer):
                 "loser": left,
             }
         )
-        await self.exit_handler(game_id, game, opponent) #! Invalid channel name error
+        #await self.exit_handler(game_id, game, opponent) #! Invalid channel name error
 
     async def exit_handler(self, game_id, game, opponent): #TODO When user close tab it should discard inside disconnect too
         # Discard both from the game group
@@ -359,6 +374,15 @@ class PongConsumer(AsyncWebsocketConsumer):
         await self.send(text_data=json.dumps({
             'type': 'user.outlobby',
             'user': user,
+        }))
+
+    async def game_disconnect(self, event):
+        game_id = event['game_id']
+        disconnected = event['disconnected']
+        await self.send(text_data=json.dumps({
+            'type': 'game.disconnect',
+            'game_id': game_id,
+            'disconnected': disconnected,
         }))
 
     async def game_invite(self, event):
@@ -532,7 +556,6 @@ class PongConsumer(AsyncWebsocketConsumer):
         await self.update_stats_elo_wallet(game_id, winner_score, loser_score, winner, loser, game_duration)
 
 
-
     @database_sync_to_async
     def update_stats_elo_wallet(self, game_id, winner_score, loser_score, winner, loser, game_duration):
         from .models import Game, UserProfile
@@ -564,7 +587,7 @@ class PongConsumer(AsyncWebsocketConsumer):
         answer = await USER_STATUS.get(username) == 'lobby'
         if not answer:
             await self.send(text_data=json.dumps({
-                "error": "User is already playing",
+                "error": "User is not in the lobby.",
             }))
         return answer
 

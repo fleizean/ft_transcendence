@@ -112,6 +112,13 @@
                                     {% else %}
                                         <span class="score">{{ tournament.first_round_matches.first.loser_score}}</span>
                                     {% endif %}
+                                    {% if request.user.username == tournament.first_round_matches.first.player1.username %}
+                                        {% if first_game_id %}
+                                            <a href="{% url 'remote_game' game_type='tournament' game_id=first_game_id %}">
+                                                <span class="match-link"><i class="bi bi-box-arrow-up-right"></i></span>
+                                            </a>
+                                        {% endif %}
+                                    {% endif %}
                                 </div>
                                 <div class="match-bottom team">
                                     <span class="image">{{ tournament.first_round_matches.first.player2.avatar.url}}</span>
@@ -121,6 +128,13 @@
                                         <span class="score">{{ tournament.first_round_matches.first.winner_score}}</span>
                                     {% else %}
                                         <span class="score">{{ tournament.first_round_matches.first.loser_score}}</span>
+                                    {% endif %}
+                                    {% if request.user.username == tournament.first_round_matches.first.player2.username %}
+                                        {% if first_game_id %}
+                                            <a href="{% url 'remote_game' game_type='tournament' game_id=first_game_id %}">
+                                                <span class="match-link"><i class="bi bi-box-arrow-up-right"></i></span>
+                                            </a>
+                                        {% endif %}
                                     {% endif %}
                                 </div>
                                 <div class="match-lines">
@@ -141,7 +155,13 @@
                                     {% else %}
                                         <span class="score">{{ tournament.first_round_matches.last.loser_score}}</span>
                                     {% endif %}
-
+                                    {% if request.user.username == tournament.first_round_matches.last.player1.username %}
+                                        {% if last_game_id %}
+                                            <a href="{% url 'remote_game' game_type='tournament' game_id=last_game_id %}">
+                                                <span class="match-link"><i class="bi bi-box-arrow-up-right"></i></span>
+                                            </a>
+                                        {% endif %}
+                                    {% endif %}
                                 </div>
                                 <div class="match-bottom team">
                                     <span class="image">{{ tournament.first_round_matches.last.player2.avatar.url}}</span>
@@ -151,6 +171,13 @@
                                         <span class="score">{{ tournament.first_round_matches.last.winner_score}}</span>
                                     {% else %}
                                         <span class="score">{{ tournament.first_round_matches.last.loser_score}}</span>
+                                    {% endif %}
+                                    {% if request.user.username == tournament.first_round_matches.last.player2.username %}
+                                        {% if last_game_id %}
+                                            <a href="{% url 'remote_game' game_type='tournament' game_id=last_game_id %}">
+                                                <span class="match-link"><i class="bi bi-box-arrow-up-right"></i></span>
+                                            </a>
+                                        {% endif %}
                                     {% endif %}
                                 </div>
                                 <div class="match-lines">
@@ -173,6 +200,11 @@
                                     {% else %}
                                         <span class="score">{{ tournament.final_round_matches.first.loser_score}}</span>
                                     {% endif %}
+                                    {% if request.user.username == tournament.final_round_matches.first.player1.username.username %}
+                                        <a href="{% url 'remote_game' game_type='tournament' game_id=tournament.first_round_matches.last.player1.username %}">
+                                            <span class="match-link"><i class="bi bi-box-arrow-up-right"></i></span>
+                                        </a>
+                                    {% endif %}
 
                                 </div>
                                 <div class="match-bottom team">
@@ -183,6 +215,11 @@
                                         <span class="score">{{ tournament.final_round_matches.first.winner_score}}</span>
                                     {% else %}
                                         <span class="score">{{ tournament.final_round_matches.first.loser_score}}</span>
+                                    {% endif %}
+                                    {% if request.user.username == tournament.final_round_matches.first.player2.username %}
+                                        <a href="{% url 'remote_game' game_type='tournament' game_id=tournament.first_round_matches.last.player1.username %}">
+                                            <span class="match-link"><i class="bi bi-box-arrow-up-right"></i></span>
+                                        </a>
                                     {% endif %}
                                 </div>
                                 <div class="match-lines">
@@ -225,6 +262,5 @@
         }
     }
 }
-
 </script>
 {% endblock %}

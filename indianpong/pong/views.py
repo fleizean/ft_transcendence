@@ -883,6 +883,18 @@ def local_tournament(request):
 @never_cache
 @login_required()
 def remote_game(request, game_type, game_id):
+    # Validation checks
+    if game_type not in ['peer-to-peer', 'tournament']:
+        raise Http404("Invalid game type. It should be either 'peer-to-peer' or 'tournament'.")
+
+    if game_type == 'peer-to-peer' and game_id != 'new':
+        raise Http404("Invalid game id for peer-to-peer. It should be 'new'.")
+
+    if game_type == 'tournament':
+        game = get_object_or_404(Game, id=game_id)
+        if game.winner is not None:
+            raise Http404("The game is already finished.")
+
     lang = request.COOKIES.get('selectedLanguage', 'en')
     context = langs.get_langs(lang)
     user_items = UserItem.objects.filter(user=request.user)
@@ -1067,6 +1079,7 @@ def tournament_room(request, id):
             messages.error(request, '4 participants are required to start the tournament.')
         else:
             tournament.create_first_round_matches()
+            # Fetch the games that belong to the current tournament
             messages.success(request, 'Tournament started successfully.')
 
     elif 'join_tournament' in request.POST:
@@ -1106,7 +1119,14 @@ def tournament_room(request, id):
     else:
         empty_slots = range(0, 4)
         is_participants = False
-    return render(request, "tournament-room.html", {"tournament": tournament, 'user': request.user, 'is_participants': is_participants, 'empty_slots': empty_slots, "context": context})
+
+    games = Game.objects.filter(tournament_id=tournament.id)
+    first_game_id = None
+    last_game_id = None
+    if games:
+        first_game_id = games.first().id
+        last_game_id = games.last().id
+    return render(request, "tournament-room.html", {"tournament": tournament, 'user': request.user, 'is_participants': is_participants, 'empty_slots': empty_slots, "context": context, 'first_game_id': first_game_id, 'last_game_id': last_game_id})
 
 @never_cache
 @login_required()

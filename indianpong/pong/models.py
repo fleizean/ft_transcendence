@@ -282,7 +282,7 @@ class Game(models.Model):
         ("rps", "Rock Paper Scissors")
     )
 
-    game_kind = models.CharField(max_length=10, choices=GAME_KIND_CHOICES, default="pong")
+    game_kind = models.CharField(max_length=10, choices=GAME_KIND_CHOICES, default="pong") #? Maybe unnecessary
     tournament_id = models.IntegerField(MinValueValidator(1), null=True, blank=True)
     group_name = models.CharField(max_length=100)
     player1 = models.ForeignKey(UserProfile, related_name='games_as_player1', on_delete=models.CASCADE)

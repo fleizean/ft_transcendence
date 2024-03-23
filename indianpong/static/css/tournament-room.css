@@ -271,7 +271,15 @@
     height: 349px;
   }
 
+  .match-link {
+    font-size: 16px;
+    color: tomato !important;
+  }
 
+  .match-link:hover {
+    color: rgb(0, 110, 255) !important;
+    cursor: pointer;
+  }
   
   .disable-image .image,
   .disable-seed .seed,

@@ -397,7 +397,7 @@ function restartGame() {
 
 // Çıkış yapma işlemleri
 function exitGame() {
-    window.location.href = '/dashboard';
+    window.location.href = '/dashboard';  // ?
 }
 
 document.getElementById('restartButton').addEventListener('click', restartGame);

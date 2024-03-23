@@ -252,6 +252,13 @@ matchsocket.onmessage = function (e) {
                 showToast(data.user + ' left!', 'text-bg-danger', 'bi bi-check-circle-fill')
             break;
 
+        case 'game.disconnected':
+            //clearInterval(BallRequest);
+            stopGame();
+            gameOverScreen.style.display = 'block';
+            showToast(`${data.disconnected} disconnected You are automatically winner`, 'text-bg-danger', 'bi bi-check-circle-fill')
+            console.log('Player disconnected', data.disconnected);
+            
         case 'game.invite':
             // Tell user that he/she is invited to a game
             console.log('Game invite', data.inviter);
@@ -475,16 +482,6 @@ matchsocket.onmessage = function (e) {
 
             console.log(`Ended Game Id: ${data.game_id} => ${data.winner} won`);
             break;
-        //? not sure
-        case 'game.restart':
-            // Send restart invite to user
-            console.log('Restart Requester: ' + data.inviter);
-            break;
-
-        case 'game.exit':
-            // Tell both user that game is ended and show scores and winner
-            console.log('Game id: ' + data.game_id + ' player1_score: ' + data.player1_score + ' player2_score: ' + data.player2_score + ' winner: ' + data.winner + ' loser: ' + data.loser);
-            break;
 
         case 'game.pause':
             // Pause the game
@@ -496,11 +493,6 @@ matchsocket.onmessage = function (e) {
             console.log('Game id: ' + data.game_id + ' resumed');
             break;
         
-        case 'user.reconnected': //? not sure
-            // Tell other user that i reconnected
-            console.log('User reconnected', data.user);
-            break;
-
         case 'game.ball':
             //get ball position and update it
             ballMove(data.x, data.y)
@@ -594,7 +586,11 @@ matchmakingButton.onclick = function () {
 //----------------------------------------------
 
 function exitGame() {
-    window.location.href = '/pong-game-find';
+    matchsocket.sendJSON({
+        action: 'exit',
+        game_id: my.game_id,
+    });
+    window.location.href = '/pong-game-find'; // ?
 }
 
 function accept(inviter) {

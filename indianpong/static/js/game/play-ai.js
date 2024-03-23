@@ -696,7 +696,7 @@ function restartGame() {
 
 // Çıkış yapma işlemleri
 function exitGame() {
-    window.location.href = '/pong-game-find';
+    window.location.href = '/pong-game-find';  // ?
 }
 
 document.getElementById('restartButton').addEventListener('click', restartGame);
