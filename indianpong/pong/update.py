@@ -30,47 +30,47 @@ def update_wallet_elo(winner, loser):
 
 def update_stats_pong(winner, loser, winnerscore, loserscore, game_duration):
     # Update total games count
-    winner.game_stats.total_games_pong += 1
-    loser.game_stats.total_games_pong += 1
+    winner.game_stats_pong.total_games_pong += 1
+    loser.game_stats_pong.total_games_pong += 1
     
 
     # Update stats for winner
-    winner.game_stats.total_win_pong += 1
-    winner.game_stats.total_win_streak_pong += 1
-    winner.game_stats.total_lose_streak_pong = 0
+    winner.game_stats_pong.total_win_pong += 1
+    winner.game_stats_pong.total_win_streak_pong += 1
+    winner.game_stats_pong.total_lose_streak_pong = 0
     
     # Update average points won and lost for winner
-    winner.game_stats.total_avg_points_won_pong = ((winner.game_stats.total_avg_points_won_pong * (winner.game_stats.total_win_pong - 1)) + winnerscore) / winner.game_stats.total_win_pong
-    winner.game_stats.total_avg_points_lost_pong = ((winner.game_stats.total_avg_points_lost_pong * (winner.game_stats.total_win_pong - 1)) + loserscore) / winner.game_stats.total_win_pong
+    winner.game_stats_pong.total_avg_points_won_pong = ((winner.game_stats_pong.total_avg_points_won_pong * (winner.game_stats_pong.total_win_pong - 1)) + winnerscore) / winner.game_stats_pong.total_win_pong
+    winner.game_stats_pong.total_avg_points_lost_pong = ((winner.game_stats_pong.total_avg_points_lost_pong * (winner.game_stats_pong.total_win_pong - 1)) + loserscore) / winner.game_stats_pong.total_win_pong
         
     # Update stats for loser
-    loser.game_stats.total_lose_pong += 1
-    loser.game_stats.total_win_rate_pong = (loser.game_stats.total_win_pong / loser.game_stats.total_games_pong)
-    loser.game_stats.total_win_streak_pong = 0
-    loser.game_stats.total_lose_streak_pong += 1
+    loser.game_stats_pong.total_lose_pong += 1
+    loser.game_stats_pong.total_win_rate_pong = (loser.game_stats_pong.total_win_pong / loser.game_stats_pong.total_games_pong)
+    loser.game_stats_pong.total_win_streak_pong = 0
+    loser.game_stats_pong.total_lose_streak_pong += 1
     
     # Update average points won and lost for loser
-    loser.game_stats.total_avg_points_won_pong = ((loser.game_stats.total_avg_points_won_pong * (loser.game_stats.total_lose_pong - 1)) + loserscore) / loser.game_stats.total_lose_pong
-    loser.game_stats.total_avg_points_lost_pong = ((loser.game_stats.total_avg_points_lost_pong * (loser.game_stats.total_lose_pong - 1)) + winnerscore) / loser.game_stats.total_lose_pong
+    loser.game_stats_pong.total_avg_points_won_pong = ((loser.game_stats_pong.total_avg_points_won_pong * (loser.game_stats_pong.total_lose_pong - 1)) + loserscore) / loser.game_stats_pong.total_lose_pong
+    loser.game_stats_pong.total_avg_points_lost_pong = ((loser.game_stats_pong.total_avg_points_lost_pong * (loser.game_stats_pong.total_lose_pong - 1)) + winnerscore) / loser.game_stats_pong.total_lose_pong
 
     # Update total win rate
-    winner.game_stats.total_win_rate_pong = (winner.game_stats.total_win_pong / winner.game_stats.total_games_pong)
-    loser.game_stats.total_win_rate_pong = (loser.game_stats.total_win_pong / loser.game_stats.total_games_pong)
+    winner.game_stats_pong.total_win_rate_pong = (winner.game_stats_pong.total_win_pong / winner.game_stats_pong.total_games_pong)
+    loser.game_stats_pong.total_win_rate_pong = (loser.game_stats_pong.total_win_pong / loser.game_stats_pong.total_games_pong)
     
     # Update total average game duration for both winner and loser
-    winner_total_game_duration_seconds =winner.game_stats.total_avg_game_duration_pong.total_seconds() * (winner.game_stats.total_games_pong - 1)
+    winner_total_game_duration_seconds =winner.game_stats_pong.total_avg_game_duration_pong.total_seconds() * (winner.game_stats_pong.total_games_pong - 1)
     winner_total_game_duration_seconds += game_duration
-    winner_avg_game_duration_seconds = winner_total_game_duration_seconds / winner.game_stats.total_games_pong
-    winner.game_stats.total_avg_game_duration_pong = timedelta(seconds=winner_avg_game_duration_seconds)
+    winner_avg_game_duration_seconds = winner_total_game_duration_seconds / winner.game_stats_pong.total_games_pong
+    winner.game_stats_pong.total_avg_game_duration_pong = timedelta(seconds=winner_avg_game_duration_seconds)
 
-    loser_total_game_duration_seconds = loser.game_stats.total_avg_game_duration_pong.total_seconds() * (loser.game_stats.total_games_pong - 1)
+    loser_total_game_duration_seconds = loser.game_stats_pong.total_avg_game_duration_pong.total_seconds() * (loser.game_stats_pong.total_games_pong - 1)
     loser_total_game_duration_seconds += game_duration
-    loser_avg_game_duration_seconds = loser_total_game_duration_seconds / loser.game_stats.total_games_pong
-    loser.game_stats.total_avg_game_duration_pong = timedelta(seconds=loser_avg_game_duration_seconds)
+    loser_avg_game_duration_seconds = loser_total_game_duration_seconds / loser.game_stats_pong.total_games_pong
+    loser.game_stats_pong.total_avg_game_duration_pong = timedelta(seconds=loser_avg_game_duration_seconds)
 
     # Save updated stats
-    winner.game_stats.save()
-    loser.game_stats.save()
+    winner.game_stats_pong.save()
+    loser.game_stats_pong.save()
 
 
 def update_stats_rps(winner, loser, winnerscore, loserscore, game_duration):

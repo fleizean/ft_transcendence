@@ -51,7 +51,7 @@ class UserProfile(AbstractUser):
     is_indianai = models.BooleanField(default=False)
     prefered_lang = models.CharField(max_length=100, blank=True, null=True)
     store_items = models.ManyToManyField(StoreItem, through='UserItem', blank=True)
-    game_stats = models.OneToOneField('UserGameStat', on_delete=models.SET_NULL, null=True, blank=True)
+    game_stats_pong = models.OneToOneField('UserGameStat', on_delete=models.SET_NULL, null=True, blank=True)
     game_stats_rps = models.OneToOneField('UserGameStatRPS', on_delete=models.SET_NULL, null=True, blank=True)
     indian_wallet = models.IntegerField(blank=True, null=True, default=0, validators=[MinValueValidator(0), MaxValueValidator(9999)])
     elo_point = models.IntegerField(blank=True, null=True, default=0, validators=[MinValueValidator(0), MaxValueValidator(99999)])
@@ -67,8 +67,10 @@ class UserProfile(AbstractUser):
         if not self.avatar and self.username != os.environ.get("INDIANAI_USERNAME", default="IndianAI") and self.username != os.environ.get("SUPER_USER", default="Bitlis"):
             svg_content = create_random_svg(self.username)
             self.avatar.save(f"{self.username}.svg", svg_content, save=False)
-        if not self.game_stats:
-            self.game_stats = UserGameStat.objects.create()
+        if not self.game_stats_pong:
+            self.game_stats_pong = UserGameStat.objects.create()
+        if not self.game_stats_rps:
+            self.game_stats_rps = UserGameStatRPS.objects.create()
         super().save(*args, **kwargs)
     
     @property
@@ -299,13 +301,13 @@ class Game(models.Model):
         if self.player1 == forfeiting_user:
             self.winner = self.player2
             self.loser = self.player1
-            self.player1_score = 0
-            self.player2_score = max_score
+            self.loser_score = 0
+            self.winner_score = max_score
         else:
             self.winner = self.player1
             self.loser = self.player2
-            self.player1_score = max_score
-            self.player2_score = 0
+            self.winner_score = max_score
+            self.loser_score = 0
         self.save()
     
     def formatted_game_duration(self):

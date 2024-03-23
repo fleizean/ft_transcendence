@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib import admin
-from .models import RPSGame, OAuthToken, Social, UserItem, StoreItem, UserProfile, Tournament, Room, Message, Game, UserGameStat
+from .models import RPSGame, OAuthToken, Social, UserGameStatRPS, UserItem, StoreItem, UserProfile, Tournament, Room, Message, Game, UserGameStat
 from django.utils.html import format_html
 from django.forms import ModelChoiceField
 
@@ -62,6 +62,15 @@ class UserItemAdmin(admin.ModelAdmin):
 class UserGameStatAdmin(admin.ModelAdmin):
     list_display = ('get_user', 'total_games_pong', 'total_win_pong', 'total_lose_pong', 'total_win_streak_pong', 'total_win_rate_pong', 'total_lose_streak_pong', 'total_avg_game_duration_pong', 'total_avg_points_won_pong', 'total_avg_points_lost_pong')
     search_fields = ('userprofile__username', 'total_win_pong',)
+
+    def get_user(self, obj):
+        return obj.userprofile
+    get_user.short_description = 'User'
+
+@admin.register(UserGameStatRPS)
+class UserGameStatRPSAdmin(admin.ModelAdmin):
+    list_display = ('get_user', 'total_games_rps', 'total_win_rps', 'total_lose_rps', 'total_win_streak_rps', 'total_win_rate_rps', 'total_lose_streak_rps', 'total_avg_game_duration_rps', 'total_avg_points_won_rps', 'total_avg_points_lost_rps')
+    search_fields = ('userprofile__username', 'total_win_rps',)
 
     def get_user(self, obj):
         return obj.userprofile

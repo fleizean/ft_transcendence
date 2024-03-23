@@ -314,6 +314,7 @@ matchsocket.onmessage = function (e) {
                 my.opponent_username = data.accepter; // if gerekir mi?
             }
             render();
+            showToast('Press Space to start the game', 'text-bg-primary', 'bi bi-exclamation-triangle-fill')
             // Show the game screen and start button
             //startButton.style.display = 'block';   
             document.addEventListener("keydown", SpaceKeyDown);

@@ -107,13 +107,21 @@
                                     <span class="image">{{ tournament.first_round_matches.first.player1.avatar.url}}</span>
                                     <span class="seed">1</span>
                                     <span class="name">{{ tournament.first_round_matches.first.player1.username }}</span>
-                                    <span class="score">{{ tournament.first_round_matches.first.player1_score}}</span>
+                                    {% if tournament.first_round_matches.first.player1.username == tournament.first_round_matches.first.winner.username %}
+                                        <span class="score">{{ tournament.first_round_matches.first.winner_score}}</span>
+                                    {% else %}
+                                        <span class="score">{{ tournament.first_round_matches.first.loser_score}}</span>
+                                    {% endif %}
                                 </div>
                                 <div class="match-bottom team">
                                     <span class="image">{{ tournament.first_round_matches.first.player2.avatar.url}}</span>
                                     <span class="seed">2</span>
                                     <span class="name">{{ tournament.first_round_matches.first.player2.username }}</span>
-                                    <span class="score">{{ tournament.first_round_matches.first.player2_score}}</span>
+                                    {% if tournament.first_round_matches.first.player2.username == tournament.first_round_matches.first.winner.username %}
+                                        <span class="score">{{ tournament.first_round_matches.first.winner_score}}</span>
+                                    {% else %}
+                                        <span class="score">{{ tournament.first_round_matches.first.loser_score}}</span>
+                                    {% endif %}
                                 </div>
                                 <div class="match-lines">
                                     <div class="line one"></div>
@@ -128,13 +136,22 @@
                                     <span class="image">{{ tournament.first_round_matches.last.player1.avatar.url}}</span>
                                     <span class="seed">3</span>
                                     <span class="name">{{ tournament.first_round_matches.last.player1.username }}</span>
-                                    <span class="score">{{ tournament.first_round_matches.last.player1_score}}</span>
+                                    {% if tournament.first_round_matches.last.player1.username == tournament.first_round_matches.last.winner.username %}
+                                        <span class="score">{{ tournament.first_round_matches.last.winner_score}}</span>
+                                    {% else %}
+                                        <span class="score">{{ tournament.first_round_matches.last.loser_score}}</span>
+                                    {% endif %}
+
                                 </div>
                                 <div class="match-bottom team">
                                     <span class="image">{{ tournament.first_round_matches.last.player2.avatar.url}}</span>
                                     <span class="seed">4</span>
                                     <span class="name">{{ tournament.first_round_matches.last.player2.username }}</span>
-                                    <span class="score">{{ tournament.first_round_matches.last.player2_score}}</span>
+                                    {% if tournament.first_round_matches.last.player2.username == tournament.first_round_matches.last.winner.username %}
+                                        <span class="score">{{ tournament.first_round_matches.last.winner_score}}</span>
+                                    {% else %}
+                                        <span class="score">{{ tournament.first_round_matches.last.loser_score}}</span>
+                                    {% endif %}
                                 </div>
                                 <div class="match-lines">
                                     <div class="line one"></div>
@@ -151,13 +168,22 @@
                                     <span class="image">{{ tournament.final_round_matches.first.player1.avatar.url}}</span>
                                     <span class="seed">5</span>
                                     <span class="name">{{ tournament.final_round_matches.first.player1.username }}</span>
-                                    <span class="score">{{ tournament.final_round_matches.first.player1_score }}</span>
+                                    {% if tournament.final_round_matches.first.player1.username == tournament.final_round_matches.first.winner.username %}
+                                        <span class="score">{{ tournament.final_round_matches.first.winner_score}}</span>
+                                    {% else %}
+                                        <span class="score">{{ tournament.final_round_matches.first.loser_score}}</span>
+                                    {% endif %}
+
                                 </div>
                                 <div class="match-bottom team">
                                     <span class="image">{{ tournament.final_round_matches.first.player2.avatar.url}}</span>
                                     <span class="seed">6</span>
                                     <span class="name">{{ tournament.final_round_matches.first.player2.username }}</span>
-                                    <span class="score">{{ tournament.final_round_matches.first.player2_score }}</span>
+                                    {% if tournament.final_round_matches.first.player2.username == tournament.final_round_matches.first.winner.username %}
+                                        <span class="score">{{ tournament.final_round_matches.first.winner_score}}</span>
+                                    {% else %}
+                                        <span class="score">{{ tournament.final_round_matches.first.loser_score}}</span>
+                                    {% endif %}
                                 </div>
                                 <div class="match-lines">
                                     <div class="line one"></div>

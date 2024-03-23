@@ -10,7 +10,8 @@ from django.http import HttpResponseRedirect
 from django.http import Http404
 from django.utils import timezone
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-import ssl  # TODO temporary solution
+import ssl
+
 
 from .forms import (
     BlockUserForm,
@@ -588,18 +589,18 @@ def dashboard(request):
 @never_cache
 @login_required()
 def rankings(request):
-    top_users = UserProfile.objects.filter(
-        game_stats__total_win_rate_pong__isnull=False
-    ).exclude(username='IndianAI').order_by("-elo_point")[:3]
-
     lang = request.COOKIES.get('selectedLanguage', 'en')
     context = langs.get_langs(lang)
+
+    top_users = UserProfile.objects.filter(
+        game_stats_pong__total_win_rate_pong__isnull=False
+    ).exclude(username='IndianAI').order_by("-elo_point")[:3]
     # Her bir kullanıcıya sıra numarası eklemek için döngü
     for index, user in enumerate(top_users, start=1):
         user.rank = index
     
     other_users = UserProfile.objects.filter(
-        game_stats__total_win_rate_pong__isnull=False
+        game_stats_pong__total_win_rate_pong__isnull=False
     ).exclude(username='IndianAI').order_by("-elo_point")[3:]
 
     for index, user in enumerate(other_users, start=4):
@@ -747,8 +748,8 @@ def search(request):
             # Add social media information to the dictionary
             if result.social:
                 result_dict["social"] = model_to_dict(result.social)
-            if result.game_stats:
-                result_dict["game_stats"] = model_to_dict(result.game_stats)
+            if result.game_stats_pong:
+                result_dict["game_stats_pong"] = model_to_dict(result.game_stats_pong)
             # Append the dictionary to the list
             results_list.append(result_dict)
         paginator = Paginator(results_list, 8)
@@ -1253,19 +1254,18 @@ def update_winner(request):
 
 
 def update_winner_pong(data):
+    from .update import update_wallet_elo, update_stats_pong
+
     winner = data.get("winner")
     loser = data.get("loser")
 
-    winner_score = int(data.get("winnerscore"))
-    loser_score = int(data.get("loserscore"))
+    winner_score = int(data.get("winner_score"))
+    loser_score = int(data.get("loser_score"))
     start_time = data.get("start_time")
     finish_time = data.get("finish_time")
     winner_profile = get_object_or_404(UserProfile, username=winner)
     loser_profile = get_object_or_404(UserProfile, username=loser)
-    if winner:
-        winner_profile.update_wallet_elo()
-    else:
-        loser_profile.update_wallet_elo(winner=False)
+    update_wallet_elo(winner_profile, loser_profile)
 
     start_time = datetime.strptime(start_time, "%Y-%m-%dT%H:%M:%S.%fZ")
     finish_time = datetime.strptime(finish_time, "%Y-%m-%dT%H:%M:%S.%fZ")
@@ -1275,34 +1275,30 @@ def update_winner_pong(data):
         group_name=winner_profile.username + "_" + loser_profile.username,
         player1=winner_profile,
         player2=loser_profile,
-        player1_score=winner_score,
-        player2_score=loser_score,
+        winner_score=winner_score,
+        loser_score=loser_score,
         winner=winner_profile,
         loser=loser_profile,
         game_duration=game_duration,
     )
 
     # Game Stats #
-    # Winner #
-    winner_profile.update_stats(winner_score, loser_score, game_duration)
-    loser_profile.update_stats(winner_score, loser_score, game_duration, winner=False)
-    
-    # Loser #
+    update_stats_pong(winner_profile, loser_profile, winner_score, loser_score, game_duration)
+
     
 
 def update_winner_rps(data):
+    from .update import update_wallet_elo, update_stats_rps
+
     winner = data.get("winner")
     loser = data.get("loser")
-    winnerscore = int(data.get("winnerscore"))
-    loserscore = int(data.get("loserscore"))
+    winner_score = int(data.get("winner_score"))
+    loser_score = int(data.get("loser_score"))
     start_time = data.get("start_time")
     finish_time = data.get("finish_time")
     winner_profile = get_object_or_404(UserProfile, username=winner)
     loser_profile = get_object_or_404(UserProfile, username=loser)
-    if winner:
-        winner_profile.update_wallet_elo()
-    else:
-        loser_profile.update_wallet_elo(winner=False)
+    update_wallet_elo(winner_profile, loser_profile)
 
     start_time = datetime.strptime(start_time, "%Y-%m-%dT%H:%M:%S.%fZ")
     finish_time = datetime.strptime(finish_time, "%Y-%m-%dT%H:%M:%S.%fZ")
@@ -1312,19 +1308,13 @@ def update_winner_rps(data):
         group_name=winner_profile.username + "_" + loser_profile.username,
         player1=winner_profile,
         player2=loser_profile,
-        player1_score=winnerscore,
-        player2_score=loserscore,
+        winner_score=winner_score,
+        loser_score=loser_score,
         winner=winner_profile,
         loser=loser_profile,
         game_duration=game_duration,
     )
-    if winner_profile.game_stats_rps is None:
-        winner_profile.game_stats_rps = UserGameStatRPS.objects.create()
-        winner_profile.save()
-    if loser_profile.game_stats_rps is None:
-        loser_profile.game_stats_rps = UserGameStatRPS.objects.create()
-        loser_profile.save()
     # Game Stats #
-    winner_profile.update_stats_rps(winnerscore, loserscore, game_duration)
-    loser_profile.update_stats_rps(winnerscore, loserscore, game_duration, winner=False)
+    update_stats_rps(winner_profile, loser_profile, winner_score, loser_score, game_duration)
+
 

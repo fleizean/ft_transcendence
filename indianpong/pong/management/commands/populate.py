@@ -12,7 +12,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         num_users = options['num_users']
-        user_game_stats = []
+        user_game_stats_pong = []
         socials = []
         user_profiles = []
         password = make_password('123456a.')
@@ -34,7 +34,7 @@ class Command(BaseCommand):
                 total_avg_points_won_pong=randint(0, 100),
                 total_avg_points_lost_pong=randint(0, 100)
             )
-            user_game_stats.append(game_stat)
+            user_game_stats_pong.append(game_stat)
 
             # Prepare Social instance
             social = Social(
@@ -51,13 +51,13 @@ class Command(BaseCommand):
                 email=email, 
                 displayname=displayname, 
                 password=password, 
-                game_stats=game_stat,
+                game_stats_pong=game_stat,
                 social=social
             )
             user_profiles.append(user_profile)
 
         # Create instances in database
-        UserGameStat.objects.bulk_create(user_game_stats)
+        UserGameStat.objects.bulk_create(user_game_stats_pong)
         Social.objects.bulk_create(socials)
         #UserProfile.objects.bulk_create(user_profiles)
         # Create UserProfile instances individually to trigger save method
