@@ -15,6 +15,7 @@ from indianpong.settings import EMAIL_HOST_USER, STATICFILES_DIRS
 from django.utils import timezone
 import uuid
 from datetime import timedelta
+from .game import MAX_SCORE
 
 
 class Social(models.Model):
@@ -297,16 +298,16 @@ class Game(models.Model):
     def __str__(self):
         return f"{self.player1.username} vs {self.player2.username}"
     
-    def forfeit(self, forfeiting_user, max_score=10):
+    def forfeit(self, forfeiting_user):
         if self.player1 == forfeiting_user:
             self.winner = self.player2
             self.loser = self.player1
             self.loser_score = 0
-            self.winner_score = max_score
+            self.winner_score = MAX_SCORE
         else:
             self.winner = self.player1
             self.loser = self.player2
-            self.winner_score = max_score
+            self.winner_score = MAX_SCORE
             self.loser_score = 0
         self.save()
     
@@ -339,7 +340,6 @@ class Tournament(models.Model):
     )
 
     name = models.CharField(max_length=100)
-    max_score = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(10)], default=10)
     game_mode = models.CharField(max_length=10, choices=GAME_MODE_CHOICES, default="vanilla")
     creator = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='creator_tournament')
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default="open")

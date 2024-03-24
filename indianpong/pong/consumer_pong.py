@@ -291,6 +291,7 @@ class PongConsumer(AsyncWebsocketConsumer):
                 'game_id': game_id,
                 'vote': current,
         })
+        
     async def leave_handler(self, game_id, left, opponent):
         # Get scores
         game = await GAMES.get(game_id) 

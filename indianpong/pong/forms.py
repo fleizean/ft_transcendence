@@ -608,7 +608,7 @@ class SetPasswordUserForm(SetPasswordForm):
 class TournamentForm(forms.ModelForm):
     class Meta:
         model = Tournament
-        fields = ['name', 'max_score', 'game_mode']
+        fields = ['name', 'game_mode']
 
     def __init__(self, *args, **kwargs):
         self.request = kwargs.pop('request', None)

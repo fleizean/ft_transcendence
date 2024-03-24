@@ -68,7 +68,7 @@ class PongGame:
         if (self.isTime != True):
             self.start_time = time.time()
             self.isTime = True
-        start_time = time.time()
+
         if (self.frozenBall): return self.ball.x, self.ball.y, self.player1.score, self.player2.score
         self.ball.x += self.ball.speed * self.ball.dx
         self.ball.y += self.ball.speed * self.ball.dy

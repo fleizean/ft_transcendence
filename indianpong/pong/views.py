@@ -1107,7 +1107,7 @@ def tournament_room(request, id):
             ).exclude(winner__isnull=False).first()
 
             if match:
-                match.forfeit(request.user, max_score=tournament.max_score)
+                match.forfeit(request.user)
                 messages.success(request, 'You have forfeited the tournament.')
             else:
                 messages.error(request, 'There is no such a game')
@@ -1126,7 +1126,9 @@ def tournament_room(request, id):
     if games:
         first_game_id = games.first().id
         last_game_id = games.last().id
-    return render(request, "tournament-room.html", {"tournament": tournament, 'user': request.user, 'is_participants': is_participants, 'empty_slots': empty_slots, "context": context, 'first_game_id': first_game_id, 'last_game_id': last_game_id})
+    final_game = tournament.final_round_matches.first()
+    final_game_id = final_game.id if final_game else None
+    return render(request, "tournament-room.html", {"tournament": tournament, 'user': request.user, 'is_participants': is_participants, 'empty_slots': empty_slots, "context": context, 'first_game_id': first_game_id, 'last_game_id': last_game_id, 'final_game_id': final_game_id})
 
 @never_cache
 @login_required()
