@@ -134,7 +134,6 @@ class PongGame:
         self.ball.dy = random.choice([-1, 1])
         if self.player1.score >= MAX_SCORE or self.player2.score >= MAX_SCORE:
             self.status = Status.ENDED
-            self.no_more = True
             self.end_time = time.time()
             #? Record the game in the database?
 
@@ -196,8 +195,4 @@ class PongGame:
     def getDuration(self):
         return self.end_time - self.start_time 
 
-    def getWinnerLoserScore(self):
-        if self.player1.score > self.player2.score:
-            return self.player1.score, self.player2.score
-        else:
-            return self.player2.score, self.player1.score
+

@@ -293,7 +293,7 @@ matchsocket.onmessage = function (e) {
 
             console.log(`Invited Group: ${data.inviter} vs ${data.invitee}`);
             break;
-        
+
         case 'tournament.match':
             player1.username = data.player1;
             player2.username = data.player2;
@@ -598,7 +598,7 @@ function accept(inviter) {
     matchsocket.sendJSON({
         action: 'accept',
         inviter_username: inviter,
-    });
+            });
 }
 
 function decline(inviter) {

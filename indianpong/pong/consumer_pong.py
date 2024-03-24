@@ -45,9 +45,7 @@ class PongConsumer(AsyncWebsocketConsumer):
             'user': self.user.username,
         })
         if self.game_type == 'tournament':
-            from .models import Game
-            game = await Game.objects.aget(id=self.game_id)
-            await self.tournament_match_handler(game)
+            await self.tournament_match_handler()
 
     async def disconnect(self, close_code):
         game_id = await USER_STATUS.get(self.user.username)
@@ -89,16 +87,14 @@ class PongConsumer(AsyncWebsocketConsumer):
             invitee_username = data.get('invitee_username')
             if matchmaking == 'true':
                 invitee_username = await self.matchmaking_handler()
-            else:      
-                await self.check_is_user_inlobby(invitee_username)
-
-            invitee_channel_name = await USER_CHANNEL_NAME.get(invitee_username)
-            if invitee_channel_name:
-                await self.channel_layer.send(invitee_channel_name, {
-                    'type': 'game.invite',
-                    'inviter': self.user.username,
-                    'invitee': invitee_username,
-                })
+            if await self.check_is_user_inlobby(invitee_username):                
+                invitee_channel_name = await USER_CHANNEL_NAME.get(invitee_username)
+                if invitee_channel_name:
+                    await self.channel_layer.send(invitee_channel_name, {
+                        'type': 'game.invite',
+                        'inviter': self.user.username,
+                        'invitee': invitee_username,
+                    })
 
         elif action == 'accept':
             inviter_username = data.get('inviter_username')
@@ -185,6 +181,7 @@ class PongConsumer(AsyncWebsocketConsumer):
                         )
                     elif (game.status == Status.ENDED and not game.no_more):
                         await self.end_handler(game_id, game)
+                        game.no_more = True
 
 
         elif action == "paddle": #? Needs validation
@@ -223,22 +220,23 @@ class PongConsumer(AsyncWebsocketConsumer):
                     )
 
     ### HANDLERS ###
-    async def tournament_match_handler(self, game):
-        if await self.check_is_user_inlobby(game.player1.username) and await self.check_is_user_inlobby(game.player2.username):
-            player1_channel_name = await USER_CHANNEL_NAME.get(game.player1.username)
-            player2_channel_name = await USER_CHANNEL_NAME.get(game.player2.username)
+    async def tournament_match_handler(self):
+        game_id, player1, player2, group_name, tournament_id = await self.match_details()
+        if await self.check_is_user_inlobby(player1) and await self.check_is_user_inlobby(player2):
+            player1_channel_name = await USER_CHANNEL_NAME.get(player1)
+            player2_channel_name = await USER_CHANNEL_NAME.get(player2)
 
-            await self.channel_layer.group_add(game.group_name, player1_channel_name)
-            await self.channel_layer.group_add(game.group_name, player2_channel_name)
+            await self.channel_layer.group_add(group_name, player1_channel_name)
+            await self.channel_layer.group_add(group_name, player2_channel_name)
 
-            await GAMES.set(game.id, PongGame(game.player1.username, game.player2.username, game.tourmament_id))
+            await GAMES.set(game_id, PongGame(player1, player2, tournament_id))
 
-            await self.channel_layer.group_send(game.group_name, {
+            await self.channel_layer.group_send(group_name, {
                 'type': 'tournament.match',
-                'tournament_id': game.tournament_id,
-                'game_id': game.id,
-                'player1': game.player1.username,
-                'player2': game.player2.username,
+                'tournament_id': tournament_id,
+                'game_id': game_id,
+                'player1': player1,
+                'player2': player2,
             })
         
 
@@ -555,6 +553,16 @@ class PongConsumer(AsyncWebsocketConsumer):
         # db operations
         await self.update_stats_elo_wallet(game_id, winner_score, loser_score, winner, loser, game_duration)
 
+    @database_sync_to_async
+    def match_details(self):
+        from .models import Game
+        game = Game.objects.get(id=self.game_id)
+        game_id = game.id
+        player1 = game.player1.username
+        player2 = game.player2.username
+        group_name = game.group_name
+        tournament_id = game.tournament_id
+        return game_id, player1, player2, group_name, tournament_id
 
     @database_sync_to_async
     def update_stats_elo_wallet(self, game_id, winner_score, loser_score, winner, loser, game_duration):
