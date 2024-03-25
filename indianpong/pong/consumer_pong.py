@@ -10,7 +10,7 @@ from .utils import add_to_cache, remove_from_cache
 from pong.game import *
 import datetime
 
-USER_CHANNEL_NAME = AsyncLockedDict() # key: id, value: channel_name
+USER_CHANNEL_NAME = AsyncLockedDict() # key: username, value: channel_name
 GAMES = AsyncLockedDict() # key: game_id, value: PongGame object
 USER_STATUS = AsyncLockedDict() # key: username, value: game_id or lobby
 

@@ -3,6 +3,8 @@ from channels.db import database_sync_to_async
 from channels.generic.websocket import AsyncWebsocketConsumer
 
 
+
+
 class RPSConsumer(AsyncWebsocketConsumer):
     players_queue = []
     is_matched = False  # Eşleştirme durumunu kontrol etmek için bir bayrak ekleyin

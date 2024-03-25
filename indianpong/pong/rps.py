@@ -22,10 +22,11 @@ class Shaker:
         self.score = 0
         self.choices = []
 
-class RockPaperScissors:
+class RPS:
     def __init__(self, player1, player2):
         self.shaker1 = Shaker(player1)
         self.shaker2 = Shaker(player2)
+        self.group_name = f'rps_{player1}_{player2}'
 
     def play(self, username, choice):
         if username == self.shaker1.username:
