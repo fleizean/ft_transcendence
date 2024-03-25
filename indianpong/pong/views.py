@@ -831,9 +831,13 @@ def play_ai(request, game_type, game_id):
 @never_cache
 @login_required()
 def play_rps(request):
-    
+    lang = request.COOKIES.get('selectedLanguage', 'en')
+    context = langs.get_langs(lang)
+    user_items = UserItem.objects.filter(user=request.user)
 
-    return render(request, "play-rps.html")
+    cheater_rps = get_equipped_item_value(user_items, "Cheater", "None")
+    godthings_rps = get_equipped_item_value(user_items, "God Things", "None")
+    return render(request, "play-rps.html", {"cheater_rps": cheater_rps, "godthings_rps": godthings_rps, "context": context})
 
 @never_cache
 @login_required()
@@ -1281,8 +1285,8 @@ def update_winner_pong(data):
     winner = data.get("winner")
     loser = data.get("loser")
 
-    winner_score = int(data.get("winner_score"))
-    loser_score = int(data.get("loser_score"))
+    winnerscore = data.get("winnerscore")
+    loserscore = data.get("loserscore")
     start_time = data.get("start_time")
     finish_time = data.get("finish_time")
     winner_profile = get_object_or_404(UserProfile, username=winner)
@@ -1297,15 +1301,15 @@ def update_winner_pong(data):
         group_name=winner_profile.username + "_" + loser_profile.username,
         player1=winner_profile,
         player2=loser_profile,
-        winner_score=winner_score,
-        loser_score=loser_score,
+        winner_score=winnerscore,
+        loser_score=loserscore,
         winner=winner_profile,
         loser=loser_profile,
         game_duration=game_duration,
     )
 
     # Game Stats #
-    update_stats_pong(winner_profile, loser_profile, winner_score, loser_score, game_duration)
+    update_stats_pong(winner_profile, loser_profile, winnerscore, loserscore, game_duration, "not_remote")
 
     
 
@@ -1314,14 +1318,15 @@ def update_winner_rps(data):
 
     winner = data.get("winner")
     loser = data.get("loser")
-    winner_score = int(data.get("winner_score"))
-    loser_score = int(data.get("loser_score"))
+    winnerscore = data.get("winnerscore")
+    loserscore = data.get("loserscore")
     start_time = data.get("start_time")
     finish_time = data.get("finish_time")
     winner_profile = get_object_or_404(UserProfile, username=winner)
     loser_profile = get_object_or_404(UserProfile, username=loser)
     update_wallet_elo(winner_profile, loser_profile)
 
+    
     start_time = datetime.strptime(start_time, "%Y-%m-%dT%H:%M:%S.%fZ")
     finish_time = datetime.strptime(finish_time, "%Y-%m-%dT%H:%M:%S.%fZ")
     game_duration = finish_time - start_time
@@ -1330,13 +1335,13 @@ def update_winner_rps(data):
         group_name=winner_profile.username + "_" + loser_profile.username,
         player1=winner_profile,
         player2=loser_profile,
-        winner_score=winner_score,
-        loser_score=loser_score,
+        winner_score=winnerscore,
+        loser_score=loserscore,
         winner=winner_profile,
         loser=loser_profile,
         game_duration=game_duration,
     )
     # Game Stats #
-    update_stats_rps(winner_profile, loser_profile, winner_score, loser_score, game_duration)
+    update_stats_rps(winner_profile, loser_profile, winnerscore, loserscore, game_duration, "not_remote")
 
 

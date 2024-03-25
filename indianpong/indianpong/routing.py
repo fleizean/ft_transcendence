@@ -11,7 +11,3 @@ websocket_urlpatterns = [
     #re_path(r'^ws/chat/(?P<room_name>[\w-]+)/$', consumers.PongConsumer.as_asgi()),
     re_path(r'^ws/rps/$', consumer_rps.RPSConsumer.as_asgi()),
 ]
-
-channel_routing = {
-    'player.matched': consumer_rps.RPSConsumer.player_matched,
-}

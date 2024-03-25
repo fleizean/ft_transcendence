@@ -556,11 +556,7 @@ function removeUserFromTable(username) {
     });
 }
 
-//----------------------------------------------
-// Add an event listener for the "Matchmaking" button
-/* inviteButton.onclick = function () {
-    invite('true');
-} */
+
 
 function invite(matchmaking = 'false', username) {
     // Get necessary data and call socket.sendJSON
@@ -586,6 +582,7 @@ matchmakingButton.onclick = function () {
 //----------------------------------------------
 
 function exitGame() {
+    console.log("id: " + my.game_id);
     matchsocket.sendJSON({
         action: 'exit',
         game_id: my.game_id,

@@ -122,7 +122,7 @@ class UserItem(models.Model):
     is_equipped = models.BooleanField(default=False) # kullanıma alındı mı veya inventorye eklendi mi?
     whatis = models.CharField(max_length=100, blank=True, null=True) # ai name or colors
 
-class UserGameStat(models.Model):
+class UserGameStat(models.Model): #? Pong and RPS models are same
     total_games_pong = models.IntegerField(default=0)
     total_win_pong = models.IntegerField(default=0)
     total_lose_pong = models.IntegerField(default=0)
@@ -381,11 +381,6 @@ class Tournament(models.Model):
         )
         self.final_round_matches.add(final_game)
     
-""" class TournamentMatch(models.Model):
-    tournament = models.ForeignKey(Tournament, on_delete=models.CASCADE, related_name='matches')
-    player1 = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='tournament_matches_as_player1')
-    player2 = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='tournament_matches_as_player2')
-    winner = models.ForeignKey(UserProfile, on_delete=models.CASCADE, null=True, blank=True, related_name='tournament_wins') """
 
 class OAuthToken(models.Model):
     user = models.OneToOneField(UserProfile, on_delete=models.CASCADE)

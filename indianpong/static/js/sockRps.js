@@ -3,79 +3,19 @@
 const wsEndpoint = 'ws://' + window.location.host + '/ws/rps/';
 const websocket = new WebSocket(wsEndpoint);
 
-websocket.onopen = () => {
-    console.log('WebSocket connected');
+const translationswin = {
+    'hi': 'आप जीत गए',
+    'pt': 'você ganhou',
+    'tr': 'kazandınız',
+    'en': 'you win' // Varsayılan İngilizce metin
 };
 
-// Prevent animation on load
-setTimeout(() => {
-    document.body.classList.remove("preload");
-}, 500);
-
-
-var game_id = null;
-var opponentChoice = null;
-
-websocket.onmessage = function (e) {
-    var data = JSON.parse(e.data)
-    if (data.message) {
-        alert(data.message)
-        if (data.message.startsWith('You have been matched')) {
-            // The user has been matched with another player
-            // Hide the 'Join Queue' button and show the game container
-            document.getElementById('ponggamebtn').style.visibility = 'hidden';
-            document.getElementById('container-top').style.visibility = 'visible';
-        }
-    }
-    if (data.type === 'game_id') {
-        console.log(data.game_id)
-        game_id = data.game_id;
-        document.getElementById('ponggamebtn').style.visibility = 'hidden';
-        document.getElementById('container-top').style.visibility = 'visible';
-    }
-    if (data.queue_count) {
-        document.getElementById('queueCount').innerText = data.queue_count
-    }
-    if (data.action === 'choose_hand') {
-        const dataChoice = data.choice;
-        const choiceName = dataChoice;
-        const choice = CHOICES.find((choice) => choice.name === choiceName);
-        opponentChoice = choice;
-    }
-}
-
-function sendChoice(choice) {
-    websocket.send(
-        JSON.stringify({
-            action: 'choose_hand',
-            choice: choice,
-            scoreNumber1: scoreNumber1,
-            scoreNumber2: scoreNumber2,
-        })
-    )
-}
-
-function endGame() {
-    websocket.send(
-        JSON.stringify({
-            action: 'end_game',
-            winner: scoreNumber1.innerText > scoreNumber2.innerText ? 'player1' : 'player2',
-            loser: scoreNumber1.innerText < scoreNumber2.innerText ? 'player1' : 'player2',
-            scoreNumber1: scoreNumber1.innerText,
-            scoreNumber2: scoreNumber2.innerText,
-            gameId: game_id,
-        })
-    )
-}
-
-function joinQueue() {
-    // "rps-buttons" yerine "container-top" kullanıyoruz
-    websocket.send(
-        JSON.stringify({
-            action: 'join_queue'
-        })
-    )
-}
+const translationslose = {
+    'hi': 'आप हार गए',
+    'pt': 'você perdeu',
+    'tr': 'kaybettiniz',
+    'en': 'you lose' // Varsayılan İngilizce metin
+};
 
 const CHOICES = [
     {
@@ -90,7 +30,181 @@ const CHOICES = [
         name: "rock",
         beats: "scissors",
     },
+    {
+        name: "godthings",
+        beats: "all",
+    },
+    {
+        name: "cheater",
+        beats: "all",
+    }
 ];
+
+// Prevent animation on load
+setTimeout(() => {
+    document.body.classList.remove("preload");
+}, 500);
+
+// maybe merge with my object
+var player1 = {username: '', score: 0};
+var player2 = {username: '', score: 0};
+
+var my = {
+    username: '', opponent_username: '', game_id: '',
+};
+
+function scoreUpdate(player1_score, player2_score) {
+    player1.score = player1_score;
+    player2.score = player2_score;
+}
+
+websocket.onopen = function (e) {
+    // Show some greeting message
+    console.log('WebSocket connection established');
+}
+
+websocket.onclose = function (e) {
+    // stop the game
+    console.error('WebSocket connection closed');
+}
+
+websocket.onerror = function (e) {
+    console.error('Error: ' + e.data);
+    // stop the game
+}
+
+websocket.onmessage = function (e) {
+    const data = JSON.parse(e.data);
+    switch (data.type) {
+        case 'insearch':
+            // Self send message
+            console.log('In search', data.user);
+            if (my.username === '') {
+                my.username = data.user;
+            }
+            // Take online users usernames and display them
+            addUserCount(data.user_count);
+            console.log('Online users', data.user_count);
+            break;
+        
+        case 'user.insearch':
+            // Send others i joined the lobby
+            console.log('User in search', data.user);
+            // Add user to online users list
+            if (data.user !== my.username) {
+                addUserCount(1);
+            }
+            if (selectedLanguage === 'tr')
+                showToast(data.user + ' katıldı!', 'text-bg-success', 'bi bi-check-circle-fill')
+            else if (selectedLanguage === 'hi')  
+                showToast(data.user + ' शामिल हो गया!', 'text-bg-success', 'bi bi-check-circle-fill')
+            else if (selectedLanguage === 'pt')  
+                showToast(data.user + ' entrou!', 'text-bg-success', 'bi bi-check-circle-fill')
+            else
+                showToast(data.user + ' joined!', 'text-bg-success', 'bi bi-check-circle-fill')
+            break;
+        case 'user.outsearch':
+            // Send others user left the lobby
+            console.log('User out search', data.user);
+            // Remove user from online users list
+            addUserCount(-1);
+            if (selectedLanguage === 'tr')
+                showToast(data.user + ' ayrıldı!', 'text-bg-danger', 'bi bi-check-circle-fill')
+            else if (selectedLanguage === 'hi')
+                showToast(data.user + ' चला गया!', 'text-bg-danger', 'bi bi-check-circle-fill')
+            else if (selectedLanguage === 'pt')
+                showToast(data.user + ' saiu!', 'text-bg-danger', 'bi bi-check-circle-fill')
+            else
+                showToast(data.user + ' left!', 'text-bg-danger', 'bi bi-check-circle-fill')
+            break;
+        case 'game.disconnected':
+            // stop the game
+            gameOverScreen.style.display = 'block'; //? check
+            showToast(`${data.disconnected} disconnected You are automatically winner`, 'text-bg-danger', 'bi bi-check-circle-fill')
+            console.log('Player disconnected', data.disconnected);
+            break;
+        case 'start':
+            // Start the game
+            my.game_id = data.game_id;
+            player1 = data.player1;
+            player2 = data.player2;
+            document.getElementById("player1Name").innerText = player1.username;
+            document.getElementById("player2Name").innerText = player2.username;
+
+            if (selectedLanguage === 'tr')
+                showToast('Oyun başladı', 'text-bg-success', 'bi bi-check-circle-fill')
+            else if (selectedLanguage === 'hi')
+                showToast('खेल शुरू हुआ', 'text-bg-success', 'bi bi-check-circle-fill')
+            else if (selectedLanguage === 'pt')
+                showToast('Jogo começou', 'text-bg-success', 'bi bi-check-circle-fill')
+            else
+                showToast('Game started', 'text-bg-success', 'bi bi-check-circle-fill')
+            break;
+        
+        case 'matchmaking.notfound':
+            // Matchmaking found
+            showToast('No opponent found', 'text-bg-danger', 'bi bi-check-circle-fill')
+            break;
+        
+        case 'result': 
+            // Game result
+            result = data.result;
+            game_id= data.game_id,
+            player1_score = data.player1_score,
+            player2_score = data.player2_score,
+            scoreUpdate(player1_score, player2_score);
+
+            switch (result) {
+                case 'PLAYER1_WIN':
+                    break;
+                case 'PLAYER2_WIN':
+                    break;
+                case 'DRAW':
+                    break;
+                case 'OVER':
+                    break;
+            }
+
+            break;    
+
+        }
+    }
+
+function addUserCount(count) {
+    var userCountElement = document.getElementById('userCount');
+    var currentCount = parseInt(userCountElement.innerText);
+    
+    if (!isNaN(count) || count !== undefined) {
+        userCountElement.innerText = currentCount + count;
+    }
+}
+
+function searchOpponent() {
+    // Search for opponent
+    websocket.send(JSON.stringify({
+        type: 'matchmaking',
+    }));
+}
+
+function sendChoicce(choice) {
+    // Send choice to opponent
+    websocket.send(JSON.stringify({
+        type: 'choice',
+        game_id: my.game_id,
+        choice: choice, // rock, paper, scissors
+    }));
+}
+
+function sendAbility(ability) {
+    // Send ability to opponent
+    websocket.send(JSON.stringify({
+        type: 'ability',
+        game_id: my.game_id,
+        ability: ability, // shield, heal, attack
+    }));
+}
+
+//-------------------
 
 const ICON_PATH = document.querySelector('.container-top').dataset.iconpath;
 
@@ -191,7 +305,6 @@ function showGameOverScreen() {
     document.getElementById('loserText').innerText = loserText;
     var winnerText = (scoreNumber1 == MAX_SCORE) ? "YOU WIN!" : "";
     var loserText = (scoreNumber2 == MAX_SCORE) ? "YOU LOSE!" : "";
-    console.log("TEST")
     if (scoreNumber1 > scoreNumber2) {
         document.getElementById('gameOverScreen').style.backgroundColor = 'rgba(11, 22, 8, 0.8)';
     }

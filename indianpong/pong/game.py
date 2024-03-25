@@ -60,14 +60,12 @@ class PongGame:
         self.no_more = False
         self.rageofFire = False
         self.frozenBall = False
-        self.start_time = time.time()
-        self.end_time = time.time()
-        self.isTime = False
+        self.start_time = None
+        self.end_time = None
 
     def moveBall(self):
-        if (self.isTime != True):
+        if (self.start_time == None):
             self.start_time = time.time()
-            self.isTime = True
 
         if (self.frozenBall): return self.ball.x, self.ball.y, self.player1.score, self.player2.score
         self.ball.x += self.ball.speed * self.ball.dx
@@ -183,6 +181,12 @@ class PongGame:
             return self.player2.username
         else:
             return self.player1.username
+        
+    def getWinnerLoserandScores(self):
+        if self.player1.score > self.player2.score:
+            return self.player1.username, self.player2.username, self.player1.score, self.player2.score
+        else:
+            return self.player2.username, self.player1.username, self.player2.score, self.player1.score
 
     def getScore(self, username):
         if username == self.player1.username:

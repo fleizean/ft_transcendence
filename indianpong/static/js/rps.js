@@ -209,7 +209,7 @@ function displayWinner(results) {
 
 function showGameOverScreenRPS() {
     resultsDiv.classList.toggle("show-winner");
-    var winnerText = (selectedLanguage && selectedLanguage in translationswin) ? translationswin[selectedLanguage] : translationslose[selectedLanguage] || translationslose['en'];
+    var winnerText = (selectedLanguage && selectedLanguage in translationswin && scoreNumber1.innerText == MAX_SCORE_RPS) ? translationswin[selectedLanguage] : translationslose[selectedLanguage] || translationslose['en'];
     document.getElementById('winnerText').innerText = winnerText;
     const isWin = (scoreNumber1.innerText == MAX_SCORE_RPS) ? true : false;
     const Result = (scoreNumber1.innerText == MAX_SCORE_RPS) ? "win" : "defeat";
@@ -341,7 +341,7 @@ function sendWinnerToBackend(winner, loser, winnerscore, loserscore, start_time)
         finish_time: finish_time
     };
 
-    fetch('update_winner', {
+    fetch('/update_winner', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

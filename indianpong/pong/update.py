@@ -28,7 +28,7 @@ def update_wallet_elo(winner, loser):
     loser.save()
 
 
-def update_stats_pong(winner, loser, winnerscore, loserscore, game_duration):
+def update_stats_pong(winner, loser, winnerscore, loserscore, game_duration, game_type):
     # Update total games count
     winner.game_stats_pong.total_games_pong += 1
     loser.game_stats_pong.total_games_pong += 1
@@ -58,22 +58,34 @@ def update_stats_pong(winner, loser, winnerscore, loserscore, game_duration):
     loser.game_stats_pong.total_win_rate_pong = (loser.game_stats_pong.total_win_pong / loser.game_stats_pong.total_games_pong)
     
     # Update total average game duration for both winner and loser
-    winner_total_game_duration_seconds =winner.game_stats_pong.total_avg_game_duration_pong.total_seconds() * (winner.game_stats_pong.total_games_pong - 1)
-    winner_total_game_duration_seconds += game_duration
-    winner_avg_game_duration_seconds = winner_total_game_duration_seconds / winner.game_stats_pong.total_games_pong
-    winner.game_stats_pong.total_avg_game_duration_pong = timedelta(seconds=winner_avg_game_duration_seconds)
+    if (game_type != "not_remote"):
+        winner_total_game_duration_seconds =winner.game_stats_pong.total_avg_game_duration_pong.total_seconds() * (winner.game_stats_pong.total_games_pong - 1)
+        winner_total_game_duration_seconds += game_duration
+        winner_avg_game_duration_seconds = winner_total_game_duration_seconds / winner.game_stats_pong.total_games_pong
+        winner.game_stats_pong.total_avg_game_duration_pong = timedelta(seconds=winner_avg_game_duration_seconds)
 
-    loser_total_game_duration_seconds = loser.game_stats_pong.total_avg_game_duration_pong.total_seconds() * (loser.game_stats_pong.total_games_pong - 1)
-    loser_total_game_duration_seconds += game_duration
-    loser_avg_game_duration_seconds = loser_total_game_duration_seconds / loser.game_stats_pong.total_games_pong
-    loser.game_stats_pong.total_avg_game_duration_pong = timedelta(seconds=loser_avg_game_duration_seconds)
+        loser_total_game_duration_seconds = loser.game_stats_pong.total_avg_game_duration_pong.total_seconds() * (loser.game_stats_pong.total_games_pong - 1)
+        loser_total_game_duration_seconds += game_duration
+        loser_avg_game_duration_seconds = loser_total_game_duration_seconds / loser.game_stats_pong.total_games_pong
+        loser.game_stats_pong.total_avg_game_duration_pong = timedelta(seconds=loser_avg_game_duration_seconds)
+    else:
+        winner_total_game_duration_seconds = winner.game_stats_pong.total_avg_game_duration_pong.total_seconds() * (winner.game_stats_pong.total_games_pong - 1)
+        winner_total_game_duration_seconds += game_duration.total_seconds()  # Corrected
+        winner_avg_game_duration_seconds = winner_total_game_duration_seconds / winner.game_stats_pong.total_games_pong
+        winner.game_stats_pong.total_avg_game_duration_pong = timedelta(seconds=winner_avg_game_duration_seconds)
+
+        loser_total_game_duration_seconds = loser.game_stats_pong.total_avg_game_duration_pong.total_seconds() * (loser.game_stats_pong.total_games_pong - 1)
+        loser_total_game_duration_seconds += game_duration.total_seconds()  # Corrected
+        loser_avg_game_duration_seconds = loser_total_game_duration_seconds / loser.game_stats_pong.total_games_pong
+        loser.game_stats_pong.total_avg_game_duration_pong = timedelta(seconds=loser_avg_game_duration_seconds)
+
 
     # Save updated stats
     winner.game_stats_pong.save()
     loser.game_stats_pong.save()
 
 
-def update_stats_rps(winner, loser, winnerscore, loserscore, game_duration):
+def update_stats_rps(winner, loser, winnerscore, loserscore, game_duration, game_type):
     # Update total games count
     winner.game_stats_rps.total_games_rps += 1
     loser.game_stats_rps.total_games_rps += 1
@@ -102,16 +114,28 @@ def update_stats_rps(winner, loser, winnerscore, loserscore, game_duration):
     winner.game_stats_rps.total_win_rate_rps = (winner.game_stats_rps.total_win_rps / winner.game_stats_rps.total_games_rps)
     loser.game_stats_rps.total_win_rate_rps = (loser.game_stats_rps.total_win_rps / loser.game_stats_rps.total_games_rps)
     
-    # Update total average game duration for both winner and loser
-    winner_total_game_duration_seconds = winner.game_stats_rps.total_avg_game_duration_rps.total_seconds() * (winner.game_stats_rps.total_games_rps - 1)
-    winner_total_game_duration_seconds += game_duration
-    winner_avg_game_duration_seconds = winner_total_game_duration_seconds / winner.game_stats_rps.total_games_rps
-    winner.game_stats_rps.total_avg_game_duration_rps = timedelta(seconds=winner_avg_game_duration_seconds)
+    # Update total average game duration for winner
+    if game_type != "not_remote":
+        winner_total_game_duration_seconds = winner.game_stats_rps.total_avg_game_duration_rps.total_seconds() * (winner.game_stats_rps.total_games_rps - 1)
+        winner_total_game_duration_seconds += game_duration
+        winner_avg_game_duration_seconds = winner_total_game_duration_seconds / winner.game_stats_rps.total_games_rps
+        winner.game_stats_rps.total_avg_game_duration_rps = timedelta(seconds=winner_avg_game_duration_seconds)
 
-    loser_total_game_duration_seconds = loser.game_stats_rps.total_avg_game_duration_rps.total_seconds() * (loser.game_stats_rps.total_games_rps - 1)
-    loser_total_game_duration_seconds += game_duration
-    loser_avg_game_duration_seconds = loser_total_game_duration_seconds / loser.game_stats_rps.total_games_rps
-    loser.game_stats_rps.total_avg_game_duration_rps = timedelta(seconds=loser_avg_game_duration_seconds)
+        loser_total_game_duration_seconds = loser.game_stats_rps.total_avg_game_duration_rps.total_seconds() * (loser.game_stats_rps.total_games_rps - 1)
+        loser_total_game_duration_seconds += game_duration
+        loser_avg_game_duration_seconds = loser_total_game_duration_seconds / loser.game_stats_rps.total_games_rps
+        loser.game_stats_rps.total_avg_game_duration_rps = timedelta(seconds=loser_avg_game_duration_seconds)
+    else:
+        winner_total_game_duration_seconds = winner.game_stats_rps.total_avg_game_duration_rps.total_seconds() * (winner.game_stats_rps.total_games_rps - 1)
+        winner_total_game_duration_seconds += game_duration.total_seconds()  # Convert timedelta to seconds
+        winner_avg_game_duration_seconds = winner_total_game_duration_seconds / winner.game_stats_rps.total_games_rps
+        winner.game_stats_rps.total_avg_game_duration_rps = timedelta(seconds=winner_avg_game_duration_seconds)
+    
+        loser_total_game_duration_seconds = loser.game_stats_rps.total_avg_game_duration_rps.total_seconds() * (loser.game_stats_rps.total_games_rps - 1)
+        loser_total_game_duration_seconds += game_duration.total_seconds()  # Convert timedelta to seconds
+        loser_avg_game_duration_seconds = loser_total_game_duration_seconds / loser.game_stats_rps.total_games_rps
+        loser.game_stats_rps.total_avg_game_duration_rps = timedelta(seconds=loser_avg_game_duration_seconds)
+
     
     # Save updated stats
     winner.game_stats_rps.save()

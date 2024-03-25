@@ -410,3 +410,20 @@
 .hidden {
     display: none;
 }
+
+.user-count {
+    color:tomato;
+    text-align:center;
+    font-size: 26px;
+    font-family: "VT323", monospace;
+    margin-bottom: 8px;
+}
+
+.user-count-text {
+    color: white;
+    font-size: 20px;
+    text-align:center;
+    font-family: "VT323", monospace;
+    margin-bottom:5px;
+    margin-top: 2em;
+}

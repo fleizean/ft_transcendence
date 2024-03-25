@@ -51,9 +51,9 @@ class PongConsumer(AsyncWebsocketConsumer):
         game_id = await USER_STATUS.get(self.user.username)
         if game_id != 'lobby':
             game = await GAMES.get(game_id)
-            await self.record_for_disconnected(game_id, game)
-            await self.exit_handler(game_id, game, game.otherPlayer(self.user.username))
             other_player_channel_name = await USER_CHANNEL_NAME.get(game.otherPlayer(self.user.username))
+            await self.record_for_disconnected(game_id, game)
+            await self.exit_handler(game_id, game)
             await self.channel_layer.send(other_player_channel_name, {
                 'type': 'game.disconnect',
                 'game_id': game_id,
@@ -128,7 +128,8 @@ class PongConsumer(AsyncWebsocketConsumer):
         elif action == 'exit':
             game_id = data.get('game_id')
             game = await GAMES.get(game_id)
-            await self.exit_handler(game_id, game)
+            if await self.check_is_users_ingame(game_id, game):
+                await self.exit_handler(game_id, game)
 
         #TODO Maybe remove this
         elif action == 'pause.game':
@@ -297,8 +298,9 @@ class PongConsumer(AsyncWebsocketConsumer):
         game = await GAMES.get(game_id) 
         left_score = game.getScore(left) # blocking?
         opponent_score = MAX_SCORE # set max score automaticaly
+        duration = game.getDuration()
         # Record the game
-        await self.record_game(game_id, opponent_score, left_score, opponent, left)
+        await self.record_stats_elo_wallet(game_id, opponent_score, left_score, opponent, left, duration)
         await USER_STATUS.set(game.player1.username, 'lobby') #?
         await USER_STATUS.set(game.player2.username, 'lobby') #?
 
@@ -316,8 +318,9 @@ class PongConsumer(AsyncWebsocketConsumer):
         )
         #await self.exit_handler(game_id, game, opponent) #! Invalid channel name error
 
-    async def exit_handler(self, game_id, game, opponent): #TODO When user close tab it should discard inside disconnect too
+    async def exit_handler(self, game_id, game):
         # Discard both from the game group
+        opponent = game.otherPlayer(self.user.username)
         opponent_channel_name = await USER_CHANNEL_NAME.get(opponent)
         await self.channel_layer.group_discard(game.group_name, self.channel_name)
         await self.channel_layer.group_discard(game.group_name, opponent_channel_name)
@@ -325,24 +328,15 @@ class PongConsumer(AsyncWebsocketConsumer):
         cache.set(f"playing_{opponent}", False)
         # delete the game from the cache
         await GAMES.delete(game_id)
-        
 
     async def end_handler(self, game_id, game):
         # Get scores
         player1_score = game.player1.score
         player2_score = game.player2.score
-        if player1_score > player2_score:
-            winner = game.player1.username
-            loser = game.player2.username
-            winner_score = player1_score
-            loser_score = player2_score
-        else:
-            winner = game.player2.username
-            loser = game.player1.username
-            winner_score = player2_score
-            loser_score = player1_score
+        duration = game.getDuration()
+        winner, loser, winner_score, loser_score = game.getWinnerLoserandScores()
         # Set the game winner, scores and save it to the database
-        await self.record_game(game_id, winner_score, loser_score, winner, loser)
+        await self.record_stats_elo_wallet(game_id, winner_score, loser_score, winner, loser, duration)
         await USER_STATUS.set(game.player1.username, 'lobby') #?
         await USER_STATUS.set(game.player2.username, 'lobby') #?
         
@@ -546,14 +540,6 @@ class PongConsumer(AsyncWebsocketConsumer):
         return game
     
 
-    #TODO leave için bozuldu Game modelste player1_score winner_score yap
-    async def record_game(self, game_id, winner_score, loser_score, winner, loser): 
-        # Get the game object from the cache
-        game_obj = await GAMES.get(game_id)
-        game_duration = game_obj.getDuration()
-        # db operations
-        await self.update_stats_elo_wallet(game_id, winner_score, loser_score, winner, loser, game_duration)
-
     @database_sync_to_async
     def match_details(self):
         from .models import Game
@@ -566,7 +552,7 @@ class PongConsumer(AsyncWebsocketConsumer):
         return game_id, player1, player2, group_name, tournament_id
 
     @database_sync_to_async
-    def update_stats_elo_wallet(self, game_id, winner_score, loser_score, winner, loser, game_duration):
+    def record_stats_elo_wallet(self, game_id, winner_score, loser_score, winner, loser, game_duration):
         from .models import Game, UserProfile
         from .update import update_wallet_elo, update_stats_pong, update_tournament
 
@@ -579,7 +565,7 @@ class PongConsumer(AsyncWebsocketConsumer):
         game.save()
 
         update_wallet_elo(game.winner, game.loser)
-        update_stats_pong(game.winner, game.loser, winner_score, loser_score, game_duration)
+        update_stats_pong(game.winner, game.loser, winner_score, loser_score, game_duration, "remote")
 
         # İf the game is a tournament game
         if game.tournament_id:   #? Check
@@ -587,10 +573,11 @@ class PongConsumer(AsyncWebsocketConsumer):
 
 
     async def record_for_disconnected(self, game_id, game):
+        duration = game.getDuration()
         if game.player1.username == self.user.username:
-            await self.record_game(game_id, game.player1.score, MAX_SCORE, game.player2.username, game.player1.username)
+            await self.record_stats_elo_wallet(game_id, game.player1.score, MAX_SCORE, game.player2.username, game.player1.username, duration)
         else:
-            await self.record_game(game_id, MAX_SCORE, game.player2.score, game.player1.username, game.player2.username)
+            await self.record_stats_elo_wallet(game_id, MAX_SCORE, game.player2.score, game.player1.username, game.player2.username, duration)
 
     async def check_is_user_inlobby(self, username):
         answer = await USER_STATUS.get(username) == 'lobby'
@@ -598,6 +585,10 @@ class PongConsumer(AsyncWebsocketConsumer):
             await self.send(text_data=json.dumps({
                 "error": "User is not in the lobby.",
             }))
+        return answer
+    
+    async def check_is_users_ingame(self, game_id, game):
+        answer = await USER_STATUS.get(game.player1.username) == game_id and await USER_STATUS.get(game.player2.username) == game_id
         return answer
 
     async def matchmaking_handler(self):

@@ -224,6 +224,7 @@ def get_lang_en():
         "rpsGameAIButtonText": "Play with AI",
         "rpsGameLocalButtonText": "Local Game",
         "rpsGameSearchOpponentButtonText": "Search Opponent ",
+        "rpsUserCountText": "number of people looking for a match right now",
 
         #AI-Game
             "rpsGamePageTittle": "RPS Game with Artificial Intelligence",
@@ -570,7 +571,8 @@ def get_lang_tr():
         "rpsGameAIButtonText": "Yapay Zeka Oyunu",
         "rpsGameLocalButtonText": "Yerel Oyun",
         "rpsGameSearchOpponentButtonText": "Rakip Arayın ",
-            
+        "rpsUserCountText": "şu anda eşleşme arayan kişi sayısı",
+        
             #AI-Game
             "rpsGamePageTittle": "RPS Yapay Zeka Oyunu",
             "rpsGameScoreText": "skor",
@@ -919,6 +921,7 @@ def get_lang_pt():
         "rpsGameAIButtonText": "Jogar com a IA",
         "rpsGameLocalButtonText": "Jogo Local",
         "rpsGameSearchOpponentButtonText": "Buscar Oponente ",
+        "rpsUserCountText": "Jogadores Online",
 
         #AI-Game
             "rpsGamePageTittle": "Jogo de Pedra, Papel e Tesoura com Inteligência Artificial",
@@ -1268,7 +1271,7 @@ def get_lang_hi():
         "rpsGameAIButtonText": "ए.आई. के साथ खेलें",
         "rpsGameLocalButtonText": "स्थानीय खेल",
         "rpsGameSearchOpponentButtonText": "विरोधी खोजें ",
-
+        "rpsUserCountText": "उपयोगकर्ता",
         #AI-Game
             "rpsGamePageTittle": "रॉक कागज कैंची आर्टिफिशियल इंटेलिजेंस गेम",
             "rpsGameScoreText": "स्कोर",
