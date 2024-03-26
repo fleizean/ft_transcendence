@@ -24,7 +24,7 @@
 				<div>
 					<label for="reactionDelay" style="color: white;">{{context.aiGameReactionDelayText}}:</label>
 					<span id="delayValue" style="color: white;">200</span>
-					<input type="range" id="reactionDelay" name="reactionDelay" min="1000" max="10000" value="2000" step="1000">				
+					<input type="range" class="slider" id="reactionDelay" name="reactionDelay" min="1000" max="10000" value="2000" step="1000">				
 				</div>
 			</div>
 		<div id="countdownContainer">
@@ -108,5 +108,17 @@
 		</div>
     </div>
     <script type=module src="{% static "js/game/play-ai.js" %}"></script>
+
+	{% comment %} <script>
+		document.addEventListener("DOMContentLoaded", function() {
+			// 'givemethemusic' elementini bul
+			var givemethemusicElement = document.getElementById("givemethemusic");
+			// Eğer 'givemethemusic' elementi varsa, ses kontrolünü göster
+			if (givemethemusicElement) {
+				var volumeControl = document.getElementById("volumeControl");
+				volumeControl.style.display = "inline-block";
+        	}
+		});
+	</script> {% endcomment %}
     {% csrf_token %}
 {% endblock %}

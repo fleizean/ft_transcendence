@@ -522,7 +522,7 @@ reactionDelaySlider.oninput = function() {
     reactionDelay = this.value / ball.speed;
     delayValueSpan.innerText = Math.round(reactionDelay); // Display the current value of the slider
     let value = (this.value-this.min)/(this.max-this.min)*100
-    this.style.background = 'linear-gradient(to right, violet, yellow ' + value + '%, #ccc ' + value + '%, #ccc)';
+    /* this.style.background = 'linear-gradient(to right, violet, yellow ' + value + '%, #ccc ' + value + '%, #ccc)'; */
 }
 let reactionDelay = Math.round(reactionDelaySlider.value / ball.speed);
 let lastBallPosition = { x: ball.x, y: ball.y };

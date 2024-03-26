@@ -87,6 +87,11 @@ class PongConsumer(AsyncWebsocketConsumer):
             invitee_username = data.get('invitee_username')
             if matchmaking == 'true':
                 invitee_username = await self.matchmaking_handler()
+                if invitee_username == None:
+                    await self.send(text_data=json.dumps({
+                        "error": "No suitable opponent found.",
+                    }))
+                    return
             if await self.check_is_user_inlobby(invitee_username):                
                 invitee_channel_name = await USER_CHANNEL_NAME.get(invitee_username)
                 if invitee_channel_name:
@@ -594,20 +599,25 @@ class PongConsumer(AsyncWebsocketConsumer):
     async def matchmaking_handler(self):
         from .models import UserProfile
         # Get the current user's elo_point
-        current_user_elo = await UserProfile.objects.aget(username=self.user.username).elo_point
-        
+        current_user = await UserProfile.objects.aget(username=self.user.username)
+        current_user_elo = current_user.elo_point
         # Get a list of online users
         lobby_users_usernames = await USER_STATUS.get_keys_with_value('lobby')
         lobby_users_usernames.remove(self.user.username) #TODO if user not in lobby
+
+        return await self.get_similar_users(lobby_users_usernames, current_user_elo)
         
-        # Filter users based on elo_point similarity
-        users = await UserProfile.objects.filter(username__in=users, elo_point__gte=current_user_elo-100, elo_point__lte=current_user_elo+100).aall()
+
+    
+    @database_sync_to_async
+    def get_similar_users(self, lobby_users_usernames, current_user_elo):
+        from .models import UserProfile
+        users = UserProfile.objects.filter(username__in=lobby_users_usernames, elo_point__gte=current_user_elo-100, elo_point__lte=current_user_elo+100).all()
         similar_users = [user.username for user in users]
-        
         if similar_users:
             invitee_username = random.choice(similar_users)
         else:
-            invitee_username = random.choice(lobby_users_usernames) #TODO if list is empty
+            invitee_username = random.choice(lobby_users_usernames) if lobby_users_usernames else None
         
         return invitee_username
 

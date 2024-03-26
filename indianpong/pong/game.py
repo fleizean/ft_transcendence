@@ -197,6 +197,8 @@ class PongGame:
             return None
 
     def getDuration(self):
+        if self.start_time == None or self.end_time == None:
+            return 0
         return self.end_time - self.start_time 
 
 

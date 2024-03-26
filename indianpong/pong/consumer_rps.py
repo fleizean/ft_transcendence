@@ -76,10 +76,15 @@ class RPSConsumer(AsyncWebsocketConsumer):
 
     async def receive(self, text_data):
         data = json.loads(text_data)
-        action = data.get('action')
+        action = data.get('type')
 
         if action == 'matchmaking':
             opponent = await self.matchmaking_handler()
+            if opponent == None:
+                    await self.send(text_data=json.dumps({
+                        "error": "No suitable opponent found.",
+                    }))
+                    return
             if opponent:
                 # Get the channel name of the shaker
                 opponent_channel_name = await RPS_USER_CHANNEL_NAME.get(opponent)
@@ -115,60 +120,57 @@ class RPSConsumer(AsyncWebsocketConsumer):
             game = await RPS_GAMES.get(game_id)
             game.play(self.user.username, choice)
             if game.both_played():
+                player1_choice, player2_choice = game.getChoices()
                 result = game.round_result()
                 player1_score, player2_score = game.get_scores()
-                if result == 'OVER':
-                    winner, loser, winner_score, loser_score = game.getWinnerLoserandScores()
-                    game_duration = game.getDuration()
-                    await self.record_stats_elo_wallet(game_id, winner_score, loser_score, winner, loser, game_duration)
                 await self.channel_layer.group_send(game.group_name, {
                     'type': 'result',
                     'game_id': game_id,
                     'result': result,
+                    'player1_choice': player1_choice,
+                    'player2_choice': player2_choice,
                     'player1_score': player1_score,
                     'player2_score': player2_score,
                 })
-        elif action == 'ability': #? Duplication look later
-            game_id = data.get('game_id')
-            ability = data.get('ability')
-            game = await RPS_GAMES.get(game_id)
-            game.use_ability(self.user.username, ability)
-            if game.both_played():
-                result = game.round_result()
-                player1_score, player2_score = game.get_scores()
-                if result == 'OVER':
+                if game.check_is_over():
                     winner, loser, winner_score, loser_score = game.getWinnerLoserandScores()
                     game_duration = game.getDuration()
                     await self.record_stats_elo_wallet(game_id, winner_score, loser_score, winner, loser, game_duration)
-                await self.channel_layer.group_send(game.group_name, {
-                    'type': 'result',
-                    'game_id': game_id,
-                    'result': result,
-                    'player1_score': player1_score,
-                    'player2_score': player2_score,
-                })
+                    await self.channel_layer.group_send(game.group_name, {
+                        'type': 'result',
+                        'game_id': game_id,
+                        'result': 'OVER',
+                        'player1_choice': player1_choice,
+                        'player2_choice': player2_choice,
+                        'player1_score': player1_score,
+                        'player2_score': player2_score,
+                    })
 
 
     ### Handlers ###
     async def matchmaking_handler(self):
         from .models import UserProfile
         # Get the current user's elo_point
-        current_user_elo = await UserProfile.objects.aget(username=self.user.username).elo_point
-        
+        current_user = await UserProfile.objects.aget(username=self.user.username)
+        current_user_elo = current_user.elo_point
         # Get a list of online users
         lobby_users_usernames = await RPS_USER_STATUS.get_keys_with_value('search')
-        lobby_users_usernames.remove(self.user.username) #TODO if user not in lobby
+        lobby_users_usernames.remove(self.user.username) #TODO if user not in search
+
+        return await self.get_similar_users(lobby_users_usernames, current_user_elo)
         
-        # Filter users based on elo_point similarity
-        users = await UserProfile.objects.filter(username__in=users, elo_point__gte=current_user_elo-100, elo_point__lte=current_user_elo+100).aall()
+
+    @database_sync_to_async
+    def get_similar_users(self, lobby_users_usernames, current_user_elo):
+        from .models import UserProfile
+        users = UserProfile.objects.filter(username__in=lobby_users_usernames, elo_point__gte=current_user_elo-100, elo_point__lte=current_user_elo+100).all()
         similar_users = [user.username for user in users]
-        
         if similar_users:
-            opponent = random.choice(similar_users)
+            invitee_username = random.choice(similar_users)
         else:
-            opponent = random.choice(lobby_users_usernames) #TODO if list is empty
+            invitee_username = random.choice(lobby_users_usernames) if lobby_users_usernames else None
         
-        return opponent
+        return invitee_username
     
     async def exit_handler(self, game_id, game): 
         # Discard both from the game group
@@ -206,6 +208,8 @@ class RPSConsumer(AsyncWebsocketConsumer):
             'type': 'result',
             'game_id': event['game_id'],
             'result': event['result'],
+            'player1_choice': event['player1_choice'],
+            'player2_choice': event['player2_choice'],
             'player1_score': event['player1_score'],
             'player2_score': event['player2_score'],
         }))

@@ -3,12 +3,33 @@
 const wsEndpoint = 'ws://' + window.location.host + '/ws/rps/';
 const websocket = new WebSocket(wsEndpoint);
 
-const translationswin = {
-    'hi': 'आप जीत गए',
-    'pt': 'você ganhou',
-    'tr': 'kazandınız',
-    'en': 'you win' // Varsayılan İngilizce metin
-};
+
+const checkbox = document.getElementById('flexSwitchCheckDefault');
+const selectedGameModeLabel = document.getElementById('selectedGameMode');
+const gameArea = document.getElementById('container-top');
+const cheaterButton = document.getElementById('cheater-choice');
+const godthingsButton = document.getElementById('godthings-choice');
+const matchmakingButton = document.getElementById('matchmakingButtons');
+
+const ICON_PATH = document.querySelector('.container-top').dataset.iconpath;
+
+const choiceButtons = document.querySelectorAll(".choice-btn");
+const gameDiv = document.querySelector(".game");
+const resultsDiv = document.querySelector(".results");
+const resultDivs = document.querySelectorAll(".results__result");
+
+const resultWinner = document.querySelector(".results__winner");
+const resultText = document.querySelector(".results__text");
+
+const scoreNumber1 = document.querySelector(".score__number1");
+const scoreNumber2 = document.querySelector(".score__number2");
+
+const player1Picked = document.getElementById("player1_picked");
+const player2Picked = document.getElementById("player2_picked");
+
+let score = 0;
+
+let abilityStatus = false;
 
 const translationslose = {
     'hi': 'आप हार गए',
@@ -17,28 +38,6 @@ const translationslose = {
     'en': 'you lose' // Varsayılan İngilizce metin
 };
 
-const CHOICES = [
-    {
-        name: "paper",
-        beats: "rock",
-    },
-    {
-        name: "scissors",
-        beats: "paper",
-    },
-    {
-        name: "rock",
-        beats: "scissors",
-    },
-    {
-        name: "godthings",
-        beats: "all",
-    },
-    {
-        name: "cheater",
-        beats: "all",
-    }
-];
 
 // Prevent animation on load
 setTimeout(() => {
@@ -55,7 +54,9 @@ var my = {
 
 function scoreUpdate(player1_score, player2_score) {
     player1.score = player1_score;
+    scoreNumber1.innerText = player1_score;
     player2.score = player2_score;
+    scoreNumber2.innerText = player2_score;
 }
 
 websocket.onopen = function (e) {
@@ -94,6 +95,7 @@ websocket.onmessage = function (e) {
             if (data.user !== my.username) {
                 addUserCount(1);
             }
+
             if (selectedLanguage === 'tr')
                 showToast(data.user + ' katıldı!', 'text-bg-success', 'bi bi-check-circle-fill')
             else if (selectedLanguage === 'hi')  
@@ -120,17 +122,31 @@ websocket.onmessage = function (e) {
         case 'game.disconnected':
             // stop the game
             gameOverScreen.style.display = 'block'; //? check
-            showToast(`${data.disconnected} disconnected You are automatically winner`, 'text-bg-danger', 'bi bi-check-circle-fill')
-            console.log('Player disconnected', data.disconnected);
+            if (selectedLanguage === 'tr')
+                showToast(`${data.disconnected} bağlantısı kesildi. Otomatik olarak kazanan sizsiniz`, 'text-bg-danger', 'bi bi-check-circle-fill')
+            else if (selectedLanguage === 'hi')
+                showToast(`${data.disconnected} डिस्कनेक्ट हो गया आप ऑटोमेटिक विनर हैं`, 'text-bg-danger', 'bi bi-check-circle-fill')
+            else if (selectedLanguage === 'pt')
+                showToast(`${data.disconnected} desconectado Você é o vencedor automaticamente`, 'text-bg-danger', 'bi bi-check-circle-fill')
+            else    
+                showToast(`${data.disconnected} disconnected You are automatically winner`, 'text-bg-danger', 'bi bi-check-circle-fill')
             break;
         case 'start':
             // Start the game
             my.game_id = data.game_id;
-            player1 = data.player1;
-            player2 = data.player2;
+            player1.username = data.player1;
+            player2.username = data.player2;
+            
+            gameArea.style.visibility = "visible";
+            matchmakingButton.style.display = "none";
+            if (abilityStatus) {
+                cheaterButton.style.display = 'block';
+                godthingsButton.style.display = 'block';
+            }
+
             document.getElementById("player1Name").innerText = player1.username;
             document.getElementById("player2Name").innerText = player2.username;
-
+            
             if (selectedLanguage === 'tr')
                 showToast('Oyun başladı', 'text-bg-success', 'bi bi-check-circle-fill')
             else if (selectedLanguage === 'hi')
@@ -143,29 +159,29 @@ websocket.onmessage = function (e) {
         
         case 'matchmaking.notfound':
             // Matchmaking found
-            showToast('No opponent found', 'text-bg-danger', 'bi bi-check-circle-fill')
+            if (selectedLanguage === 'tr')
+                showToast('Rakip bulunamadı', 'text-bg-danger', 'bi bi-check-circle-fill')
+            else if (selectedLanguage === 'hi')
+                showToast('विरोधी नहीं मिला', 'text-bg-danger', 'bi bi-check-circle-fill')
+            else if (selectedLanguage === 'pt')
+                showToast('Oponente não encontrado', 'text-bg-danger', 'bi bi-check-circle-fill')
+            else
+                showToast('No opponent found', 'text-bg-danger', 'bi bi-check-circle-fill')
             break;
         
         case 'result': 
             // Game result
             result = data.result;
-            game_id= data.game_id,
-            player1_score = data.player1_score,
-            player2_score = data.player2_score,
+            game_id = data.game_id;
+            player1_choice = data.player1_choice;
+            player2_choice = data.player2_choice;
+            player1_score = data.player1_score;
+            player2_score = data.player2_score;
             scoreUpdate(player1_score, player2_score);
 
-            switch (result) {
-                case 'PLAYER1_WIN':
-                    break;
-                case 'PLAYER2_WIN':
-                    break;
-                case 'DRAW':
-                    break;
-                case 'OVER':
-                    break;
-            }
-
-            break;    
+            displayResults([player1_choice, player2_choice]);
+            displayWinner(result);
+            break;
 
         }
     }
@@ -174,85 +190,61 @@ function addUserCount(count) {
     var userCountElement = document.getElementById('userCount');
     var currentCount = parseInt(userCountElement.innerText);
     
-    if (!isNaN(count) || count !== undefined) {
-        userCountElement.innerText = currentCount + count;
-    }
-}
+    userCountElement.innerText = currentCount + count;
 
+}
 function searchOpponent() {
     // Search for opponent
+    checkbox.disabled = true;
     websocket.send(JSON.stringify({
-        type: 'matchmaking',
+        type: 'matchmaking'
     }));
 }
 
-function sendChoicce(choice) {
+function sendChoice(choice) {
     // Send choice to opponent
+    console.log(choice);
     websocket.send(JSON.stringify({
         type: 'choice',
         game_id: my.game_id,
-        choice: choice, // rock, paper, scissors
-    }));
-}
-
-function sendAbility(ability) {
-    // Send ability to opponent
-    websocket.send(JSON.stringify({
-        type: 'ability',
-        game_id: my.game_id,
-        ability: ability, // shield, heal, attack
+        choice: choice, // rock, paper, scissors, godthings, cheater
     }));
 }
 
 //-------------------
 
-const ICON_PATH = document.querySelector('.container-top').dataset.iconpath;
-
-const choiceButtons = document.querySelectorAll(".choice-btn");
-const gameDiv = document.querySelector(".game");
-const resultsDiv = document.querySelector(".results");
-const resultDivs = document.querySelectorAll(".results__result");
-
-const resultWinner = document.querySelector(".results__winner");
-const resultText = document.querySelector(".results__text");
-
-const playAgainBtn = document.querySelector(".play-again");
-
-const scoreNumber1 = document.querySelector(".score__number1");
-const scoreNumber2 = document.querySelector(".score__number2");
-let score = 0;
 
 // Game Logic
 choiceButtons.forEach((button) => {
     button.addEventListener("click", () => {
         const choiceName = button.dataset.choice;
-        const choice = CHOICES.find((choice) => choice.name === choiceName);
         sendChoice(choiceName);
-        choose(choice);
-
-        // Seçimi WebSocket üzerinden gönder
-        const dataToSend = { choice: choiceName };
-        websocket.send(JSON.stringify(dataToSend));
+        choiceButtons.forEach(btn => {
+            btn.disabled = true;
+        });
     });
 });
 
 
-
-function choose(choice) {
-    const aichoice= opponentChoice;
-    displayResults([choice, aichoice]);
-    displayWinner([choice, aichoice]);
-
-}
-
-
 function displayResults(results) {
+    player1Picked.innerHTML = 
+    selectedLanguage === 'tr' ? player1.username + " seçti" :
+    selectedLanguage === 'hi' ? player1.username + " चुना" :
+    selectedLanguage === 'pt' ? player1.username + " escolheu" :
+    player1.username + " picked";
+
+    player2Picked.innerHTML = 
+        selectedLanguage === 'tr' ? player2.username + " seçti" :
+        selectedLanguage === 'hi' ? player2.username + " चुना" :
+        selectedLanguage === 'pt' ? player2.username + " escolheu" :
+        player2.username + " picked";
 
     resultDivs.forEach((resultDiv, idx) => {
         setTimeout(() => {
+            
             resultDiv.innerHTML = `
-        <div class="choice ${results[idx].name}">
-            <img src="${ICON_PATH}icon-${results[idx].name}.svg" alt="${results[idx].name}" />
+        <div class="choice ${results[idx].toLowerCase()}">
+            <img src="${ICON_PATH}icon-${results[idx].toLowerCase()}.svg" alt="${results[idx].toLowerCase()}" />
         </div>
       `;
         }, idx * 1000);
@@ -262,85 +254,100 @@ function displayResults(results) {
     resultsDiv.classList.toggle("hidden");
 }
 
-function displayWinner(results) {
+function displayWinner(result) {
     setTimeout(() => {
-        const userWins = isWinner(results);
-        const aiWins = isWinner(results.reverse());
-
-        if (userWins) {
-            resultText.innerText = "you win";
+        if (result === "PLAYER1_WIN") {
+            var langResult = selectedLanguage === 'tr' ? " kazandı" : selectedLanguage === 'hi' ? " जीता" : selectedLanguage === 'pt' ? " ganhou" : " win";
+            resultText.innerText = player1.username + langResult;
             resultDivs[0].classList.toggle("winner");
-            keepScore(1);
-        } else if (aiWins) {
-            resultText.innerText = "you lose";
+        } else if (result === "PLAYER2_WIN") {
+            var langResult = selectedLanguage === 'tr' ? " kazandı" : selectedLanguage === 'hi' ? " जीता" : selectedLanguage === 'pt' ? " ganhou" : " win";
+            resultText.innerText = player2.username + langResult;
             resultDivs[1].classList.toggle("winner");
-            keepScore(-1);
-        } else {
-            resultText.innerText = "draw";
-        }
-        if (3 == parseInt(scoreNumber1.innerText)) {
-            resultWinner.innerText = "You win the game";
-            resultWinner.classList.toggle("hidden");
-            resultsDiv.classList.toggle("show-winner");
-            showGameOverScreen();
-        }
-        else if (3 == parseInt(scoreNumber2.innerText)) {
-            resultWinner.innerText = "You lose the game";
-            resultWinner.classList.toggle("hidden");
-            resultsDiv.classList.toggle("show-winner");
-            showGameOverScreen();
+        } else if (result === "DRAW") {
+            var langResult = selectedLanguage === 'tr' ? " berabere" : selectedLanguage === 'hi' ? " बराबरी" : selectedLanguage === 'pt' ? " empate" : " draw";
+            resultText.innerText = langResult;
         }
         else {
+            if (player1.score > player2.score)
+                resultWinner.innerText = player1.username + resultWinnerText;
+            else
+                resultWinner.innerText = player2.username + resultWinnerText;
             resultWinner.classList.toggle("hidden");
-            resultsDiv.classList.toggle("show-winner");
+            resultsDiv.classList.toggle("hidden");
             showGameOverScreen();
         }
-
+        resultWinner.classList.toggle("hidden");
     }, 1000);
+    if (result != "OVER") {
+        setTimeout(() => {
+            gameDiv.classList.toggle("hidden");
+            resultsDiv.classList.toggle("hidden");
+
+            resultDivs.forEach((resultDiv) => {
+                resultDiv.innerHTML = "";
+                resultDiv.classList.remove("winner");
+            });
+        
+            resultText.innerText = "";
+            resultWinner.classList.toggle("hidden");
+            resultsDiv.classList.toggle("show-winner");
+
+            choiceButtons.forEach(btn => {
+                btn.disabled = false;
+            });
+        }, 3000);
+    }
 }
 
 function showGameOverScreen() {
-
-    document.getElementById('winnerText').innerText = winnerText;
-    document.getElementById('loserText').innerText = loserText;
-    var winnerText = (scoreNumber1 == MAX_SCORE) ? "YOU WIN!" : "";
-    var loserText = (scoreNumber2 == MAX_SCORE) ? "YOU LOSE!" : "";
-    if (scoreNumber1 > scoreNumber2) {
-        document.getElementById('gameOverScreen').style.backgroundColor = 'rgba(11, 22, 8, 0.8)';
-    }
-    else {
-        document.getElementById('gameOverScreen').style.backgroundColor = 'rgba(20, 5, 5, 0.8)';
-    }
+    var winnerText = (player1.score == 3) ? player1.username : player2.username;
+    document.getElementById('winnerText').innerText =  selectedLanguage === 'tr' ? winnerText + " kazandı" : selectedLanguage === 'hi' ? winnerText + " जीता" : selectedLanguage === 'pt' ? winnerText + " ganhou" : winnerText + " win";
+    document.getElementById('gameOverScreen').style.backgroundColor = 'rgba(11, 22, 8, 0.8)';
     document.getElementById('gameOverScreen').style.display = 'block';
 }
 
 
-function isWinner(results) {
-    return results[0].beats === results[1].name;
-}
-
-function keepScore(point) {
-    const tempscore = Math.abs(point);
-    if (point > 0) {
-        scoreNumber1.innerText = parseInt(scoreNumber1.innerText) + tempscore;
+checkbox.addEventListener('change', function() {
+    // Checkbox'un durumuna göre etiketin innerHTML değerini değiştirme
+    if (checkbox.checked) {
+        gameMode = "Abilities";
+        abilityStatus = true;
+        if (selectedLanguage === 'tr')
+            selectedGameModeLabel.innerHTML = "Yetenekler";
+        else if (selectedLanguage === 'hi')
+            selectedGameModeLabel.innerHTML = "क्षमताएँ";
+        else if (selectedLanguage === 'pt')
+            selectedGameModeLabel.innerHTML = "Habilidades";
+        else
+            selectedGameModeLabel.innerHTML = "Abilities";
     } else {
-        scoreNumber2.innerText = parseInt(scoreNumber2.innerText) + tempscore;
+        gameMode = "Vanilla";
+        abilityStatus = false;
+        if (selectedLanguage === 'tr')
+            selectedGameModeLabel.innerHTML = "Vanilya";
+        else if (selectedLanguage === 'hi')
+            selectedGameModeLabel.innerHTML = "वैनिला";
+        else if (selectedLanguage === 'pt')
+            selectedGameModeLabel.innerHTML = "Baunilha";
+        else
+            selectedGameModeLabel.innerHTML = "Vanilla";
     }
-}
-
-// Play Again
-playAgainBtn.addEventListener("click", () => {
-    gameDiv.classList.toggle("hidden");
-    resultsDiv.classList.toggle("hidden");
-
-    resultDivs.forEach((resultDiv) => {
-        resultDiv.innerHTML = "";
-        resultDiv.classList.remove("winner");
-    });
-
-    resultText.innerText = "";
-    resultWinner.classList.toggle("hidden");
-    resultsDiv.classList.toggle("show-winner");
 });
 
+const gameModeSelect = document.getElementById("gameModeSelect");
+
+gameModeSelect.addEventListener("mouseenter", function() {
+    document.querySelector(".game-mode-info").style.display = "block";
+});
+
+gameModeSelect.addEventListener("mouseleave", function() {
+    document.querySelector(".game-mode-info").style.display = "none";
+});
 // Show/Hide Rules
+
+document.getElementById('exitButton').addEventListener('click', exitGame);
+
+function exitGame() {
+    window.location.href = '/rps-game-find';  // ?
+}
