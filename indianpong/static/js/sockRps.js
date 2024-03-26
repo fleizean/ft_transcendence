@@ -27,17 +27,12 @@ const scoreNumber2 = document.querySelector(".score__number2");
 const player1Picked = document.getElementById("player1_picked");
 const player2Picked = document.getElementById("player2_picked");
 
+let cheaterAbilities = false;
+let godthingsAbilities = false;
+
 let score = 0;
 
 let abilityStatus = false;
-
-const translationslose = {
-    'hi': 'आप हार गए',
-    'pt': 'você perdeu',
-    'tr': 'kaybettiniz',
-    'en': 'you lose' // Varsayılan İngilizce metin
-};
-
 
 // Prevent animation on load
 setTimeout(() => {
@@ -70,7 +65,7 @@ websocket.onclose = function (e) {
 }
 
 websocket.onerror = function (e) {
-    console.error('Error: ' + e.data);
+    console.error('Error: ' + e.data.error);
     // stop the game
 }
 
@@ -136,6 +131,7 @@ websocket.onmessage = function (e) {
             my.game_id = data.game_id;
             player1.username = data.player1;
             player2.username = data.player2;
+
             
             gameArea.style.visibility = "visible";
             matchmakingButton.style.display = "none";
@@ -177,6 +173,16 @@ websocket.onmessage = function (e) {
             player2_choice = data.player2_choice;
             player1_score = data.player1_score;
             player2_score = data.player2_score;
+            
+            if (my.username === player1.username && player1_choice === "LIKEACHEATER")
+                cheaterAbilities = true;
+            else if (my.username === player2.username && player2_choice === "LIKEACHEATER")
+                cheaterAbilities = true;
+            if (my.username === player1.username && player1_choice === "GODOFTHINGS")
+                godthingsAbilities = true;
+            else if (my.username === player2.username && player2_choice === "GODOFTHINGS")
+                godthingsAbilities = true;
+            
             scoreUpdate(player1_score, player2_score);
 
             displayResults([player1_choice, player2_choice]);
@@ -269,6 +275,7 @@ function displayWinner(result) {
             resultText.innerText = langResult;
         }
         else {
+            var resultWinnerText = selectedLanguage === 'tr' ? " oyunu kazandı" : selectedLanguage === 'hi' ? " जीत गया" : selectedLanguage === 'pt' ? " ganhou o jogo" : " won the game";
             if (player1.score > player2.score)
                 resultWinner.innerText = player1.username + resultWinnerText;
             else
@@ -281,6 +288,10 @@ function displayWinner(result) {
     }, 1000);
     if (result != "OVER") {
         setTimeout(() => {
+            if (cheaterAbilities)
+                cheaterButton.style.display = "none";
+            else if (godthingsAbilities)
+                godthingsButton.style.display = "none";
             gameDiv.classList.toggle("hidden");
             resultsDiv.classList.toggle("hidden");
 

@@ -109,16 +109,19 @@
     </div>
     <script type=module src="{% static "js/game/play-ai.js" %}"></script>
 
-	{% comment %} <script>
-		document.addEventListener("DOMContentLoaded", function() {
-			// 'givemethemusic' elementini bul
-			var givemethemusicElement = document.getElementById("givemethemusic");
-			// Eğer 'givemethemusic' elementi varsa, ses kontrolünü göster
-			if (givemethemusicElement) {
-				var volumeControl = document.getElementById("volumeControl");
-				volumeControl.style.display = "inline-block";
-        	}
-		});
+{% comment %} 	<script>
+	    var givemethemusic = {% if givemethemusic %} true {% else %} false {% endif %};
+	
+	    document.addEventListener("DOMContentLoaded", function() {
+	        if (givemethemusic) {
+	            var volumeControl = document.getElementById("volumeControl");
+	            volumeControl.style.display = "inline-block";
+	        }
+			else {
+	            var volumeControl = document.getElementById("volumeControl");
+	            volumeControl.style.display = "none";
+	        }
+	    });
 	</script> {% endcomment %}
     {% csrf_token %}
 {% endblock %}

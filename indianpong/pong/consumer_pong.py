@@ -51,14 +51,15 @@ class PongConsumer(AsyncWebsocketConsumer):
         game_id = await USER_STATUS.get(self.user.username)
         if game_id != 'lobby':
             game = await GAMES.get(game_id)
-            other_player_channel_name = await USER_CHANNEL_NAME.get(game.otherPlayer(self.user.username))
-            await self.record_for_disconnected(game_id, game)
-            await self.exit_handler(game_id, game)
-            await self.channel_layer.send(other_player_channel_name, {
-                'type': 'game.disconnect',
-                'game_id': game_id,
-                'disconnected': self.user.username,
-                })
+            if game != None:
+                other_player_channel_name = await USER_CHANNEL_NAME.get(game.otherPlayer(self.user.username))
+                await self.record_for_disconnected(game_id, game)
+                await self.exit_handler(game_id, game)
+                await self.channel_layer.send(other_player_channel_name, {
+                    'type': 'game.disconnect',
+                    'game_id': game_id,
+                    'disconnected': self.user.username,
+                    })
 
         # Remove the user from the 'lobby' group
         await self.channel_layer.group_discard("lobby", self.channel_name)

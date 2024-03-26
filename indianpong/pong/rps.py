@@ -10,7 +10,6 @@ class Abilities(Enum):
     LIKEACHEATER = 3,
     GODOFTHINGS = 4
 
-
 class RoundResult(Enum):
     DRAW = 0
     PLAYER1_WIN = 1
@@ -42,8 +41,8 @@ class RPS:
             self.shaker2.choices.append(KV_CHOICES[choice])
 
     def ability_result(self, choice1, choice2):
-        ab1 = choice1 in Abilities._value2member_map_
-        ab2 = choice2 in Abilities._value2member_map_
+        ab1 = choice1 == Abilities.LIKEACHEATER or choice1 == Abilities.GODOFTHINGS
+        ab2 = choice2 == Abilities.LIKEACHEATER or choice2 == Abilities.GODOFTHINGS
         if ab1 and ab2:                                 #both played this it's draw
             return 0
         elif ab1 and choice1 == Abilities.LIKEACHEATER: #stole opponent score if greater than 0
