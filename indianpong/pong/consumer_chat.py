@@ -19,13 +19,13 @@ class ChatConsumer(AsyncWebsocketConsumer):
     # Receive message from WebSocket
     async def receive(self, text_data):
         from .models import UserProfile, Message
-        text_data_json = json.loads(text_data)
-        action = text_data_json["action"]
+        data = json.loads(text_data)
+        action =data["action"]
 
         if action == "chat":
-            message = text_data_json["message"]
-            user = await UserProfile.objects.aget(username = text_data_json["user"])
-            m = await Message.objects.acreate(content=message, user=user, room_id=self.room_name) #? Room object isn't created yet
+            message =data["message"]
+            user = await UserProfile.objects.aget(username=data["user"])
+            m = await Message.objects.acreate(content=message, user=user, room_id=self.room_name) #room_id is the room name
             # Send message to room group
             await self.channel_layer.group_send(
                 self.room_group_name, 
@@ -38,14 +38,20 @@ class ChatConsumer(AsyncWebsocketConsumer):
             )
 
         elif action == "invite.game":
+            # Send invite message to room group which have accept button and decline button in it
             pass
         elif action == "accept.game":
+            # if accept it create game object and send link in form: /remote-game/invite/game_id to both
+            # send message to room group that user accepted the game make it in client side
             pass
         elif action == "decline.game":
+            # if decline it send message to room group that user declined the game
             pass
         elif action == "block":
+            # create Block object and add user to block list
             pass
         elif action == "unblock":
+            # remove user from block list
             pass
 
     # Receive message from room group
