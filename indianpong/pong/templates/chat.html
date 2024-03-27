@@ -1,12 +1,17 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load status %}
 
 {% block title %}
   {{context.chatPageTittle}}
 {% endblock %}
 
+{% block stylesheet %}
+<link rel="stylesheet" href="{% static "css/chat.css" %}"/>
+{% endblock stylesheet %}
+
+
 {% block app %}
-  <link rel="stylesheet" href="{% static "css/chat.css" %}"/>
   <div class="container-top">
     <div class="card">
       <section class="chat-section">
@@ -31,10 +36,11 @@
                     <span>{{context.chatRecentlyText}}</span>
                   </li>
                   {% for user in users %}
-                      <li>
-                        <a href="{% url 'start_chat' user %}" data-link>
-                          <img class="content-message-image" src="{{ user.avatar.url }}" alt="" />
-                          
+                  <li>
+                    <a href="{% url 'start_chat' user %}" data-link>
+                          {% is_user_online user.username as user_is_online %}
+                          {% is_user_playing user.username as user_is_playing %}
+                          <img class="content-message-image" src="{{ user.avatar.url }}" alt="avatar" class="profile-image-circ" {% if user_is_playing %} style="border: 3px solid #ffa600; aspect-ratio: 1/1; object-fit: cover;" {% elif user_is_online %} style="border: 3px solid #4CAF4F; aspect-ratio: 1/1; object-fit: cover;" {% else %} style="border: 3px solid #ff0000; aspect-ratio: 1/1; object-fit: cover;" {% endif %}/>
                           <span class="content-message-info">
                             <span class="content-message-name">{{ user }}</span>
                           </span>

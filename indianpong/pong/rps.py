@@ -29,11 +29,11 @@ class RPS:
         self.shaker2 = Shaker(player2)
         self.max_score = 3
         self.group_name = f'rps_{player1}_{player2}'
-        self.start_time = None
-        self.end_time = None
+        self.start_time = 0
+        self.end_time = 0
 
     def play(self, username, choice):
-        if (self.start_time == None):
+        if (self.start_time == 0):
             self.start_time = time.time()
         if username == self.shaker1.username:
             self.shaker1.choices.append(KV_CHOICES[choice])
@@ -107,8 +107,6 @@ class RPS:
         return self.shaker1.score, self.shaker2.score
     
     def getDuration(self):
-        if self.start_time == None or self.end_time == None:
-            return 0
         return self.end_time - self.start_time
     
     def getWinnerLoserandScores(self):
