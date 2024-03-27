@@ -13,7 +13,7 @@ from django.utils.http import urlsafe_base64_encode
 from django.utils.encoding import force_bytes
 from indianpong.settings import EMAIL_HOST_USER, STATICFILES_DIRS
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, UserChangeForm, PasswordChangeForm, PasswordResetForm, SetPasswordForm 
-from .models import Social, VerifyToken, BlockedUser, ChatMessage, GameInvitation, UserProfile, TwoFactorAuth, JWTToken, Tournament
+from .models import Social, VerifyToken, UserProfile, Tournament
 from django.contrib.auth import authenticate
 
 
@@ -629,31 +629,14 @@ class TournamentForm(forms.ModelForm):
         return tournament
     
 
-class ChatMessageForm(forms.ModelForm):
-    class Meta:
-        model = ChatMessage
-        fields = ['content']
-        widgets = {
-            'content': forms.Textarea(attrs={'rows': 3}),
-        }
 
+"""
 class BlockUserForm(forms.ModelForm):
     blocked_user = forms.ModelChoiceField(queryset=UserProfile.objects.all(), widget=forms.Select(attrs={'class': 'input'}))
 
     class Meta:
         model = BlockedUser
         fields = ['blocked_user']
-
-class InviteToGameForm(forms.ModelForm):
-    invited_user = forms.ModelChoiceField(queryset=UserProfile.objects.all(), widget=forms.Select(attrs={'class': 'input'}))
-
-    class Meta:
-        model = GameInvitation
-        fields = ['message']
-        widgets = {
-            'message': forms.Textarea(attrs={'rows': 3}),
-        }
-
 
 class TwoFactorAuthSetupForm(forms.ModelForm):
     class Meta:
@@ -665,7 +648,7 @@ class JWTTokenForm(forms.ModelForm):
         model = JWTToken
         fields = ['token']
 
-
+"""
 
 
 

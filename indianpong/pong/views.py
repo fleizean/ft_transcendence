@@ -14,10 +14,7 @@ import ssl
 
 
 from .forms import (
-    BlockUserForm,
-    ChatMessageForm,
     DeleteAccountForm,
-    InviteToGameForm,
     PasswordChangeUserForm,
     PasswordResetUserForm,
     ProfileAvatarForm,
@@ -26,22 +23,14 @@ from .forms import (
     StoreItemActionForm,
     UserProfileForm,
     UpdateUserProfileForm,
-    TwoFactorAuthSetupForm,
-    JWTTokenForm,
+
     AuthenticationUserForm,
     TournamentForm,
 )
 from .models import (
-    BlockedUser,
-    ChatMessage,
-    GameWarning,
     VerifyToken,
     UserProfile,
     Game,
-    TwoFactorAuth,
-    UserGameStatRPS,
-    JWTToken,
-    UserGameStat,
     Tournament,
     UserItem,
     StoreItem,
@@ -964,99 +953,6 @@ def start_chat(request, username):
             room = Room.objects.create(first_user=request.user, second_user=second_user)
     return redirect("room", room.id)
 
-
-### OldChat ###
-
-
-@never_cache
-@login_required()
-def chat_room(request):
-    messages_sent = ChatMessage.objects.filter(sender=request.user)
-    messages_received = ChatMessage.objects.filter(receiver=request.user)
-    context = {"messages_sent": messages_sent, "messages_received": messages_received}
-    return render(request, "chat_room.html", context)
-
-
-@never_cache
-@login_required()
-def send_message(request, receiver_id):
-    receiver = UserProfile.objects.get(id=receiver_id)
-    if request.method == "POST":
-        form = ChatMessageForm(request.POST)
-        if form.is_valid():
-            message = form.save(commit=False)
-            message.sender = request.user
-            message.receiver = receiver
-            message.save()
-            messages.success(request, "Message sent successfully.")
-            return redirect("chat")
-    else:
-        form = ChatMessageForm()
-    context = {"form": form, "receiver": receiver}
-    return render(request, "send_message.html", context)
-
-
-@never_cache
-@login_required()
-def block_user(request):
-    if request.method == "POST":
-        form = BlockUserForm(request.POST)
-        if form.is_valid():
-            blocked_user = form.cleaned_data["blocked_user"]
-            blocking_relation, created = BlockedUser.objects.get_or_create(
-                user=request.user, blocked_user=blocked_user
-            )
-            if created:
-                messages.success(request, f"You have blocked {blocked_user.username}.")
-            else:
-                messages.warning(
-                    request, f"You have already blocked {blocked_user.username}."
-                )
-            return redirect("chat")
-    else:
-        form = BlockUserForm()
-    return render(request, "block_user.html", {"form": form})
-
-
-@never_cache
-@login_required()
-def unblock_user(request, blocked_user_id):
-    blocked_user = UserProfile.objects.get(id=blocked_user_id)
-    BlockedUser.objects.filter(user=request.user, blocked_user=blocked_user).delete()
-    messages.success(request, f"You have unblocked {blocked_user.username}.")
-    return redirect("chat")
-
-
-@never_cache
-@login_required()
-def invite_to_game(request, invited_user_id):
-    invited_user = UserProfile.objects.get(id=invited_user_id)
-    if request.method == "POST":
-        form = InviteToGameForm(request.POST)
-        if form.is_valid():
-            invitation = form.save(commit=False)
-            invitation.inviting_user = request.user
-            invitation.invited_user = invited_user
-            invitation.save()
-            messages.success(
-                request, f"Invitation sent to {invited_user.username} successfully."
-            )
-            return redirect("chat")
-    else:
-        form = InviteToGameForm()
-    context = {"form": form, "invited_user": invited_user}
-    return render(request, "invite_to_game.html", context)
-
-
-@never_cache
-@login_required()
-def game_warning(request, opponent_id):
-    opponent = UserProfile.objects.get(id=opponent_id)
-    GameWarning.objects.create(user=request.user, opponent=opponent)
-    messages.warning(request, f"Game warning sent to {opponent.username}.")
-    return redirect("chat")
-
-
 ### Tournaments ###
 
 
@@ -1192,7 +1088,7 @@ def create_tournament_match(request):
 
 ### Two-Factor Authentication ###
 
-
+"""
 @never_cache
 @login_required()
 def setup_two_factor_auth(request):
@@ -1220,7 +1116,7 @@ def generate_jwt_token(request):
     else:
         form = JWTTokenForm(instance=request.user.jwttoken)
     return render(request, "generate_jwt_token.html", {"form": form})
-
+"""
 
 # Game logics #
 

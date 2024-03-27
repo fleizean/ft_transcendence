@@ -40,13 +40,12 @@ class StoreItem(models.Model):
     show_status = models.BooleanField(default=False) # store'da görünebilir mi?
 
 class UserProfile(AbstractUser):
-    #id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     displayname = models.CharField(max_length=100, blank=True, null=True)
     email = models.EmailField(unique=True, max_length=254)
     avatar = models.ImageField(upload_to=get_upload_to, null=True, blank=True)
     friends = models.ManyToManyField('self', symmetrical=False, blank=True)
+    blocked_users = models.ManyToManyField('self', symmetrical=False, blank=True)
     social = models.OneToOneField('Social', on_delete=models.CASCADE, null=True, blank=True)
-    #channel_name = models.CharField(max_length=100, blank=True, null=True)
     is_verified = models.BooleanField(default=False)
     is_42student = models.BooleanField(default=False)
     is_indianai = models.BooleanField(default=False)
@@ -56,10 +55,8 @@ class UserProfile(AbstractUser):
     game_stats_rps = models.OneToOneField('UserGameStatRPS', on_delete=models.SET_NULL, null=True, blank=True)
     indian_wallet = models.IntegerField(blank=True, null=True, default=0, validators=[MinValueValidator(0), MaxValueValidator(9999)])
     elo_point = models.IntegerField(blank=True, null=True, default=0, validators=[MinValueValidator(0), MaxValueValidator(99999)])
-    reconnect_url = models.URLField(blank=True, null=True)
     username_change_date = models.DateTimeField(blank=True, null=True)
-    #is_online = models.BooleanField(default=False)
-    #is_playing = models.BooleanField(default=False)
+
 
     def __str__(self) -> str:
         return f"{self.username}"
@@ -384,17 +381,7 @@ class Message(models.Model):
     def get_short_date(self):
         return str(self.created_date.strftime("%H:%M"))
 
-
-class ChatMessage(models.Model):
-    sender = models.ForeignKey(UserProfile, related_name='sent_messages', on_delete=models.CASCADE)
-    receiver = models.ForeignKey(UserProfile, related_name='received_messages', on_delete=models.CASCADE)
-    content = models.TextField()
-    timestamp = models.DateTimeField(auto_now_add=True)
-
-class BlockedUser(models.Model):
-    user = models.ForeignKey(UserProfile, related_name='blocking_users', on_delete=models.CASCADE)
-    blocked_user = models.ForeignKey(UserProfile, related_name='blocked_by_users', on_delete=models.CASCADE)
-
+"""
 class GameInvitation(models.Model):
     inviting_user = models.ForeignKey(UserProfile, related_name='invitations_sent', on_delete=models.CASCADE)
     invited_user = models.ForeignKey(UserProfile, related_name='invitations_received', on_delete=models.CASCADE)
@@ -421,3 +408,4 @@ class JWTToken(models.Model):
     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     token = models.CharField(max_length=255)
     expires_at = models.DateTimeField()
+"""
