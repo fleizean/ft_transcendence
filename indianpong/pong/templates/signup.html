@@ -10,7 +10,7 @@
   <div class="container">
     <div class="RegisterArea" id="RegisterArea">
       <form class="form" enctype="multipart/form-data" method="post">
-        <a href="/login" data-link>
+        <a onclick="swapApp('/login')" data-link>
           <button class="backbtn" type="button">
             <svg
               height="16"
@@ -30,7 +30,7 @@
           <span class="titlebottom">{{context.signupHeaderText2}}</span>
         </div>
         <div class="login-with">
-          <a href="/auth" data-link class="no-underline"><div class="button-log"><b>42</b></div></a>
+          <a onclick="swapApp('/auth')" class="no-underline"><div class="button-log"><b>42</b></div></a>
         </div>
         {% csrf_token %}
         <input type="text" name="username" class="input" placeholder="{{context.signupInputUsernameText}}" autofocus required id="id_username">
@@ -86,7 +86,6 @@
           <input type="file" name="avatar" class="input" accept="image/*" id="id_avatar">
           {{form.avatar.errors}}
         </label>
-{% comment %}         {% for error in form.non_field_errors %} {% endcomment %}
         <div class="register-buttons">
           <button type="submit" class="button-confirm">{{context.signupButtonSignup}} →</button>
         </div>

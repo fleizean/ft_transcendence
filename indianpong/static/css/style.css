@@ -53,6 +53,7 @@ body {
   background-size: cover;
   z-index: 1;
   overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .container {
@@ -1091,15 +1092,16 @@ body {
   color: white !important; /* Değiştirmek istediğiniz yeni renk */
 }
 
-.language-submenu a {
+.language-item {
   color: white;
+  cursor:pointer;
   text-decoration: none;
   display: flex;
   font-size: 10px;
   padding: 10px;
 }
 
-.language-submenu a:hover {
+.language-item:hover {
   color: #007bff;
   background-color: #1b6718; /* Hover rengi */
 }

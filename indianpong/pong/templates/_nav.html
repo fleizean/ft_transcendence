@@ -61,11 +61,11 @@
   {% if not request.user.is_anonymous %}
   <script>
     var socket = new WebSocket('ws://' + window.location.host + '/ws/online_status/');
-  
+
     socket.onopen = function(e) {
         console.log('User is connected');
     };
-  
+
     socket.onmessage = function(e) {
         var data = JSON.parse(e.data);
         var status = data['status'];

@@ -1,10 +1,10 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
+
 
 {% load static %}
 
 {% block title %}{{context.loginPageTittle}}{% endblock title %}
 
-{% block stylesheet %}<link rel="stylesheet" href="{% static "css/register.css" %}">{% endblock stylesheet %}
 
 {% block app %}
 
@@ -12,7 +12,7 @@
   <div class="container">
     <div class="LoginArea" id="LoginArea">
       <form class="form" enctype="multipart/form-data" method="post">
-        <a href="/" data-link
+        <a onclick="swapApp('/')"
           ><button class="backbtn" type="button">
             <svg
               height="16"
@@ -31,7 +31,7 @@
           <span class="titlebottom">{{context.loginHeaderText2}}</span>
         </div>
         <div class="login-with">
-          <a href="/auth" data-link class="no-underline"><div class="button-log"><b>42</b></div></a>
+          <a onclick="swapApp('/auth')" data-link class="no-underline"><div class="button-log"><b>42</b></div></a>
         </div>
         {% csrf_token %}
         <p>
@@ -42,10 +42,10 @@
           <i class="bi bi-eye-slash-fill" id="togglePassword" style="position: absolute;top: 292px;right: 35px;z-index: 100; display: none;"></i>
         </p>
         <div class="forgot-pass">
-          <a href="/password_reset" class="forgot-password-link">{{context.loginForgotPasswordText}}</a>
+          <a onclick="swapApp('/password_reset')" class="forgot-password-link">{{context.loginForgotPasswordText}}</a>
         </div>
-        <a ><button type="submit" class="button-confirm">{{context.loginButtonLogin}} →</button></a>
-        <a href="/signup" data-link><button type="button" class="registerbtn">{{context.loginButtonJoin}} ✓</button></a>
+        <a><button type="submit" class="button-confirm">{{context.loginButtonLogin}} →</button></a>
+        <a onclick="swapApp('/signup')" data-link><button type="button" class="registerbtn">{{context.loginButtonJoin}} ✓</button></a>
       </form>
     </div>
   </div>
@@ -69,6 +69,9 @@
     toggleButton.style.display = this.value.trim() !== '' ? 'block' : 'none';
   });
 </script>
+
+<script src="{% static "js/navigation.js" %}"></script>
+
 
 {% endblock %}
 

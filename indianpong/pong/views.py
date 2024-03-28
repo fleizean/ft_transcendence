@@ -9,9 +9,9 @@ from django.http import HttpResponse, HttpResponseBadRequest
 from django.http import HttpResponseRedirect
 from django.http import Http404
 from django.utils import timezone
+from django.template import loader
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 import ssl
-
 
 from .forms import (
     DeleteAccountForm,
@@ -66,9 +66,10 @@ from . import langs
 def index(request):
     if request.user.is_authenticated:
         return redirect("dashboard")
+
     lang = request.COOKIES.get('selectedLanguage', 'en')
-    context = langs.get_langs(lang)
-    return render(request, "base.html", {"context": context})
+    context = langs.get_langs(lang)    
+    return render(request, 'base.html', {"context": context})
 
 
 @login_required()
@@ -84,8 +85,8 @@ def handler404(request, exception):
 ### User Authentication ###
 @never_cache
 def signup(request):
-    language = request.COOKIES.get('selectedLanguage', 'en')
-    context = langs.get_langs(language)
+    lang = request.COOKIES.get('selectedLanguage', 'en')
+    context = langs.get_langs(lang)
     if request.method == "POST":
         form = UserProfileForm(request.POST, request.FILES, lang=request.COOKIES.get('selectedLanguage', 'en'))
         if form.is_valid():
@@ -98,8 +99,7 @@ def signup(request):
             return HttpResponseRedirect("login")
     else:
         form = UserProfileForm(lang=request.COOKIES.get('selectedLanguage', 'en'))
-    return render(request, "signup.html", {"form": form, "context": context})
-
+    return HttpResponse(render_to_string("signup.html", {"form": form, "context": context}))
 
 @never_cache
 def activate_account(request, token):
@@ -227,14 +227,8 @@ def auth_callback(request):
 
     return redirect("login")  # Handle authentication failure
 
-def set_language(request):
-    if request.method == 'POST':
-        selected_language = request.POST.get('language')
-        # Seçilen dil bilgisini çerez olarak sakla
-        response = redirect(request.META.get('HTTP_REFERER'))
-        response.set_cookie('selectedLanguage', selected_language)
-        return response
-    return redirect(request.META.get('HTTP_REFERER'))
+
+
 
 ### Login and Logout ###
 
@@ -257,14 +251,13 @@ def login_view(request):
             return HttpResponseRedirect("dashboard")
     else:
         form = AuthenticationUserForm()
-    return render(request,"login.html", {"form": form, "context": context})
+    return HttpResponse(render_to_string("login.html", {"form": form, "context": context}))
 
 @never_cache
 @login_required()
 def logout_view(request):
     logout(request)
     return redirect("login")
-
 
 ### Profile ###
 
@@ -927,7 +920,7 @@ def room(request, room_name):
     room = Room.objects.get(id=room_name)
     lang = request.COOKIES.get('selectedLanguage', 'en')
     context = langs.get_langs(lang)
-    messages = Message.objects.filter(room=room)
+    messages = Message.objects.filter(room=room) #? html için mark_safe kullnabilinir
     return render(
         request,
         "room.html",

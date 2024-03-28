@@ -44,7 +44,7 @@ class UserProfile(AbstractUser):
     email = models.EmailField(unique=True, max_length=254)
     avatar = models.ImageField(upload_to=get_upload_to, null=True, blank=True)
     friends = models.ManyToManyField('self', symmetrical=False, blank=True)
-    blocked_users = models.ManyToManyField('self', symmetrical=False, blank=True)
+    blocked_users = models.ManyToManyField('self', symmetrical=False, blank=True, related_name='blocked_by')
     social = models.OneToOneField('Social', on_delete=models.CASCADE, null=True, blank=True)
     is_verified = models.BooleanField(default=False)
     is_42student = models.BooleanField(default=False)

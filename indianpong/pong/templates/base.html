@@ -10,25 +10,24 @@
         <link rel="icon" type="image/x-icon" href="{% static "assets/favicon.ico" %}">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
-        {% comment %} <link href="{% static "css/bootstrap.min.css" %}" rel="stylesheet"> {% endcomment %}
-        {% comment %} <link href="{% static "css/fonts/bootstrap-icons.css" %}" rel="stylesheet"> {% endcomment %}
         <link rel="stylesheet" href="{% static "css/style.css" %}">
         <link rel="stylesheet" href="{% static "css/scrollbar.css" %}">
         <link rel="stylesheet" href="{% static "css/modal.css" %}">
+        <link rel="stylesheet" href="{% static "css/register.css" %}">
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"></script>
         {% block stylesheet %}{% endblock %}
     </head>
     <body>
             <div class="backgroundimage">
-                {% if not request.user.is_anonymous %}
+                {% if request.user.is_authenticated %}
                     {% include "_nav.html" %}
                 {% endif %}
-                <div class="app" id="app" >
-                    {% if not user.is_authenticated %}
+                
+                    {% if not request.user.is_authenticated %}
                         <div class="top-nav-infos">
                             <div class="info-menu">
                                 <div class="info-icon" style="margin-top: 25px; color: tomato; margin-right: 3em;">
-                                    <i class="bi bi-info-circle-fill" data-bs-toggle="modal" data-bs-target="#exampleModal"></i>
+                                    <i class="bi bi-info-circle-fill" data-bs-toggle="modal" data-bs-target="#exampleModal1"></i>
                                 </div>
                             </div>
 
@@ -37,44 +36,45 @@
                                     <i class="bi bi-flag-fill"></i>       
                                 </div>
                                 <div class="language-submenu">
-                                    <form id="language-form" method="post" action="{% url 'set_language' %}">
                                         {% csrf_token %}
-                                        <a href="#" onclick="setLanguage('tr'); return false;">
+                                        <a class="language-item" onclick="setLanguage('tr')">
                                             <img style="margin-right: 5px;" src="{% static "assets/flags/turkey.png" %}" alt="Türkçe">
                                             <span style="margin-top: 3px;">Türkçe</span>
                                         </a>
-                                        <a href="#" onclick="setLanguage('hi'); return false;">
+                                        <a class="language-item" onclick="setLanguage('hi')">
                                             <img style="margin-right: 5px;" src="{% static "assets/flags/hindi.png" %}" alt="हिंदी">
                                             <span style="margin-top: 3px;">हिंदी</span>
                                         </a>
-                                        <a href="#" onclick="setLanguage('en'); return false;">
+                                        <a class="language-item" onclick="setLanguage('en')">
                                             <img style="margin-right: 5px;" src="{% static "assets/flags/english.png" %}" alt="English">
                                             <span style="margin-top: 3px;">English</span>
                                         </a>
-                                        <a href="#" onclick="setLanguage('pt'); return false;">
+                                        <a class="language-item" onclick="setLanguage('pt')">
                                             <img style="margin-right: 5px;" src="{% static "assets/flags/portugal.png" %}" alt="Português">
                                             <span style="margin-top: 3px;">Português</span>
                                         </a>
-                                    </form>
                                 </div>
                             </div>
                         </div>
                     {% endif %}
                     {% block app %}
+                    <div class="app" id="app">
                         <div class="cursor">
                             <div class="container">
                                 <div class="HeaderArea" id="HeaderArea">
                                     <div class="big-text">{{context.baseHeaderText}}</div>
                                     <div class="small-text">{{context.baseSubHeaderText}}</div>
-                                    <a href="/login" data-link><button type="button" class="PixellButton">{{context.basePlayButtonText}}</button></a>
+                                    <a onclick="swapApp('/login')"><button type="button" class="PixellButton">{{context.basePlayButtonText}}</button></a>
                                 </div>
                             </div>
                         </div>
+                        
                     {% endblock %}
-                </div>
+                    </div>
             </div>
+            
             <!-- Modal -->
-            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal fade" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -99,17 +99,6 @@
                     </div>
                 </div>
             </div>
-        <script>
-            function setLanguage(language) {
-            var form = document.getElementById('language-form');
-            var input = document.createElement('input');
-            input.type = 'hidden';
-            input.name = 'language';
-            input.value = language;
-            form.appendChild(input);
-            form.submit();
-        }
-        </script>
-        {% comment %} <script src="{% static "js/bootstrap.min.js" %}"></script> {% endcomment %}
+            <script src="{% static "js/navigation.js" %}"></script>
     </body>
 </html>
