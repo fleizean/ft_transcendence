@@ -11,7 +11,7 @@
 <div class="cursor">
   <div class="container">
     <div class="LoginArea" id="LoginArea">
-      <form class="form" enctype="multipart/form-data" method="post">
+      <form class="form" enctype="multipart/form-data" method="post" id="loginForm">
         <a onclick="swapApp('/')"
           ><button class="backbtn" type="button">
             <svg
@@ -44,13 +44,44 @@
         <div class="forgot-pass">
           <a onclick="swapApp('/password_reset')" class="forgot-password-link">{{context.loginForgotPasswordText}}</a>
         </div>
-        <a><button type="submit" class="button-confirm">{{context.loginButtonLogin}} →</button></a>
+        <a><button type="button" class="button-confirm" id="submitButton" onclick="makeLogin()">{{context.loginButtonLogin}} →</button></a>
         <a onclick="swapApp('/signup')" data-link><button type="button" class="registerbtn">{{context.loginButtonJoin}} ✓</button></a>
       </form>
     </div>
   </div>
+  <div class="toast-container position-fixed bottom-0 end-0 p-6" style="margin-right: 20px; margin-bottom: 20px">
+    <div class="toast text-bg-danger" id="liveToast" role="alert">
+        <div class="toast-body">
+            <div class="d-flex gap-4">
+                <span class="i-class"><i class="bi bi-bug-fill"></i></span>
+                <div class="d-flex flex-grow-1 align-items-center">
+                    <span class="fw-semibold">NULL</span>
+                    <span class="toast-close" data-bs-dismiss="toast"><i class="bi bi-x-circle-fill"></i></span>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
 </div>
 <script>
+
+  function showToast(content, status, iconClass) {
+    const liveToast = document.getElementById('liveToast');
+    var toastContent = document.querySelector('#liveToast .fw-semibold');
+    var toastIcon = document.querySelector('.toast-body .i-class i');
+
+    toastIcon.className = iconClass;
+    liveToast.classList.remove('text-bg-danger'); 
+    liveToast.className = 'toast'; 
+    liveToast.classList.add(status);
+
+    toastContent.textContent = content;
+
+    const toast = new bootstrap.Toast(liveToast);
+    toast.show();
+
+}
+
   const passwordInput = document.getElementById('id_password');
   const toggleButton = document.getElementById('togglePassword');
   
@@ -68,9 +99,10 @@
   passwordInput.addEventListener('input', function() {
     toggleButton.style.display = this.value.trim() !== '' ? 'block' : 'none';
   });
+
+
 </script>
 
-<script src="{% static "js/navigation.js" %}"></script>
 
 
 {% endblock %}

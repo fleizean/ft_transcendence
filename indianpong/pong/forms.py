@@ -18,13 +18,13 @@ from django.contrib.auth import authenticate
 
 
 class UserProfileForm(UserCreationForm):
-
     username = forms.CharField(label='Username', widget=forms.TextInput(attrs={'class': 'input'}))
     displayname = forms.CharField(label='Displayname', widget=forms.TextInput(attrs={'class': 'input'}))
     email = forms.EmailField(label='Email', widget=forms.EmailInput(attrs={'class': 'input'}))
     password1 = forms.CharField(label='Password', widget=forms.PasswordInput(attrs={'class': 'input'}))
     password2 = forms.CharField(label='RePassword', widget=forms.PasswordInput(attrs={'class': 'input'}))
     avatar = forms.ImageField(required=False ,label='Avatar', widget=forms.FileInput(attrs={'class': 'input'}))
+    
     class Meta:
         model = UserProfile
         fields = ['username', 'displayname', 'email', 'password1', 'password2', 'avatar']
@@ -33,10 +33,11 @@ class UserProfileForm(UserCreationForm):
         self.lang = kwargs.pop('lang', 'en')  # Varsayılan dil: İngilizce
         super().__init__(*args, **kwargs)
 
+        #TODO make link spa compatible
     """ def confirm_login_allowed(self, user):
         if not user.is_verified:
             raise forms.ValidationError(
-                mark_safe(
+                mark_safe( 
                     "This account is not verified. <a href='{}'>Resend verification email</a>".format(
                         reverse("password_reset")
                     )
@@ -58,6 +59,31 @@ class UserProfileForm(UserCreationForm):
                 raise forms.ValidationError('Não é possível usar o endereço de e-mail 42')
             else:
                 raise forms.ValidationError('Cannot use 42 email address')
+
+        if not "@" in email:
+            if (lang == 'tr'):
+                raise forms.ValidationError("Geçerli bir e-posta adresi girin.")
+            elif (lang == 'en'):
+                raise forms.ValidationError("Enter a valid email.")
+            elif (lang == 'hi'):
+                raise forms.ValidationError("एक मान्य ईमेल पता दर्ज करें।")
+            elif (lang == 'pt'):
+                raise forms.ValidationError("Insira um endereço de email válido.")
+            else:
+                raise forms.ValidationError("Enter a valid email.")
+
+        if not email:
+            if (lang == 'tr'):
+                raise forms.ValidationError("Email zorunludur.")
+            elif (lang == 'en'):
+                raise forms.ValidationError("Email is required.")
+            elif (lang == 'hi'):
+                raise forms.ValidationError("ईमेल आवश्यक है।")
+            elif (lang == 'pt'):
+                raise forms.ValidationError("Email é obrigatório.")
+            else:
+                raise forms.ValidationError("Email is required.")
+
         return email
     
     def clean_username(self):
@@ -129,22 +155,6 @@ class UserProfileForm(UserCreationForm):
                 raise forms.ValidationError("Username and displayname cannot be the same.")
         return displayname
 
-    def clean_email(self):
-        email = self.cleaned_data.get("email")
-        lang = self.lang
-        if not email:
-            if (lang == 'tr'):
-                raise forms.ValidationError("Email zorunludur.")
-            elif (lang == 'en'):
-                raise forms.ValidationError("Email is required.")
-            elif (lang == 'hi'):
-                raise forms.ValidationError("ईमेल आवश्यक है।")
-            elif (lang == 'pt'):
-                raise forms.ValidationError("Email é obrigatório.")
-            else:
-                raise forms.ValidationError("Email is required.")
-        return email
-    
     def clean_password1(self):
         password1 = self.cleaned_data.get("password1")
         lang = self.lang
@@ -315,22 +325,6 @@ class AuthenticationUserForm(AuthenticationForm):
         model = UserProfile
         fields = ['username', 'password']
     
-    def authentication_failed(self):
-        lang = self.lang
-        auth_result = authenticate(username=self.cleaned_data.get('username'), password=self.cleaned_data.get('password'))
-        if (auth_result is None):
-            if (lang == 'tr'):
-                raise forms.ValidationError("Kullanıcı adı veya parola yanlış.")
-            elif (lang == 'en'):
-                raise forms.ValidationError("Username or password is incorrect.")
-            elif (lang == 'hi'):
-                raise forms.ValidationError("उपयोगकर्ता नाम या पासवर्ड गलत है।")
-            elif (lang == 'pt'):
-                raise forms.ValidationError("Nome de usuário ou senha incorretos.")
-            else:
-                raise forms.ValidationError("Username or password is incorrect.")
-        return auth_result
-
 class UpdateUserProfileForm(UserChangeForm):
     username = forms.CharField(label='Username', widget=forms.TextInput(attrs={'class': 'form-control'}))
     email = forms.EmailField(label='Email', widget=forms.EmailInput(attrs={'class': 'form-control'}))
@@ -349,6 +343,7 @@ class UpdateUserProfileForm(UserChangeForm):
     def clean_email(self):
         email = self.cleaned_data.get('email')
         lang = self.lang
+
         if not email:
             if (lang == 'tr'):
                 raise forms.ValidationError("Email zorunludur.")

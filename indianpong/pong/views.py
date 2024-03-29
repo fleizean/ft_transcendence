@@ -96,7 +96,9 @@ def signup(request):
             )
             obj.send_verification_email(request, user)
             messages.success(request, "Please check your email to verify your account.")
-            return HttpResponseRedirect("login")
+            return HttpResponse("login")
+        else:
+            return HttpResponse(render_to_string("signup.html", {"form": form, "context": context}))
     else:
         form = UserProfileForm(lang=request.COOKIES.get('selectedLanguage', 'en'))
     return HttpResponse(render_to_string("signup.html", {"form": form, "context": context}))
@@ -228,15 +230,13 @@ def auth_callback(request):
     return redirect("login")  # Handle authentication failure
 
 
-
-
 ### Login and Logout ###
 
 
 @never_cache
 def login_view(request):
     if request.user.is_authenticated:
-        return HttpResponseRedirect("dashboard")
+        return redirect("dashboard")
     lang = request.COOKIES.get('selectedLanguage', 'en')
     context = langs.get_langs(lang)
     if request.method == "POST":
@@ -246,9 +246,11 @@ def login_view(request):
             """  if not user.is_verified: #TODO confirm_login_allowed make this unnecessary?
                 messages.error(request, "Account not verified")
                 return redirect('login') """
-
             login(request, user)
-            return HttpResponseRedirect("dashboard")
+            return HttpResponse("dashboard")
+        else:
+            msg = {'tr': "Kullanıcı adı veya şifre hatalı.", 'hi': "गलत उपयोगकर्ता नाम या पासवर्ड।", 'pt': "Nome de usuário ou senha inválidos.", 'en': "Invalid username or password."}
+            return HttpResponse(msg[lang])
     else:
         form = AuthenticationUserForm()
     return HttpResponse(render_to_string("login.html", {"form": form, "context": context}))
