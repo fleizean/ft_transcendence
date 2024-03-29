@@ -120,7 +120,42 @@
 <script src="{% static "js/register.js" %}"></script>
 
 <script>
+  const passwordInput1 = document.getElementById('id_password1');
+    const passwordInput2 = document.getElementById('id_password2');
+    const toggleButton1 = document.getElementById('togglePassword1');
+    const toggleButton2 = document.getElementById('togglePassword2');
+    
+    toggleButton1.addEventListener('mousedown', function() {
+        passwordInput1.type = 'text';
+        toggleButton1.classList.remove('bi-eye-slash-fill');
+        toggleButton1.classList.add('bi-eye-fill');
+    });
+    
+    toggleButton1.addEventListener('mouseup', function() {
+        passwordInput1.type = 'password';
+        toggleButton1.classList.remove('bi-eye-fill');
+        toggleButton1.classList.add('bi-eye-slash-fill');
+    });
   
+    toggleButton2.addEventListener('mousedown', function() {
+        passwordInput2.type = 'text';
+        toggleButton2.classList.remove('bi-eye-slash-fill');
+        toggleButton2.classList.add('bi-eye-fill');
+    });
+  
+    toggleButton2.addEventListener('mouseup', function() {
+        passwordInput2.type = 'password';
+        toggleButton2.classList.remove('bi-eye-fill');
+        toggleButton2.classList.add('bi-eye-slash-fill');
+    });
+  
+    passwordInput1.addEventListener('input', function() {
+      toggleButton1.style.display = this.value.trim() !== '' ? 'block' : 'none';
+    });
+  
+    passwordInput2.addEventListener('input', function() {
+      toggleButton2.style.display = this.value.trim() !== '' ? 'block' : 'none';
+    });
 </script>
 
 <script>
