@@ -1,7 +1,7 @@
 from channels.generic.websocket import AsyncWebsocketConsumer
 from django.core.cache import cache
 from .utils import add_to_cache, remove_from_cache
-from .models import UserProfile
+#from .models import UserProfile
 import json
 
 class OnlineStatusConsumer(AsyncWebsocketConsumer):
@@ -17,6 +17,7 @@ class OnlineStatusConsumer(AsyncWebsocketConsumer):
         # Add user ID to online_users list
         add_to_cache('online_users', set(), self.user.id) """
         cache.set(f'online_{self.user.username}', True)
+        cache.set(f'playing_{self.user.username}', False) #TODO spada çalışmıyabilir
         # Maybe add playing to the cache
         await self.accept()
 

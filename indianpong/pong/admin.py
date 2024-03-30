@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib import admin
-from .models import RPSGame, OAuthToken, Social, UserItem, StoreItem, UserProfile, Tournament, Room, Message, Game, UserGameStat
+from .models import OAuthToken, Social, UserGameStatRPS, UserItem, StoreItem, UserProfile, Tournament, Room, Message, Game, UserGameStat
 from django.utils.html import format_html
 from django.forms import ModelChoiceField
 
@@ -67,6 +67,15 @@ class UserGameStatAdmin(admin.ModelAdmin):
         return obj.userprofile
     get_user.short_description = 'User'
 
+@admin.register(UserGameStatRPS)
+class UserGameStatRPSAdmin(admin.ModelAdmin):
+    list_display = ('get_user', 'total_games_rps', 'total_win_rps', 'total_lose_rps', 'total_win_streak_rps', 'total_win_rate_rps', 'total_lose_streak_rps', 'total_avg_game_duration_rps', 'total_avg_points_won_rps', 'total_avg_points_lost_rps')
+    search_fields = ('userprofile__username', 'total_win_rps',)
+
+    def get_user(self, obj):
+        return obj.userprofile
+    get_user.short_description = 'User'
+
 @admin.register(Social)
 class SocialAdmin(admin.ModelAdmin):
     list_display = ('get_user', 'intra42', 'linkedin', 'github', 'twitter')
@@ -80,7 +89,7 @@ class SocialAdmin(admin.ModelAdmin):
 
 @admin.register(Game)
 class GameAdmin(admin.ModelAdmin):
-    list_display = ('game_kind' ,'group_name', 'player1', 'player2', 'player1_score', 'player2_score', 'created_at', 'game_duration', 'winner', 'loser')
+    list_display = ('game_kind' ,'tournament_id', 'group_name', 'player1', 'player2', 'winner_score', 'loser_score', 'created_at', 'game_duration', 'winner', 'loser')
     list_filter = ('player1', 'player2', 'winner', 'loser')
     search_fields = ('player1__username', 'player2__username', 'group_name')
 
@@ -102,12 +111,6 @@ class MessageAdmin(admin.ModelAdmin):
 class OAuthTokenAdmin(admin.ModelAdmin):
     list_display = ('user', 'access_token', 'refresh_token', 'expires_in', 'created_at', 'secret_valid_until')
     search_fields = ('user__username',) 
-
-@admin.register(RPSGame)
-class RPSGameAdmin(admin.ModelAdmin):
-    list_display = ('player1', 'player2')
-    list_filter = ('player1', 'player2')
-    search_fields = ('player1__username', 'player2__username')
 
 """ @admin.register(TwoFactorAuth)
 class TwoFactorAuthAdmin(admin.ModelAdmin):

@@ -42,6 +42,22 @@
     object-fit: cover;
     filter: brightness(0.5);
   }
+
+  .cover-image-started {
+    width: 100%;
+    max-height: 300px !important;
+    height: 300px;
+    object-fit: cover;
+    filter: hue-rotate(170deg) brightness(0.5);
+  }
+
+  .cover-image-ended {
+    width: 100%;
+    max-height: 300px !important;
+    height: 300px;
+    object-fit: cover;
+    filter: grayscale(80%) brightness(0.5);
+  }
   
   .wrapper-rooms {
     transition: all 0.5s;

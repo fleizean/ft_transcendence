@@ -1,439 +1,264 @@
+import datetime
 import json
+import random
 from channels.db import database_sync_to_async
+from django.core.cache import cache
 from channels.generic.websocket import AsyncWebsocketConsumer
-from .models import RPSGame, Game, UserProfile
-import json
-from channels.db import database_sync_to_async
-from channels.generic.websocket import AsyncWebsocketConsumer
-from .models import RPSGame, Game, UserProfile
+from .utils import AsyncLockedDict
+from .rps import *
+
+RPS_USER_CHANNEL_NAME = AsyncLockedDict() # key: username, value: channel_name
+RPS_GAMES = AsyncLockedDict() # key: game_id, value: RPSGame object
+RPS_USER_STATUS = AsyncLockedDict() # key: username, value: game_id or search
+
 
 class RPSConsumer(AsyncWebsocketConsumer):
-    players_queue = []
-    is_matched = False  # Eşleştirme durumunu kontrol etmek için bir bayrak ekleyin
-
+    
     async def connect(self):
-        self.user = self.scope["user"]
-        self.group_name = None
+        self.user = self.scope['user']
+
         await self.accept()
 
-    async def disconnect(self, close_code):
-        await self.channel_layer.group_discard(
-            self.group_name,
-            self.channel_name
-        )
-        self.remove_from_queue()
+        # Add the user to the 'lobby' group
+        await self.channel_layer.group_add("search", self.channel_name)
 
-    async def receive(self, text_data):
-        text_data_json = json.loads(text_data)
-        action = text_data_json.get('action')
-        
-        if action == 'join_queue':
-            await self.join_queue()
-        elif action == 'choose_hand':
-            choices = text_data_json.get('choices')
-            print(choices)
-            opponent_channel_name = self.players_queue[0][0]
-            await self.channel_layer.send(opponent_channel_name, {
-                'type': 'choose_hand',
-                'choices': choices
-            })
-        elif action == 'end_game':
-            game_id = text_data_json.get('game_id')
-            game = await RPSGame.objects.aget(room_id=game_id)
-            game.winner = await UserProfile.objects.aget(username=text_data_json.get('winner_username'))
-            game.loser = await UserProfile.objects.aget(username=text_data_json.get('loser_username'))
-            game.score1 = text_data_json.get('score1')
-            game.score2 = text_data_json.get('score2')
-            game.asave()
-            await self.channel_layer.group_discard(
-                self.room_group_name,
-                self.channel_name
-            )
+        # Set the user's channel name
+        await RPS_USER_CHANNEL_NAME.set(self.user.username, self.channel_name)
+        # Add user username to lobby cache
+        await RPS_USER_STATUS.set(self.user.username, "search")
 
-    async def opponent_choose_hand(self, event):
-        choices = event['choices']
+        # Get the number of users in the lobby
+        lobby_users_usernames = await RPS_USER_STATUS.get_keys_with_value('search')
+        lobby_users_count = len(lobby_users_usernames)
         await self.send(text_data=json.dumps({
-            'opponent_choices': choices
+            'type': 'insearch',
+            'user': self.user.username,
+            'user_count': lobby_users_count,
         }))
 
-    async def join_queue(self):
-        if not self.is_matched:  # Eğer kullanıcı eşleştirilmediyse, kuyruğa ekleyin
-            self.user = self.scope["user"]
-            user_elo_point = self.user.elo_point
-            print(self.user.username + ": " + str(user_elo_point) + " elo point")
-            self.players_queue.append((self.channel_name, user_elo_point, self.user.username))  # Append a tuple
-            # Send a message to the user that they have successfully joined the matchmaking queue
-            await self.send(text_data=json.dumps({
-                'message': 'Successfully joined matchmaking queue.'
-            }))
-            # Start the process of checking the queue for a match
-            await self.check_for_match()
-
-    async def game_start(self, event):
-        # Oyun başladığında, oyuncuları bir araya getirir ve oyunu başlatır
-
-        game_id = event['game_id']
-
-        
-        print(self.user.username + " game_start")
-        
-        message = event['message']
-        await self.send(text_data=json.dumps({
-            'message': message
-        }))
-        # RPSGame modelinde bir oyun oluştur
-
-        # Yeni oluşturulan oyunun kimlik numarasını  al
-        print("game_start")
-        # Oyunculara oyunun kimlik numarasını gönder
-        
-        await self.channel_layer.group_send(event['group_name'], {
-                'type': 'game_id',
-                'game_id': game_id
-            }
-        )
-
-
-    async def game_id(self, event):
-        # Oyun kimlik numarasını alır ve oyuncuya gönderir
-        game_id = event['game_id']
-        await self.send(text_data=json.dumps({
-            'type': 'game_id',
-            'game_id': game_id
-        }))
-    
-    async def check_for_match(self):
-        if len(self.players_queue) >= 2:
-            await self.check_players_count()
-
-    async def check_players_count(self):
-        # Oyuncu sayısı 2'nin katları ise, yeni bir lobi oluştur
-        if len(self.players_queue) % 2 == 0:
-            await self.create_lobby()
-
-    async def create_lobby(self):
-        # Her iki oyuncu için yeni bir lobi oluştur
-        for i in range(0, len(self.players_queue), 2):
-            player1_channel, player1_elo, player1_username = self.players_queue[i]
-            player2_channel, player2_elo, player2_username = self.players_queue[i + 1]
-            player1M = await UserProfile.objects.aget(username=player1_username)
-            player2M = await UserProfile.objects.aget(username=player2_username)
-
-            game = await database_sync_to_async(RPSGame.objects.create)(
-                player1=player1M,
-                player2=player2M
-            )
-            game_id = game.room_id
-            group_name = f"{player1_username}-{player2_username}"
-            self.group_name = group_name
-            await self.channel_layer.group_add(group_name, player1_channel)
-            await self.channel_layer.group_add(group_name, player2_channel)
-            await self.game_start({
-                'message': 'Opponent found. Game starting...',
-                'group_name': group_name,
-                'game_id': str(game_id),
-            })
-
-
-    async def remove_from_queue(self):
-        # Kuyruktan ayrılan kullanıcıyı kaldırın
-        if self.channel_name in self.players_queue:
-            self.players_queue.remove(self.channel_name)
-            self.is_matched = False  # Kullanıcıyı eşleştirilmemiş olarak işaretleyin
-    
-    async def game_match(self, event):
-        opponent_channel = event['opponent_channel']
-    
-        await self.send(text_data=json.dumps({
-            "matched": "true",
-            'message': 'You are matched with an opponent!'
-        }))
-    
-    async def player_matched(self, event):
-        # Extract the opponent's channel name from the event
-        opponent_channel_name = event['opponent_channel_name']
-        # Send a message to the user to let them know they've been matched
-        await self.send(text_data=json.dumps({
-            'message': f'You have been matched with {opponent_channel_name}.'
-        }))
-    
-""" 
-class RPSConsumer(AsyncWebsocketConsumer):
-    players_queue = []
-    is_matched = False  # Eşleştirme durumunu kontrol etmek için bir bayrak ekleyin
-
-    async def connect(self):
-        self.user = self.scope["user"]
-        self.group_name = None
-        await self.accept()
+        #? Maybe unnecessary
+        await self.channel_layer.group_send("search", {
+            'type': 'user.insearch',
+            'user': self.user.username,
+        })
 
     async def disconnect(self, close_code):
-        await self.channel_layer.group_discard(
-            self.group_name,
-            self.channel_name
-        )
-        self.remove_from_queue()
+        game_id = await RPS_USER_STATUS.get(self.user.username)
+        if game_id != 'search':
+            game = await RPS_GAMES.get(game_id)
+            if game != None:
+                other_player_channel_name = await RPS_USER_CHANNEL_NAME.get(game.otherPlayer(self.user.username))
+                await self.record_for_disconnected(game_id, game)
+                await self.exit_handler(game_id, game)
+                await self.channel_layer.send(other_player_channel_name, {
+                    'type': 'game.disconnect',
+                    'game_id': game_id,
+                    'disconnected': self.user.username,
+                    })
+
+        # Remove the user from the 'lobby' group
+        await self.channel_layer.group_discard("search", self.channel_name)
+
+        # Remove the user's channel name
+        await RPS_USER_CHANNEL_NAME.delete(self.user.username)
+
+        # Remove user username from lobby cache
+        await RPS_USER_STATUS.delete(self.user.username)
+
+        #? Maybe unnecessary
+        # Set the user's status to offline
+        await self.channel_layer.group_send("search", {
+            'type': 'user.outsearch',
+            'user': self.user.username,
+        })
+
+        # Close the websocket connection
+        await self.close(close_code)
 
     async def receive(self, text_data):
-        text_data_json = json.loads(text_data)
-        action = text_data_json.get('action')
-        
-        if action == 'join_queue':
-            await self.join_queue()
-        elif action == 'choose_hand':
-            choices = text_data_json.get('choices')
-            opponent_channel_name = text_data_json.get('opponent_channel_name')
-            await self.channel_layer.send(opponent_channel_name, {
-                'type': 'opponent.choose_hand',
-                'choices': choices
-            })
-        elif action == 'end_game':
-            game_id = text_data_json.get('game_id')
-            game = await RPSGame.objects.aget(room_id=game_id)
-            game.winner = await UserProfile.objects.aget(username=text_data_json.get('winner_username'))
-            game.loser = await UserProfile.objects.aget(username=text_data_json.get('loser_username'))
-            game.score1 = text_data_json.get('score1')
-            game.score2 = text_data_json.get('score2')
-            game.asave()
-            await self.channel_layer.group_discard(
-                self.room_group_name,
-                self.channel_name
-            )
+        data = json.loads(text_data)
+        action = data.get('type')
 
-    async def opponent_choose_hand(self, event):
-        choices = event['choices']
-        await self.send(text_data=json.dumps({
-            'opponent_choices': choices
-        }))
-
-    async def join_queue(self):
-        if not self.is_matched:  # Eğer kullanıcı eşleştirilmediyse, kuyruğa ekleyin
-            self.user = self.scope["user"]
-            user_elo_point = self.user.elo_point
-            print(self.user.username + ": " + str(user_elo_point) + " elo point")
-            self.players_queue.append((self.channel_name, user_elo_point, self.user.username))  # Append a tuple
-            # Send a message to the user that they have successfully joined the matchmaking queue
-            await self.send(text_data=json.dumps({
-                'message': 'Successfully joined matchmaking queue.'
-            }))
-            # Start the process of checking the queue for a match
-            await self.check_for_match()
-
-    async def game_start(self, event):
-        # Oyun başladığında, oyuncuları bir araya getirir ve oyunu başlatır
-
-        game_id = event['game_id']
-
-        
-        print(self.user.username + " game_start")
-        
-        message = event['message']
-        await self.send(text_data=json.dumps({
-            'message': message
-        }))
-        # RPSGame modelinde bir oyun oluştur
-
-        # Yeni oluşturulan oyunun kimlik numarasını  al
-        print("game_start")
-        # Oyunculara oyunun kimlik numarasını gönder
-        
-        await self.channel_layer.group_send(event['group_name'], {
-                'type': 'game_id',
-                'game_id': game_id
-            }
-        )
-
-
-    async def game_id(self, event):
-        # Oyun kimlik numarasını alır ve oyuncuya gönderir
-        game_id = event['game_id']
-        await self.send(text_data=json.dumps({
-            'type': 'game_id',
-            'game_id': game_id
-        }))
-    
-    async def check_for_match(self):
-        if len(self.players_queue) >= 2:
-            
-            # If there are at least two people in the queue, match the first two people
-            player1, player2 = self.players_queue[:2]
-            # Check if the elo_point difference is not greater than 100
-            if abs(player1[1] - player2[1]) <= 100:
-                # If the elo_point difference is not greater than 100, match the players
-                # Remove the matched players from the queue
-                self.players_queue = self.players_queue[2:]
-                self.is_matched = True  # Kullanıcıyı eşleştirildi olarak işaretleyin
-
-                # Call game_start function to start the game,
-                print(player1[2] + " check_for_match")
-                print(player2[2] + " check_for_match")
-                player1M = await UserProfile.objects.aget(username=self.user.username)
-                player2M = await UserProfile.objects.aget(username=player1[2])
-                game = await database_sync_to_async(RPSGame.objects.create)(
-                    player1=player1M,
-                    player2=player2M
-                )
-                game_id = game.room_id
-                print(self.channel_name)
-                print(player1[0])
-                group_name = f"{player1[2]}-{self.user.username}"
-                self.group_name = group_name
+        if action == 'matchmaking':
+            opponent = await self.matchmaking_handler()
+            if opponent == None:
+                    await self.send(text_data=json.dumps({
+                        "error": "No suitable opponent found.",
+                    }))
+                    return
+            if opponent:
+                # Get the channel name of the shaker
+                opponent_channel_name = await RPS_USER_CHANNEL_NAME.get(opponent)
+                group_name = f'rps_{self.user.username}_{opponent}'
+                # Create a new game instance in database
+                game = await self.create_game(group_name, self.user.username, opponent)
+                # Add both players to the group
                 await self.channel_layer.group_add(group_name, self.channel_name)
-                await self.channel_layer.group_add(group_name, player1[0])
-                await self.game_start({
-                    'message': 'Opponent found. Game starting...',
-                    'group_name': group_name,
-                    'game_id': str(game_id),
-                })  
+                await self.channel_layer.group_add(group_name, opponent_channel_name)
+                # Save the game instance in the cache
+                await RPS_GAMES.set(game.id, RPS(self.user.username, opponent))
+                # Set the user's status to playing
+                await RPS_USER_STATUS.set(self.user.username, game.id)
+                await RPS_USER_STATUS.set(opponent, game.id)
+                cache.set(f"playing_{self.user.username}", True)
+                cache.set(f"playing_{opponent}", True)
+
+                # Send the game id to both players
+                await self.channel_layer.group_send(group_name, {
+                    'type': 'start',
+                    'game_id': game.id,
+                    'player1': self.user.username,
+                    'player2': opponent,
+                })
             else:
-                # If the elo_point difference is greater than 100, don't match the players
-                pass
+                await self.send(text_data=json.dumps({
+                    'type': 'matchmaking.notfound',
+                }))
+
+        elif action == 'choice':
+            game_id = data.get('game_id')
+            choice = data.get('choice')
+            game = await RPS_GAMES.get(game_id)
+            game.play(self.user.username, choice)
+            if game.both_played():
+                player1_choice, player2_choice = game.getChoices()
+                result = game.round_result()
+                player1_score, player2_score = game.get_scores()
+                await self.channel_layer.group_send(game.group_name, {
+                    'type': 'result',
+                    'game_id': game_id,
+                    'result': result,
+                    'player1_choice': player1_choice,
+                    'player2_choice': player2_choice,
+                    'player1_score': player1_score,
+                    'player2_score': player2_score,
+                })
+                if game.check_is_over():
+                    winner, loser, winner_score, loser_score = game.getWinnerLoserandScores()
+                    game_duration = game.getDuration()
+                    await self.record_stats_elo_wallet(game_id, winner_score, loser_score, winner, loser, game_duration)
+                    await self.channel_layer.group_send(game.group_name, {
+                        'type': 'result',
+                        'game_id': game_id,
+                        'result': 'OVER',
+                        'player1_choice': player1_choice,
+                        'player2_choice': player2_choice,
+                        'player1_score': player1_score,
+                        'player2_score': player2_score,
+                    })
 
 
+    ### Handlers ###
+    async def matchmaking_handler(self):
+        from .models import UserProfile
+        # Get the current user's elo_point
+        current_user = await UserProfile.objects.aget(username=self.user.username)
+        current_user_elo = current_user.elo_point
+        # Get a list of online users
+        lobby_users_usernames = await RPS_USER_STATUS.get_keys_with_value('search')
+        lobby_users_usernames.remove(self.user.username) #TODO if user not in search
 
-    async def remove_from_queue(self):
-        # Kuyruktan ayrılan kullanıcıyı kaldırın
-        if self.channel_name in self.players_queue:
-            self.players_queue.remove(self.channel_name)
-            self.is_matched = False  # Kullanıcıyı eşleştirilmemiş olarak işaretleyin
+        return await self.get_similar_users(lobby_users_usernames, current_user_elo)
+        
+
+    @database_sync_to_async
+    def get_similar_users(self, lobby_users_usernames, current_user_elo):
+        from .models import UserProfile
+        users = UserProfile.objects.filter(username__in=lobby_users_usernames, elo_point__gte=current_user_elo-100, elo_point__lte=current_user_elo+100).all()
+        similar_users = [user.username for user in users]
+        if similar_users:
+            invitee_username = random.choice(similar_users)
+        else:
+            invitee_username = random.choice(lobby_users_usernames) if lobby_users_usernames else None
+        
+        return invitee_username
     
-    async def game_match(self, event):
-        opponent_channel = event['opponent_channel']
-
+    async def exit_handler(self, game_id, game): 
+        # Discard both from the game group
+        opponent = game.otherPlayer(self.user.username)
+        opponent_channel_name = await RPS_USER_CHANNEL_NAME.get(opponent)
+        await self.channel_layer.group_discard(game.group_name, self.channel_name)
+        await self.channel_layer.group_discard(game.group_name, opponent_channel_name)
+        cache.set(f"playing_{self.user.username}", False)
+        cache.set(f"playing_{opponent}", False)
+        # delete the game from the cache
+        await RPS_GAMES.delete(game_id)
+    
+    ## Senders ##
+    async def user_insearch(self, event):
         await self.send(text_data=json.dumps({
-            "matched": "true",
-            'message': 'You are matched with an opponent!'
+            'type': 'user.insearch',
+            'user': event['user'],
         }))
 
-    async def player_matched(self, event):
-        # Extract the opponent's channel name from the event
-        opponent_channel_name = event['opponent_channel_name']
-        # Send a message to the user to let them know they've been matched
+    async def user_outsearch(self, event):
         await self.send(text_data=json.dumps({
-            'message': f'You have been matched with {opponent_channel_name}.'
+            'type': 'user.outsearch',
+            'user': event['user'],
         }))
 
+    async def game_disconnect(self, event):
+        await self.send(text_data=json.dumps({
+            'type': 'game.disconnect',
+            'game_id': event['game_id'],
+            'disconnected': event['disconnected'],
+        }))    
+    
+    async def result(self, event):
+        await self.send(text_data=json.dumps({
+            'type': 'result',
+            'game_id': event['game_id'],
+            'result': event['result'],
+            'player1_choice': event['player1_choice'],
+            'player2_choice': event['player2_choice'],
+            'player1_score': event['player1_score'],
+            'player2_score': event['player2_score'],
+        }))
 
+    
+    
+    async def start(self, event):
+        await self.send(text_data=json.dumps({
+            'type': 'start',
+            'game_id': event['game_id'],
+            'player1': event['player1'],
+            'player2': event['player2'],
+        }))
+    
+    # Helpers #
+    async def create_game(self,group_name, player1, player2):
+        from .models import Game, UserProfile
+        # Create a new game instance with the given players and an group_name
+        player1 = await UserProfile.objects.aget(username=player1)
+        player2 = await UserProfile.objects.aget(username=player2)           
+        game = await Game.objects.acreate(game_kind="rps", group_name=group_name, player1=player1, player2=player2)
+        return game
+    
+    @database_sync_to_async
+    def record_stats_elo_wallet(self, game_id, winner_score, loser_score, winner, loser, game_duration):
+        from .models import Game, UserProfile
+        from .update import update_wallet_elo, update_stats_rps
 
+        game = Game.objects.get(id=game_id)
+        game.game_kind = "rps"
+        game.winner_score = winner_score
+        game.loser_score = loser_score
+        game.winner =UserProfile.objects.get(username=winner)
+        game.loser = UserProfile.objects.get(username=loser)
+        game.game_duration = datetime.timedelta(seconds=game_duration)
+        game.save()
 
- """
+        update_wallet_elo(game.winner, game.loser)
+        update_stats_rps(game.winner, game.loser, winner_score, loser_score, game_duration, "remote")
 
-
-
-
-
-
-
-
-
-
-
-
+    async def record_for_disconnected(self, game_id, game):
+        duration = game.getDuration()
+        if game.shaker1.username == self.user.username:
+            await self.record_stats_elo_wallet(game_id, game.shaker1.score, game.max_score, game.shaker2.username, game.shaker1.username, duration)
+        else:
+            await self.record_stats_elo_wallet(game_id, game.max_score, game.shaker2.score, game.shaker1.username, game.shaker2.username, duration)
 
 
         
-"""     async def game_start(self, event):
-        try:
-            player1 = UserProfile.objects.get(displayname='self.user.username')
-        except UserProfile.DoesNotExist:
-            print("No UserProfile with username 'player1' exists.")
-        message = event['message']
-        await self.send(text_data=json.dumps({
-            'message': message
-        }))
-        # RPSGame modelinde bir oyun oluştur
-        game = RPSGame.objects.create(
-            # Burada gerekli alanları doldurun, örneğin:
-            player1=self.channel_name,
-            player2=event['opponent_channel_name']
-        )
-        print("game_start")
-        # Yeni oluşturulan oyunun kimlik numarasını al
-        game_id = game.room_id
-        # Oyunculara oyunun kimlik numarasını gönder
-        await self.channel_layer.group_send(
-            self.channel_name,
-            {
-                'type': 'game_id',
-                'game_id': str(game_id)
-            }
-        )
-        await self.channel_layer.group_send(
-            event['opponent_channel_name'],
-            {
-                'type': 'game_id',
-                'game_id': str(game_id)
-            }
-        )
- """
 
-"""     async def check_for_match(self):
-        if len(self.players_queue) >= 2:
-            # If there are at least two people in the queue, match the first two people
-            player1, player2 = self.players_queue[:2]
-            # Check if the elo_point difference is not greater than 100
-            if abs(player1[1] - player2[1]) <= 100:
-                # If the elo_point difference is not greater than 100, match the players
-                # Remove the matched players from the queue
-                self.players_queue = self.players_queue[2:]
-                # Send a message to the players that they have been matched
-                await self.channel_layer.send(player1[0], {
-                    'type': 'player.matched',
-                    'opponent_channel_name': player2[0]
-                })
-                await self.channel_layer.send(player2[0], {
-                    'type': 'player.matched',
-                    'opponent_channel_name': player1[0]
-                })
-            else:
-                # If the elo_point difference is greater than 100, don't match the players
-                pass """
-""" 
-class RPSConsumer(AsyncWebsocketConsumer):
-    async def connect(self):
-        self.room_name = 'rps_game'
-        self.room_group_name = 'rps_game_group'
 
-        await self.channel_layer.group_add(
-            self.room_group_name,
-            self.channel_name
-        )
-        await self.accept()
-
-        # Oyuncuyu eşleştirme talebi
-        room = await sync_to_async(rpsRoom.get_or_create_waiting_room)()
-        room.add_player(self.channel_name)
-
-        # Eğer odada iki oyuncu varsa, oyunu başlat
-        if room.is_full():
-            opponent_channel_name = room.get_opponent_channel_name(self.channel_name)
-            await self.channel_layer.group_send(
-                opponent_channel_name,
-                {
-                    'type': 'game_start',
-                    'message': 'Your opponent is ready. Game starting...'
-                }
-            )
-            await self.channel_layer.group_send(
-                self.channel_name,
-                {
-                    'type': 'game_start',
-                    'message': 'Opponent found. Game starting...'
-                }
-            )
-
-    async def disconnect(self, close_code):
-        await self.channel_layer.group_discard(
-            self.room_group_name,
-            self.channel_name
-        )
-
-    async def receive(self, text_data):
-        pass
-
-    async def game_start(self, event):
-        message = event['message']
-        await self.send(text_data=json.dumps({
-            'message': message
-        }))
- """

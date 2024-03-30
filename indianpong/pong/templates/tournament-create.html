@@ -24,13 +24,6 @@
                     <div class="error-message" style="color: red; font-size: 14px;">{{ form.name.errors }}</div>
                   {% endif %}
                   </span>
-                <label class="tournamentGame-Text" for="id_max_score">{{context.tournamentCreateMaxPointsText}}</label>
-                <input class="input-style" type="number" name="max_score" value="10" required id="id_max_score">
-                <span>
-                {% if form.max_score.errors %}
-                  <div class="error-message"  style="color: red; font-size: 14px;">{{ form.max_score.errors }}</div>
-                {% endif %}
-                </span>
                 <div class="selectorGame">
                   <label class="tournamentGame-Text" for="id_game_mode">{{context.tournamentCreateGameModeText}}</label>
                   <select class="form-select" name="game_mode" id="id_game_mode">

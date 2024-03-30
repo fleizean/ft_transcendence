@@ -3,35 +3,62 @@
 {% load static %}
 
 {% block title %}
-  Play with AI
+  Remote RPS
 {% endblock %}
 
 {% block stylesheet %}<link rel="stylesheet" href="{% static 'css/rps.css' %}"/>
-<link rel="stylesheet" href="{% static 'css/game-find.css' %}"
+<link rel="stylesheet" href="{% static 'css/game-find.css' %}">
 {% endblock %}
 
 {% block app %}
 
-  <div class="ai-btn">
-    <div class="ponggamebtn" id="ponggamebtn" onclick="joinQueue()">
-      Search Opponent <i class="bi bi-person-arms-up"></i>
+  <div class="ai-btn" id="matchmakingButtons">
+    <h3 class="user-count-text">{{context.rpsUserCountText}}:</h3>
+    <h5 class="user-count" id="userCount">0</h5>
+    <div class="form-check form-switch" style="justify-content: center !important; text-align: center !important; display: flex !important;">
+      <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+   </div>
+   <div class="game-mode-info-select" id="gameModeSelect">
+       <label class="selectedmode" id="selectedGameMode">{{context.remotePongSelectedMode}}</label>
+   </div>
+    <div class="game-mode-info">
+      <label class="form-check-label">{{context.remotePongGameStartText}}</label>
+    </div>
+    <div class="ponggamebtn" id="ponggamebtn" onclick="searchOpponent()">
+      {{context.rpsGameSearchOpponentButtonText}} <i class="bi bi-person-arms-up"></i>
     </div>
   </div>
   <div class="container-top" id="container-top" style="visibility: hidden;" data-iconpath="{% static "assets/rps/" %}">
     <div class="header-top">
       <div class="header">
         <div class="score" style="margin-right: 15px;">
-          <div class="score__title">score</div>
-          <div class="score__number">0</div>
+          <div class="player1_name" id="player1Name"> </div>
+          <div class="score__title">{{context.rpsGameScoreText}}</div>
+          <div class="score__number1">0</div>
         </div>
-        <h3 class="rps-header-text">ROCK<br />PAPER<br />SCISSORS</h3>
+        <h3 class="rps-header-text">{{context.rpsGameRockText}}<br />{{context.rpsGamePaperText}}<br />{{context.rpsGameScissorsText}}</h3>
         <div class="score" style="margin-left: 15px;">
-          <div class="score__title">score</div>
-          <div class="score__number">0</div>
+          <div class="player2_name" id="player2Name"></div>
+          <div class="score__title">{{context.rpsGameScoreText}}</div>
+          <div class="score__number2">0</div>
         </div>
       </div>
     </div>
     <section class="game">
+      {% if cheater_rps == "true" %}
+        <button class="choice-btn" id="cheater-choice" data-choice="cheater" style="display: none;">
+          <div class="choice cheater">
+            <img src="{% static 'assets/rps/icon-likeacheater.svg' %}" alt="Cheater" />
+          </div>
+        </button>
+      {% endif %}
+      {% if godthings_rps == "true" %}
+        <button class="choice-btn" id="godthings-choice" data-choice="godthings" style="display: none;">
+          <div class="choice godthings">
+            <img src="{% static 'assets/rps/icon-godofthings.svg' %}" alt="Godthings" />
+          </div>
+        </button>
+      {% endif %}
       <button class="choice-btn" data-choice="paper">
         <div class="choice paper">
           <img src="{% static 'assets/rps/icon-paper.svg' %}" alt="Paper" />
@@ -49,17 +76,55 @@
       </button>
     </section>
   </div>
-
+  
+  <div class="results__winner hidden">
+    <h3 class="results__text"></h3>
+  </div>
   <section class="results hidden">
-    <h2 class="results__heading">you picked</h2>
-    <h2 class="results__heading">the house picked</h2>
-    <div class="results__result"></div>
-    <div class="results__winner hidden">
-      <h3 class="results__text"></h3>
-      <button class="play-again">play again</button>
-    </div>
-    <div class="results__result"></div>
+      <h2 class="results__heading" id="player1_picked"></h2>
+      <h2 class="results__heading" id="player2_picked"></h2>
+      <div class="results__result"></div>
+      <div class="results__result"></div>
   </section>
+  
+  <div id="gameOverScreen" class="game-over">
+    <h1 id="winnerText" class="winnerName"></h1>
+    <h2 style="color: white;">{{context.rpsGameGameOverText}}</h2>
+    <button id="exitButton">{{context.rpsGameExitButtonText}}</button>
+  </div>
 
+<div class="toast-container position-fixed bottom-0 end-0 p-6" style="margin-right: 20px; margin-bottom: 20px">
+  <div class="toast text-bg-danger" id="liveToast" role="alert">
+      <div class="toast-body">
+          <div class="d-flex gap-4">
+              <span class="i-class"><i class="bi bi-image"></i></span>
+              <div class="d-flex flex-grow-1 align-items-center">
+                  <span class="fw-semibold"></span>
+                  <span class="toast-close" style="margin-left: auto;" data-bs-dismiss="toast"><i class="bi bi-x-circle-fill"></i></span>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+
+  <script>
+    function showToast(content, status, iconClass) {
+        const liveToast = document.getElementById('liveToast');
+        var toastContent = document.querySelector('#liveToast .fw-semibold');
+        var toastIcon = document.querySelector('.toast-body .i-class i');
+
+        toastIcon.className = iconClass;
+        liveToast.classList.remove('text-bg-danger'); 
+        liveToast.className = 'toast'; 
+        liveToast.classList.add(status);
+
+        toastContent.textContent = content;
+        const toast = new bootstrap.Toast(liveToast);
+        toast.show();
+        setTimeout(function() {
+            toast.hide();
+        }, 8000);
+    }
+  </script>
   <script src="{% static 'js/sockRps.js' %}"></script>
 {% endblock %}

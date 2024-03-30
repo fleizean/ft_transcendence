@@ -49,7 +49,7 @@ var ainameX = canvas.width - textWidth2 - 10;
 var ainameY = 20;
 
 // if giantMan abilities equiped
-var abilities_paddleHeight = (giantMan == "true") ? 120 : 100;
+var abilities_paddleHeight = (giantMan == "true") ? 115 : 100;
 var paddleWidth = 10;
 var paddleHeight = 100;
 var paddleSpeed = 15;
@@ -114,7 +114,7 @@ function update() {
             startLPaddleSound();
             if (rageofFire == "true") {
                 if (Math.random() <= 0.5) {
-                    ball.speed += 1;
+                    ball.speed += 0.25;
                 }
             }
             ball.x = paddle1.x + paddle1.width + ball.radius;
@@ -125,7 +125,7 @@ function update() {
             }
         }
     }
-    if (ball.y + ball.radius >= paddle2.y && ball.y - ball.radius <= paddle2.y + paddle2.height && ball.dx > 0) {
+    else if (ball.y + ball.radius >= paddle2.y && ball.y - ball.radius <= paddle2.y + paddle2.height && ball.dx > 0) {
         if (ball.x + ball.radius >= paddle2.x) {
             startRPaddleSound();
             // Çarpışma var, topun x koordinatını paddle'ın yanına ayarla ve yönünü tersine çevir
@@ -522,7 +522,7 @@ reactionDelaySlider.oninput = function() {
     reactionDelay = this.value / ball.speed;
     delayValueSpan.innerText = Math.round(reactionDelay); // Display the current value of the slider
     let value = (this.value-this.min)/(this.max-this.min)*100
-    this.style.background = 'linear-gradient(to right, violet, yellow ' + value + '%, #ccc ' + value + '%, #ccc)';
+    /* this.style.background = 'linear-gradient(to right, violet, yellow ' + value + '%, #ccc ' + value + '%, #ccc)'; */
 }
 let reactionDelay = Math.round(reactionDelaySlider.value / ball.speed);
 let lastBallPosition = { x: ball.x, y: ball.y };
@@ -696,7 +696,7 @@ function restartGame() {
 
 // Çıkış yapma işlemleri
 function exitGame() {
-    window.location.href = '/pong-game-find';
+    window.location.href = '/pong-game-find';  // ?
 }
 
 document.getElementById('restartButton').addEventListener('click', restartGame);

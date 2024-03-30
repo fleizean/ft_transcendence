@@ -9,8 +9,8 @@
 <div class="cursor">
   <div class="container">
     <div class="RegisterArea" id="RegisterArea">
-      <form class="form" enctype="multipart/form-data" method="post">
-        <a href="/login" data-link>
+      <form class="form" enctype="multipart/form-data" method="post" id="registerForm">
+        <a onclick="swapApp('/login')" data-link>
           <button class="backbtn" type="button">
             <svg
               height="16"
@@ -30,35 +30,45 @@
           <span class="titlebottom">{{context.signupHeaderText2}}</span>
         </div>
         <div class="login-with">
-          <a href="/auth" data-link class="no-underline"><div class="button-log"><b>42</b></div></a>
+          <a onclick="swapApp('/auth')" class="no-underline"><div class="button-log"><b>42</b></div></a>
         </div>
         {% csrf_token %}
         <input type="text" name="username" class="input" placeholder="{{context.signupInputUsernameText}}" autofocus required id="id_username">
         {% for error in form.username.errors %}
+          {% if error != "This field is required." %}
             <span id="propertyUsernameError" class="text-danger">{{error}}</span>
+          {% endif %}
         {% endfor %}
 
         <input type="text" name="displayname" class="input" placeholder="{{context.signupInputDisplayNameText}}" required id="id_displayname">
         {% for error in form.displayname.errors %}
+          {% if error != "This field is required." %}
             <span id="propertyDisplaynameError" class="text-danger">{{error}}</span>
+          {% endif %}
         {% endfor %}
 
         <input type="email" name="email" class="input" maxlength="320" placeholder="{{context.signupInputEmailText}}" required id="id_email">
         {% for error in form.email.errors %}
-            <span id="propertyEmailError" class="text-danger">{{error}}</span>
+            {% if error != "Enter a valid email address." and error != "This field is required." %}
+                <span id="propertyEmailError" class="text-danger">{{error}}</span>
+            {% endif %}
         {% endfor %}
 
         <input type="password" name="password1" class="input" placeholder="{{context.signupInputPasswordText}}" required id="id_password1">
         <i class="bi bi-eye-slash-fill" id="togglePassword1" style="position: absolute;top: 396px;right: 35px;z-index: 100; display: none;"></i>
         
         {% for error in form.password1.errors %}
-            <span id="propertyPassword1Error" class="text-danger">{{error}}</span>
+            {% if error != "This field is required." %}
+              <span id="propertyPassword1Error" class="text-danger">{{error}}</span>
+            {% endif %}
         {% endfor %}
         <input type="password" name="password2" class="input" placeholder="{{context.signupInputConfirmPasswordText}}" required id="id_password2">
         <i class="bi bi-eye-slash-fill" id="togglePassword2" style="position: absolute;top: 456px;right: 35px;z-index: 100; display: none;"></i>
         
         {% for error in form.password2.errors %}
-          <span id="propertyPassword2Error" class="text-danger">- {{error}}</span>
+          {% if error != "This field is required." %}
+            <span id="propertyPassword2Error" class="text-danger">- {{error}}</span>
+          {% endif %}
         {% endfor %}
       
         <label class="custom-file-upload" for="id_avatar">
@@ -84,11 +94,10 @@
             <span style="font-weight: 500;">{{context.signupImageUploadText}}</span>
           </div>
           <input type="file" name="avatar" class="input" accept="image/*" id="id_avatar">
-          {{form.avatar.errors}}
+{% comment %}           {{form.avatar.errors}} {% endcomment %}
         </label>
-{% comment %}         {% for error in form.non_field_errors %} {% endcomment %}
         <div class="register-buttons">
-          <button type="submit" class="button-confirm">{{context.signupButtonSignup}} →</button>
+          <button type="button" class="button-confirm" onclick="makeRegister()">{{context.signupButtonSignup}} →</button>
         </div>
       </form>
     </div>
@@ -109,100 +118,12 @@
   
 </div>
 <script>
-  const passwordInput1 = document.getElementById('id_password1');
-  const passwordInput2 = document.getElementById('id_password2');
-  const toggleButton1 = document.getElementById('togglePassword1');
-  const toggleButton2 = document.getElementById('togglePassword2');
-  
-  toggleButton1.addEventListener('mousedown', function() {
-      passwordInput1.type = 'text';
-      toggleButton1.classList.remove('bi-eye-slash-fill');
-      toggleButton1.classList.add('bi-eye-fill');
-  });
-  
-  toggleButton1.addEventListener('mouseup', function() {
-      passwordInput1.type = 'password';
-      toggleButton1.classList.remove('bi-eye-fill');
-      toggleButton1.classList.add('bi-eye-slash-fill');
-  });
 
-  toggleButton2.addEventListener('mousedown', function() {
-      passwordInput2.type = 'text';
-      toggleButton2.classList.remove('bi-eye-slash-fill');
-      toggleButton2.classList.add('bi-eye-fill');
-  });
-
-  toggleButton2.addEventListener('mouseup', function() {
-      passwordInput2.type = 'password';
-      toggleButton2.classList.remove('bi-eye-fill');
-      toggleButton2.classList.add('bi-eye-slash-fill');
-  });
-
-  passwordInput1.addEventListener('input', function() {
-    toggleButton1.style.display = this.value.trim() !== '' ? 'block' : 'none';
-  });
-
-  passwordInput2.addEventListener('input', function() {
-    toggleButton2.style.display = this.value.trim() !== '' ? 'block' : 'none';
-  });
 </script>
-
+<script type="module" src="{% static "js/signup.js" %}"></script>
 <script>
-
-function getCookie(name) {
-    const cookieValue = document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)');
-    return cookieValue ? cookieValue.pop() : '';
-}
-
-const selectedLanguage = getCookie('selectedLanguage');
-
-function showToast(content, status, iconClass) {
-    const liveToast = document.getElementById('liveToast');
-    var toastContent = document.querySelector('#liveToast .fw-semibold');
-    var toastIcon = document.querySelector('.toast-body .i-class i');
-
-    toastIcon.className = iconClass;
-    liveToast.classList.remove('text-bg-danger'); 
-    liveToast.className = 'toast'; 
-    liveToast.classList.add(status);
-
-    toastContent.textContent = content;
-    const toast = new bootstrap.Toast(liveToast);
-    toast.show();
-    setTimeout(function() {
-        toast.hide();
-    }, 8000);
-}
-
-const fileInput = document.getElementById('id_avatar');
-fileInput.addEventListener('change', function(event) {
-
-  var file = this.files[0];
-    if (file.size > 2.6 * 1024 * 1024) { // 1MB
-        if(selectedLanguage == 'en')
-          showToast("Photo must be under 2.6MB!", "text-bg-danger", "bi bi-image");
-        else if(selectedLanguage == 'tr')
-          showToast("Fotoğraf 2.6MB'dan küçük olmalıdır!", "text-bg-danger", "bi bi-image");
-        else if(selectedLanguage == 'hi')
-          showToast("फोटो 2.6MB से कम होना चाहिए!", "text-bg-danger", "bi bi-image");
-        else if(selectedLanguage == 'pt')
-          showToast("A foto deve ter menos de 2,6 MB!", "text-bg-danger", "bi bi-image");
-        else
-          showToast("Photo must be under 2.6MB!", "text-bg-danger", "bi bi-image");
-        this.value = '';
-    }
-    else {
-        if(selectedLanguage == 'en')
-          showToast("Photo added!", "text-bg-success", "bi bi-image");
-        else if(selectedLanguage == 'tr')
-          showToast("Fotoğraf eklendi!", "text-bg-success", "bi bi-image");
-        else if(selectedLanguage == 'hi')
-          showToast("फोटो जोड़ दी गई!", "text-bg-success", "bi bi-image");
-        else if(selectedLanguage == 'pt')
-          showToast("Foto adicionada!", "text-bg-success", "bi bi-image");
-        else
-          showToast("Photo added!", "text-bg-success", "bi bi-image");
-    }
-});
+  window.onload = function() {
+    initializeSignup();
+  };
 </script>
 {% endblock %}

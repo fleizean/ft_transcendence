@@ -68,6 +68,7 @@
   .player-wrapper {
     max-width: 520px;
     margin: auto; 
+    text-align:center;
   }
   
   .place {
@@ -85,6 +86,21 @@
     object-fit: cover;
   }
 
+  .winner-container {
+    display:flex;
+    justify-content:center;
+    text-align:center;
+    align-items:center;
+    flex-direction: column;
+  }
+
+  .winner-avatar {
+    height: 90px;
+    width: 90px;
+    object-fit: cover;
+    border: 3px solid greenyellow;
+  }
+
   .avatar-container-creator {
     height: 90px;
     width: 90px;
@@ -92,7 +108,31 @@
     border: 1px solid orangered;
   }
 
-  
+  .winner-info {
+    margin-top:8px;
+  }
+
+  .crown-icon {
+      width: 20px;   /* Taç ikonunun genişliği */
+      height: auto;  /* Otomatik yükseklik ayarı */
+      margin-top: -5px;
+  }
+
+  .losers-winner-text {
+    color: tomato;
+    text-align:center;
+    font-style:italic;
+    font-weight: bold;
+    font-size: 14px;
+  }
+
+  .winner-guy-text {
+    color: greenyellow;
+    text-align:center;
+    font-style:italic;
+    font-weight: bold;
+    font-size: 14px;
+  }
   
   .player-info {
     font-size: 15px;
@@ -119,6 +159,13 @@
   
   .game-room-avatar {
     border: 1px solid #dadada;
+    max-width: 100%;
+    aspect-ratio: 1/1; 
+    object-fit: cover;
+    height: 100%;
+  }
+
+  .game-room-avatar-winner {
     max-width: 100%;
     aspect-ratio: 1/1; 
     object-fit: cover;
@@ -271,7 +318,20 @@
     height: 349px;
   }
 
+  .match-link-a {
+    margin-left:auto;
+    margin-right:-7.5em;
+  }
 
+  .match-link {
+    font-size: 16px;
+    color: tomato !important;
+  }
+
+  .match-link:hover {
+    color: rgb(0, 110, 255) !important;
+    cursor: pointer;
+  }
   
   .disable-image .image,
   .disable-seed .seed,

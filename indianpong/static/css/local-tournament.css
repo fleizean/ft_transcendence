@@ -19,6 +19,16 @@
   margin: 0 0 20px;
 }
 
+.game-info-menu-tournament {
+  display: none;
+}
+
+.game-info-menu-local {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
 .tournamentLocalGamePlayerText {
   color: greenyellow;
   font-size: 16px;
@@ -119,6 +129,11 @@ min-width: 240px;
 max-width: 240px;
 height: 62px;
 margin: 12px 24px 12px 0;
+}
+.match-bottom team {
+  /* diğer stil özellikleri */
+  pointer-events: auto; /* Eğer pointer-events: none; olarak atanmışsa, bu satırı ekleyin veya bu özelliği kaldırın */
+  z-index: 1; /* Eğer bu elementin diğer elementlerin üzerinde olmasını istiyorsanız, z-index değerini artırabilirsiniz */
 }
 .match .match-top {
 border-radius: 2px 2px 0 0;

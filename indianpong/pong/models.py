@@ -15,6 +15,7 @@ from indianpong.settings import EMAIL_HOST_USER, STATICFILES_DIRS
 from django.utils import timezone
 import uuid
 from datetime import timedelta
+from .game import MAX_SCORE
 
 
 class Social(models.Model):
@@ -39,25 +40,23 @@ class StoreItem(models.Model):
     show_status = models.BooleanField(default=False) # store'da görünebilir mi?
 
 class UserProfile(AbstractUser):
-    #id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     displayname = models.CharField(max_length=100, blank=True, null=True)
     email = models.EmailField(unique=True, max_length=254)
     avatar = models.ImageField(upload_to=get_upload_to, null=True, blank=True)
     friends = models.ManyToManyField('self', symmetrical=False, blank=True)
+    blocked_users = models.ManyToManyField('self', symmetrical=False, blank=True, related_name='blocked_by')
     social = models.OneToOneField('Social', on_delete=models.CASCADE, null=True, blank=True)
-    #channel_name = models.CharField(max_length=100, blank=True, null=True)
     is_verified = models.BooleanField(default=False)
     is_42student = models.BooleanField(default=False)
     is_indianai = models.BooleanField(default=False)
-    preffered_lang = models.CharField(max_length=100, blank=True, null=True)
+    prefered_lang = models.CharField(max_length=100, blank=True, null=True)
     store_items = models.ManyToManyField(StoreItem, through='UserItem', blank=True)
-    game_stats = models.OneToOneField('UserGameStat', on_delete=models.SET_NULL, null=True, blank=True)
+    game_stats_pong = models.OneToOneField('UserGameStat', on_delete=models.SET_NULL, null=True, blank=True)
     game_stats_rps = models.OneToOneField('UserGameStatRPS', on_delete=models.SET_NULL, null=True, blank=True)
     indian_wallet = models.IntegerField(blank=True, null=True, default=0, validators=[MinValueValidator(0), MaxValueValidator(9999)])
     elo_point = models.IntegerField(blank=True, null=True, default=0, validators=[MinValueValidator(0), MaxValueValidator(99999)])
-    reconnect_url = models.URLField(blank=True, null=True)
-    #is_online = models.BooleanField(default=False)
-    #is_playing = models.BooleanField(default=False)
+    username_change_date = models.DateTimeField(blank=True, null=True)
+
 
     def __str__(self) -> str:
         return f"{self.username}"
@@ -66,6 +65,10 @@ class UserProfile(AbstractUser):
         if not self.avatar and self.username != os.environ.get("INDIANAI_USERNAME", default="IndianAI") and self.username != os.environ.get("SUPER_USER", default="Bitlis"):
             svg_content = create_random_svg(self.username)
             self.avatar.save(f"{self.username}.svg", svg_content, save=False)
+        if not self.game_stats_pong:
+            self.game_stats_pong = UserGameStat.objects.create()
+        if not self.game_stats_rps:
+            self.game_stats_rps = UserGameStatRPS.objects.create()
         super().save(*args, **kwargs)
     
     @property
@@ -79,7 +82,7 @@ class UserProfile(AbstractUser):
             (200, 250): "silver.webp",
             (250, 310): "gold.webp",
             (310, 360): "platinum.webp",
-            (360, 420): "emerlad.webp",
+            (360, 420): "emerald.webp",
             (420, 500): "diamond.webp",
             (500, 550): "master.webp",
             (550, 600): "grandmaster.webp",
@@ -90,24 +93,23 @@ class UserProfile(AbstractUser):
                 return rank_image
         return "unranked.webp"
 
-        def get_rank_name(self):
-            ranks = {
-                (1, 150): "Lumina",
-                (150, 200): "Vexal",
-                (200, 250): "Sylan",
-                (250, 310): "Verdan",
-                (310, 360): "Fiora",
-                (360, 420): "Zoral",
-                (420, 500): "Lysar",
-                (500, 550): "Aerion",
-                (550, 600): "Eclis",
-                (600, float('inf')): "Noctis"
-            }
-            for rank_range, rank_name in ranks.items():
-                if rank_range[0] <= self.elo_point <= rank_range[1]:
-                    return rank_name
-            return "Solvia"
-
+    def get_rank_name(self):
+        ranks = {
+            (1, 150): "Warritt",
+            (150, 200): "Kagen",
+            (200, 250): "Larvik",
+            (250, 310): "Deglan",
+            (310, 360): "Letho",
+            (360, 420): "Eskel",
+            (420, 500): "Lambert",
+            (500, 550): "Vesemir",
+            (550, 600): "Geralt of Rivia",
+            (600, float('inf')): "Cirilla Fiona"
+        }
+        for rank_range, rank_name in ranks.items():
+            if rank_range[0] <= self.elo_point <= rank_range[1]:
+                return rank_name
+        return "Reinald"
 
 
 class UserItem(models.Model):
@@ -117,7 +119,7 @@ class UserItem(models.Model):
     is_equipped = models.BooleanField(default=False) # kullanıma alındı mı veya inventorye eklendi mi?
     whatis = models.CharField(max_length=100, blank=True, null=True) # ai name or colors
 
-class UserGameStat(models.Model):
+class UserGameStat(models.Model): #? Pong and RPS models are same
     total_games_pong = models.IntegerField(default=0)
     total_win_pong = models.IntegerField(default=0)
     total_lose_pong = models.IntegerField(default=0)
@@ -155,7 +157,7 @@ class UserGameStat(models.Model):
         return "{:.2f}".format(self.total_avg_points_lost_pong)
 
     def formatted_avg_points_won(self):
-        return "{:.2f}".format(self.total_avg_points_won_pong)
+        return "{:.2f}".format(self.total_avg_points_won_pong)        
 
 
 class UserGameStatRPS(models.Model):
@@ -245,32 +247,7 @@ class VerifyToken(models.Model):
         email.send(fail_silently=True)
         #send_mail(mail_subject, message, EMAIL_HOST_USER, [user.email], fail_silently=True, html_message=message)
 
-class ChatMessage(models.Model):
-    sender = models.ForeignKey(UserProfile, related_name='sent_messages', on_delete=models.CASCADE)
-    receiver = models.ForeignKey(UserProfile, related_name='received_messages', on_delete=models.CASCADE)
-    content = models.TextField()
-    timestamp = models.DateTimeField(auto_now_add=True)
 
-class BlockedUser(models.Model):
-    user = models.ForeignKey(UserProfile, related_name='blocking_users', on_delete=models.CASCADE)
-    blocked_user = models.ForeignKey(UserProfile, related_name='blocked_by_users', on_delete=models.CASCADE)
-
-class GameInvitation(models.Model):
-    inviting_user = models.ForeignKey(UserProfile, related_name='invitations_sent', on_delete=models.CASCADE)
-    invited_user = models.ForeignKey(UserProfile, related_name='invitations_received', on_delete=models.CASCADE)
-    message = models.TextField()
-    created_at = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return f"{self.inviting_user.username} invited {self.invited_user.username} to play Pong"
-    
-class GameWarning(models.Model):
-    user = models.ForeignKey(UserProfile, related_name='warnings_sent', on_delete=models.CASCADE)
-    opponent = models.ForeignKey(UserProfile, related_name='warnings_received', on_delete=models.CASCADE)
-    created_at = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return f"{self.user.username} sent a game warning to {self.opponent.username}"
 
 class Game(models.Model):
     GAME_KIND_CHOICES = (
@@ -278,13 +255,13 @@ class Game(models.Model):
         ("rps", "Rock Paper Scissors")
     )
 
-    game_kind = models.CharField(max_length=10, choices=GAME_KIND_CHOICES, default="pong")
+    game_kind = models.CharField(max_length=10, choices=GAME_KIND_CHOICES, default="pong") #? Maybe unnecessary
     tournament_id = models.IntegerField(MinValueValidator(1), null=True, blank=True)
     group_name = models.CharField(max_length=100)
     player1 = models.ForeignKey(UserProfile, related_name='games_as_player1', on_delete=models.CASCADE)
     player2 = models.ForeignKey(UserProfile, related_name='games_as_player2', on_delete=models.CASCADE)
-    player1_score = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(10)], default=0)
-    player2_score = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(10)], default=0)
+    winner_score = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(10)], default=0)
+    loser_score = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(10)], default=0)
     created_at = models.DateTimeField(auto_now_add=True)
     game_duration = models.DurationField(null=True, blank=True)
     winner = models.ForeignKey(UserProfile, related_name='games_won', on_delete=models.CASCADE, null=True, blank=True)
@@ -293,17 +270,17 @@ class Game(models.Model):
     def __str__(self):
         return f"{self.player1.username} vs {self.player2.username}"
     
-    def forfeit(self, forfeiting_user, max_score=10):
+    def forfeit(self, forfeiting_user):
         if self.player1 == forfeiting_user:
             self.winner = self.player2
             self.loser = self.player1
-            self.player1_score = 0
-            self.player2_score = max_score
+            self.loser_score = 0
+            self.winner_score = MAX_SCORE
         else:
             self.winner = self.player1
             self.loser = self.player2
-            self.player1_score = max_score
-            self.player2_score = 0
+            self.winner_score = MAX_SCORE
+            self.loser_score = 0
         self.save()
     
     def formatted_game_duration(self):
@@ -335,7 +312,6 @@ class Tournament(models.Model):
     )
 
     name = models.CharField(max_length=100)
-    max_score = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(10)], default=10)
     game_mode = models.CharField(max_length=10, choices=GAME_MODE_CHOICES, default="vanilla")
     creator = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='creator_tournament')
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default="open")
@@ -351,9 +327,7 @@ class Tournament(models.Model):
         return f"{self.name}"
     
     def create_first_round_matches(self):
-        if self.participants.count() % 2 != 0:
-            self.participants.add(UserProfile.objects.get(username="IndianAI"))
-
+        
         participants = list(self.participants.all())
         random.shuffle(participants)
 
@@ -379,11 +353,6 @@ class Tournament(models.Model):
         )
         self.final_round_matches.add(final_game)
     
-""" class TournamentMatch(models.Model):
-    tournament = models.ForeignKey(Tournament, on_delete=models.CASCADE, related_name='matches')
-    player1 = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='tournament_matches_as_player1')
-    player2 = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='tournament_matches_as_player2')
-    winner = models.ForeignKey(UserProfile, on_delete=models.CASCADE, null=True, blank=True, related_name='tournament_wins') """
 
 class OAuthToken(models.Model):
     user = models.OneToOneField(UserProfile, on_delete=models.CASCADE)
@@ -393,15 +362,6 @@ class OAuthToken(models.Model):
     created_at = models.IntegerField(null=True, blank=True)
     secret_valid_until = models.IntegerField(null=True, blank=True)
 
-class TwoFactorAuth(models.Model):
-    user = models.OneToOneField(UserProfile, on_delete=models.CASCADE)
-    secret_key = models.CharField(max_length=16)  # Store the secret key securely
-    is_enabled = models.BooleanField(default=False)
-
-class JWTToken(models.Model):
-    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
-    token = models.CharField(max_length=255)
-    expires_at = models.DateTimeField()
 
 
 #------------------------------------------------------------#
@@ -421,29 +381,31 @@ class Message(models.Model):
     def get_short_date(self):
         return str(self.created_date.strftime("%H:%M"))
 
-class RPSGame(models.Model):
-    MOVE_CHOICES = [
-        ('R', 'Rock'),
-        ('P', 'Paper'),
-        ('S', 'Scissors'),
-    ]
+"""
+class GameInvitation(models.Model):
+    inviting_user = models.ForeignKey(UserProfile, related_name='invitations_sent', on_delete=models.CASCADE)
+    invited_user = models.ForeignKey(UserProfile, related_name='invitations_received', on_delete=models.CASCADE)
+    message = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
 
-    room_id = models.UUIDField(primary_key=True, default=uuid.uuid4)
-    player1 = models.ForeignKey(UserProfile, related_name="rps_player1", on_delete=models.CASCADE)
-    player2 = models.ForeignKey(UserProfile, related_name="rps_player2", on_delete=models.CASCADE)
-    player1_move = models.CharField(max_length=1, choices=MOVE_CHOICES, null=True)
-    player2_move = models.CharField(max_length=1, choices=MOVE_CHOICES, null=True)
-    is_over = models.BooleanField(default=False)
-    winner = models.ForeignKey(UserProfile, related_name="rps_winner", on_delete=models.SET_NULL, null=True)
+    def __str__(self):
+        return f"{self.inviting_user.username} invited {self.invited_user.username} to play Pong"
+    
+class GameWarning(models.Model):
+    user = models.ForeignKey(UserProfile, related_name='warnings_sent', on_delete=models.CASCADE)
+    opponent = models.ForeignKey(UserProfile, related_name='warnings_received', on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
 
-    def check_winner(self):
-        if self.player1_move and self.player2_move:
-            if self.player1_move == self.player2_move:
-                self.winner = None
-            elif (self.player1_move, self.player2_move) in [('R', 'S'), ('P', 'R'), ('S', 'P')]:
-                self.winner = self.player1
-            else:
-                self.winner = self.player2
-            self.is_over = True
-            self.save()
-        
+    def __str__(self):
+        return f"{self.user.username} sent a game warning to {self.opponent.username}"
+
+class TwoFactorAuth(models.Model):
+    user = models.OneToOneField(UserProfile, on_delete=models.CASCADE)
+    secret_key = models.CharField(max_length=16)  # Store the secret key securely
+    is_enabled = models.BooleanField(default=False)
+
+class JWTToken(models.Model):
+    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+    token = models.CharField(max_length=255)
+    expires_at = models.DateTimeField()
+"""

@@ -1,58 +1,60 @@
 <!-- _nav.html -->
 
 {% load static %}
+{% load transnav %}
 
 <nav class="navbar">
-    <div class="logo-container"><a href="/dashboard" data-link>
+    <div class="logo-container"><a onclick="swapApp('/dashboard')">
       <div class="logo">
         <img src="{% static "assets/logo.png" %}" alt="IndianPong Logo" width="48" height="48">
         IndianPong
       </div></a>
   </div>
     <ul class="nav-links">
-      <li><a href="/dashboard" data-link><i class="bi bi-house-door-fill"></i>Dashboard</a></li>
-      <li><a href="/chat" data-link><i class="bi bi-chat-fill"></i>Chat</a></li>
-      <li><a href="/pong-game-find" data-link><i class="bi bi-play-circle-fill"></i>Pong Game</a></li>
-      <li><a href="/rps-game-find" data-link><i class="bi bi-scissors"></i>RPS Game</a></li>
-      <li><a href="/rankings" data-link><i class="bi bi-bar-chart-fill"></i>Rankings</a></li>
-      <li><a href="/store/{{username}}" data-link><i class="bi bi-basket2"></i>Store</a></li>
-      <li><a href="/search" data-link><i class="bi bi-search"></i>Search</a></li>
-      <li><a href="/about-us" data-link><i class="bi bi-person-raised-hand"></i>About Us</a></li> 
+    {% transnav request as tn %}
+      <li><a onclick="swapApp('/dashboard')" id="dashboardText"><i class="bi bi-house-door-fill"></i>{{tn.0}}</a></li>
+      <li><a onclick="swapApp('/chat')" id="chatText"><i class="bi bi-chat-fill"></i>{{tn.1}}</a></li>
+      <li><a onclick="swapApp('/pong-game-find')" id="pongGameText"><i class="bi bi-play-circle-fill"></i>{{tn.2}}</a></li>
+      <li><a onclick="swapApp('/rps-game-find')" id="rpsGameText"><i class="bi bi-scissors"></i>{{tn.3}}</a></li>
+      <li><a onclick="swapApp('/rankings')" id="rankingText"><i class="bi bi-bar-chart-fill"></i>{{tn.4}}</a></li>
+      <li><a onclick="swapApp('/store/{{username}}')" id="storeText"><i class="bi bi-basket2"></i>{{tn.5}}</a></li>
+      <li><a onclick="swapApp('/search')" id="searchText"><i class="bi bi-search"></i>{{tn.6}}</a></li>
+      <li><a onclick="swapApp('/about-us')" id="aboutUsText"><i class="bi bi-person-raised-hand"></i>{{tn.7}}</a></li> 
       <li class="notification-menu">
-      <div class="notification-icon" style="margin-top: 5px; color: rgb(255, 140, 0);">
-          <i class="bi bi-flag-fill"></i>       
+      <div class="notification-icon" style="margin-top: 5px; color: tomato">
+          <i class="bi bi-flag-fill"></i>
       </div>
       <div class="notification-submenu">
-        <form id="language-form" method="post" action="{% url 'set_language' %}">
+        <form id="language-form" method="post">
           {% csrf_token %}
           <a href="#" onclick="setLanguage('tr'); return false;">
               <img style="margin-right: 5px;" src="{% static "assets/flags/turkey.png" %}" alt="Türkçe">
-              <span style="margin-top: 3px;">Türkçe</span>
+              <span id="turkeyText" style="margin-top: 3px;">Türkçe</span>
           </a>
           <a href="#" onclick="setLanguage('hi'); return false;">
               <img style="margin-right: 5px;" src="{% static "assets/flags/hindi.png" %}" alt="हिंदी">
-              <span style="margin-top: 3px;">हिंदी</span>
+              <span id="indianText" style="margin-top: 3px;">हिंदी</span>
           </a>
           <a href="#" onclick="setLanguage('en'); return false;">
               <img style="margin-right: 5px;" src="{% static "assets/flags/english.png" %}" alt="English">
-              <span style="margin-top: 3px;">English</span>
+              <span id="englishText" style="margin-top: 3px;">English</span>
           </a>
           <a href="#" onclick="setLanguage('pt'); return false;">
               <img style="margin-right: 5px;" src="{% static "assets/flags/portugal.png" %}" alt="Português">
-              <span style="margin-top: 3px;">Português</span>
+              <span id="portugalText" style="margin-top: 3px;">Português</span>
           </a>
         </form>
       </div>
     </li>
-      <li class="profile-menu"> 
+      <li class="profile-menu">  
         <div class="profile-image">
           <img src="{{avatar}}" alt="Profile Image" width="48" height="48" {% if is_playing %} style="border: 3px solid #ffa600" {% else %} style="border: 3px solid #4CAF4F"{% endif %}>
         </div>
         <div class="profile-submenu">
-          <a href="/profile/{{username}}" data-link><i class="bi bi-person-fill" ></i>Profile</a>
-          <a href="/friends/{{username}}" data-link><i class="bi bi-people-fill"></i>Friends</a>
-          <a href="/profile/{{username}}/settings" data-link><i class="bi bi-gear-fill"></i>Settings</a> 
-          <a href="/logout" data-link><i class="bi bi-box-arrow-right"></i>Logout</a>
+          <a href="/profile/{{username}}" class="submenu-item" id="profileText"><i class="bi bi-person-fill" ></i>{{tn.8}}</a>
+          <a href="/friends/{{username}}" class="submenu-item" id="friendsText"><i class="bi bi-people-fill"></i>{{tn.9}}</a>
+          <a href="/profile/{{username}}/settings" class="submenu-item" id="profileSettingsText"><i class="bi bi-gear-fill"></i>{{tn.10}}</a> 
+          <a href="/logout" class="submenu-item" id="logoutText"><i class="bi bi-box-arrow-right"></i>{{tn.11}}</a>
         </div>
       </li>
     </ul>
@@ -61,11 +63,11 @@
   {% if not request.user.is_anonymous %}
   <script>
     var socket = new WebSocket('ws://' + window.location.host + '/ws/online_status/');
-  
+
     socket.onopen = function(e) {
         console.log('User is connected');
     };
-  
+
     socket.onmessage = function(e) {
         var data = JSON.parse(e.data);
         var status = data['status'];
@@ -73,62 +75,13 @@
             console.log('User is online');
         }
     };
-
-    function translateMenu(selectedLanguage) {
-      const menuItems = document.querySelectorAll('li a[data-link]');
-      menuItems.forEach(item => {
-          const href = item.getAttribute('href');
-          switch (href) {
-            case '/dashboard':
-                  item.innerHTML = '<i class="bi bi-house-door-fill"></i>' + (selectedLanguage === 'en' ? 'Dashboard' : selectedLanguage === 'tr' ? 'Panel' : selectedLanguage === 'pt' ? 'Painel' : selectedLanguage === 'hi' ? 'डैशबोर्ड' : 'Dashboard');
-                  break;
-              case '/chat':
-                  item.innerHTML = '<i class="bi bi-chat-fill"></i>' + (selectedLanguage === 'en' ? 'Chat' : selectedLanguage === 'tr' ? 'Sohbet' : selectedLanguage === 'pt' ? 'Chat' : selectedLanguage === 'hi' ? 'चैट' : 'Chat');
-                  break;
-              case '/pong-game-find':
-                  item.innerHTML = '<i class="bi bi-play-circle-fill"></i>' + (selectedLanguage === 'en' ? 'Pong Game' : selectedLanguage === 'tr' ? 'Pong Oyunu' : selectedLanguage === 'pt' ? 'Jogo de Pong' : selectedLanguage === 'hi' ? 'पोंग खेल' : 'Pong Game');
-                  break;
-              case '/rps-game-find':
-                  item.innerHTML = '<i class="bi bi-scissors"></i>' + (selectedLanguage === 'en' ? 'RPS Game' : selectedLanguage === 'tr' ? 'TKM Oyunu' : selectedLanguage === 'pt' ? 'Jogo de PPT' : selectedLanguage === 'hi' ? 'टिकमटक खेल' : 'RPS Game');
-                  break;
-              case '/rankings':
-                  item.innerHTML = '<i class="bi bi-bar-chart-fill"></i>' + (selectedLanguage === 'en' ? 'Rankings' : selectedLanguage === 'tr' ? 'Sıralamalar' : selectedLanguage === 'pt' ? 'Classificações' : selectedLanguage === 'hi' ? 'अंक' : 'Rankings');
-                  break;
-              case '/store/{{username}}':
-                  item.innerHTML = '<i class="bi bi-basket2"></i>' + (selectedLanguage === 'en' ? 'Store' : selectedLanguage === 'tr' ? 'Mağaza' : selectedLanguage === 'pt' ? 'Loja' : selectedLanguage === 'hi' ? 'स्टोर' : 'Store');
-                  break;
-              case '/search':
-                  item.innerHTML = '<i class="bi bi-search"></i>' + (selectedLanguage === 'en' ? 'Search' : selectedLanguage === 'tr' ? 'Ara' : selectedLanguage === 'pt' ? 'Pesquisar' : selectedLanguage === 'hi' ? 'खोज' : 'Search');
-                  break;
-              case '/about-us':
-                  item.innerHTML = '<i class="bi bi-person-raised-hand"></i>' + (selectedLanguage === 'en' ? 'About Us' : selectedLanguage === 'tr' ? 'Hakkımızda' : selectedLanguage === 'pt' ? 'Sobre nós' : selectedLanguage === 'hi' ? 'हमारे बारे में' : 'About Us');
-                  break;
-              case '/profile/{{username}}':
-                  item.innerHTML = '<i class="bi bi-person-fill"></i>' + (selectedLanguage === 'en' ? 'Profile' : selectedLanguage === 'tr' ? 'Profil' : selectedLanguage === 'pt' ? 'Perfil' : selectedLanguage === 'hi' ? 'प्रोफ़ाइल' : 'Profile');
-                  break;
-              case '/friends/{{username}}':
-                  item.innerHTML = '<i class="bi bi-people-fill"></i>' + (selectedLanguage === 'en' ? 'Friends' : selectedLanguage === 'tr' ? 'Arkadaşlar' : selectedLanguage === 'pt' ? 'Amigos' : selectedLanguage === 'hi' ? 'दोस्त' : 'Friends');
-                  break;
-              case '/profile/{{username}}/settings':
-                  item.innerHTML = '<i class="bi bi-gear-fill"></i>' + (selectedLanguage === 'en' ? 'Settings' : selectedLanguage === 'tr' ? 'Ayarlar' : selectedLanguage === 'pt' ? 'Configurações' : selectedLanguage === 'hi' ? 'सेटिंग्स' : 'Settings');
-                  break;
-              case '/logout':
-                  item.innerHTML = '<i class="bi bi-box-arrow-right"></i>' + (selectedLanguage === 'en' ? 'Logout' : selectedLanguage === 'tr' ? 'Çıkış' : selectedLanguage === 'pt' ? 'Sair' : selectedLanguage === 'hi' ? 'लॉग आउट' : 'Logout');
-                  break;
-              default:
-                  item.innerHTML = 'Translation not available';
-          }
-      });
-  }
     
     function getCookie(name) {
         const cookieValue = document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)');
         return cookieValue ? cookieValue.pop() : '';
     }
-
     const selectedLanguage = getCookie('selectedLanguage');
 
-    translateMenu(selectedLanguage);
     </script>
   {% endif %}
 <script >
