@@ -4,7 +4,7 @@
 {% load transnav %}
 
 <nav class="navbar">
-    <div class="logo-container"><a onclick="swapApp('/dashboard')">
+    <div class="logo-container"><a class="navbar-item" onclick="swapApp('/dashboard')">
       <div class="logo">
         <img src="{% static "assets/logo.png" %}" alt="IndianPong Logo" width="48" height="48">
         IndianPong
@@ -12,14 +12,14 @@
   </div>
     <ul class="nav-links">
     {% transnav request as tn %}
-      <li><a onclick="swapApp('/dashboard')" id="dashboardText"><i class="bi bi-house-door-fill"></i>{{tn.0}}</a></li>
-      <li><a onclick="swapApp('/chat')" id="chatText"><i class="bi bi-chat-fill"></i>{{tn.1}}</a></li>
-      <li><a onclick="swapApp('/pong-game-find')" id="pongGameText"><i class="bi bi-play-circle-fill"></i>{{tn.2}}</a></li>
-      <li><a onclick="swapApp('/rps-game-find')" id="rpsGameText"><i class="bi bi-scissors"></i>{{tn.3}}</a></li>
-      <li><a onclick="swapApp('/rankings')" id="rankingText"><i class="bi bi-bar-chart-fill"></i>{{tn.4}}</a></li>
-      <li><a onclick="swapApp('/store/{{username}}')" id="storeText"><i class="bi bi-basket2"></i>{{tn.5}}</a></li>
-      <li><a onclick="swapApp('/search')" id="searchText"><i class="bi bi-search"></i>{{tn.6}}</a></li>
-      <li><a onclick="swapApp('/about-us')" id="aboutUsText"><i class="bi bi-person-raised-hand"></i>{{tn.7}}</a></li> 
+      <li><a class="navbar-item" onclick="swapApp('/dashboard')" id="dashboardText"><i class="bi bi-house-door-fill"></i>{{tn.0}}</a></li>
+      <li><a class="navbar-item" onclick="swapApp('/chat')" id="chatText"><i class="bi bi-chat-fill"></i>{{tn.1}}</a></li>
+      <li><a class="navbar-item" onclick="swapApp('/pong-game-find')" id="pongGameText"><i class="bi bi-play-circle-fill"></i>{{tn.2}}</a></li>
+      <li><a class="navbar-item" onclick="swapApp('/rps-game-find')" id="rpsGameText"><i class="bi bi-scissors"></i>{{tn.3}}</a></li>
+      <li><a class="navbar-item" onclick="swapApp('/rankings')" id="rankingText"><i class="bi bi-bar-chart-fill"></i>{{tn.4}}</a></li>
+      <li><a class="navbar-item" onclick="swapApp('/store/{{username}}')" id="storeText"><i class="bi bi-basket2"></i>{{tn.5}}</a></li>
+      <li><a class="navbar-item" onclick="swapApp('/search')" id="searchText"><i class="bi bi-search"></i>{{tn.6}}</a></li>
+      <li><a class="navbar-item" onclick="swapApp('/about-us')" id="aboutUsText"><i class="bi bi-person-raised-hand"></i>{{tn.7}}</a></li> 
       <li class="notification-menu">
       <div class="notification-icon" style="margin-top: 5px; color: tomato">
           <i class="bi bi-flag-fill"></i>
@@ -27,19 +27,19 @@
       <div class="notification-submenu">
         <form id="language-form" method="post">
           {% csrf_token %}
-          <a href="#" onclick="setLanguage('tr'); return false;">
+          <a class="navbar-item" onclick="setLanguage('tr'); return false;">
               <img style="margin-right: 5px;" src="{% static "assets/flags/turkey.png" %}" alt="Türkçe">
               <span id="turkeyText" style="margin-top: 3px;">Türkçe</span>
           </a>
-          <a href="#" onclick="setLanguage('hi'); return false;">
+          <a class="navbar-item" onclick="setLanguage('hi'); return false;">
               <img style="margin-right: 5px;" src="{% static "assets/flags/hindi.png" %}" alt="हिंदी">
               <span id="indianText" style="margin-top: 3px;">हिंदी</span>
           </a>
-          <a href="#" onclick="setLanguage('en'); return false;">
+          <a class="navbar-item" onclick="setLanguage('en'); return false;">
               <img style="margin-right: 5px;" src="{% static "assets/flags/english.png" %}" alt="English">
               <span id="englishText" style="margin-top: 3px;">English</span>
           </a>
-          <a href="#" onclick="setLanguage('pt'); return false;">
+          <a class="navbar-item" onclick="setLanguage('pt'); return false;">
               <img style="margin-right: 5px;" src="{% static "assets/flags/portugal.png" %}" alt="Português">
               <span id="portugalText" style="margin-top: 3px;">Português</span>
           </a>
@@ -51,10 +51,10 @@
           <img src="{{avatar}}" alt="Profile Image" width="48" height="48" {% if is_playing %} style="border: 3px solid #ffa600" {% else %} style="border: 3px solid #4CAF4F"{% endif %}>
         </div>
         <div class="profile-submenu">
-          <a href="/profile/{{username}}" class="submenu-item" id="profileText"><i class="bi bi-person-fill" ></i>{{tn.8}}</a>
-          <a href="/friends/{{username}}" class="submenu-item" id="friendsText"><i class="bi bi-people-fill"></i>{{tn.9}}</a>
-          <a href="/profile/{{username}}/settings" class="submenu-item" id="profileSettingsText"><i class="bi bi-gear-fill"></i>{{tn.10}}</a> 
-          <a href="/logout" class="submenu-item" id="logoutText"><i class="bi bi-box-arrow-right"></i>{{tn.11}}</a>
+          <a class="navbar-item" href="/profile/{{username}}" class="submenu-item" id="profileText"><i class="bi bi-person-fill" ></i>{{tn.8}}</a>
+          <a class="navbar-item" href="/friends/{{username}}" class="submenu-item" id="friendsText"><i class="bi bi-people-fill"></i>{{tn.9}}</a>
+          <a class="navbar-item" href="/profile/{{username}}/settings" class="submenu-item" id="profileSettingsText"><i class="bi bi-gear-fill"></i>{{tn.10}}</a> 
+          <a class="navbar-item" href="/logout" class="submenu-item" id="logoutText"><i class="bi bi-box-arrow-right"></i>{{tn.11}}</a>
         </div>
       </li>
     </ul>
@@ -62,6 +62,11 @@
   </nav>
   {% if not request.user.is_anonymous %}
   <script>
+    function setLanguage(language) {
+      document.cookie = "selectedLanguage=" + language;
+      swapApp(window.location.pathname);
+    }
+
     var socket = new WebSocket('ws://' + window.location.host + '/ws/online_status/');
 
     socket.onopen = function(e) {
