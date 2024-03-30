@@ -973,8 +973,8 @@ def get_lang_pt():
         "searchPageTittle": "Procurar",
         "searchInputText": "Procurar por e-mail, nome de usuário ou nome de exibicão...",
         "searchMessageButtonText": "Mensagem",
-        "searchFollowButtonText": "Seguir",
-        "searchFollowingButtonText": "Deixar",
+        "searchFollowButtonText": "takip",
+        "searchFollowingButtonText": "çık",
         "searchNoResultFoundText": "Nenhum resultado encontrado.",
         
         #Profile

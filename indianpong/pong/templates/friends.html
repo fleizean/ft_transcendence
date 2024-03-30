@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 
 {% load static %}
 {% load status %}
@@ -75,17 +75,17 @@
             <nav aria-label="Page navigation example " class="mt-4">
               <ul class="pagination justify-content-center">
                   <li class="page-item {% if not friends.has_previous %}disabled{% endif %}">
-                      <a class="page-link" href="{% if friends.has_previous %}?page={{ friends.previous_page_number }}{% endif %}" aria-label="Previous">
+                      <a class="page-link" onclick="swapApp('/friends/{{profile.username}}{% if friends.has_previous %}?page={{ friends.previous_page_number }}{% endif %}')" aria-label="Previous">
                           <span aria-hidden="true">&laquo;</span>
                       </a>
                   </li>
                   {% for page_num in friends.paginator.page_range %}
                     <li class="page-item {% if page_num == friends.number %}active{% endif %}">
-                      <a class="page-link page-link-friends" href="?page={{ page_num }}">{{ page_num }}</a>
+                      <a class="page-link page-link-friends">{{ page_num }}</a>
                     </li>
                   {% endfor %}
                   <li class="page-item {% if not friends.has_next %}disabled{% endif %}">
-                      <a class="page-link" href="{% if friends.has_next %}?page={{ friends.next_page_number }}{% endif %}" aria-label="Next">
+                      <a class="page-link" onclick="swapApp('/friends/{{profile.username}}{% if friends.has_next %}?page={{ friends.next_page_number }}{% endif %}')" aria-label="Next">
                           <span aria-hidden="true">&raquo;</span>
                       </a>
                   </li>

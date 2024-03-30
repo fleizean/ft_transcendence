@@ -299,18 +299,8 @@ def profile_view(request, username):
     except EmptyPage:
         # Geçersiz bir sayfa numarası istenirse, son sayfayı al
         history_page_obj = paginator.page(paginator.num_pages)
-    return render(
-        request,
-        "profile.html",
-        {
-            "profile": profile,
-            "history_page_obj": history_page_obj,
-            "is_friend": is_friend,
-            "game_records_rps": game_records_rps,
-            "context": context,
-        },
-    )
-
+    
+    return HttpResponse(render_to_string("profile.html", {"profile": profile, "history_page_obj": history_page_obj, "is_friend": is_friend, "game_records_rps": game_records_rps, "context": context, "request": request}))
 
 ## Rps Game ##
 @never_cache
@@ -767,8 +757,7 @@ def friends(request, profile):
     except EmptyPage:
         # Geçersiz bir sayfa numarası istenirse, son sayfayı al
         friends = friends.page(friends.num_pages)
-    return render(request, "friends.html", {"friends": friends, "profile": profile, "context": context})
-
+    return HttpResponse(render_to_string("friends.html", {"friends": friends, "profile": profile, "context": context, "request": request}))
 
 @login_required()
 def follow_unfollow(request, username):
@@ -781,7 +770,8 @@ def follow_unfollow(request, username):
         request.user.friends.remove(profile)
     else:
         return JsonResponse({"status": "error", "message": "Invalid action"})
-    return JsonResponse({"status": "ok"})
+        
+    return JsonResponse({"status": "ok", "action": action})
 
 
 @login_required()

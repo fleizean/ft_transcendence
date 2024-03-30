@@ -1,5 +1,6 @@
 import { initializeLogin, makeLogin } from './login.js';
 import { initializeSignup, makeRegister } from './signup.js';
+import { initializeProfile, toggleGame, matchHistoryChanger} from './profile.js';
 
 function updateApp(path) {
   showLoadingScreen();
@@ -24,18 +25,14 @@ window.initializeLogin = initializeLogin;
 window.initializeSignup = initializeSignup;
 window.makeLogin = makeLogin;
 window.makeRegister = makeRegister;
+window.initializeProfile = initializeProfile;
+window.toggleGame = toggleGame;
+window.matchHistoryChanger = matchHistoryChanger;
 
 window.onpopstate = function(event) {
   if (window.location.hash == '') // Eğer # ile başlayan bir path değilse değişim yaptırıyoruz çünkü profile-settings alanında # ile başlayan path yönlendirmeleri var onlarla çakışıp yönlendirmeyi engelliyor.
     updateApp(window.location.pathname);
 };
-
-function setLanguage(language) {
-  document.cookie = "selectedLanguage=" + language;
-  swapApp(window.location.pathname);
-}
-
-
 
 function pageHandler(path) {
     if (path == '/login') {
@@ -44,6 +41,8 @@ function pageHandler(path) {
     else if (path == '/signup') {
       initializeSignup();
     }
+    else if(path.includes('/profile/'))
+      initializeProfile();
 }
 
 function showLoadingScreen() {

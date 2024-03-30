@@ -1,7 +1,6 @@
-
 var isRPSVisibleHistory = true; 
 
-function matchHistoryChanger() {
+export function matchHistoryChanger() {
     var switcherBtn = document.querySelector(".changer-btn");
     var historyPong = document.getElementById('match-history-pong');
     var historyRPS = document.getElementById('match-history-rps');
@@ -24,7 +23,7 @@ function matchHistoryChanger() {
 
 var isRPSVisibleStats = true; 
 
-function toggleGame() {
+export function toggleGame() {
     var switcherBtn = document.querySelector(".switch-btn");
     var statsPong = document.getElementById('stats-info-pong');
     var statsRPS = document.getElementById('stats-info-rps');
@@ -45,32 +44,34 @@ function toggleGame() {
     // Durumu tersine çevir
 }
 
-const followButtons = document.querySelectorAll(".btn, .unfollow-btn");
-followButtons.forEach((button) => {
-    button.addEventListener('click', (e) => {
-        const username = e.target.getAttribute('data-username');
-        const action = e.target.classList.contains('unfollow-btn') ? 'unfollow' : 'follow';
-        fetch(`/follow_unfollow/${username}`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
-            },
-            body: JSON.stringify({ action: action })
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data['status'] === 'ok') {
-                if (action === 'follow') {
-                  e.target.innerHTML = '<i class="bi bi-heartbreak-fill"></i> Unfollow';
-                  e.target.classList.add('unfollow-btn');
-                  e.target.classList.remove('btn', 'btn-danger');
-                } else {
-                  e.target.innerHTML = '<i class="bi bi-heart-fill"></i> Follow';
-                  e.target.classList.remove('unfollow-btn');
-                  e.target.classList.add('btn', 'btn-danger');
+export function initializeProfile() {
+    const followButtons = document.querySelectorAll(".btn, .unfollow-btn");
+    followButtons.forEach((button) => {
+        button.addEventListener('click', (e) => {
+            const username = e.target.getAttribute('data-username');
+            const action = e.target.classList.contains('unfollow-btn') ? 'unfollow' : 'follow';
+            fetch(`/follow_unfollow/${username}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+                },
+                body: JSON.stringify({ action: action })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data['status'] === 'ok') {
+                    if (action === 'follow') {
+                    e.target.innerHTML = '<i class="bi bi-heartbreak-fill"></i> Unfollow';
+                    e.target.classList.add('unfollow-btn');
+                    e.target.classList.remove('btn', 'btn-danger');
+                    } else {
+                    e.target.innerHTML = '<i class="bi bi-heart-fill"></i> Follow';
+                    e.target.classList.remove('unfollow-btn');
+                    e.target.classList.add('btn', 'btn-danger');
+                    }
                 }
-              }
+            });
         });
     });
-});
+}

@@ -9,6 +9,7 @@ def userinfo(request):
     if request.path in excluded_paths:
         return {}
      """
+    
     profile = get_object_or_404(UserProfile, username=request.user.username)
     is_online = cache.get(f'online_{profile.username}', default=False)
     is_playing = cache.get(f'playing_{profile.username}', default=False)

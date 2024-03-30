@@ -117,10 +117,10 @@
     button.addEventListener('click', (e) => {
       const username = e.target.getAttribute('data-username');
       let action = e.target.innerHTML.trim();
-      console.log(action)
-      if (action == "अनुसरण करना" || action == "Seguir" || action == "Takip Et" || action == "Follow") {
+      console.log(action);
+      if (action == "अनुसरण करना" || action == "takip" || action == "Takip Et" || action == "Follow") {
         action = "follow"
-      } else if (action == "करें" || action == "Deixar" || action == "Takipten Çık" || action == "Unfollow") {
+      } else if (action == "करें" || action == "çık" || action == "Takipten Çık" || action == "Unfollow") {
         action = "unfollow"
       }
       fetch(`/follow_unfollow/${username}`, {
@@ -134,21 +134,21 @@
       .then(response => response.json())
       .then(data => {
         if (data['status'] === 'ok') {
-          if(selectedLanguage == 'tr') {
-            e.target.innerHTML = action === 'follow' ? 'Takipten Çık' : 'Takip Et';
-            e.target.style.backgroundColor = action === 'follow' ? 'black' : '#dc3545';
+          if (selectedLanguage == 'hi') {
+            e.target.innerHTML = data['action'] === 'follow' ? 'अनुसरण करना' : 'करें';
+            e.target.style.backgroundColor = data['action'] === 'follow' ? 'black' : '#dc3545';
           }
-          else if (selectedLanguage == 'hi') {
-            e.target.innerHTML = action === 'follow' ? 'अनुसरण करना' : 'करें';
-            e.target.style.backgroundColor = action === 'follow' ? 'black' : '#dc3545';
+          else if(selectedLanguage == 'tr') {
+            e.target.innerHTML = data['action'] === 'follow' ? 'Takipten Çık' : 'Takip Et';
+            e.target.style.backgroundColor = data['action'] === 'follow' ? 'black' : '#dc3545';
           }
           else if (selectedLanguage == 'pt') {
-            e.target.innerHTML = action === 'follow' ? 'Seguir' : 'Deixar';
-            e.target.style.backgroundColor = action === 'follow' ? 'black' : '#dc3545';
+            e.target.innerHTML = data['action'] === 'follow' ? 'takip' : 'çık';
+            e.target.style.backgroundColor = data['action'] === 'follow' ? 'black' : '#dc3545';
           }
           else {
-            e.target.innerHTML = action === 'follow' ? 'Unfollow' : 'Follow';
-            e.target.style.backgroundColor = action === 'follow' ? 'black' : '#dc3545';
+            e.target.innerHTML = data['action'] === 'follow' ? 'Unfollow' : 'Follow';
+            e.target.style.backgroundColor = data['action'] === 'follow' ? 'black' : '#dc3545';
           }
         }
       });

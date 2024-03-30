@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 {% load static %}
 {% load status %}
 
@@ -155,7 +155,7 @@
                         <nav aria-label="Page navigation example" class="mt-4">
                             <ul class="pagination justify-content-center">
                                 <li class="page-item {% if not history_page_obj.has_previous %}disabled{% endif %}">
-                                    <a class="page-link" href="{% if history_page_obj.has_previous %}?page={{ history_page_obj.previous_page_number }}{% endif %}" aria-label="Previous">
+                                    <a class="page-link" onclick="swapApp('/profile/{{profile.username}}{% if history_page_obj.has_previous %}?page={{ history_page_obj.previous_page_number }}{% endif %}')" aria-label="Previous">
                                         <span aria-hidden="true">&laquo;</span>
                                     </a>
                                 </li>
@@ -163,7 +163,7 @@
                                     <span class="page-link page-link-history">{{ history_page_obj.number }}</span>
                                 </li>
                                 <li class="page-item {% if not history_page_obj.has_next %}disabled{% endif %}">
-                                    <a class="page-link" href="{% if history_page_obj.has_next %}?page={{ history_page_obj.next_page_number }}{% endif %}" aria-label="Next">
+                                    <a class="page-link" onclick="swapApp('/profile/{{profile.username}}{% if history_page_obj.has_next %}?page={{ history_page_obj.next_page_number }}{% endif %}')" aria-label="Next">
                                         <span aria-hidden="true">&raquo;</span>
                                     </a>
                                 </li>
@@ -312,6 +312,12 @@
         </div>
     </div>
 </div>
-<script src="{% static "js/profile.js" %}"></script>
+<script type="module" src="{% static "js/profile.js" %}"></script>
+<script>
+  window.onload = function() {
+    initializeProfile();
+  };
+</script>
+
 
 {% endblock %}

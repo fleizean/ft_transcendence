@@ -27,19 +27,19 @@
       <div class="notification-submenu">
         <form id="language-form" method="post">
           {% csrf_token %}
-          <a class="navbar-item" onclick="setLanguage('tr'); return false;">
+          <a class="navbar-item" onclick="setLanguage('tr')">
               <img style="margin-right: 5px;" src="{% static "assets/flags/turkey.png" %}" alt="Türkçe">
               <span id="turkeyText" style="margin-top: 3px;">Türkçe</span>
           </a>
-          <a class="navbar-item" onclick="setLanguage('hi'); return false;">
+          <a class="navbar-item" onclick="setLanguage('hi')">
               <img style="margin-right: 5px;" src="{% static "assets/flags/hindi.png" %}" alt="हिंदी">
               <span id="indianText" style="margin-top: 3px;">हिंदी</span>
           </a>
-          <a class="navbar-item" onclick="setLanguage('en'); return false;">
+          <a class="navbar-item" onclick="setLanguage('en')">
               <img style="margin-right: 5px;" src="{% static "assets/flags/english.png" %}" alt="English">
               <span id="englishText" style="margin-top: 3px;">English</span>
           </a>
-          <a class="navbar-item" onclick="setLanguage('pt'); return false;">
+          <a class="navbar-item" onclick="setLanguage('pt')">
               <img style="margin-right: 5px;" src="{% static "assets/flags/portugal.png" %}" alt="Português">
               <span id="portugalText" style="margin-top: 3px;">Português</span>
           </a>
@@ -51,8 +51,8 @@
           <img src="{{avatar}}" alt="Profile Image" width="48" height="48" {% if is_playing %} style="border: 3px solid #ffa600" {% else %} style="border: 3px solid #4CAF4F"{% endif %}>
         </div>
         <div class="profile-submenu">
-          <a class="navbar-item" href="/profile/{{username}}" class="submenu-item" id="profileText"><i class="bi bi-person-fill" ></i>{{tn.8}}</a>
-          <a class="navbar-item" href="/friends/{{username}}" class="submenu-item" id="friendsText"><i class="bi bi-people-fill"></i>{{tn.9}}</a>
+          <a class="navbar-item" onclick="swapApp('/profile/{{username}}')" class="submenu-item" id="profileText"><i class="bi bi-person-fill" ></i>{{tn.8}}</a>
+          <a class="navbar-item" onclick="swapApp('/friends/{{username}}')" class="submenu-item" id="friendsText"><i class="bi bi-people-fill"></i>{{tn.9}}</a>
           <a class="navbar-item" href="/profile/{{username}}/settings" class="submenu-item" id="profileSettingsText"><i class="bi bi-gear-fill"></i>{{tn.10}}</a> 
           <a class="navbar-item" href="/logout" class="submenu-item" id="logoutText"><i class="bi bi-box-arrow-right"></i>{{tn.11}}</a>
         </div>
@@ -62,10 +62,7 @@
   </nav>
   {% if not request.user.is_anonymous %}
   <script>
-    function setLanguage(language) {
-      document.cookie = "selectedLanguage=" + language;
-      swapApp(window.location.pathname);
-    }
+    
 
     var socket = new WebSocket('ws://' + window.location.host + '/ws/online_status/');
 
@@ -89,15 +86,3 @@
 
     </script>
   {% endif %}
-<script >
-    document.addEventListener('DOMContentLoaded', function () {
-      document.querySelector(".burger-menu").addEventListener("click", function () {
-          var navLinks = document.querySelector(".nav-links");
-          if (navLinks.classList.contains("show")) {
-              navLinks.classList.remove("show");
-          } else {
-              navLinks.classList.add("show");
-          }
-      });
-  });
-  </script>

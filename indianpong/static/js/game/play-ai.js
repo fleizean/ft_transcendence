@@ -99,6 +99,8 @@ function resetAbilities() {
     aiFastandFuriousCount = 0;
 }
 
+const lang = getCookie('selectedLanguage'); // [TODO] oyundaki javascriptlerde dil seçeneği değişmiyordu o yüzden eklendi
+
 // Update the ball and paddle positions
 function update() {
     // If the game is paused, don't update anything
@@ -625,7 +627,7 @@ function resetGame() {
     resetAbilities();
 }
 
-function getOutcomeMessage(selectedLanguage, outcome) {
+function getOutcomeMessage(lang, outcome) {
     // Dil çevirilerini içeren bir sözlük oluşturalım
     const translations = {
         'hi': {
@@ -646,7 +648,7 @@ function getOutcomeMessage(selectedLanguage, outcome) {
         }
     };
     // Seçilen dil ve sonucu kullanarak uygun metni belirleyelim
-    const message = translations[selectedLanguage] ? translations[selectedLanguage][outcome] : translations['en'][outcome];
+    const message = translations[lang] ? translations[lang][outcome] : translations['en'][outcome];
     return message;
 }
 
@@ -654,8 +656,8 @@ function getOutcomeMessage(selectedLanguage, outcome) {
 function showGameOverScreen() {
     //var winnerText = (score1 == MAX_SCORE) ? username + " wins!" : ainame + " wins!";
     
-    var winnerText = (score1 == MAX_SCORE) ? getOutcomeMessage(selectedLanguage, "win") : "";
-    var loserText = (score2 == MAX_SCORE) ? getOutcomeMessage(selectedLanguage, "lose") : "";
+    var winnerText = (score1 == MAX_SCORE) ? getOutcomeMessage(lang, "win") : "";
+    var loserText = (score2 == MAX_SCORE) ? getOutcomeMessage(lang, "lose") : "";
     if (score1 == MAX_SCORE) {
         playResultSound(true); // Zafer durumu
     } else {
