@@ -26,7 +26,8 @@ window.makeLogin = makeLogin;
 window.makeRegister = makeRegister;
 
 window.onpopstate = function(event) {
-  updateApp(window.location.pathname);
+  if (window.location.hash == '') // Eğer # ile başlayan bir path değilse değişim yaptırıyoruz çünkü profile-settings alanında # ile başlayan path yönlendirmeleri var onlarla çakışıp yönlendirmeyi engelliyor.
+    updateApp(window.location.pathname);
 };
 
 function setLanguage(language) {

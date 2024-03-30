@@ -18,23 +18,23 @@
                     <div class="collapse navbar-collapse" id="profileNavLinks">
                         <ul class="navbar-nav flex-column">
                             <li class="nav-item">
-                                <a class="nav-link" href="#editProfile"
+                                <a class="nav-link" 
                                     onclick="displaySection('editProfile')"><i class="bi bi-pencil-fill"></i> {{context.profileSettingsNavbar1}}</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#changePassword"
+                                <a class="nav-link" 
                                     onclick="displaySection('changePassword')"><i class="bi bi-lock-fill"></i> {{context.profileSettingsNavbar2}}</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#addSocial" onclick="displaySection('addSocial')"><i
+                                <a class="nav-link" onclick="displaySection('addSocial')"><i
                                         class="bi bi-bookmark-fill"></i> {{context.profileSettingsNavbar3}}</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#blockedUsers"
+                                <a class="nav-link" 
                                     onclick="displaySection('blockedUsers')"><i class="bi bi-ban"></i> {{context.profileSettingsNavbar4}}</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#closeAccount"
+                                <a class="nav-link" 
                                     onclick="displaySection('closeAccount')"><i class="bi bi-door-closed-fill"></i>
                                     {{context.profileSettingsNavbar5}}</a>
                             </li>
@@ -249,6 +249,7 @@ function displaySection(sectionId) {
         var section = document.getElementById(sections[i]);
         if (sections[i] === sectionId) {
             section.style.display = 'block';
+            window.location.hash = sectionId;
         } else {
             section.style.display = 'none';
         }
