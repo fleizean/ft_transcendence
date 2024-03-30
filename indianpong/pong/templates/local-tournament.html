@@ -9,11 +9,7 @@
 <link rel="stylesheet" href="{% static 'css/local-tournament.css' %}" />
   <div class="container-top" data-paddlecolor="{{paddlecolor}}" data-playgroundcolor="{{playgroundcolor}}">
     <div class="ai-game">
-        <div class="game-info-menu" id="gameInfosMenu">
-            <div class="info-icon" style="color: rgb(255, 140, 0); margin-right: 3em; margin-bottom: -1em;">
-              <i class="bi bi-info-circle-fill" data-bs-toggle="modal" data-bs-target="#exampleModalGame"></i>
-            </div>
-          </div>
+        
         <div id="tournament-start-info" class="tournament-start-info">
             <h1 class="tournamentLocalGameText">{{context.localTournamentGameHeaderText}}</h1>
             <div class="input-box">
@@ -115,7 +111,11 @@
                 <button class="btn btn-outline-success" id="startTournament">{{context.localTournamentBracketStartButtonText}}</button>
 
         </div>
-        
+        <div class="game-info-menu-tournament" id="game-info-tournament">
+            <div class="info-icon" style="color: tomato; margin-right: 3em; margin-bottom: -1em;">
+              <i class="bi bi-info-circle-fill" data-bs-toggle="modal" data-bs-target="#exampleModalGame"></i>
+            </div>
+        </div>
         <canvas id="pongCanvas" width="800" height="600" style="display: none;"></canvas>
         <div id="gameOverScreen" class="game-over">
             <h1 id="winnerText" class="winnerName"></h1>
@@ -127,7 +127,7 @@
         <div id="gameOverScreenTournament" class="game-over">
             <h1 id="winnerTextTournament" class="winnerName"></h1>
             <h2>{{context.localTournamentTournamentOverText}}</h2>
-            <button id="restartButtonTournament">{{context.}}</button>
+            <button id="restartButtonTournament">{{context.localTournamentOverButtonText}}</button>
             <button id="exitButton">{{context.aiGameExitButtonText}}</button>
         </div>
     </div>

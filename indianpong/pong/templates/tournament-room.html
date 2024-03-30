@@ -44,30 +44,34 @@
         </div>
         <!-- Show winner avatar name and redirect to profile-->
         {% if tournament.winner %}
+            <h3 class="winner-guy-text">{{context.tournamentOverWinnerGuyText}}</h3>
             <div class="winner-container">
                 <div class="winner-avatar">
-                    <img src="{{ tournament.winner.avatar.url }}" alt="Avatar" class="game-room-avatar">
+                    <img src="{{ tournament.winner.avatar.url }}" alt="Avatar" class="game-room-avatar-winner">
                 </div>
                 <div class="winner-info">
-                    <p class="truncate-pseudo" title="{{ tournament.winner.username }}">{{ tournament.winner.username }}</p>
+                    <p class="truncate-pseudo" style="color: greenyellow !important; font-weight:bold !important;" title="{{ tournament.winner.username }}"><img src="{% static "assets/rankings/crown.svg" %}" alt="Crown" class="crown-icon"> {{ tournament.winner.username }}</p>
                 </div>
             </div>
         {% endif %}
         <section id="game-room-section">
             <div class="player-wrapper">
+                {% if tournament.winner %}
+                    <h3 class="losers-winner-text">{{context.tournamentOverLosersText}}</h3>
+                {% endif %}
                 {% for participant in tournament.participants.all %}   
-                        {% if participant.username == tournament.creator.username %}
-                            <div class="place">
-                                <div class="place-container">
-                                    <div class="avatar-container-creator">
-                                        <img src="{{ participant.avatar.url }}" alt="Avatar" class="game-room-avatar">
+                        {% if participant.username == tournament.creator.username and tournament.winner.username != tournament.creator.username %}
+                                <div class="place">
+                                    <div class="place-container">
+                                        <div class="avatar-container-creator">
+                                            <img src="{{ participant.avatar.url }}" alt="Avatar" class="game-room-avatar">
+                                        </div>
+                                        <div class="clash-info player-info">
+                                            <p class="truncate-pseudo-creator" title="{{ participant.username }}">{{ participant.username }} (L)</p>
+                                        </div>
                                     </div>
-                                    <div class="clash-info player-info">
-                                        <p class="truncate-pseudo-creator" title="{{ participant.username }}">{{ participant.username }} (L)</p>
-                                    </div>
-                                </div>
-                            </div>
-                        {% else %}
+                                </div>                                
+                        {% elif tournament.winner.username != participant.username %}
                             <div class="place">
                                 <div class="place-container">
                                     <div class="avatar-container">
@@ -107,13 +111,37 @@
                                     <span class="image">{{ tournament.first_round_matches.first.player1.avatar.url}}</span>
                                     <span class="seed">1</span>
                                     <span class="name">{{ tournament.first_round_matches.first.player1.username }}</span>
-                                    <span class="score">{{ tournament.first_round_matches.first.player1_score}}</span>
+                                    {% if request.user.username == tournament.first_round_matches.first.player1.username %}
+                                        {% if first_game_id and not tournament.first_round_matches.first.winner %}
+                                            <a href="{% url 'remote_game' game_type='tournament' game_id=first_game_id %}" class="match-link-a">
+                                                <span class="match-link"><i class="bi bi-box-arrow-up-right"></i></span>
+                                            </a>
+                                        {% endif %}
+                                    {% endif %}
+                                    {% if tournament.first_round_matches.first.player1.username == tournament.first_round_matches.first.winner.username %}
+                                        <span class="score">{{ tournament.first_round_matches.first.winner_score}}</span>
+                                    {% else %}
+                                        <span class="score">{{ tournament.first_round_matches.first.loser_score}}</span>
+                                    {% endif %}
+                                    
                                 </div>
                                 <div class="match-bottom team">
                                     <span class="image">{{ tournament.first_round_matches.first.player2.avatar.url}}</span>
                                     <span class="seed">2</span>
                                     <span class="name">{{ tournament.first_round_matches.first.player2.username }}</span>
-                                    <span class="score">{{ tournament.first_round_matches.first.player2_score}}</span>
+                                    {% if request.user.username == tournament.first_round_matches.first.player2.username %}
+                                        {% if first_game_id and not tournament.first_round_matches.first.winner %}
+                                            <a href="{% url 'remote_game' game_type='tournament' game_id=first_game_id %}" class="match-link-a">
+                                                <span class="match-link"><i class="bi bi-box-arrow-up-right"></i></span>
+                                            </a>
+                                        {% endif %}
+                                    {% endif %}
+                                    {% if tournament.first_round_matches.first.player2.username == tournament.first_round_matches.first.winner.username %}
+                                        <span class="score">{{ tournament.first_round_matches.first.winner_score}}</span>
+                                    {% else %}
+                                        <span class="score">{{ tournament.first_round_matches.first.loser_score}}</span>
+                                    {% endif %}
+                                    
                                 </div>
                                 <div class="match-lines">
                                     <div class="line one"></div>
@@ -128,13 +156,37 @@
                                     <span class="image">{{ tournament.first_round_matches.last.player1.avatar.url}}</span>
                                     <span class="seed">3</span>
                                     <span class="name">{{ tournament.first_round_matches.last.player1.username }}</span>
-                                    <span class="score">{{ tournament.first_round_matches.last.player1_score}}</span>
+                                    {% if request.user.username == tournament.first_round_matches.last.player1.username %}
+                                        {% if last_game_id and not tournament.first_round_matches.last.winner %}
+                                            <a href="{% url 'remote_game' game_type='tournament' game_id=last_game_id %}" class="match-link-a">
+                                                <span class="match-link"><i class="bi bi-box-arrow-up-right"></i></span>
+                                            </a>
+                                        {% endif %}
+                                    {% endif %}
+                                    {% if tournament.first_round_matches.last.player1.username == tournament.first_round_matches.last.winner.username %}
+                                        <span class="score">{{ tournament.first_round_matches.last.winner_score}}</span>
+                                    {% else %}
+                                        <span class="score">{{ tournament.first_round_matches.last.loser_score}}</span>
+                                    {% endif %}
+                                    
                                 </div>
                                 <div class="match-bottom team">
                                     <span class="image">{{ tournament.first_round_matches.last.player2.avatar.url}}</span>
                                     <span class="seed">4</span>
                                     <span class="name">{{ tournament.first_round_matches.last.player2.username }}</span>
-                                    <span class="score">{{ tournament.first_round_matches.last.player2_score}}</span>
+                                    {% if request.user.username == tournament.first_round_matches.last.player2.username %}
+                                    {% if last_game_id and not tournament.first_round_matches.last.winner %}
+                                        <a href="{% url 'remote_game' game_type='tournament' game_id=last_game_id %}" class="match-link-a">
+                                            <span class="match-link"><i class="bi bi-box-arrow-up-right"></i></span>
+                                        </a>
+                                    {% endif %}
+                                {% endif %}
+                                    {% if tournament.first_round_matches.last.player2.username == tournament.first_round_matches.last.winner.username %}
+                                        <span class="score">{{ tournament.first_round_matches.last.winner_score}}</span>
+                                    {% else %}
+                                        <span class="score">{{ tournament.first_round_matches.last.loser_score}}</span>
+                                    {% endif %}
+                                   
                                 </div>
                                 <div class="match-lines">
                                     <div class="line one"></div>
@@ -151,21 +203,42 @@
                                     <span class="image">{{ tournament.final_round_matches.first.player1.avatar.url}}</span>
                                     <span class="seed">5</span>
                                     <span class="name">{{ tournament.final_round_matches.first.player1.username }}</span>
-                                    <span class="score">{{ tournament.final_round_matches.first.player1_score }}</span>
+                                    {% if request.user.username == tournament.final_round_matches.first.player1.username %}
+                                        {% if final_game_id and not tournament.final_round_matches.first.winner %}
+                                            <a href="{% url 'remote_game' game_type='tournament' game_id=final_game_id %}" class="match-link-a">
+                                                <span class="match-link"><i class="bi bi-box-arrow-up-right"></i></span>
+                                            </a>
+                                        {% endif %}
+                                    {% endif %}
+                                    {% if tournament.final_round_matches.first.player1.username == tournament.final_round_matches.first.winner.username %}
+                                        <span class="score">{{ tournament.final_round_matches.first.winner_score}}</span>
+                                    {% else %}
+                                        <span class="score">{{ tournament.final_round_matches.first.loser_score}}</span>
+                                    {% endif %}
+                                    
                                 </div>
+
                                 <div class="match-bottom team">
                                     <span class="image">{{ tournament.final_round_matches.first.player2.avatar.url}}</span>
                                     <span class="seed">6</span>
                                     <span class="name">{{ tournament.final_round_matches.first.player2.username }}</span>
-                                    <span class="score">{{ tournament.final_round_matches.first.player2_score }}</span>
+                                    {% if request.user.username == tournament.final_round_matches.first.player2.username %}
+                                        {% if final_game_id and not tournament.final_round_matches.first.winner %}
+                                            <a href="{% url 'remote_game' game_type='tournament' game_id=final_game_id %}" class="match-link-a">
+                                                <span class="match-link"><i class="bi bi-box-arrow-up-right"></i></span>
+                                            </a>
+                                        {% endif %}
+                                    {% endif %}
+                                    {% if tournament.final_round_matches.first.player2.username == tournament.final_round_matches.first.winner.username %}
+                                        <span class="score">{{ tournament.final_round_matches.first.winner_score}}</span>
+                                    {% else %}
+                                        <span class="score">{{ tournament.final_round_matches.first.loser_score}}</span>
+                                    {% endif %}
+                                    
                                 </div>
-                                <div class="match-lines">
-                                    <div class="line one"></div>
-                                    <div class="line two"></div>
-                                </div>
-                                <div class="match-lines alt">
-                                    <div class="line one"></div>
-                                </div>
+
+
+                               
                             </div>
                         </div>
                     </div>
@@ -199,6 +272,5 @@
         }
     }
 }
-
 </script>
 {% endblock %}

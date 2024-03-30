@@ -132,7 +132,7 @@
   font-family: 'Roboto', sans-serif;
   font-size: 14px;
   font-weight: bold;
-  margin-top: 5px;
+  margin-top: 7px;
 }
 
 .category-text a {
@@ -157,6 +157,7 @@
 .store-text-fields {
   margin-left: 5px;
   margin-bottom: 5px;
+  margin-top: 5px;
 }
 
 .small-wallet-name {

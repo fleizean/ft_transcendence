@@ -1,36 +1,26 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load status %}
 
 {% block title %}
-  Chat
+  {{context.chatPageTittle}}
 {% endblock %}
 
+{% block stylesheet %}
+<link rel="stylesheet" href="{% static "css/chat.css" %}"/>
+{% endblock stylesheet %}
+
+
 {% block app %}
-  <link rel="stylesheet" href="{% static "css/chat.css" %}"/>
   <div class="container-top">
     <div class="card">
       <section class="chat-section">
         <div class="chat-container">
           <!-- start: Sidebar -->
           <aside class="chat-sidebar">
-            {% comment %} <a href="#" class="chat-sidebar-logo"><i class="bi bi-discord"></i></a> {% endcomment %}
             <ul class="chat-sidebar-menu">
               <li class="active">
-                <a href="#" data-title="DM"><i class="bi bi-chat-square-fill"></i></a>
-              </li>
-              {% comment %} <li>
-                <a href="#" data-title="Settings"><i class="bi bi-gear-fill"></i></a>
-              </li> {% endcomment %}
-              <li class="chat-sidebar-profile">
-                {% comment %} <button type="button" class="chat-sidebar-profile-toggle"><i class="bi bi-person-circle" style="font-size: 24px; color: #059669;"></i></button> {% endcomment %}
-                <ul class="chat-sidebar-profile-dropdown">
-                  <li>
-                    <a href="#"><i class="bi bi-person-fill"></i> Profile</a>
-                  </li>
-                  <li>
-                    <a href="#"><i class="bi bi-box-arrow-left"></i> Logout</a>
-                  </li>
-                </ul>
+                <a href="#" data-title="{{context.chatDMText}}"><i class="bi bi-chat-square-fill"></i></a>
               </li>
             </ul>
           </aside>
@@ -39,28 +29,21 @@
           <div class="chat-content">
             <!-- start: Content side -->
             <div class="content-sidebar">
-              <div class="content-sidebar-title">Chats</div>
-{% comment %}               <form action="" class="content-sidebar-form">
-                <input type="search" class="content-sidebar-input" placeholder="Search..." />
-                <button type="submit" class="content-sidebar-submit"><i class="bi bi-search"></i></button>
-              </form> {% endcomment %}
+              <div class="content-sidebar-title">{{context.chatHeaderText}}</div>
               <div class="content-messages">
                 <ul class="content-messages-list">
                   <li class="content-message-title">
-                    <span>Recently</span>
+                    <span>{{context.chatRecentlyText}}</span>
                   </li>
                   {% for user in users %}
-                      <li>
-                        <a href="{% url 'start_chat' user %}" data-link>
-                          <img class="content-message-image" src="{{ user.avatar.url }}" alt="" />
-                          
+                  <li>
+                    <a href="{% url 'start_chat' user %}" data-link>
+                          {% is_user_online user.username as user_is_online %}
+                          {% is_user_playing user.username as user_is_playing %}
+                          <img class="content-message-image" src="{{ user.avatar.url }}" alt="avatar" class="profile-image-circ" {% if user_is_playing %} style="border: 3px solid #ffa600; aspect-ratio: 1/1; object-fit: cover;" {% elif user_is_online %} style="border: 3px solid #4CAF4F; aspect-ratio: 1/1; object-fit: cover;" {% else %} style="border: 3px solid #ff0000; aspect-ratio: 1/1; object-fit: cover;" {% endif %}/>
                           <span class="content-message-info">
                             <span class="content-message-name">{{ user }}</span>
                           </span>
-{% comment %}                           <span class="content-message-more">
-                            <span class="content-message-unread">5</span>
-                            <span class="content-message-time">12:30</span>
-                          </span> {% endcomment %}
                         </a>
                       </li>
                   {% endfor %}
@@ -71,7 +54,7 @@
                   <!-- start: Conversation -->
                   <div class="conversation conversation-default active">
                     <i class="bi bi-chat-square"></i>
-                    <p>Select chat and view conversation!</p>
+                    <p>{{context.chatContainerSelectText}}</p>
                   </div>
                 </div>
                 <!-- end: Content -->

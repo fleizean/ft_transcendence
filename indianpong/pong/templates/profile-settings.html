@@ -67,7 +67,8 @@
                             <div class="mb-3">
                                 <label class="small mb-1" >{{context.editProfileUsernameText}}</label>
                                 <input class="form-control" id="id_username_profile" name="username" required type="text" value="{{ username }}"
-                                    placeholder="{{ username }}">
+                                    placeholder="{{ username }}" {% if changepassword %} readonly style="background-color: #f2f2f2;" {%endif %}>
+                                    {% if changepassword %} <p style="color:red; font-style: italic;">{{context.editProfileUsernameTimeText}}</p> {% endif %}
                             </div>
 
                             <!-- Email textbox -->
@@ -232,7 +233,7 @@
                   <span class="i-class"><i class="bi bi-image"></i></span>
                   <div class="d-flex flex-grow-1 align-items-center">
                       <span class="fw-semibold"></span>
-                      <span class="toast-close" data-bs-dismiss="toast"><i class="bi bi-x-circle-fill"></i></span>
+                      <span class="toast-close" data-bs-dismiss="toast" style="margin-left: auto; cursor:pointer"><i class="bi bi-x-circle-fill"></i></span>
                   </div>
               </div>
           </div>
@@ -336,10 +337,24 @@ document.getElementById('password_submit').addEventListener('click', function() 
     })
     .then(response => response.json())
     .then(data => {
-        if (data.message)
-            showToast(data.message, 'text-bg-success', 'bi bi-check-circle-fill');
-        else
-            showToast(data.error, 'text-bg-danger', 'bi bi-x-circle-fill');
+        if (data.message) {
+                showToast(data.message, 'text-bg-success', 'bi bi-check-circle-fill');
+            } else if (data.error) {
+                // Hata mesajlarını göster
+                for (let platform in data.error) {
+                    showToast(data.error[platform][0], 'text-bg-danger', 'bi bi-x-circle-fill');
+                }
+            } else {
+                if (selectedLanguage === 'tr') {
+                    showToast('Bir hata oluştu.', 'text-bg-danger', 'bi bi-x-circle-fill');
+                } else if (selectedLanguage === 'hi') {
+                    showToast('कोई त्रुटि हुई।', 'text-bg-danger', 'bi bi-x-circle-fill');
+                } else if (selectedLanguage === 'pt')
+                    showToast('Ocorreu um erro.', 'text-bg-danger', 'bi bi-x-circle-fill');
+                else {
+                    showToast('An error occurred.', 'text-bg-danger', 'bi bi-x-circle-fill');
+                }
+            }
     })
     .catch(error => {
         console.error('Error:', error);
@@ -365,10 +380,16 @@ document.getElementById('social_submit').addEventListener('click', function() {
     .then(data => {
         if (data.message) {
             showToast(data.message, 'text-bg-success', 'bi bi-check-circle-fill');
+        } else if (data.error) {
+            // Hata mesajlarını göster
+            for (let platform in data.error) {
+                showToast(data.error[platform][0], 'text-bg-danger', 'bi bi-x-circle-fill');
+            }
         } else {
-            showToast(data.error, 'text-bg-danger', 'bi bi-x-circle-fill');
+            showToast('An error occurred.', 'text-bg-danger', 'bi bi-x-circle-fill');
         }
-    })
+}   )
+
     .catch(error => {
         console.error('Error:', error);
     });
@@ -391,8 +412,21 @@ document.getElementById('delete_account_submit').addEventListener('click', funct
     .then(data => {
         if (data.message) {
             showToast(data.message, 'text-bg-success', 'bi bi-check-circle-fill');
+        } else if (data.error) {
+            // Hata mesajlarını göster
+            for (let platform in data.error) {
+                showToast(data.error[platform][0], 'text-bg-danger', 'bi bi-x-circle-fill');
+            }
         } else {
-            showToast(data.error, 'text-bg-danger', 'bi bi-x-circle-fill');
+            if (selectedLanguage === 'tr') {
+                showToast('Bir hata oluştu.', 'text-bg-danger', 'bi bi-x-circle-fill');
+            } else if (selectedLanguage === 'hi') {
+                showToast('कोई त्रुटि हुई।', 'text-bg-danger', 'bi bi-x-circle-fill');
+            } else if (selectedLanguage === 'pt')
+                showToast('Ocorreu um erro.', 'text-bg-danger', 'bi bi-x-circle-fill');
+            else {
+                showToast('An error occurred.', 'text-bg-danger', 'bi bi-x-circle-fill');
+            }
         }
     })
     .catch(error => {
@@ -411,8 +445,8 @@ document.querySelectorAll('button.btn-block').forEach(item => {
 const fileInput = document.getElementById('id_avatar');
 fileInput.addEventListener('change', function(event) {
     var file = this.files[0];
-    if (file.size > 2.6 * 1024 * 1024) { // 1MB
-        showToast("Photo must be under 2.6MB!", "text-bg-danger", "bi bi-image");
+    if (file.size > 2 * 1024 * 1024) { // 1MB
+        showToast("Photo must be under 2MB!", "text-bg-danger", "bi bi-image");
     }
     else {
         var formData = new FormData(); // FormData nesnesini oluştur
@@ -432,10 +466,24 @@ fileInput.addEventListener('change', function(event) {
         })
         .then(response => response.json())
         .then(data => {
-            if (data.message)
+            if (data.message) {
                 showToast(data.message, 'text-bg-success', 'bi bi-check-circle-fill');
-            else
-                showToast(data.error, 'text-bg-danger', 'bi bi-x-circle-fill');
+            } else if (data.error) {
+                // Hata mesajlarını göster
+                for (let platform in data.error) {
+                    showToast(data.error[platform][0], 'text-bg-danger', 'bi bi-x-circle-fill');
+                }
+            } else {
+                if (selectedLanguage === 'tr') {
+                    showToast('Bir hata oluştu.', 'text-bg-danger', 'bi bi-x-circle-fill');
+                } else if (selectedLanguage === 'hi') {
+                    showToast('कोई त्रुटि हुई।', 'text-bg-danger', 'bi bi-x-circle-fill');
+                } else if (selectedLanguage === 'pt')
+                    showToast('Ocorreu um erro.', 'text-bg-danger', 'bi bi-x-circle-fill');
+                else {
+                    showToast('An error occurred.', 'text-bg-danger', 'bi bi-x-circle-fill');
+                }
+            }
         })
         .catch(error => {
             console.error('Error:', error);

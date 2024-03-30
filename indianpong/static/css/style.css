@@ -53,6 +53,7 @@ body {
   background-size: cover;
   z-index: 1;
   overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .container {
@@ -107,6 +108,15 @@ body {
   font-size: 6em;
   color: aliceblue;
   font-family: 'Pixeboy-z8XGD', sans-serif;
+  margin-bottom: 5px;
+}
+
+.big-text-email {
+  animation: backInDown 1s ease;
+  font-size: 6em;
+  color: aliceblue;
+  font-family: "VT323", monospace;
+  font-weight: bold;
   margin-bottom: 5px;
 }
 
@@ -207,6 +217,20 @@ body {
   font-size: 0.8em;
   color: white;
   
+}
+
+.submenu-item {
+  font-size: 1.2em !important;
+  color: greenyellow !important;
+  position: relative !important;
+  /* cursor: url('../assets/scrool/crossedsword.png'), auto; */
+  padding: 0.4rem 0 !important;
+  margin-top: -5px !important;
+}
+
+.submenu-item i {
+  margin-top: 5px;
+  color: tomato !important;
 }
 
 .nav-links li a {
@@ -829,7 +853,6 @@ body {
 
 .ai-game canvas {
   display: block;
-  margin: 20px auto;
   z-index: 50;
   background: 'lightgrey';/* #ff0000; */
   border: 8px solid #FFFFFF;
@@ -867,6 +890,7 @@ body {
   border-radius: 10px;
 }
 
+
 .game-over p {
   font-family: 'Pixeboy-z8XGD', sans-serif;
   font-size: 20px;
@@ -887,6 +911,8 @@ body {
   font-family: 'Pixeboy-z8XGD', sans-serif;
   margin-bottom: 20px;
 }
+
+
 
 #restartButton{
   font-family: 'Pixeboy-z8XGD', sans-serif;
@@ -1035,7 +1061,7 @@ body {
 .notification-icon {
   margin-top: 25px;
   font-size: 16px;
-  color: rgb(255, 140, 0);
+  color: tomato;
 }
 
 .info-icon i {
@@ -1066,15 +1092,219 @@ body {
   color: white !important; /* Değiştirmek istediğiniz yeni renk */
 }
 
-.language-submenu a {
+.language-item {
   color: white;
+  cursor:pointer;
   text-decoration: none;
   display: flex;
   font-size: 10px;
   padding: 10px;
 }
 
-.language-submenu a:hover {
+.language-item:hover {
   color: #007bff;
   background-color: #1b6718; /* Hover rengi */
+}
+
+.gohome-button-container {
+  display: flex;
+  justify-content: center;
+}
+
+.gohome-button-container a {
+  text-decoration: none;
+}
+
+.gohome-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 13rem;
+  overflow: hidden;
+  height: 3rem;
+  background-size: 300% 300%;
+  backdrop-filter: blur(1rem);
+  border-radius: 5rem;
+  transition: 0.5s;
+  animation: gradient_301 5s ease infinite;
+  border: double 4px transparent;
+  background-image: linear-gradient(#212121, #212121),  linear-gradient(137.48deg, tomato 10%,#3e1826 45%, #0f1b2b 67%, #0044ff 87%);
+  background-origin: border-box;
+  background-clip: content-box, border-box;
+}
+
+#container-stars {
+  position: absolute;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  transition: 0.5s;
+  backdrop-filter: blur(1rem);
+  border-radius: 5rem;
+}
+
+.gohome-button strong {
+  z-index: 2;
+  font-family: 'Avalors Personal Use';
+  font-size: 12px;
+  letter-spacing: 5px;
+  color: #FFFFFF;
+  text-shadow: 0 0 4px white;
+}
+
+.gohome-button strong i {
+  z-index: 2;
+  font-family:'Times New Roman', Times, serif;
+  font-size: 12px;
+  font-weight: bold;
+  margin-bottom: -20px;
+}
+
+#glow {
+  position: absolute;
+  display: flex;
+  width: 12rem;
+}
+
+.circle {
+  width: 100%;
+  height: 30px;
+  filter: blur(2rem);
+  animation: pulse_3011 4s infinite;
+  z-index: -1;
+}
+
+.circle:nth-of-type(1) {
+  background: rgba(254, 83, 186, 0.636);
+}
+
+.circle:nth-of-type(2) {
+  background: rgba(142, 81, 234, 0.704);
+}
+
+.gohome-button:hover #container-stars {
+  z-index: 1;
+  background-color: tomato;
+}
+
+.gohome-button:hover {
+  transform: scale(1.1)
+}
+
+.gohome-button:active {
+  border: double 4px #FE53BB;
+  background-origin: border-box;
+  background-clip: content-box, border-box;
+  animation: none;
+}
+
+.gohome-button:active .circle {
+  background: #FE53BB;
+}
+
+#stars {
+  position: relative;
+  background: transparent;
+  width: 200rem;
+  height: 200rem;
+}
+
+#stars::after {
+  content: "";
+  position: absolute;
+  top: -10rem;
+  left: -100rem;
+  width: 100%;
+  height: 100%;
+  animation: animStarRotate 90s linear infinite;
+}
+
+#stars::after {
+  background-image: radial-gradient(#ffffff 1px, transparent 1%);
+  background-size: 50px 50px;
+}
+
+#stars::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -50%;
+  width: 170%;
+  height: 500%;
+  animation: animStar 60s linear infinite;
+}
+
+#stars::before {
+  background-image: radial-gradient(#ffffff 1px, transparent 1%);
+  background-size: 50px 50px;
+  opacity: 0.5;
+}
+
+@keyframes animStar {
+  from {
+    transform: translateY(0);
+  }
+
+  to {
+    transform: translateY(-135rem);
+  }
+}
+
+@keyframes animStarRotate {
+  from {
+    transform: rotate(360deg);
+  }
+
+  to {
+    transform: rotate(0);
+  }
+}
+
+@keyframes gradient_301 {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes pulse_3011 {
+  0% {
+    transform: scale(0.75);
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.7);
+  }
+
+  70% {
+    transform: scale(1);
+    box-shadow: 0 0 0 10px rgba(0, 0, 0, 0);
+  }
+
+  100% {
+    transform: scale(0.75);
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+  }
+}
+
+#loading-bar-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px; /* İlerleme çubuğu yüksekliği */
+  background-color: #0000; /* İlerleme çubuğu arka plan rengi */
+  z-index: 9999; /* Diğer elementlerin üstünde olmasını sağlar */
+}
+
+#loading-bar {
+  height: 100%;
+  width: 0;
+  background-color: #F99601; /* İlerleme çubuğu rengi */
+  transition: width 0.3s ease; /* İlerleme animasyonu */
 }

@@ -19,6 +19,13 @@
     width: 100%;
 }
 
+.game-info-menu {
+    display: flex;
+    justify-content: space-between;
+    color: tomato;
+    
+}
+
 .game-info-menu-local {
     position: absolute;
     top: 0;
@@ -100,7 +107,7 @@
 }
 
 .countdown p {
-    font-family: 'Pixeboy-z8XGD', sans-serif;
+    font-family: "VT323", monospace;
     font-size: 20px;
     font-weight: bold;
     margin-top: -20px;
@@ -117,7 +124,7 @@
 .countdown h2 {
     font-size: 24px;
     color: #ffffff;
-    font-family: 'Pixeboy-z8XGD', sans-serif;
+    font-family: "VT323", monospace;
     margin-bottom: 20px;
 }
 
@@ -149,12 +156,34 @@
     background-color: rgba(0,0,0,0.5); /* Modal arka planını yarı şeffaf yapar */
 }
 
-input[type=range] {
-    /* Required for Firefox. */
-    background: linear-gradient(to right, violet, yellow);
-}
 
-input[type=range]::-webkit-slider-runnable-track {
-    background: linear-gradient(to right, violet, yellow);
-}
 
+.slider {
+    -webkit-appearance: none;
+    /* width: 100%; */
+    height: 10px;
+    border-radius: 5px;  
+    background: #ffffff;
+    outline: none;
+    opacity: 0.9;
+    -webkit-transition: .2s;
+    transition: opacity .2s;
+  }
+  
+  .slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%; 
+    background: tomato;
+    cursor: pointer;
+  }
+  
+  .slider::-moz-range-thumb {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background: tomato;
+    cursor: pointer;
+  }

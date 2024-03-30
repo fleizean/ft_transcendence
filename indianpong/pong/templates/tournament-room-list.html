@@ -15,21 +15,21 @@
             
             <div class="room-wrapper">
               {% for tournament in tournaments %}
-                <div class="room rps-room">
-                    <a href="{% url 'tournament-room' id=tournament.id %}" alt="Mythrill">
-                      <div class="game-room-card">
-                        <div class="wrapper-rooms">
-                          <img src="{% static "assets/backgrounds/bg-pingpong.png" %}" class="cover-image" />
+                  <div class="room rps-room">
+                      <a href="{% url 'tournament-room' id=tournament.id %}" alt="Mythrill">
+                        <div class="game-room-card">
+                          <div class="wrapper-rooms">
+                            <img src="{% static "assets/backgrounds/bg-pingpong.png" %}" {% if tournament.status == "started" %} class="cover-image-started" {% elif tournament.status == "ended" %} class="cover-image-ended" {% else %} class="cover-image" {% endif %}/>
+                          </div>
+                          <div class="title-room">
+                              <h4>Pong Room#{{tournament.id}} {{tournament.name}}</h4>
+                              <h6 {% if tournament.status == "started" %} style="color:orange; font-weight:bold;" {% elif tournament.status == "ended" %} style="color:red; font-weight:bold;" {% else %} style="color: green; font-weight:bold;" {% endif %}>{{tournament.status}}</h6>
+                              <p>{{tournament.creator.username}}</p>
+                          </div>
+                          <img src="https://cdn3d.iconscout.com/3d/premium/thumb/table-tennis-5789761-4849378.png?f=webp" class="character" />
                         </div>
-                        <div class="title-room">
-                            <h4>Pong Room#{{tournament.id}} {{tournament.name}}</h4>
-                            <h6>{{tournament.status}}</h6>
-                            <p>{{tournament.creator.username}}</p>
-                        </div>
-                        <img src="https://cdn3d.iconscout.com/3d/premium/thumb/table-tennis-5789761-4849378.png?f=webp" class="character" />
-                      </div>
-                    </a>
-                </div>
+                      </a>
+                  </div>
               {% endfor %}
 {% comment %} 
                 <div class="room rps-room">

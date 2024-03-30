@@ -13,17 +13,18 @@ from django.utils.http import urlsafe_base64_encode
 from django.utils.encoding import force_bytes
 from indianpong.settings import EMAIL_HOST_USER, STATICFILES_DIRS
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, UserChangeForm, PasswordChangeForm, PasswordResetForm, SetPasswordForm 
-from .models import Social, VerifyToken, BlockedUser, ChatMessage, GameInvitation, UserProfile, TwoFactorAuth, JWTToken, Tournament
+from .models import Social, VerifyToken, UserProfile, Tournament
+from django.contrib.auth import authenticate
 
 
 class UserProfileForm(UserCreationForm):
-
     username = forms.CharField(label='Username', widget=forms.TextInput(attrs={'class': 'input'}))
     displayname = forms.CharField(label='Displayname', widget=forms.TextInput(attrs={'class': 'input'}))
     email = forms.EmailField(label='Email', widget=forms.EmailInput(attrs={'class': 'input'}))
     password1 = forms.CharField(label='Password', widget=forms.PasswordInput(attrs={'class': 'input'}))
     password2 = forms.CharField(label='RePassword', widget=forms.PasswordInput(attrs={'class': 'input'}))
     avatar = forms.ImageField(required=False ,label='Avatar', widget=forms.FileInput(attrs={'class': 'input'}))
+    
     class Meta:
         model = UserProfile
         fields = ['username', 'displayname', 'email', 'password1', 'password2', 'avatar']
@@ -32,10 +33,11 @@ class UserProfileForm(UserCreationForm):
         self.lang = kwargs.pop('lang', 'en')  # Varsayılan dil: İngilizce
         super().__init__(*args, **kwargs)
 
+        #TODO make link spa compatible
     """ def confirm_login_allowed(self, user):
         if not user.is_verified:
             raise forms.ValidationError(
-                mark_safe(
+                mark_safe( 
                     "This account is not verified. <a href='{}'>Resend verification email</a>".format(
                         reverse("password_reset")
                     )
@@ -57,6 +59,31 @@ class UserProfileForm(UserCreationForm):
                 raise forms.ValidationError('Não é possível usar o endereço de e-mail 42')
             else:
                 raise forms.ValidationError('Cannot use 42 email address')
+
+        if not "@" in email:
+            if (lang == 'tr'):
+                raise forms.ValidationError("Geçerli bir e-posta adresi girin.")
+            elif (lang == 'en'):
+                raise forms.ValidationError("Enter a valid email.")
+            elif (lang == 'hi'):
+                raise forms.ValidationError("एक मान्य ईमेल पता दर्ज करें।")
+            elif (lang == 'pt'):
+                raise forms.ValidationError("Insira um endereço de email válido.")
+            else:
+                raise forms.ValidationError("Enter a valid email.")
+
+        if not email:
+            if (lang == 'tr'):
+                raise forms.ValidationError("Email zorunludur.")
+            elif (lang == 'en'):
+                raise forms.ValidationError("Email is required.")
+            elif (lang == 'hi'):
+                raise forms.ValidationError("ईमेल आवश्यक है।")
+            elif (lang == 'pt'):
+                raise forms.ValidationError("Email é obrigatório.")
+            else:
+                raise forms.ValidationError("Email is required.")
+
         return email
     
     def clean_username(self):
@@ -126,23 +153,8 @@ class UserProfileForm(UserCreationForm):
                 raise forms.ValidationError("Nome de usuário e nome de exibicão não podem ser iguais.")
             else:
                 raise forms.ValidationError("Username and displayname cannot be the same.")
+        return displayname
 
-    def clean_email(self):
-        email = self.cleaned_data.get("email")
-        lang = self.lang
-        if not email:
-            if (lang == 'tr'):
-                raise forms.ValidationError("Email zorunludur.")
-            elif (lang == 'en'):
-                raise forms.ValidationError("Email is required.")
-            elif (lang == 'hi'):
-                raise forms.ValidationError("ईमेल आवश्यक है।")
-            elif (lang == 'pt'):
-                raise forms.ValidationError("Email é obrigatório.")
-            else:
-                raise forms.ValidationError("Email is required.")
-        return email
-    
     def clean_password1(self):
         password1 = self.cleaned_data.get("password1")
         lang = self.lang
@@ -264,19 +276,46 @@ class SocialForm(forms.ModelForm):
         model = Social
         fields = ['intra42', 'linkedin', 'github', 'twitter']
 
+    def __init__(self, *args, **kwargs):
+        self.lang = kwargs.pop('lang', 'en')  # Varsayılan dil: İngilizce
+        super().__init__(*args, **kwargs)
+
+    
+
 class DeleteAccountForm(forms.Form):
     #password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control'}), help_text="Enter your password to confirm account deletion.")
     email = forms.EmailField(label='Email', widget=forms.EmailInput(attrs={'class': 'form-control'}))
 
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user')
+        self.lang = kwargs.pop('lang', 'en')  # Varsayılan dil: İngilizce
         super(DeleteAccountForm, self).__init__(*args, **kwargs)
 
     def clean(self):
         cleaned_data = super().clean()
         email = cleaned_data.get('email')
+        if not email:
+            if (self.lang == 'tr'):
+                raise forms.ValidationError("Email zorunludur.")
+            elif (self.lang == 'en'):
+                raise forms.ValidationError("Email is required.")
+            elif (self.lang == 'hi'):
+                raise forms.ValidationError("ईमेल आवश्यक है।")
+            elif (self.lang == 'pt'):
+                raise forms.ValidationError("Email é obrigatório.")
+            else:
+                raise forms.ValidationError("Email is required.")
         if not self.user.email == email:
-            raise forms.ValidationError("Email does not match")
+            if (self.lang == 'tr'):
+                raise forms.ValidationError("Email uyuşmuyor")
+            elif (self.lang == 'en'):
+                raise forms.ValidationError("Email does not match")
+            elif (self.lang == 'hi'):
+                raise forms.ValidationError("ईमेल मेल नहीं खा रहा है")
+            elif (self.lang == 'pt'):
+                raise forms.ValidationError("Email não corresponde")
+            else:
+                raise forms.ValidationError("Email does not match")
         return cleaned_data
 
 class AuthenticationUserForm(AuthenticationForm):
@@ -285,7 +324,7 @@ class AuthenticationUserForm(AuthenticationForm):
     class Meta:
         model = UserProfile
         fields = ['username', 'password']
-
+    
 class UpdateUserProfileForm(UserChangeForm):
     username = forms.CharField(label='Username', widget=forms.TextInput(attrs={'class': 'form-control'}))
     email = forms.EmailField(label='Email', widget=forms.EmailInput(attrs={'class': 'form-control'}))
@@ -296,12 +335,78 @@ class UpdateUserProfileForm(UserChangeForm):
         model = UserProfile
         fields = ['username', 'email', 'displayname']
         #exclude = ['password']
+    
+    def __init__(self, *args, **kwargs):
+        self.lang = kwargs.pop('lang', 'en')
+        super().__init__(*args, **kwargs)
+    
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        lang = self.lang
+
+        if not email:
+            if (lang == 'tr'):
+                raise forms.ValidationError("Email zorunludur.")
+            elif (lang == 'en'):
+                raise forms.ValidationError("Email is required.")
+            elif (lang == 'hi'):
+                raise forms.ValidationError("ईमेल आवश्यक है।")
+            elif (lang == 'pt'):
+                raise forms.ValidationError("Email é obrigatório.")
+            else:
+                raise forms.ValidationError("Email is required.")
+        return email
+    
+    def clean_username(self):
+        username = self.cleaned_data.get('username')
+        lang = self.lang
+        if not username:
+            if (lang == 'tr'):
+                raise forms.ValidationError("Kullanici adi zorunludur.")
+            elif (lang == 'en'):
+                raise forms.ValidationError("Username is required.")
+            elif (lang == 'hi'):
+                raise forms.ValidationError("उपयोगकर्ता नाम आवश्यक है।")
+            elif (lang == 'pt'):
+                raise forms.ValidationError("Nome de usuário é obrigatório.")
+            else:
+                raise forms.ValidationError("Username is required.")
+        if not username.isascii():
+            if (lang == 'tr'):
+                raise forms.ValidationError("Kullanici adi ASCII olmayan karakterler icermemelidir.")
+            elif (lang == 'en'):
+                raise forms.ValidationError("Username cannot contain non-ASCII characters.")
+            elif (lang == 'hi'):
+                raise forms.ValidationError("उपयोगकर्ता नाम में अशी नहीं हो सकते।")
+            elif (lang == 'pt'):
+                raise forms.ValidationError("Nome de usuário não pode conter caracteres não ASCII.")
+            else:
+                raise forms.ValidationError("Username cannot contain non-ASCII characters.")
+        return username
+    
+    def clean_displayname(self):
+        displayname = self.cleaned_data.get('displayname')
+        lang = self.lang
+        if not displayname:
+            if (lang == 'tr'):
+                raise forms.ValidationError("Gorunen ad zorunludur.")
+            elif (lang == 'en'):
+                raise forms.ValidationError("Displayname is required.")
+            elif (lang == 'hi'):
+                raise forms.ValidationError("प्रदर्शन नाम आवश्यक है।")
+            elif (lang == 'pt'):
+                raise forms.ValidationError("Nome de exibicão é obrigatório.")
+            else:
+                raise forms.ValidationError("Displayname is required.")
+        return displayname
+    
 
 class ProfileAvatarForm(forms.ModelForm):
     avatar = forms.ImageField(label='Avatar', widget=forms.FileInput(attrs={'class': 'form-control'}))
     class Meta:
         model = UserProfile
         fields = ['avatar']
+            
 
 class PasswordChangeUserForm(PasswordChangeForm):
     old_password = forms.CharField(label='Old Password', widget=forms.PasswordInput(attrs={'class': 'form-control'}))
@@ -310,6 +415,100 @@ class PasswordChangeUserForm(PasswordChangeForm):
     class Meta:
         model = UserProfile
         fields = ['old_password', 'new_password1', 'new_password2']
+
+    def __init__(self, *args, **kwargs):
+        self.lang = kwargs.pop('lang', 'en')  # Varsayılan dil: İngilizce
+        self.user = kwargs.pop('user', None)  
+        super().__init__(*args, **kwargs)
+    
+    def clean_old_password(self):
+        old_password = self.cleaned_data.get('old_password')
+        lang = self.lang
+        user = self.user
+        
+        authenticated_user = authenticate(username=user.username, password=old_password)
+
+        if not authenticated_user:
+            if (lang == 'tr'):
+                raise forms.ValidationError("Eski parola yanlış.")
+            elif (lang == 'en'):
+                raise forms.ValidationError("Old password is incorrect.")
+            elif (lang == 'hi'):
+                raise forms.ValidationError("पुराना पासवर्ड गलत है।")
+            elif (lang == 'pt'):
+                raise forms.ValidationError("Senha antiga está incorreta.")
+            else:
+                raise forms.ValidationError("Old password is incorrect.")
+    
+        return old_password
+    
+    def clean_new_password1(self):
+        new_password1 = self.cleaned_data.get('new_password1')
+        lang = self.lang
+        if not new_password1:
+            if (lang == 'tr'):
+                raise forms.ValidationError("Yeni parola zorunludur.")
+            elif (lang == 'en'):
+                raise forms.ValidationError("New password is required.")
+            elif (lang == 'hi'):
+                raise forms.ValidationError("नया पासवर्ड आवश्यक है।")
+            elif (lang == 'pt'):
+                raise forms.ValidationError("Nova senha é obrigatória.")
+            else:
+                raise forms.ValidationError("New password is required.")
+        if len(new_password1) < 8:
+            if (lang == 'tr'):
+                raise forms.ValidationError("Parola en az 8 karakter uzunlugunda olmalidir.")
+            elif (lang == 'en'):
+                raise forms.ValidationError("Password must be at least 8 characters long.")
+            elif (lang == 'hi'):
+                raise forms.ValidationError("पासवर्ड कम से कम 8 वर्ण लंबा होना चाहिए।")
+            elif (lang == 'pt'):
+                raise forms.ValidationError("A senha deve ter pelo menos 8 caracteres.")
+            else:
+                raise forms.ValidationError("Password must be at least 8 characters long.")
+        if not any(char.isdigit() for char in new_password1):
+            if (lang == 'tr'):
+                raise forms.ValidationError("Parola en az bir rakam içermelidir.")
+            elif (lang == 'en'):
+                raise forms.ValidationError("Password must contain at least one digit.")
+            elif (lang == 'hi'):
+                raise forms.ValidationError("पासवर्ड में कम से कम एक अंक होना चाहिए।")
+            elif (lang == 'pt'):
+                raise forms.ValidationError("A senha deve conter pelo menos um dígito.")
+            else:
+                raise forms.ValidationError("Password must contain at least one digit.")
+        return new_password1
+    
+    def clean_new_password2(self):
+        new_password1 = self.cleaned_data.get('new_password1')
+        new_password2 = self.cleaned_data.get('new_password2')
+        lang = self.lang
+        if not new_password2:
+            if (lang == 'tr'):
+                raise forms.ValidationError("Parolayı tekrar girmek zorunludur.")
+            elif (lang == 'en'):
+                raise forms.ValidationError("Re-entering password is required.")
+            elif (lang == 'hi'):
+                raise forms.ValidationError("पासवर्ड फिर से दर्ज करना आवश्यक है।")
+            elif (lang == 'pt'):
+                raise forms.ValidationError("Re-entrar senha é obrigatório.")
+            else:
+                raise forms.ValidationError("Re-entering password is required.")        
+        if new_password1 != new_password2:
+            if (lang == 'tr'):
+                raise forms.ValidationError("Parolalar eşleşmiyor.")
+            elif (lang == 'en'):
+                raise forms.ValidationError("Passwords do not match.")
+            elif (lang == 'hi'):
+                raise forms.ValidationError("पासवर्ड मेल नहीं खा रहे हैं।")
+            elif (lang == 'pt'):
+                raise forms.ValidationError("As senhas não coincidem.")
+            else:
+                raise forms.ValidationError("Passwords do not match.")
+        return new_password2
+    
+
 
 class PasswordResetUserForm(PasswordResetForm):
     #email = forms.EmailField(label='Email', widget=forms.EmailInput(attrs={'class': 'input'}))
@@ -404,7 +603,7 @@ class SetPasswordUserForm(SetPasswordForm):
 class TournamentForm(forms.ModelForm):
     class Meta:
         model = Tournament
-        fields = ['name', 'max_score', 'game_mode']
+        fields = ['name', 'game_mode']
 
     def __init__(self, *args, **kwargs):
         self.request = kwargs.pop('request', None)
@@ -425,31 +624,14 @@ class TournamentForm(forms.ModelForm):
         return tournament
     
 
-class ChatMessageForm(forms.ModelForm):
-    class Meta:
-        model = ChatMessage
-        fields = ['content']
-        widgets = {
-            'content': forms.Textarea(attrs={'rows': 3}),
-        }
 
+"""
 class BlockUserForm(forms.ModelForm):
     blocked_user = forms.ModelChoiceField(queryset=UserProfile.objects.all(), widget=forms.Select(attrs={'class': 'input'}))
 
     class Meta:
         model = BlockedUser
         fields = ['blocked_user']
-
-class InviteToGameForm(forms.ModelForm):
-    invited_user = forms.ModelChoiceField(queryset=UserProfile.objects.all(), widget=forms.Select(attrs={'class': 'input'}))
-
-    class Meta:
-        model = GameInvitation
-        fields = ['message']
-        widgets = {
-            'message': forms.Textarea(attrs={'rows': 3}),
-        }
-
 
 class TwoFactorAuthSetupForm(forms.ModelForm):
     class Meta:
@@ -461,7 +643,7 @@ class JWTTokenForm(forms.ModelForm):
         model = JWTToken
         fields = ['token']
 
-
+"""
 
 
 
