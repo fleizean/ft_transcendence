@@ -94,7 +94,7 @@
             <span style="font-weight: 500;">{{context.signupImageUploadText}}</span>
           </div>
           <input type="file" name="avatar" class="input" accept="image/*" id="id_avatar">
-          {{form.avatar.errors}}
+{% comment %}           {{form.avatar.errors}} {% endcomment %}
         </label>
         <div class="register-buttons">
           <button type="button" class="button-confirm" onclick="makeRegister()">{{context.signupButtonSignup}} →</button>
@@ -117,66 +117,13 @@
   </div>
   
 </div>
-<script src="{% static "js/register.js" %}"></script>
-
 <script>
-  const passwordInput1 = document.getElementById('id_password1');
-    const passwordInput2 = document.getElementById('id_password2');
-    const toggleButton1 = document.getElementById('togglePassword1');
-    const toggleButton2 = document.getElementById('togglePassword2');
-    
-    toggleButton1.addEventListener('mousedown', function() {
-        passwordInput1.type = 'text';
-        toggleButton1.classList.remove('bi-eye-slash-fill');
-        toggleButton1.classList.add('bi-eye-fill');
-    });
-    
-    toggleButton1.addEventListener('mouseup', function() {
-        passwordInput1.type = 'password';
-        toggleButton1.classList.remove('bi-eye-fill');
-        toggleButton1.classList.add('bi-eye-slash-fill');
-    });
-  
-    toggleButton2.addEventListener('mousedown', function() {
-        passwordInput2.type = 'text';
-        toggleButton2.classList.remove('bi-eye-slash-fill');
-        toggleButton2.classList.add('bi-eye-fill');
-    });
-  
-    toggleButton2.addEventListener('mouseup', function() {
-        passwordInput2.type = 'password';
-        toggleButton2.classList.remove('bi-eye-fill');
-        toggleButton2.classList.add('bi-eye-slash-fill');
-    });
-  
-    passwordInput1.addEventListener('input', function() {
-      toggleButton1.style.display = this.value.trim() !== '' ? 'block' : 'none';
-    });
-  
-    passwordInput2.addEventListener('input', function() {
-      toggleButton2.style.display = this.value.trim() !== '' ? 'block' : 'none';
-    });
+
 </script>
-
+<script type="module" src="{% static "js/signup.js" %}"></script>
 <script>
-function showToast(content, status, iconClass) {
-    const liveToast = document.getElementById('liveToast');
-    var toastContent = document.querySelector('#liveToast .fw-semibold');
-    var toastIcon = document.querySelector('.toast-body .i-class i');
-
-    toastIcon.className = iconClass;
-    liveToast.classList.remove('text-bg-danger'); 
-    liveToast.className = 'toast'; 
-    liveToast.classList.add(status);
-
-    toastContent.textContent = content;
-    const toast = new bootstrap.Toast(liveToast);
-    toast.show();
-    setTimeout(function() {
-        toast.hide();
-    }, 8000);
-}
-
-
+  window.onload = function() {
+    initializeSignup();
+  };
 </script>
 {% endblock %}

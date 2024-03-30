@@ -18,6 +18,9 @@
         {% block stylesheet %}{% endblock %}
     </head>
     <body>
+            <div id="loading-bar-container">
+                <div id="loading-bar"></div>
+            </div>
             <div class="backgroundimage">
                 {% if request.user.is_authenticated %}
                     {% include "_nav.html" %}
@@ -99,6 +102,6 @@
                     </div>
                 </div>
             </div>
-            <script src="{% static "js/navigation.js" %}"></script>
+            <script type="module" src="{% static "js/navigation.js" %}"></script>
     </body>
 </html>

@@ -445,8 +445,8 @@ document.querySelectorAll('button.btn-block').forEach(item => {
 const fileInput = document.getElementById('id_avatar');
 fileInput.addEventListener('change', function(event) {
     var file = this.files[0];
-    if (file.size > 2.6 * 1024 * 1024) { // 1MB
-        showToast("Photo must be under 2.6MB!", "text-bg-danger", "bi bi-image");
+    if (file.size > 2 * 1024 * 1024) { // 1MB
+        showToast("Photo must be under 2MB!", "text-bg-danger", "bi bi-image");
     }
     else {
         var formData = new FormData(); // FormData nesnesini oluştur
