@@ -5,7 +5,7 @@ const gameId = pathArray[3]; // Assuming game_id is the fourth segment of the UR
 
 
 // Connect to the WebSocket server using the extracted game_id and game_type
-const matchsocket = new WebSocket(`wss://${window.location.host}/ws/remote-game/${gameType}/${gameId}/`); //? Maybe we need to pass game type and game id here
+const matchsocket = new WebSocket(`ws://${window.location.host}/ws/remote-game/${gameType}/${gameId}/`); //? Maybe we need to pass game type and game id here
 
 
 const canvas = document.getElementById('pongCanvas');

@@ -62,7 +62,7 @@
   </nav>
   {% if not request.user.is_anonymous %}
   <script>
-    var socket = new WebSocket('wss://' + window.location.host + '/ws/online_status/');
+    var socket = new WebSocket('ws://' + window.location.host + '/ws/online_status/');
 
     socket.onopen = function(e) {
         console.log('User is connected');
