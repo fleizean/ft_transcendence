@@ -1,3 +1,23 @@
+let username = window.username;
+
+function showToast(content, status, iconClass) {
+    const liveToast = document.getElementById('liveToast');
+    var toastContent = document.querySelector('#liveToast .fw-semibold');
+    var toastIcon = document.querySelector('.toast-body .i-class i');
+
+    toastIcon.className = iconClass;
+    liveToast.classList.remove('text-bg-danger'); 
+    liveToast.className = 'toast'; 
+    liveToast.classList.add(status);
+
+    toastContent.textContent = content;
+    const toast = new bootstrap.Toast(liveToast);
+    toast.show();
+    setTimeout(function() {
+        toast.hide();
+    }, 8000);
+}
+
 export function initializeProfileSettings() {
 
     document.getElementById('profile_submit').addEventListener('click', function() {
@@ -12,7 +32,7 @@ export function initializeProfileSettings() {
     
         // CSRF token'ı eklemek
     
-        fetch('{% url "profile_settings" username=user_info.username %}', {
+        fetch(`/profile/${username}/settings`, {
             method: 'POST',
             body: formData,
             headers: {
@@ -21,11 +41,11 @@ export function initializeProfileSettings() {
         })
         .then(response => response.text())
         .then(data => {
-            document.body.innerHTML = data;
-            if(data.message)
+                            document.body.innerHTML = data;
+if(data.message)
                 showToast(data.message, 'text-bg-success', 'bi bi-check-circle-fill');
-            else
-                showToast(data.error, 'text-bg-danger', 'bi bi-x-circle-fill');
+                        else
+                showToast("oç0" + data.error, 'text-bg-danger', 'bi bi-x-circle-fill');
         })
         .catch(error => {
             console.error('Error:', error);
@@ -39,7 +59,7 @@ export function initializeProfileSettings() {
         formData.append('new_password1', document.getElementById('id_new_password1').value);
         formData.append('new_password2', document.getElementById('id_new_password2').value);
         formData.append('password_form', 'password_form');
-        fetch('{% url "profile_settings" username=user_info.username %}', {
+        fetch(`/profile/${username}/settings`, {
             method: 'POST',
             body: formData,
             headers: {
@@ -48,13 +68,13 @@ export function initializeProfileSettings() {
         })
         .then(response => response.text())
         .then(data => {
-            document.body.innerHTML = data;
-            if (data.message) {
+                                document.body.innerHTML = data;
+if (data.message) {
                     showToast(data.message, 'text-bg-success', 'bi bi-check-circle-fill');
                 } else if (data.error) {
                     // Hata mesajlarını göster
                     for (let platform in data.error) {
-                        showToast(data.error[platform][0], 'text-bg-danger', 'bi bi-x-circle-fill');
+                        showToast("oç4" + data.error[platform][0], 'text-bg-danger', 'bi bi-x-circle-fill');
                     }
                 } else {
                     if (selectedLanguage === 'tr') {
@@ -82,7 +102,7 @@ export function initializeProfileSettings() {
         formData.append('github', document.getElementById('id_github').value);
         formData.append('social_form', 'social_form');
     
-        fetch('{% url "profile_settings" username=user_info.username %}', {
+        fetch(`/profile/${username}/settings`, {
             method: 'POST',
             body: formData,
             headers: {
@@ -97,7 +117,7 @@ export function initializeProfileSettings() {
             } else if (data.error) {
                 // Hata mesajlarını göster
                 for (let platform in data.error) {
-                    showToast(data.error[platform][0], 'text-bg-danger', 'bi bi-x-circle-fill');
+                    showToast("oç5" + data.error[platform][0], 'text-bg-danger', 'bi bi-x-circle-fill');
                 }
             } else {
                 showToast('An error occurred.', 'text-bg-danger', 'bi bi-x-circle-fill');
@@ -131,7 +151,7 @@ export function initializeProfileSettings() {
             } else if (data.error) {
                 // Hata mesajlarını göster
                 for (let platform in data.error) {
-                    showToast(data.error[platform][0], 'text-bg-danger', 'bi bi-x-circle-fill');
+                    showToast("oç" + data.error[platform][0], 'text-bg-danger', 'bi bi-x-circle-fill');
                 }
             } else {
                 if (selectedLanguage === 'tr') {
@@ -174,7 +194,7 @@ export function initializeProfileSettings() {
             formData.append('avatar_form', 'avatar_form');
     
             // CSRF token'ı eklemek
-            fetch('{% url "profile_settings" username=user_info.username %}', {
+            fetch(`/profile/${username}/settings`, {
                 method: 'POST',
                 body: formData,
                 headers: {
@@ -189,7 +209,7 @@ export function initializeProfileSettings() {
                 } else if (data.error) {
                     // Hata mesajlarını göster
                     for (let platform in data.error) {
-                        showToast(data.error[platform][0], 'text-bg-danger', 'bi bi-x-circle-fill');
+                        showToast("oç2" + data.error[platform][0], 'text-bg-danger', 'bi bi-x-circle-fill');
                     }
                 } else {
                     if (selectedLanguage === 'tr') {
@@ -209,21 +229,4 @@ export function initializeProfileSettings() {
         }
     });
 
-    function showToast(content, status, iconClass) {
-        const liveToast = document.getElementById('liveToast');
-        var toastContent = document.querySelector('#liveToast .fw-semibold');
-        var toastIcon = document.querySelector('.toast-body .i-class i');
-    
-        toastIcon.className = iconClass;
-        liveToast.classList.remove('text-bg-danger'); 
-        liveToast.className = 'toast'; 
-        liveToast.classList.add(status);
-    
-        toastContent.textContent = content;
-        const toast = new bootstrap.Toast(liveToast);
-        toast.show();
-        setTimeout(function() {
-            toast.hide();
-        }, 8000);
-    }
 }

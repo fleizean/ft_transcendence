@@ -21,6 +21,11 @@
             <div id="loading-bar-container">
                 <div id="loading-bar"></div>
             </div>
+
+{% comment %}             <div class="progress-bar">
+                <div class="progress-bar-fill"></div>
+            </div> {% endcomment %}
+
             <div class="backgroundimage">
                 {% if request.user.is_authenticated %}
                     {% include "_nav.html" %}

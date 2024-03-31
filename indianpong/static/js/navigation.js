@@ -1,15 +1,18 @@
+import { initializeBurger } from './burger.js';
 import { initializeLogin, makeLogin } from './login.js';
 import { initializeSignup, makeRegister } from './signup.js';
 import { initializeProfile, toggleGame, matchHistoryChanger} from './profile.js';
 import { initializeSearch } from './search.js';
 import { initializeStore } from './store.js';
 import { initializeInventory } from './inventory.js';
-import { initializeBurger } from './burger.js';
+import { initializeProfileSettings } from './profile-settings.js';
 
 function getCookie(name) {
   const cookieValue = document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)');
   return cookieValue ? cookieValue.pop() : '';
 }
+
+const fill = document.querySelector('.progress-bar-fill');
 
 function updateApp(path) {
   showLoadingScreen();
@@ -24,37 +27,27 @@ function updateApp(path) {
 }
 
 function updateTitle(path) {
-  let title;
-  const lang = getCookie('selectedLanguage');
-  console.log(path);
-  switch (path) {
-    case '/':
-      title = 'Indian Pong';
-      break;
-    case '/login':
-      title = lang == 'en' ? 'Indian Pong - Login' : lang == 'hi' ? 'इंडियन पोंग - लॉग इन' : lang == 'pt' ? 'Pong Indiano - Login' : lang == 'tr' ? 'Hint Pong - Giriş' : 'Indian Pong - Login';
-      break;
-    case '/signup':
-      title = 'Indian Pong - Signup';
-      break;
-    case '/settings':
-      title = 'Indian Pong - Settings';
-      break;
-    case '/profile':
-      title = 'Indian Pong - Profile';
-      break;
-    case '/search':
-      title = 'Indian Pong - Search';
-      break;
-    case '/store':
-      title = 'Indian Pong - Store';
-      break;
-    case '/inventory':
-      title = 'Indian Pong - Inventory';
-      break;
-    default:
-      title = 'Indian Pong';
+  // Split the path by slashes
+  var parts = path.split('/');
+
+  if (parts.length > 0) {
+    // Remove the first empty string from the parts array
+    parts.shift();
+
+    // Map over each part to capitalize the first letter
+    var titleParts = parts.map(function(part) {
+      return part.charAt(0).toUpperCase() + part.slice(1);
+    });
+
+    // Join the title parts with spaces
+    var title = titleParts.join(' ');
   }
+  else {
+    // If there are no parts, set the title to 'Home'
+    var title = 'IndianPong';
+  }
+
+  // Set the document title
   document.title = title;
 }
 
@@ -65,6 +58,7 @@ function swapApp(path) {
   updateTitle(path);
 }
 
+window.initializeBurger = initializeBurger;
 window.swapApp = swapApp;
 window.initializeLogin = initializeLogin;
 window.initializeSignup = initializeSignup;
@@ -76,7 +70,7 @@ window.matchHistoryChanger = matchHistoryChanger;
 window.initializeSearch = initializeSearch;
 window.initializeStore = initializeStore;
 window.initializeInventory = initializeInventory;
-window.initializeBurger = initializeBurger;
+window.initializeProfileSettings = initializeProfileSettings;
 
 
 window.onpopstate = function(event) {
@@ -89,6 +83,8 @@ function pageHandler(path) {
       initializeLogin();
     else if (path == '/signup')
       initializeSignup();
+    else if(path.includes('/settings'))
+      initializeProfileSettings();
     else if(path.includes('/profile/'))
       initializeProfile();
     else if(path.includes('/search'))
@@ -97,10 +93,8 @@ function pageHandler(path) {
       initializeStore();
     else if(path.includes('/inventory/'))
       initializeInventory();
-    
     if (path != '/' && path != '/login' && path != '/signup')
       initializeBurger();
-
 }
 
 function showLoadingScreen() {
@@ -111,3 +105,11 @@ function showLoadingScreen() {
 function hideLoadingScreen() {
   document.getElementById('loading-bar').style.width = '0';;
 }
+
+/* function showProgressBar() {
+  document.querySelector('.progress-bar').style.display = 'block';
+}
+
+function hideProgressBar() {
+  document.querySelector('.progress-bar').style.display = 'none';
+} */

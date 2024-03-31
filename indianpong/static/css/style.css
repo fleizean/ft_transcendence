@@ -1312,3 +1312,21 @@ body {
   background-color: #F99601; /* İlerleme çubuğu rengi */
   transition: width 0.3s ease; /* İlerleme animasyonu */
 }
+
+.progress-bar {
+  width: 100%;
+  background-color: #f0f0f0;
+  height: 10px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  background-color: #65ef88;
+  height: 100%;
+  width: 0%;
+  transition: width 0.3s ease;
+}

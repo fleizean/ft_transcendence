@@ -98,10 +98,10 @@ def signup(request):
             messages.success(request, "Please check your email to verify your account.")
             return HttpResponse("login")
         else:
-            return HttpResponse(render_to_string("signup.html", {"form": form, "context": context, "request": request}))
+            return HttpResponse(render_to_string("signup.html", {"form": form, "context": context}, request=request))
     else:
         form = UserProfileForm(lang=request.COOKIES.get('selectedLanguage', 'en'))
-    return HttpResponse(render_to_string("signup.html", {"form": form, "context": context, "request": request}))
+    return HttpResponse(render_to_string("signup.html", {"form": form, "context": context}, request=request))
 
 @never_cache
 def activate_account(request, token):
@@ -253,7 +253,7 @@ def login_view(request):
             return HttpResponse(msg[lang])
     else:
         form = AuthenticationUserForm()
-    return HttpResponse(render_to_string("login.html", {"form": form, "context": context, "request": request}))
+    return HttpResponse(render_to_string("login.html", {"form": form, "context": context}, request=request))
 
 @never_cache
 @login_required()
@@ -300,7 +300,7 @@ def profile_view(request, username):
         # Geçersiz bir sayfa numarası istenirse, son sayfayı al
         history_page_obj = paginator.page(paginator.num_pages)
     
-    return HttpResponse(render_to_string("profile.html", {"profile": profile, "history_page_obj": history_page_obj, "is_friend": is_friend, "game_records_rps": game_records_rps, "context": context, "request": request}))
+    return HttpResponse(render_to_string("profile.html", {"profile": profile, "history_page_obj": history_page_obj, "is_friend": is_friend, "game_records_rps": game_records_rps, "context": context}, request=request))
 
 ## Rps Game ##
 @never_cache
@@ -440,7 +440,7 @@ def profile_settings(request, username):
         else:
             error = "Invalid form submission."
 
-    return HttpResponse(render_to_string("profile-settings.html", {"profile": request.user, "avatar_form": avatar_form, "profile_form": profile_form, "password_form": password_form, "social_form": social_form, "delete_account_form": delete_account_form, "context": context, "changepassword": changepassword, "request": request, "message": message, "error": error}))
+    return HttpResponse(render_to_string("profile-settings.html", {"profile": request.user, "avatar_form": avatar_form, "profile_form": profile_form, "password_form": password_form, "social_form": social_form, "delete_account_form": delete_account_form, "context": context, "changepassword": changepassword, "message": message, "error": error}, request=request))
 
 @never_cache
 @login_required()
@@ -576,7 +576,7 @@ def rankings(request):
         users_page_obj = paginator.page(paginator.num_pages)
 
     # Add rank attribute to each user in the page
-    return HttpResponse(render_to_string("rankings.html", {"top_users": top_users, "users_page_obj": users_page_obj, "context": context, "request": request}))
+    return HttpResponse(render_to_string("rankings.html", {"top_users": top_users, "users_page_obj": users_page_obj, "context": context}, request=request))
 
 
 @login_required()
@@ -623,7 +623,7 @@ def store(request, username): #store_view
         if category_name and category_name != "All":
             store_items = store_items.filter(Q(category_name=category_name) | Q(category_name="All"))
 
-    return HttpResponse(render_to_string("store.html", {"store_items": store_items, "profile": profile, "form": form, "context": context, "selected_language": lang, "request": request}))
+    return HttpResponse(render_to_string("store.html", {"store_items": store_items, "profile": profile, "form": form, "context": context, "selected_language": lang}, request=request))
 
 @never_cache
 @login_required
@@ -669,7 +669,7 @@ def inventory(request, username):
                 Q(item__category_name=category_name) | Q(item__category_name="All"),
                 user=profile
             )
-    return HttpResponse(render_to_string("inventory.html", {"profile": profile, "inventory_items": inventory_items, "form": form, "context": context, "selected_language": lang, "request": request}))
+    return HttpResponse(render_to_string("inventory.html", {"profile": profile, "inventory_items": inventory_items, "form": form, "context": context, "selected_language": lang}, request=request))
 
 @login_required()
 @csrf_exempt
@@ -713,8 +713,8 @@ def search(request):
         except EmptyPage:
             # If page number is out of range, deliver the last page
             results = paginator.page(paginator.num_pages)
-        return HttpResponse(render_to_string("search.html", {"results": results, "context": context, "request": request}))
-    return HttpResponse(render_to_string("search.html", {"context": context, "request": request}))
+        return HttpResponse(render_to_string("search.html", {"results": results, "context": context}, request=request))
+    return HttpResponse(render_to_string("search.html", {"context": context}, request=request))
 
 
 @login_required()
@@ -733,7 +733,7 @@ def friends(request, profile):
     except EmptyPage:
         # Geçersiz bir sayfa numarası istenirse, son sayfayı al
         friends = friends.page(friends.num_pages)
-    return HttpResponse(render_to_string("friends.html", {"friends": friends, "profile": profile, "context": context, "request": request}))
+    return HttpResponse(render_to_string("friends.html", {"friends": friends, "profile": profile, "context": context}, request=request))
 
 @login_required()
 def follow_unfollow(request, username):
@@ -880,7 +880,7 @@ def chat(request):
 def aboutus(request):
     lang = request.COOKIES.get('selectedLanguage', 'en')
     context = langs.get_langs(lang)
-    return HttpResponse(render_to_string("aboutus.html", {"context": context, "request": request}))
+    return HttpResponse(render_to_string("aboutus.html", {"context": context}, request=request))
 
 ### New Chat ###
 @login_required()
