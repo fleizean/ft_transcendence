@@ -135,7 +135,7 @@
       .then(data => {
         if (data['status'] === 'ok') {
           if (selectedLanguage == 'hi') {
-            e.target.innerHTML = data['action'] === 'follow' ? 'अनुसरण करना' : 'करें';
+            e.target.innerHTML = data['action'] === 'follow' ? 'अनफ़ॉलो' : 'अनुसरण करना';
             e.target.style.backgroundColor = data['action'] === 'follow' ? 'black' : '#dc3545';
           }
           else if(selectedLanguage == 'tr') {
@@ -143,7 +143,7 @@
             e.target.style.backgroundColor = data['action'] === 'follow' ? 'black' : '#dc3545';
           }
           else if (selectedLanguage == 'pt') {
-            e.target.innerHTML = data['action'] === 'follow' ? 'takip' : 'çık';
+            e.target.innerHTML = data['action'] === 'follow' ? 'Deixar' : 'Seguir';
             e.target.style.backgroundColor = data['action'] === 'follow' ? 'black' : '#dc3545';
           }
           else {

@@ -626,6 +626,8 @@ def get_lang_tr():
         "searchMessageButtonText": "Mesaj Gönder",
         "searchFollowButtonText": "Takip Et",
         "searchFollowingButtonText": "Takipten Çık",
+
+        
         "searchNoResultFoundText": "Sonuç bulunamadı.",
         
         #Profile
@@ -973,8 +975,8 @@ def get_lang_pt():
         "searchPageTittle": "Procurar",
         "searchInputText": "Procurar por e-mail, nome de usuário ou nome de exibicão...",
         "searchMessageButtonText": "Mensagem",
-        "searchFollowButtonText": "takip",
-        "searchFollowingButtonText": "çık",
+        "searchFollowButtonText": "Seguir",
+        "searchFollowingButtonText": "Deixar",
         "searchNoResultFoundText": "Nenhum resultado encontrado.",
         
         #Profile
@@ -1324,7 +1326,7 @@ def get_lang_hi():
         "searchInputText": "ईमेल या उपयोगकर्ता नाम या डिस्प्ले नाम खोजें...",
         "searchMessageButtonText": "संदेश",
         "searchFollowButtonText": "अनुसरण करना",
-        "searchFollowingButtonText": "करें",
+        "searchFollowingButtonText": "अनफ़ॉलो",
         "searchNoResultFoundText": "कोई परिणाम नहीं मिला।",
         
         #Profile
@@ -1333,7 +1335,7 @@ def get_lang_hi():
         "profileRankUserText1": " उपयोगकर्ता रैंक",
         "profileRankUserText2": " रैंक",
         "profileFollowButton": "अनुसरण करना",
-        "profileFollowingButton": "करें",
+        "profileFollowingButton": "अनफ़ॉलो",
         "profileTitleText1": "42 स्कूल समुदाय",
         "profileTitleText2": "पॉन्ग खिलाड़ी",
 
