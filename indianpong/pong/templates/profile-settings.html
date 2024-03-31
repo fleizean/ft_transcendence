@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load user_info %}
 {% block title %}{{ username }} {{context.profileSettingsPageTittle}}{% endblock %}
 
 {% block stylesheet %}<link rel="stylesheet" href="{% static "css/profilesettings.css" %}">{% endblock %}
@@ -52,7 +53,8 @@
                         <form id="avatar_form" name="avatar_form" enctype="multipart/form-data">
                             <div class="profile-pic-container">
                                 <label for="id_avatar" class="profile-pic-label">
-                                    <img src="{{ avatar }}" alt="Profile Picture"
+                                    {% user_info as user_info %}
+                                    <img src="{{ user_info.avatar }}" alt="Profile Picture"
                                     class="profile-pic">
                                     <div class="change-image-overlay">
                                         <span class="bi bi-image-fill"></span>
