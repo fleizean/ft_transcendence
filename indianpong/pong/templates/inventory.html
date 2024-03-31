@@ -1,8 +1,9 @@
 {% extends 'base.html' %}
 
 {% load static %}
+{% load user_info %}
 
-{% block title %}{{ username }} {{context.inventoryPageTittle}}{% endblock title %}
+{% block title %}{{context.inventoryPageTittle}}{% endblock title %}
 
 {% block stylesheet %}<link rel="stylesheet" href="{% static "css/inventory.css" %}">{% endblock stylesheet %}
 
@@ -10,25 +11,25 @@
 
   <div class="container-top">
     <div class="inventory-card">
-      
+      {% user_info as user_info %}
        <div class="top-inventory">
         <div class="inventory-left">
-          <h3>{{username}} / {{context.inventoryText}}</h3>
+          <h3>{{user_info.username}} / {{context.inventoryText}}</h3>
         </div>
         <div class="inventory-mid">
             <div class="category-field">
-              <h5 class="category-text"><a href="?category_name=All">#{{context.inventoryTagText}}</a></h5>
+              <h5 class="category-text"><a class="category-text-item" onclick="swapApp('/inventory/{{user_info.username}}?category_name=All')">#{{context.inventoryTagText}}</a></h5>
             </div>
             <div class="category-field">
-              <h5 class="category-text"><a href="?category_name=Pong">#Pong</a></h5>
+              <h5 class="category-text"><a class="category-text-item" onclick="swapApp('/inventory/{{user_info.username}}?category_name=Pong')">#Pong</a></h5>
             </div>
             <div class="category-field">
-              <h5 class="category-text"><a href="?category_name=RPS">#RPS</a></h5>
+              <h5 class="category-text"><a class="category-text-item" onclick="swapApp('/inventory/{{user_info.username}}?category_name=RPS')">#RPS</a></h5>
             </div>
           </div>
         <div class="inventory-mid-right">
           <div class="inventory-field">
-            <h5 class="inventory-text"><a href="/store/{{username}}"><i class="bi bi-shop"></i></a></h5>
+            <h5 class="inventory-text"><a class="store-bag" onclick="swapApp('/store/{{user_info.username}}')"><i class="bi bi-shop"></i></a></h5>
           </div>
         </div>
         <div class="top-inventory-card">
@@ -50,7 +51,7 @@
           <div class="modal fade" id="setPropertyModal" tabindex="-1" aria-labelledby="setPropertyModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
-                  <form id="store_item_form{{ item.id }}"  method="POST">
+                  <form id="store_item_form{{ item.id }}" method="POST">
                     {% csrf_token %}
                     <div class="modal-header">
                         <h5 class="modal-title" id="setPropertyModalLabel">{{context.inventoryModalHeaderText}}</h5>
@@ -64,7 +65,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary" onclick="event.preventDefault(); saveProperty(`{{item.id}}`)">{{context.inventoryModalSaveButton}}</button>
+                        <button type="button" class="btn btn-primary" onclick="event.preventDefault(); saveProperty(`{{item.id}}`)">{{context.inventoryModalSaveButton}}</button>
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{context.inventoryModalCloseButton}}</button>
                     </div>
                   </div>
@@ -77,7 +78,7 @@
                 <img src="{% static 'assets/stores/'|add:item.item.image_url %}" alt="" />
                 <h2 class="card__title">{% if selected_language == 'hi' and item.item.name_hi %} {{item.item.name_hi}} {% elif selected_language == 'pt' and item.item.name_pt %}{{item.item.name_pt}} {% elif selected_language == 'tr' and item.item.name_tr %}{{ item.item.name_tr }} {% else %} {{item.item.name}} {% endif %}</h2>
                 <h4 {% if item.item.category_name == "Pong" %} class="card__category pong" {% elif item.item.category_name == "RPS" %} class="card__category rps"  {% else %} class="card__category all" {% endif %}>
-                  <a href="?category_name={{item.item.category_name}}">#{% if item.item.category_name == 'All' %}{{context.storeTagText }}{% else %}{{item.item.category_name}}{%endif%}</a>
+                  <a onclick="swapApp('/inventory/?category_name={{item.item.category_name}}')">#{% if item.item.category_name == 'All' %}{{context.storeTagText }}{% else %}{{item.item.category_name}}{%endif%}</a>
                 </h4>
                 <span class="card__description">{% if selected_language == 'hi' and item.item.description_hi %} {{item.item.description_hi}} {% elif selected_language == 'pt' and item.item.description_pt %}{{item.item.description_pt}} {% elif selected_language == 'tr' and item.item.description_tr %}{{ item.item.description_tr }} {% else %} {{item.item.description}} {% endif %}</span>
                 {% if item.item.name != "My Playground" and item.item.name != "My Beautiful AI" and item.item.name != "My Beautiful Paddle" and item.item.name != "Giant-Man" and item.item.name != "Rage of Fire" and item.item.name != "DJ Give Me The Music" %}
@@ -123,7 +124,14 @@
       </div>
     </div>
 </div>
+
+<script type="module" src="{% static "js/inventory.js" %}"></script>
+
 <script>
+
+    window.onload = function() {
+      initializeInventory();
+    };
 
 function showToast(content, status, iconClass) {
   const liveToast = document.getElementById('liveToast');
@@ -171,23 +179,24 @@ function saveProperty(itemId) {
     } else {
         whatis = document.getElementById('propertyName').value;
     }
+    var csrftoken = document.cookie.split('; ').find(row => row.startsWith('csrftoken')).split('=')[1];
 
-    showToast(`${itemName} öğesini başarıyla özelleştirdin!`, `text-bg-success`, `bi bi-shop`);
     const form = document.getElementById('store_item_form' + itemId);
     const formData = new FormData(form);
 
 
-    fetch("/inventory/{{username}}/", {
+    fetch("/inventory/{{user_info.username}}/", {
       method: form.method,
       body: formData,
       headers: {
-        'X-CSRFToken': form.querySelector('[name=csrfmiddlewaretoken]').value
+        'X-CSRFToken': csrftoken
       }
     })
     .then(response => response.text())
     .then(text => {
       let button = document.getElementById(`button-${itemName}`);
       button.setAttribute('data-whatis', whatis);
+      showToast(`${itemName} öğesini başarıyla özelleştirdin!`, `text-bg-success`, `bi bi-shop`);
     })
     .catch((error) => {
       console.error('Error:', error);
@@ -199,7 +208,7 @@ function submitStoreItemForm(itemName) {
   const formData = new FormData(form);
   // Access the data-is-equipped attribute
   let isEquipped = form.getAttribute('data-is-equipped');
-  console.log(isEquipped, typeof isEquipped);
+  var csrftoken = document.cookie.split('; ').find(row => row.startsWith('csrftoken')).split('=')[1];
 
   
   let toastMessage;
@@ -211,39 +220,26 @@ function submitStoreItemForm(itemName) {
     toastMessage = `${itemName} öğesini başarıyla kuşandın!`; // You successfully equipped the item!
     toastIcon = `bi bi-check-circle-fill`;
   }
-  showToast(toastMessage, `text-bg-success`, toastIcon);
+  
 
-  fetch("/inventory/{{username}}/", {
+  fetch("/inventory/{{user_info.username}}/", {
     method: form.method,
     body: formData,
     headers: {
-      'X-CSRFToken': form.querySelector('[name=csrfmiddlewaretoken]').value
+      'X-CSRFToken': csrftoken
     }
   })
   .then(response => response.text())
-  .then(text => {
+  .then(data => {
      // Change the value of data-is-equipped attribute
     form.setAttribute('data-is-equipped', isEquipped == 'True' ? 'False' : 'True');
+    document.body.innerHTML = data;
+    showToast(toastMessage, `text-bg-success`, toastIcon);
   })
   .catch((error) => {
     console.error('Error:', error);
   });
 }
 
-document.addEventListener('DOMContentLoaded', (event) => {
-  const inventoryInfos = document.getElementsByClassName('inventory-info'); // .inventory-info'ya erişim
-    const smallWalletNames = document.getElementsByClassName('small-wallet-name');
-
-    for (let i = 0; i < smallWalletNames.length; i++) {
-        smallWalletNames[i].addEventListener('mouseover', () => {
-            inventoryInfos[i].style.visibility = 'visible';
-        });
-
-        smallWalletNames[i].addEventListener('mouseout', () => {
-            inventoryInfos[i].style.visibility = 'hidden';
-        });
-    }
-  });
-    
 </script>
 {% endblock app %}

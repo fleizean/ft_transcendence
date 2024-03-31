@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 {% load user_info %}
-{% block title %}{{ username }} {{context.profileSettingsPageTittle}}{% endblock %}
+{% block title %}{{context.profileSettingsPageTittle}}{% endblock %}
 
 {% block stylesheet %}<link rel="stylesheet" href="{% static "css/profilesettings.css" %}">{% endblock %}
 
@@ -68,8 +68,8 @@
                             <!-- Username textbox -->
                             <div class="mb-3">
                                 <label class="small mb-1" >{{context.editProfileUsernameText}}</label>
-                                <input class="form-control" id="id_username_profile" name="username" required type="text" value="{{ username }}"
-                                    placeholder="{{ username }}" {% if changepassword %} readonly style="background-color: #f2f2f2;" {%endif %}>
+                                <input class="form-control" id="id_username_profile" name="username" required type="text" value="{{ user_info.username }}"
+                                    placeholder="{{ user_info.username }}" {% if changepassword %} readonly style="background-color: #f2f2f2;" {%endif %}>
                                     {% if changepassword %} <p style="color:red; font-style: italic;">{{context.editProfileUsernameTimeText}}</p> {% endif %}
                             </div>
 
@@ -88,7 +88,7 @@
                                         placeholder="{{ profile.displayname }}" value="{{ profile.displayname }}">
                             </div>
                             <!-- Submit button -->
-                            <button type="button" id="profile_submit" class="btn btn-success">{{context.editProfileSaveButtonText}}</button>
+                            <button type="button" id="profile_submit" onclick="editProfile()" class="btn btn-success">{{context.editProfileSaveButtonText}}</button>
                         </form>
                 </section>
 
@@ -258,7 +258,6 @@ function displaySection(sectionId) {
     }
 }
 
-
 window.onload = function() {
         // Get the hash from the URL
         var hash = window.location.hash;        
@@ -275,7 +274,6 @@ window.onload = function() {
     var currentFragment = window.location.hash.substring(1);
     displaySection(currentFragment);
 };
-
 
 function showToast(content, status, iconClass) {
     const liveToast = document.getElementById('liveToast');
@@ -295,8 +293,9 @@ function showToast(content, status, iconClass) {
     }, 8000);
 }
 
-document.getElementById('profile_submit').addEventListener('click', function() {
+function editProfile() {
     var formData = new FormData(); // FormData nesnesi oluştur
+    var csrftoken = document.cookie.split('; ').find(row => row.startsWith('csrftoken')).split('=')[1];
 
     // Form verilerini al
     formData.append('username', document.getElementById('id_username_profile').value);
@@ -306,15 +305,16 @@ document.getElementById('profile_submit').addEventListener('click', function() {
 
     // CSRF token'ı eklemek
 
-    fetch('{% url "profile_settings" username=request.user.username %}', {
+    fetch('{% url "profile_settings" username=user_info.username %}', {
         method: 'POST',
         body: formData,
         headers: {
-            'X-CSRFToken': '{{ csrf_token }}'
+            'X-CSRFToken': csrftoken
         },
     })
-    .then(response => response.json())
+    .then(response => response.text())
     .then(data => {
+        document.body.innerHTML = data;
         if(data.message)
             showToast(data.message, 'text-bg-success', 'bi bi-check-circle-fill');
         else
@@ -323,23 +323,25 @@ document.getElementById('profile_submit').addEventListener('click', function() {
     .catch(error => {
         console.error('Error:', error);
     });
-});
+}
 
 document.getElementById('password_submit').addEventListener('click', function() {
     var formData = new FormData(); // FormData nesnesi oluştur
+    var csrftoken = document.cookie.split('; ').find(row => row.startsWith('csrftoken')).split('=')[1];
     formData.append('old_password', document.getElementById('id_old_password').value);
     formData.append('new_password1', document.getElementById('id_new_password1').value);
     formData.append('new_password2', document.getElementById('id_new_password2').value);
     formData.append('password_form', 'password_form');
-    fetch('{% url "profile_settings" username=request.user.username %}', {
+    fetch('{% url "profile_settings" username=user_info.username %}', {
         method: 'POST',
         body: formData,
         headers: {
-            'X-CSRFToken': '{{ csrf_token }}'
+            'X-CSRFToken': csrftoken
         }
     })
-    .then(response => response.json())
+    .then(response => response.text())
     .then(data => {
+        document.body.innerHTML = data;
         if (data.message) {
                 showToast(data.message, 'text-bg-success', 'bi bi-check-circle-fill');
             } else if (data.error) {
@@ -366,21 +368,23 @@ document.getElementById('password_submit').addEventListener('click', function() 
 
 document.getElementById('social_submit').addEventListener('click', function() {
     var formData = new FormData(); // FormData nesnesi oluştur
+    var csrftoken = document.cookie.split('; ').find(row => row.startsWith('csrftoken')).split('=')[1];
     formData.append('linkedin', document.getElementById('id_linkedin').value);
     formData.append('twitter', document.getElementById('id_twitter').value);
     formData.append('intra42', document.getElementById('id_intra42').value);
     formData.append('github', document.getElementById('id_github').value);
     formData.append('social_form', 'social_form');
 
-    fetch('{% url "profile_settings" username=request.user.username %}', {
+    fetch('{% url "profile_settings" username=user_info.username %}', {
         method: 'POST',
         body: formData,
         headers: {
-            'X-CSRFToken': '{{ csrf_token }}'
+            'X-CSRFToken': csrftoken
         }
     })
-    .then(response => response.json())
-    .then(data => {
+    .then(response => response.text())
+    .then(data => {    
+        document.body.innerHTML = data;
         if (data.message) {
             showToast(data.message, 'text-bg-success', 'bi bi-check-circle-fill');
         } else if (data.error) {
@@ -403,16 +407,18 @@ document.getElementById('delete_account_submit').addEventListener('click', funct
     var formData = new FormData(); // FormData nesnesi oluştur
     formData.append('email', document.getElementById('id_email').value);
     formData.append('delete_account_form', 'delete_account_form');
+    var csrftoken = document.cookie.split('; ').find(row => row.startsWith('csrftoken')).split('=')[1];
 
-    fetch('{% url "profile_settings" username=request.user.username %}', {
+    fetch('{% url "profile_settings" username=user_info.username %}', {
         method: 'POST',
         body: formData,
         headers: {
-            'X-CSRFToken': '{{ csrf_token }}'
+            'X-CSRFToken': csrftoken
         }
     })
-    .then(response => response.json())
+    .then(response => response.text())
     .then(data => {
+        document.body.innerHTML = data;
         if (data.message) {
             showToast(data.message, 'text-bg-success', 'bi bi-check-circle-fill');
         } else if (data.error) {
@@ -447,6 +453,7 @@ document.querySelectorAll('button.btn-block').forEach(item => {
 
 const fileInput = document.getElementById('id_avatar');
 fileInput.addEventListener('change', function(event) {
+    var csrftoken = document.cookie.split('; ').find(row => row.startsWith('csrftoken')).split('=')[1];
     var file = this.files[0];
     if (file.size > 2 * 1024 * 1024) { // 1MB
         showToast("Photo must be under 2MB!", "text-bg-danger", "bi bi-image");
@@ -460,15 +467,16 @@ fileInput.addEventListener('change', function(event) {
         formData.append('avatar_form', 'avatar_form');
 
         // CSRF token'ı eklemek
-        fetch('{% url "profile_settings" username=request.user.username %}', {
+        fetch('{% url "profile_settings" username=user_info.username %}', {
             method: 'POST',
             body: formData,
             headers: {
-                'X-CSRFToken': '{{ csrf_token }}'
+                'X-CSRFToken': csrftoken
             },
         })
-        .then(response => response.json())
+        .then(response => response.text())
         .then(data => {
+            document.body.innerHTML = data;
             if (data.message) {
                 showToast(data.message, 'text-bg-success', 'bi bi-check-circle-fill');
             } else if (data.error) {

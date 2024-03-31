@@ -1,5 +1,4 @@
-{% extends 'base.html' %}
-
+{% extends "base.html" %}
 {% block title %}{{context.searchPageTittle}}{% endblock title %}
 
 {% load static %}
@@ -11,11 +10,11 @@
 <div class="container-top">
     <div class="search-card">
         <!-- Arama kutusu ve butonu -->
-        <form action="{% url 'search' %}" method="POST">
+        <form id="searchForm" method="POST" >
             {% csrf_token %}
             <div class="search-container">
                 <input type="text" name="search_query" placeholder="{{context.searchInputText}}" class="search-input" autocomplete="off" data-lpignore="true">
-                <button class="search-button" type="submit"><i class="bi bi-search"></i></button>
+                <button class="search-button" type="button" onclick="makeSearch()"><i class="bi bi-search"></i></button>
             </div>
         </form>
 
@@ -93,17 +92,17 @@
             <nav aria-label="Page navigation example" class="mt-4">
               <ul class="pagination justify-content-center">
                   <li class="page-item {% if not results.has_previous %}disabled{% endif %}">
-                      <a class="page-link" href="{% if results.has_previous %}?page={{ results.previous_page_number }}{% endif %}" aria-label="Previous">
+                      <a class="page-link" onclick="swapApp('/search{% if results.has_previous %}?page={{ results.previous_page_number }}{% endif %}')" aria-label="Previous">
                           <span aria-hidden="true">&laquo;</span>
                       </a>
                   </li>
                   {% for page_num in results.paginator.page_range %}
                       <li class="page-item {% if page_num == results.number %}active{% endif %}">
-                          <a class="page-link page-link-search" href="?page={{ page_num }}">{{ page_num }}</a>
+                          <a class="page-link page-link-search">{{ page_num }}</a>
                       </li>
                   {% endfor %}
                   <li class="page-item {% if not results.has_next %}disabled{% endif %}">
-                      <a class="page-link" href="{% if results.has_next %}?page={{ results.next_page_number }}{% endif %}" aria-label="Next">
+                      <a class="page-link" onclick="swapApp('/search{% if results.has_next %}?page={{ results.next_page_number }}{% endif %}')" aria-label="Next">
                           <span aria-hidden="true">&raquo;</span>
                       </a>
                   </li>
@@ -111,52 +110,30 @@
             </nav>        
     </div>
   </div>
-<script>
-  const followButtons = document.querySelectorAll(".button-follow");
-  followButtons.forEach((button) => {
-    button.addEventListener('click', (e) => {
-      const username = e.target.getAttribute('data-username');
-      let action = e.target.innerHTML.trim();
-      console.log(action);
-      if (action == "अनुसरण करना" || action == "Seguir" || action == "Takip Et" || action == "Follow") {
-        action = "follow"
-      } else if (action == "अनफ़ॉलो" || action == "Deixar" || action == "Takipten Çık" || action == "Unfollow") {
-        action = "unfollow"
-      }
-      fetch(`/follow_unfollow/${username}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
-        },
-        body: JSON.stringify({ action: action })
-      })
-      .then(response => response.json())
-      .then(data => {
-        if (data['status'] === 'ok') {
-          if (selectedLanguage == 'hi') {
-            e.target.innerHTML = data['action'] === 'follow' ? 'अनफ़ॉलो' : 'अनुसरण करना';
-            e.target.style.backgroundColor = data['action'] === 'follow' ? 'black' : '#dc3545';
-          }
-          else if(selectedLanguage == 'tr') {
-            e.target.innerHTML = data['action'] === 'follow' ? 'Takipten Çık' : 'Takip Et';
-            e.target.style.backgroundColor = data['action'] === 'follow' ? 'black' : '#dc3545';
-          }
-          else if (selectedLanguage == 'pt') {
-            e.target.innerHTML = data['action'] === 'follow' ? 'Deixar' : 'Seguir';
-            e.target.style.backgroundColor = data['action'] === 'follow' ? 'black' : '#dc3545';
-          }
-          else {
-            e.target.innerHTML = data['action'] === 'follow' ? 'Unfollow' : 'Follow';
-            e.target.style.backgroundColor = data['action'] === 'follow' ? 'black' : '#dc3545';
-          }
-        }
-      });
-      
-    });
-    
-  });
 
- 
-</script>
+  <script type="module" src="{% static "js/search.js" %}"></script>
+  <script>
+    window.onload = function() {
+      initializeSearch();
+    };
+
+    function makeSearch() {
+        var form = document.getElementById('searchForm');
+        var formData = new FormData(form);
+        fetch('/search', {
+          method: 'POST',
+          headers: {
+            'X-CSRFToken': csrftoken
+          },
+          body: formData
+        })
+        .then(response => response.text())
+        .then(data => {
+          document.body.innerHTML = data;
+        })
+        .catch(error => {
+          console.error(error);
+        });
+    }
+  </script>
 {% endblock app %}

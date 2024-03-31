@@ -108,16 +108,7 @@
                   swapApp(window.location.pathname);
                 }
                  
-                document.addEventListener('DOMContentLoaded', function () {
-                    document.querySelector(".burger-menu").addEventListener("click", function () {
-                        var navLinks = document.querySelector(".nav-links");
-                        if (navLinks.classList.contains("show")) {
-                            navLinks.classList.remove("show");
-                        } else {
-                            navLinks.classList.add("show");
-                        }
-                    });
-                });
+               
             </script>
             <script type="module" src="{% static "js/navigation.js" %}"></script>
     </body>

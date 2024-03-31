@@ -49,12 +49,13 @@ export function initializeProfile() {
     followButtons.forEach((button) => {
         button.addEventListener('click', (e) => {
             const username = e.target.getAttribute('data-username');
+            var csrftoken = document.cookie.split('; ').find(row => row.startsWith('csrftoken')).split('=')[1];
             const action = e.target.classList.contains('unfollow-btn') ? 'unfollow' : 'follow';
             fetch(`/follow_unfollow/${username}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+                    'X-CSRFToken': csrftoken
                 },
                 body: JSON.stringify({ action: action })
             })

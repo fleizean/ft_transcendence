@@ -50,12 +50,12 @@
     </li>
       <li class="profile-menu">  
         <div class="profile-image">
-          <img src="{{ user_info.avatar }}" alt="Profile Image" width="48" height="48" {% if user_info.is_playing %} style="border: 3px solid #ffa600" {% else %} style="border: 3px solid #4CAF4F"{% endif %}>
+          <img src="{{user_info.avatar}}" alt="Profile Image" width="48" height="48" {% if user_info.is_playing %} style="border: 3px solid #ffa600" {% else %} style="border: 3px solid #4CAF4F"{% endif %}>
         </div>
         <div class="profile-submenu">
-          <a class="navbar-item" onclick="swapApp('/profile/{{ user_info.username }}')" class="submenu-item" id="profileText"><i class="bi bi-person-fill" ></i>{{tn.8}}</a>
-          <a class="navbar-item" onclick="swapApp('/friends/{{ user_info.username }}')" class="submenu-item" id="friendsText"><i class="bi bi-people-fill"></i>{{tn.9}}</a>
-          <a class="navbar-item" href="/profile/{{ user_info.username }}/settings" class="submenu-item" id="profileSettingsText"><i class="bi bi-gear-fill"></i>{{tn.10}}</a> 
+          <a class="navbar-item" onclick="swapApp('/profile/{{user_info.username}}')" class="submenu-item" id="profileText"><i class="bi bi-person-fill" ></i>{{tn.8}}</a>
+          <a class="navbar-item" onclick="swapApp('/friends/{{user_info.username}}')" class="submenu-item" id="friendsText"><i class="bi bi-people-fill"></i>{{tn.9}}</a>
+          <a class="navbar-item" onclick="swapApp('/profile/{{user_info.username}}/settings')" class="submenu-item" id="profileSettingsText"><i class="bi bi-gear-fill"></i>{{tn.10}}</a> 
           <a class="navbar-item" href="/logout" class="submenu-item" id="logoutText"><i class="bi bi-box-arrow-right"></i>{{tn.11}}</a>
         </div>
       </li>
@@ -63,8 +63,11 @@
     <div class="burger-menu">&#9776;</div>
   </nav>
   {% if not request.user.is_anonymous %}
+  <script type="module" src="{% static "js/burger.js" %}"></script>
   <script>
-    
+    window.onload = function () {
+      initilizeBurger();
+    }
 
     var socket = new WebSocket('ws://' + window.location.host + '/ws/online_status/');
 

@@ -98,10 +98,10 @@ def signup(request):
             messages.success(request, "Please check your email to verify your account.")
             return HttpResponse("login")
         else:
-            return HttpResponse(render_to_string("signup.html", {"form": form, "context": context}))
+            return HttpResponse(render_to_string("signup.html", {"form": form, "context": context, "request": request}))
     else:
         form = UserProfileForm(lang=request.COOKIES.get('selectedLanguage', 'en'))
-    return HttpResponse(render_to_string("signup.html", {"form": form, "context": context}))
+    return HttpResponse(render_to_string("signup.html", {"form": form, "context": context, "request": request}))
 
 @never_cache
 def activate_account(request, token):
@@ -253,7 +253,7 @@ def login_view(request):
             return HttpResponse(msg[lang])
     else:
         form = AuthenticationUserForm()
-    return HttpResponse(render_to_string("login.html", {"form": form, "context": context}))
+    return HttpResponse(render_to_string("login.html", {"form": form, "context": context, "request": request}))
 
 @never_cache
 @login_required()
@@ -323,10 +323,11 @@ def pong_game_find(request):
 @login_required()
 def profile_settings(request, username):
     if request.user.username != username:
-        raise Http404
+        return redirect(reverse('profile_settings', kwargs={'username': request.user.username}))
     lang = request.COOKIES.get('selectedLanguage', 'en')
     context = langs.get_langs(lang)
-
+    message = None
+    error = None
     changepassword = False
     now = timezone.now()  # Django'nun timezone modülünden zamanı al
     
@@ -339,6 +340,11 @@ def profile_settings(request, username):
             changepassword = True
     else:
         changepassword = False
+    avatar_form = ProfileAvatarForm(instance=request.user)
+    profile_form = UpdateUserProfileForm(instance=request.user, lang = request.COOKIES.get('selectedLanguage', 'en'))
+    password_form = PasswordChangeUserForm(request.user, lang = request.COOKIES.get('selectedLanguage', 'en'))
+    social_form = SocialForm(instance=request.user.social, lang = request.COOKIES.get('selectedLanguage', 'en'))
+    delete_account_form = DeleteAccountForm(user=request.user, lang = request.COOKIES.get('selectedLanguage', 'en'))
     if request.method == "POST":
         data = request.POST
         if "avatar_form" in data:
@@ -353,32 +359,32 @@ def profile_settings(request, username):
                     profile.avatar = avatar_form.cleaned_data["avatar"]
                     profile.save()
                     if (lang == 'tr'):
-                        return JsonResponse({"message": "Fotoğrafınız başarıyla güncellendi."})
+                        message = "Avatarınız başarıyla güncellendi."
                     elif (lang == 'hi'):
-                        return JsonResponse({"message": "अवतार सफलतापूर्वक अपडेट किया गया।"})
+                        message = "आपका अवतार सफलतापूर्वक अपडेट किया गया।"
                     elif (lang == 'pt'):
-                        return JsonResponse({"message": "Avatar atualizado com sucesso."})
+                        message = "Seu avatar foi atualizado com sucesso."
                     else:
-                        return JsonResponse({"message": "Avatar updated successfully."})
+                        message = "Avatar updated successfully."
                 else:
-                    return JsonResponse({"error": avatar_form.errors}, status=400)
+                    error = avatar_form.errors
             else:
-                return JsonResponse({"error": "No avatar file provided."}, status=400)
+                error = "No file selected."
         elif "profile_form" in data:
             profile_form = UpdateUserProfileForm(data, instance=request.user, lang = request.COOKIES.get('selectedLanguage', 'en'))
             if profile_form.is_valid():
                 request.user.username_change_date = datetime.now()
                 profile_form.save()
                 if (lang == 'tr'):
-                    return JsonResponse({"message": "Profiliniz başarıyla güncellendi."})
+                    message = "Profiliniz başarıyla güncellendi."
                 elif (lang == 'hi'):
-                    return JsonResponse({"message": "आपकी प्रोफ़ाइल सफलतापूर्वक अपडेट की गई।"})
+                    message = "आपका प्रोफ़ाइल सफलतापूर्वक अपडेट किया गया।"
                 elif (lang == 'pt'):
-                    return JsonResponse({"message": "Seu perfil foi atualizado com sucesso."})
+                    message = "Seu perfil foi atualizado com sucesso."
                 else:
-                    return JsonResponse({"message": "Profile updated successfully."})
+                    message = "Profile updated successfully."
             else:
-                return JsonResponse({"error": profile_form.errors}, status=400)
+                error = profile_form.errors
         elif "password_form" in data:
             password_form = PasswordChangeUserForm(request.user, data, lang = request.COOKIES.get('selectedLanguage', 'en'))
             if password_form.is_valid():
@@ -387,15 +393,15 @@ def profile_settings(request, username):
                 profile.save()
                 update_session_auth_hash(request, profile)  # Important!
                 if (lang == 'tr'):
-                    return JsonResponse({"message": "Şifreniz başarıyla güncellendi!"})
+                    message = "Şifreniz başarıyla güncellendi."
                 elif (lang == 'hi'):
-                    return JsonResponse({"message": "आपका पासवर्ड सफलतापूर्वक अपडेट किया गया!"})
+                    message = "आपका पासवर्ड सफलतापूर्वक अपडेट किया गया।"
                 elif (lang == 'pt'):
-                    return JsonResponse({"message": "Sua senha foi atualizada com sucesso!"})
+                    message = "Sua senha foi atualizada com sucesso."
                 else:
-                    return JsonResponse({"message": "Your password was successfully updated!"})
+                    message = "Password updated successfully."
             else:
-                return JsonResponse({"error": password_form.errors}, status=400)
+                error = password_form.errors
         elif "social_form" in data:
             social_form = SocialForm(request.POST, instance=request.user.social, lang = request.COOKIES.get('selectedLanguage', 'en'))
             if social_form.is_valid():
@@ -404,15 +410,15 @@ def profile_settings(request, username):
                 profile.social = social
                 profile.save()
                 if (lang == 'tr'):
-                    return JsonResponse({"message": "Sosyal medya bilgileriniz başarıyla güncellendi."})
+                    message = "Sosyal medya bilgileriniz başarıyla güncellendi."
                 elif (lang == 'hi'):
-                    return JsonResponse({"message": "आपकी सोशल मीडिया जानकारी सफलतापूर्वक अपडेट की गई।"})
+                    message = "आपकी सोशल मीडिया जानकारी सफलतापूर्वक अपडेट की गई।"
                 elif (lang == 'pt'):
-                    return JsonResponse({"message": "Suas informações de mídia social foram atualizadas com sucesso."})
+                    message = "Suas informações de redes sociais foram atualizadas com sucesso."
                 else:
-                    return JsonResponse({"message": "Socials updated successfully."})
+                    message = "Your social media information has been updated successfully."
             else:
-                return JsonResponse({"error": social_form.errors}, status=400)
+                error = social_form.errors
         elif "delete_account_form" in data:
             delete_account_form = DeleteAccountForm(data, user=request.user, lang = request.COOKIES.get('selectedLanguage', 'en'))
             if delete_account_form.is_valid():
@@ -420,41 +426,21 @@ def profile_settings(request, username):
                 if profile.avatar:
                     delete_from_media(profile.avatar.path)
                 profile.delete()
+
                 if (lang == 'tr'):
-                    return JsonResponse({"message": "Hesabınız başarıyla silindi."})
+                    message = "Hesabınız başarıyla silindi."
                 elif (lang == 'hi'):
-                    return JsonResponse({"message": "आपका खाता सफलतापूर्वक हटा दिया गया।"})
+                    message = "आपका खाता सफलतापूर्वक हटा दिया गया।"
                 elif (lang == 'pt'):
-                    return JsonResponse({"message": "Sua conta foi excluída com sucesso."})
+                    message = "Sua conta foi excluída com sucesso."
                 else:
-                    return JsonResponse({"message": "Account deleted successfully."})
+                    message = "Your account has been deleted successfully."
             else:
-                return JsonResponse({"error": delete_account_form.errors}, status=400)
+                error = delete_account_form.errors
         else:
-            return JsonResponse({"error": "Invalid form type"}, status=400)
+            error = "Invalid form submission."
 
-    else:
-        avatar_form = ProfileAvatarForm(instance=request.user)
-        profile_form = UpdateUserProfileForm(instance=request.user, lang = request.COOKIES.get('selectedLanguage', 'en'))
-        password_form = PasswordChangeUserForm(request.user, lang = request.COOKIES.get('selectedLanguage', 'en'))
-        social_form = SocialForm(instance=request.user.social, lang = request.COOKIES.get('selectedLanguage', 'en'))
-        delete_account_form = DeleteAccountForm(user=request.user, lang = request.COOKIES.get('selectedLanguage', 'en'))
-
-        return render(
-            request,
-            "profile-settings.html",
-            {
-                "profile": request.user,
-                "avatar_form": avatar_form,
-                "profile_form": profile_form,
-                "password_form": password_form,
-                "social_form": social_form,
-                "delete_account_form": delete_account_form,
-                "context": context,
-                "changepassword": changepassword,
-            },
-        )
-
+    return HttpResponse(render_to_string("profile-settings.html", {"profile": request.user, "avatar_form": avatar_form, "profile_form": profile_form, "password_form": password_form, "social_form": social_form, "delete_account_form": delete_account_form, "context": context, "changepassword": changepassword, "request": request, "message": message, "error": error}))
 
 @never_cache
 @login_required()
@@ -590,12 +576,11 @@ def rankings(request):
         users_page_obj = paginator.page(paginator.num_pages)
 
     # Add rank attribute to each user in the page
-
-    return render(request, "rankings.html", {"top_users": top_users, "users_page_obj": users_page_obj, "context": context})
+    return HttpResponse(render_to_string("rankings.html", {"top_users": top_users, "users_page_obj": users_page_obj, "context": context, "request": request}))
 
 
 @login_required()
-def store(request, username):  # store_view
+def store(request, username): #store_view
     if request.user.username != username:
         return redirect(reverse("store", kwargs={"username": request.user.username}))
     lang = request.COOKIES.get('selectedLanguage', 'en')
@@ -638,11 +623,7 @@ def store(request, username):  # store_view
         if category_name and category_name != "All":
             store_items = store_items.filter(Q(category_name=category_name) | Q(category_name="All"))
 
-    return render(
-        request,
-        "store.html",
-        {"store_items": store_items, "profile": profile, "form": form, "context": context, "selected_language": lang,},
-    )
+    return HttpResponse(render_to_string("store.html", {"store_items": store_items, "profile": profile, "form": form, "context": context, "selected_language": lang, "request": request}))
 
 @never_cache
 @login_required
@@ -688,13 +669,10 @@ def inventory(request, username):
                 Q(item__category_name=category_name) | Q(item__category_name="All"),
                 user=profile
             )
-    return render(
-        request,
-        "inventory.html",
-        {"profile": profile, "inventory_items": inventory_items, "context": context, "selected_language": lang},
-    )
+    return HttpResponse(render_to_string("inventory.html", {"profile": profile, "inventory_items": inventory_items, "form": form, "context": context, "selected_language": lang, "request": request}))
 
 @login_required()
+@csrf_exempt
 def search(request):
     if request.method == "POST":
         search_query = request.POST.get("search_query", "")
@@ -703,7 +681,6 @@ def search(request):
         search_query = request.session.get("search_query", "")
     lang = request.COOKIES.get('selectedLanguage', 'en')
     context = langs.get_langs(lang)
-    
     if search_query:
         search_query_email = search_query.split("@")[0]
         results = UserProfile.objects.filter(
@@ -736,9 +713,8 @@ def search(request):
         except EmptyPage:
             # If page number is out of range, deliver the last page
             results = paginator.page(paginator.num_pages)
-        return render(request, "search.html", {"results": results, "context": context})
-    return render(request, "search.html", {"context": context})
-
+        return HttpResponse(render_to_string("search.html", {"results": results, "context": context, "request": request}))
+    return HttpResponse(render_to_string("search.html", {"context": context, "request": request}))
 
 
 @login_required()
@@ -902,8 +878,9 @@ def chat(request):
 
 @login_required()
 def aboutus(request):
-    return render(request, "aboutus.html")
-
+    lang = request.COOKIES.get('selectedLanguage', 'en')
+    context = langs.get_langs(lang)
+    return HttpResponse(render_to_string("aboutus.html", {"context": context, "request": request}))
 
 ### New Chat ###
 @login_required()
