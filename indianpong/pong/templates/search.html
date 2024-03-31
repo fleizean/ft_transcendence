@@ -118,9 +118,9 @@
       const username = e.target.getAttribute('data-username');
       let action = e.target.innerHTML.trim();
       console.log(action);
-      if (action == "अनुसरण करना" || action == "takip" || action == "Takip Et" || action == "Follow") {
+      if (action == "अनुसरण करना" || action == "Seguir" || action == "Takip Et" || action == "Follow") {
         action = "follow"
-      } else if (action == "करें" || action == "çık" || action == "Takipten Çık" || action == "Unfollow") {
+      } else if (action == "अनफ़ॉलो" || action == "Deixar" || action == "Takipten Çık" || action == "Unfollow") {
         action = "unfollow"
       }
       fetch(`/follow_unfollow/${username}`, {
