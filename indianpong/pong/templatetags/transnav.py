@@ -3,8 +3,9 @@ from django import template
 
 register = template.Library()
 
-@register.simple_tag
-def transnav(request):
+@register.simple_tag(takes_context=True)
+def transnav(context):
+    request = context['request']
     lang = request.COOKIES.get('selectedLanguage', 'en')
     d = {'tr': "Ana Sayfa", 'en': "Dashboard", 'hi': "डैशबोर्ड", 'pt': "Página Inicial"}
     c = {'tr': "Sohbet", 'en': "Chat", 'hi': "चैट", 'pt': "Bate-papo"}

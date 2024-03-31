@@ -2,6 +2,7 @@
 
 {% load static %}
 {% load transnav %}
+{% load user_info %}
 
 <nav class="navbar">
     <div class="logo-container"><a class="navbar-item" onclick="swapApp('/dashboard')">
@@ -11,13 +12,14 @@
       </div></a>
   </div>
     <ul class="nav-links">
-    {% transnav request as tn %}
+    {% transnav as tn %}
+    {% user_info as user_info %}
       <li><a class="navbar-item" onclick="swapApp('/dashboard')" id="dashboardText"><i class="bi bi-house-door-fill"></i>{{tn.0}}</a></li>
       <li><a class="navbar-item" onclick="swapApp('/chat')" id="chatText"><i class="bi bi-chat-fill"></i>{{tn.1}}</a></li>
       <li><a class="navbar-item" onclick="swapApp('/pong-game-find')" id="pongGameText"><i class="bi bi-play-circle-fill"></i>{{tn.2}}</a></li>
       <li><a class="navbar-item" onclick="swapApp('/rps-game-find')" id="rpsGameText"><i class="bi bi-scissors"></i>{{tn.3}}</a></li>
       <li><a class="navbar-item" onclick="swapApp('/rankings')" id="rankingText"><i class="bi bi-bar-chart-fill"></i>{{tn.4}}</a></li>
-      <li><a class="navbar-item" onclick="swapApp('/store/{{username}}')" id="storeText"><i class="bi bi-basket2"></i>{{tn.5}}</a></li>
+      <li><a class="navbar-item" onclick="swapApp('/store/{{ user_info.username }}')" id="storeText"><i class="bi bi-basket2"></i>{{tn.5}}</a></li>
       <li><a class="navbar-item" onclick="swapApp('/search')" id="searchText"><i class="bi bi-search"></i>{{tn.6}}</a></li>
       <li><a class="navbar-item" onclick="swapApp('/about-us')" id="aboutUsText"><i class="bi bi-person-raised-hand"></i>{{tn.7}}</a></li> 
       <li class="notification-menu">
@@ -48,12 +50,12 @@
     </li>
       <li class="profile-menu">  
         <div class="profile-image">
-          <img src="{{avatar}}" alt="Profile Image" width="48" height="48" {% if is_playing %} style="border: 3px solid #ffa600" {% else %} style="border: 3px solid #4CAF4F"{% endif %}>
+          <img src="{{ user_info.avatar }}" alt="Profile Image" width="48" height="48" {% if user_info.is_playing %} style="border: 3px solid #ffa600" {% else %} style="border: 3px solid #4CAF4F"{% endif %}>
         </div>
         <div class="profile-submenu">
-          <a class="navbar-item" onclick="swapApp('/profile/{{username}}')" class="submenu-item" id="profileText"><i class="bi bi-person-fill" ></i>{{tn.8}}</a>
-          <a class="navbar-item" onclick="swapApp('/friends/{{username}}')" class="submenu-item" id="friendsText"><i class="bi bi-people-fill"></i>{{tn.9}}</a>
-          <a class="navbar-item" href="/profile/{{username}}/settings" class="submenu-item" id="profileSettingsText"><i class="bi bi-gear-fill"></i>{{tn.10}}</a> 
+          <a class="navbar-item" onclick="swapApp('/profile/{{ user_info.username }}')" class="submenu-item" id="profileText"><i class="bi bi-person-fill" ></i>{{tn.8}}</a>
+          <a class="navbar-item" onclick="swapApp('/friends/{{ user_info.username }}')" class="submenu-item" id="friendsText"><i class="bi bi-people-fill"></i>{{tn.9}}</a>
+          <a class="navbar-item" href="/profile/{{ user_info.username }}/settings" class="submenu-item" id="profileSettingsText"><i class="bi bi-gear-fill"></i>{{tn.10}}</a> 
           <a class="navbar-item" href="/logout" class="submenu-item" id="logoutText"><i class="bi bi-box-arrow-right"></i>{{tn.11}}</a>
         </div>
       </li>
