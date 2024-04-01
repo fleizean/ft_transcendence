@@ -6,6 +6,8 @@ import { initializeSearch } from './search.js';
 import { initializeStore } from './store.js';
 import { initializeInventory } from './inventory.js';
 import { editProfile, editPassword, editSocial, deleteAccount, changeAvatar, displaySection } from './profile-settings.js';
+import { getChat } from './base-chat.js'
+import { innerChat } from './chat.js';
 
 function getCookie(name) {
   const cookieValue = document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)');
@@ -76,6 +78,8 @@ window.editSocial = editSocial;
 window.deleteAccount = deleteAccount;
 window.changeAvatar = changeAvatar;
 window.displaySection = displaySection;
+window.getChat = getChat;
+window.innerChat = innerChat;
 
 window.onpopstate = function(event) {
   if (window.location.hash == '') // Eğer # ile başlayan bir path değilse değişim yaptırıyoruz çünkü profile-settings alanında # ile başlayan path yönlendirmeleri var onlarla çakışıp yönlendirmeyi engelliyor.
@@ -83,6 +87,8 @@ window.onpopstate = function(event) {
 };
 
 function pageHandler(path) {
+    const pathParts = path.split('/');
+    console.log(pathParts + ' ' + pathParts.length);
     if (path.includes('/login'))
       initializeLogin();
     else if (path.includes('/signup'))
@@ -99,6 +105,14 @@ function pageHandler(path) {
       initializeStore();
     else if(path.includes('/inventory/'))
       initializeInventory();
+    else if (pathParts[1] === 'chat' && pathParts.length === 3) {
+      console.log('chat1');
+      getChat();
+    }
+    else if (pathParts[1] === 'chat' && pathParts.length === 4) {
+      console.log('chat');
+      innerChat();
+    }
     if (path != '/' && path != '/login' && path != '/signup')
       initializeBurger();
 }

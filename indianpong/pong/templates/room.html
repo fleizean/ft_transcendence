@@ -35,7 +35,7 @@
                   </li>
                   {% for user in users %}
                       <li>
-                        <a href="{% url 'start_chat' user %}" data-link>
+                        <a onclick="getChat(`{{user}}`)" data-link>
                           {% is_user_online user.username as user_is_online %}
                           {% is_user_playing user.username as user_is_playing %}
                           <img class="content-message-image" src="{{ user.avatar.url }}" alt="avatar" class="profile-image-circ" {% if user_is_playing %} style="border: 3px solid #ffa600; aspect-ratio: 1/1; object-fit: cover;" {% elif user_is_online %} style="border: 3px solid #4CAF4F; aspect-ratio: 1/1; object-fit: cover;" {% else %} style="border: 3px solid #ff0000; aspect-ratio: 1/1; object-fit: cover;" {% endif %}/>
@@ -52,13 +52,13 @@
                 <button type="button" class="conversation-back"><i class="bi bi-arrow-left-circle-fill"></i></button>
                 <div class="conversation-user">
                   {% if room.first_user == request.user %}
-                    <a href="{% url 'profile' room.second_user %}">
+                    <a class="room-profile-click" onclick="swapApp('/profile/{{room.second_user}}')">
                     <img class="content-message-image" src="{{ room.second_user.avatar.url }}" alt="" /></a>
                     <div id="userNameOnChat" class="conversation-user-name" >
                       {{ room.second_user }}
                     </div>
                   {% else %}
-                    <a href="{% url 'profile' room.first_user %}">{{ room.first_user }}</a>
+                    <a class="room-profile-click" onclick="swapApp('/profile/{{room.first_user}}')">{{ room.first_user }}</a>
                     <img class="content-message-image" src="{{ room.first_user.avatar.url }}" alt="" />
                     <div id="userNameOnChat" class="conversation-user-name" >
                       {{ room.first_user }}
@@ -126,8 +126,7 @@
         {{ room_name|json_script:"room-name" }}
         {{ request.user.username|json_script:"user" }}
         
-
-        <script src="{% static "js/chat.js" %}"></script>
+        <script type="module" src="{% static "js/chat.js" %}"></script>
       </section>
     </div>
   </div>

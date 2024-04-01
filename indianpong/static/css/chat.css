@@ -20,7 +20,9 @@
 }
 /* end: Chat */
 
-
+.room-profile-click {
+  cursor: pointer !important;
+}
 
 /* start: Sidebar */
 .chat-sidebar {

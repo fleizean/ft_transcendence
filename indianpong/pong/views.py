@@ -866,7 +866,7 @@ def chat(request):
     users = UserProfile.objects.all().exclude(username=request.user).exclude(username="IndianAI")
     lang = request.COOKIES.get('selectedLanguage', 'en')
     context = langs.get_langs(lang)
-    return render(request, "chat.html", {"users": users, "context": context})
+    return HttpResponse(render_to_string("chat.html", {"users": users, "context": context, "request": request}))
 
 
 @login_required()
@@ -882,18 +882,9 @@ def room(request, room_name):
     room = Room.objects.get(id=room_name)
     lang = request.COOKIES.get('selectedLanguage', 'en')
     context = langs.get_langs(lang)
-    messages = Message.objects.filter(room=room) #? html için mark_safe kullnabilinir
-    return render(
-        request,
-        "room.html",
-        {
-            "room_name": room_name,
-            "room": room,
-            "users": users,
-            "messages": messages,
-            "context": context,
-        },
-    )
+    messages = Message.objects.filter(room=room) #? html için mark_safe kullnabilini
+    return HttpResponse(render_to_string("room.html", {"room_name": room_name, "room": room, "users": users, "messages": messages, "context": context, "request": request}))
+
 
 
 @login_required()
@@ -906,7 +897,8 @@ def start_chat(request, username):
             room = Room.objects.get(second_user=request.user, first_user=second_user)
         except Room.DoesNotExist:
             room = Room.objects.create(first_user=request.user, second_user=second_user)
-    return redirect("room", room.id)
+    print(room.id)
+    return JsonResponse({'room_id': room.id})
 
 ### Tournaments ###
 
