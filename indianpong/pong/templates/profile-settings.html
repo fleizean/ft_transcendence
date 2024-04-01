@@ -177,7 +177,8 @@
                     <form id="delete_account_form" name="delete_account_form">
                         <h4>{{context.closeAccountHeaderText}}</h4>
                         <p>{{context.closeAccountSubHeaderText}}</p>
-                        <input type="email" name="email" class="form-control" placeholder="{{context.closeAccountInputText}}" maxlength="320" required="" id="id_email">                        <button type="button" id="delete_account_submit" onclick="deleteAccount()" class="btn btn-danger">
+                        <input type="email" name="email" class="form-control" placeholder="{{context.closeAccountInputText}}" maxlength="320" required="" id="id_email">                        
+                        <button type="button" id="delete_account_submit" onclick="deleteAccount(`{{user_info.username}}`)" class="btn btn-danger">
                             <i class="bi bi-trash-fill"></i> {{context.closeAccountButton}}
                         </button>
                     </form>

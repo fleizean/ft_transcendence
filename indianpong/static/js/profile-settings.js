@@ -1,3 +1,7 @@
+function getCookie(name) {
+    const cookieValue = document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)');
+    return cookieValue ? cookieValue.pop() : '';
+}
 
 function showToast(content, status, iconClass) {
     const liveToast = document.getElementById('liveToast');
@@ -27,7 +31,6 @@ export function editProfile(username) {
     formData.append('email', document.getElementById('id_email_profile').value);
     formData.append('displayname', document.getElementById('id_displayname_profile').value);
     formData.append('profile_form', 'profile_form');
-
     // CSRF token'ı eklemek
 
     fetch(`/profile/${username}/settings`, {
@@ -42,8 +45,6 @@ export function editProfile(username) {
         document.body.innerHTML = data;
         const message = document.querySelector('.container-top').dataset.message;
         const error = document.querySelector('.container-top').dataset.error;
-        var currentFragment = window.location.hash.substring(1);
-        displaySection(currentFragment);
         if (message)
         {   
             showToast(message, 'text-bg-success', 'bi bi-check-circle-fill');
@@ -63,6 +64,7 @@ export function editPassword(username) {
     formData.append('new_password1', document.getElementById('id_new_password1').value);
     formData.append('new_password2', document.getElementById('id_new_password2').value);
     formData.append('password_form', 'password_form');
+    const lang = getCookie('selectedLanguage');
     fetch(`/profile/${username}/settings`, {
         method: 'POST',
         body: formData,
@@ -85,11 +87,11 @@ export function editPassword(username) {
                 showToast("oç4" + error[platform][0], 'text-bg-danger', 'bi bi-x-circle-fill');
             }
         } else {
-            if (selectedLanguage === 'tr') {
+            if (lang === 'tr') {
                 showToast('Bir hata oluştu.', 'text-bg-danger', 'bi bi-x-circle-fill');
-            } else if (selectedLanguage === 'hi') {
+            } else if (lang === 'hi') {
                 showToast('कोई त्रुटि हुई।', 'text-bg-danger', 'bi bi-x-circle-fill');
-            } else if (selectedLanguage === 'pt')
+            } else if (lang === 'pt')
                 showToast('Ocorreu um erro.', 'text-bg-danger', 'bi bi-x-circle-fill');
             else {
                 showToast('An error occurred.', 'text-bg-danger', 'bi bi-x-circle-fill');
@@ -109,7 +111,7 @@ export function editSocial(username) {
     formData.append('intra42', document.getElementById('id_intra42').value);
     formData.append('github', document.getElementById('id_github').value);
     formData.append('social_form', 'social_form');
-
+    const lang = getCookie('selectedLanguage');
     fetch(`/profile/${username}/settings`, {
         method: 'POST',
         body: formData,
@@ -132,11 +134,11 @@ export function editSocial(username) {
                 showToast("oç5" + error[platform][0], 'text-bg-danger', 'bi bi-x-circle-fill');
             }
         } else {
-            if (selectedLanguage === 'tr') {
+            if (lang === 'tr') {
                 showToast('Bir hata oluştu.', 'text-bg-danger', 'bi bi-x-circle-fill');
-            } else if (selectedLanguage === 'hi') {
+            } else if (lang === 'hi') {
                 showToast('कोई त्रुटि हुई।', 'text-bg-danger', 'bi bi-x-circle-fill');
-            } else if (selectedLanguage === 'pt')
+            } else if (lang === 'pt')
                 showToast('Ocorreu um erro.', 'text-bg-danger', 'bi bi-x-circle-fill');
             else {
                 showToast('An error occurred.', 'text-bg-danger', 'bi bi-x-circle-fill');
@@ -151,10 +153,10 @@ export function editSocial(username) {
 
 export function deleteAccount(username) {
     var formData = new FormData(); // FormData nesnesi oluştur
+    var csrftoken = document.cookie.split('; ').find(row => row.startsWith('csrftoken')).split('=')[1];
     formData.append('email', document.getElementById('id_email').value);
     formData.append('delete_account_form', 'delete_account_form');
-    var csrftoken = document.cookie.split('; ').find(row => row.startsWith('csrftoken')).split('=')[1];
-
+    const lang = getCookie('selectedLanguage');
     fetch(`/profile/${username}/settings`, {
         method: 'POST',
         body: formData,
@@ -165,28 +167,6 @@ export function deleteAccount(username) {
     .then(response => response.text())
     .then(data => {
         document.body.innerHTML = data;
-        const message = document.querySelector('.container-top').dataset.message;
-        const error = document.querySelector('.container-top').dataset.error;
-        var currentFragment = window.location.hash.substring(1);
-        displaySection(currentFragment);
-        if (message) {
-            showToast(message, 'text-bg-success', 'bi bi-check-circle-fill');
-        } else if (error) {
-            // Hata mesajlarını göster
-            for (let platform in error) {
-                showToast("oç" + error[platform][0], 'text-bg-danger', 'bi bi-x-circle-fill');
-            }
-        } else {
-            if (selectedLanguage === 'tr') {
-                showToast('Bir hata oluştu.', 'text-bg-danger', 'bi bi-x-circle-fill');
-            } else if (selectedLanguage === 'hi') {
-                showToast('कोई त्रुटि हुई।', 'text-bg-danger', 'bi bi-x-circle-fill');
-            } else if (selectedLanguage === 'pt')
-                showToast('Ocorreu um erro.', 'text-bg-danger', 'bi bi-x-circle-fill');
-            else {
-                showToast('An error occurred.', 'text-bg-danger', 'bi bi-x-circle-fill');
-            }
-        }
     })
     .catch(error => {
         console.error('Error:', error);
@@ -197,7 +177,7 @@ export function changeAvatar(username) {
         const fileInput = document.getElementById('id_avatar');
         var csrftoken = document.cookie.split('; ').find(row => row.startsWith('csrftoken')).split('=')[1];
         var file = fileInput.files[0];  
-        
+        const lang = getCookie('selectedLanguage');
         if (file.size > 2 * 1024 * 1024) { // 1MB
             showToast("Photo must be under 2MB!", "text-bg-danger", "bi bi-image");
         }
@@ -222,16 +202,14 @@ export function changeAvatar(username) {
                 document.body.innerHTML = data;
                 const message = document.querySelector('.container-top').dataset.message;
                 const error = document.querySelector('.container-top').dataset.error;
-                var currentFragment = window.location.hash.substring(1);
-                displaySection(currentFragment);
                 if (message) {
                     showToast(message, 'text-bg-success', 'bi bi-check-circle-fill');
                 } else {
-                    if (selectedLanguage === 'tr') {
+                    if (lang === 'tr') {
                         showToast('Bir hata oluştu.', 'text-bg-danger', 'bi bi-x-circle-fill');
-                    } else if (selectedLanguage === 'hi') {
+                    } else if (lang === 'hi') {
                         showToast('कोई त्रुटि हुई।', 'text-bg-danger', 'bi bi-x-circle-fill');
-                    } else if (selectedLanguage === 'pt') {
+                    } else if (lang === 'pt') {
                         showToast('Ocorreu um erro.', 'text-bg-danger', 'bi bi-x-circle-fill');
                     } else {
                         showToast('An error occurred.', 'text-bg-danger', 'bi bi-x-circle-fill');

@@ -345,6 +345,7 @@ def profile_settings(request, username):
     password_form = PasswordChangeUserForm(request.user, lang = request.COOKIES.get('selectedLanguage', 'en'))
     social_form = SocialForm(instance=request.user.social, lang = request.COOKIES.get('selectedLanguage', 'en'))
     delete_account_form = DeleteAccountForm(user=request.user, lang = request.COOKIES.get('selectedLanguage', 'en'))
+    
     if request.method == "POST":
         data = request.POST
         if "avatar_form" in data:
@@ -426,20 +427,12 @@ def profile_settings(request, username):
                 if profile.avatar:
                     delete_from_media(profile.avatar.path)
                 profile.delete()
-
-                if (lang == 'tr'):
-                    message = "Hesabınız başarıyla silindi."
-                elif (lang == 'hi'):
-                    message = "आपका खाता सफलतापूर्वक हटा दिया गया।"
-                elif (lang == 'pt'):
-                    message = "Sua conta foi excluída com sucesso."
-                else:
-                    message = "Your account has been deleted successfully."
+                return redirect("login")
             else:
                 error = delete_account_form.errors
         else:
             error = "Invalid form submission."
-    print('test: ' + str(message))
+    
     return HttpResponse(render_to_string("profile-settings.html", {"profile": request.user, "avatar_form": avatar_form, "profile_form": profile_form, "password_form": password_form, "social_form": social_form, "delete_account_form": delete_account_form, "context": context, "changepassword": changepassword, "message": message, "error": error}, request=request))
 
 @never_cache
