@@ -326,8 +326,8 @@ def profile_settings(request, username):
         return redirect(reverse('profile_settings', kwargs={'username': request.user.username}))
     lang = request.COOKIES.get('selectedLanguage', 'en')
     context = langs.get_langs(lang)
-    message = None
-    error = None
+    message = ""
+    error = ""
     changepassword = False
     now = timezone.now()  # Django'nun timezone modülünden zamanı al
     
@@ -439,7 +439,7 @@ def profile_settings(request, username):
                 error = delete_account_form.errors
         else:
             error = "Invalid form submission."
-
+    print('test: ' + str(message))
     return HttpResponse(render_to_string("profile-settings.html", {"profile": request.user, "avatar_form": avatar_form, "profile_form": profile_form, "password_form": password_form, "social_form": social_form, "delete_account_form": delete_account_form, "context": context, "changepassword": changepassword, "message": message, "error": error}, request=request))
 
 @never_cache

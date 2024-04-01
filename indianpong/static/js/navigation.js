@@ -5,7 +5,7 @@ import { initializeProfile, toggleGame, matchHistoryChanger} from './profile.js'
 import { initializeSearch } from './search.js';
 import { initializeStore } from './store.js';
 import { initializeInventory } from './inventory.js';
-import { initializeProfileSettings } from './profile-settings.js';
+import { editProfile, editPassword, editSocial, deleteAccount, changeAvatar, displaySection } from './profile-settings.js';
 
 function getCookie(name) {
   const cookieValue = document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)');
@@ -70,8 +70,12 @@ window.matchHistoryChanger = matchHistoryChanger;
 window.initializeSearch = initializeSearch;
 window.initializeStore = initializeStore;
 window.initializeInventory = initializeInventory;
-window.initializeProfileSettings = initializeProfileSettings;
-
+window.editProfile = editProfile;
+window.editPassword = editPassword;
+window.editSocial = editSocial;
+window.deleteAccount = deleteAccount;
+window.changeAvatar = changeAvatar;
+window.displaySection = displaySection;
 
 window.onpopstate = function(event) {
   if (window.location.hash == '') // Eğer # ile başlayan bir path değilse değişim yaptırıyoruz çünkü profile-settings alanında # ile başlayan path yönlendirmeleri var onlarla çakışıp yönlendirmeyi engelliyor.
@@ -79,12 +83,14 @@ window.onpopstate = function(event) {
 };
 
 function pageHandler(path) {
-    if (path == '/login')
+    if (path.includes('/login'))
       initializeLogin();
-    else if (path == '/signup')
+    else if (path.includes('/signup'))
       initializeSignup();
     else if(path.includes('/settings'))
-      initializeProfileSettings();
+    {
+      
+    }
     else if(path.includes('/profile/'))
       initializeProfile();
     else if(path.includes('/search'))

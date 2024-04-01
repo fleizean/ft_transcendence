@@ -107,14 +107,12 @@
                     </div>
                 </div>
             </div>
+            <script type="module" src="{% static "js/navigation.js" %}"></script>
             <script>
                 function setLanguage(language) {
                   document.cookie = "selectedLanguage=" + language;
                   swapApp(window.location.pathname);
                 }
-                 
-               
             </script>
-            <script type="module" src="{% static "js/navigation.js" %}"></script>
     </body>
 </html>

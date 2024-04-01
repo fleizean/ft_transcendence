@@ -6,7 +6,7 @@
 {% block stylesheet %}<link rel="stylesheet" href="{% static "css/profilesettings.css" %}">{% endblock %}
 
 {% block app %}
-<div class="container-top">
+<div class="container-top" data-message="{{message}}" data-error="{{error}}">
     <div class="profile-settings-card">
         <div class="row">
             <!-- Left Sidebar -->
@@ -50,10 +50,11 @@
 
                 <!-- Edit Profile Form -->
                 <section id="editProfile">
-                        <form id="avatar_form" name="avatar_form" enctype="multipart/form-data">
+                    {% user_info as user_info %}
+                        <form id="avatar_form" name="avatar_form" enctype="multipart/form-data" onchange="changeAvatar(`{{user_info.username}}`)">
                             <div class="profile-pic-container">
                                 <label for="id_avatar" class="profile-pic-label">
-                                    {% user_info as user_info %}
+                                    
                                     <img src="{{ user_info.avatar }}" alt="Profile Picture"
                                     class="profile-pic">
                                     <div class="change-image-overlay">
@@ -88,7 +89,7 @@
                                         placeholder="{{ profile.displayname }}" value="{{ profile.displayname }}">
                             </div>
                             <!-- Submit button -->
-                            <button type="button" id="profile_submit" class="btn btn-success">{{context.editProfileSaveButtonText}}</button>
+                            <button type="button" id="profile_submit" onclick="editProfile(`{{user_info.username}}`)" class="btn btn-success">{{context.editProfileSaveButtonText}}</button>
                         </form>
                 </section>
 
@@ -120,7 +121,7 @@
                         {% if profile.is_42student %} <label class="small mb-1" style="color:red; font-style: italic;">                                
                         {{context.changePassword42Text}}
                         </label> <br> {% endif %}
-                        <button type="button" id="password_submit" class="btn btn-outline-success"><i class="bi bi-lock-fill"></i> {{context.changePasswordSaveButtonText}}</button>
+                        <button type="button" id="password_submit"  onclick="editPassword(`{{user_info.username}}`)" class="btn btn-outline-success"><i class="bi bi-lock-fill"></i> {{context.changePasswordSaveButtonText}}</button>
                     </form>
                 </section>
 
@@ -168,7 +169,7 @@
 
                         <!-- Diğer sosyal medya platformları için benzer şekilde devam edebilirsiniz -->
 
-                        <button type="button" id="social_submit" class="btn btn-primary"><i class="bi bi-save-fill"></i> {{context.addSocialsSaveButtonText}}</button>
+                        <button type="button" id="social_submit" onclick="editSocial(`{{user_info.username}}`)" class="btn btn-primary"><i class="bi bi-save-fill"></i> {{context.addSocialsSaveButtonText}}</button>
                     </form>
                 </section>
 
@@ -176,7 +177,7 @@
                     <form id="delete_account_form" name="delete_account_form">
                         <h4>{{context.closeAccountHeaderText}}</h4>
                         <p>{{context.closeAccountSubHeaderText}}</p>
-                        <input type="email" name="email" class="form-control" placeholder="{{context.closeAccountInputText}}" maxlength="320" required="" id="id_email">                        <button type="button" id="delete_account_submit" class="btn btn-danger">
+                        <input type="email" name="email" class="form-control" placeholder="{{context.closeAccountInputText}}" maxlength="320" required="" id="id_email">                        <button type="button" id="delete_account_submit" onclick="deleteAccount()" class="btn btn-danger">
                             <i class="bi bi-trash-fill"></i> {{context.closeAccountButton}}
                         </button>
                     </form>
@@ -243,48 +244,7 @@
     </div>
     </div>
 </div>
-<script>
-    window.username = "{{ user_info.username }}";
-</script>
 
 <script type="module" src="{% static "js/profile-settings.js" %}"></script>
 
-<script>
-
-function displaySection(sectionId) {
-    var sections = ["editProfile", "addSocial", "closeAccount","blockedUsers", "changePassword"];
-
-    for (var i = 0; i < sections.length; i++) {
-        var section = document.getElementById(sections[i]);
-        if (sections[i] === sectionId) {
-            section.style.display = 'block';
-            window.location.hash = sectionId;
-        } else {
-            section.style.display = 'none';
-        }
-    }
-}
-
-window.onload = function() {
-    window.username = "{{ user_info.username }}";
-    initializeProfileSettings();
-    // Get the hash from the URL
-    var hash = window.location.hash;        
-    // If there's a hash
-    if(hash) {
-        // Remove the '#' from the start of the hash
-        var sectionId = hash.substring(1);
-    
-        // Call the displaySection function with the sectionId
-        displaySection(sectionId);
-    }
-};
-
-window.onhashchange = function() {
-    var currentFragment = window.location.hash.substring(1);
-    displaySection(currentFragment);
-};
-
-
-</script>
 {% endblock %}
