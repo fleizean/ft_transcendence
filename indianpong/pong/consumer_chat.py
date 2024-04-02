@@ -122,3 +122,51 @@ class ChatConsumer(AsyncWebsocketConsumer):
             "user": user,
             "created_date": created_date,
         }))
+
+    async def invite_game(self, event):
+        inviter = event["inviter"]
+        # Send message to WebSocket
+        await self.send(text_data=json.dumps({
+            "type": "invite.game",
+            "inviter": inviter,
+        }))
+
+    async def accept_game(self, event):
+        message = event["message"]
+        user = event["user"]
+        created_date = event["created_date"]
+        # Send message to WebSocket
+        await self.send(text_data=json.dumps({
+            "type": "accept.game",
+            "message": message,
+            "user": user,
+            "created_date": created_date,
+        }))
+
+    async def decline_game(self, event):
+        decliner = event["decliner"]
+        # Send message to WebSocket
+        await self.send(text_data=json.dumps({
+            "type": "decline.game",
+            "decliner": decliner,
+        }))
+
+    async def blocked(self, event):
+        blocker = event["blocker"]
+        blocked = event["blocked"]
+        # Send message to WebSocket
+        await self.send(text_data=json.dumps({
+            "type": "blocked",
+            "blocker": blocker,
+            "blocked": blocked,
+        }))
+
+    async def unblocked(self, event):
+        unblocker = event["unblocker"]
+        unblocked = event["unblocked"]
+        # Send message to WebSocket
+        await self.send(text_data=json.dumps({
+            "type": "unblocked",
+            "unblocker": unblocker,
+            "unblocked": unblocked,
+        }))
