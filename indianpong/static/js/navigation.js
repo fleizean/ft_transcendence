@@ -2,8 +2,6 @@ import { initializeBurger } from './burger.js';
 import { getChat } from './base-chat.js'
 import { innerChat } from './chat.js';
 
-let isChat = false;
-
 function getCookie(name) {
   const cookieValue = document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)');
   return cookieValue ? cookieValue.pop() : '';
