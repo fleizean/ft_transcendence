@@ -3,7 +3,7 @@ function getCookie(name) {
   return cookieValue ? cookieValue.pop() : '';
 }
 
-export function initializeSearch() {
+function initializeSearch() {
     const lang = getCookie('selectedLanguage');
     const followButtons = document.querySelectorAll(".button-follow");
     var csrftoken = document.cookie.split('; ').find(row => row.startsWith('csrftoken')).split('=')[1];
@@ -47,11 +47,11 @@ export function initializeSearch() {
         });
       }); 
     });
-
-    
 }
 
-export function makeSearch() {
+function makeSearch(event) {
+  event.preventDefault();
+  console.log('searching');
   var form = document.getElementById('searchForm');
   var formData = new FormData(form);
   var csrftoken = document.cookie.split('; ').find(row => row.startsWith('csrftoken')).split('=')[1];

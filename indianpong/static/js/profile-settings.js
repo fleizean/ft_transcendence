@@ -21,7 +21,7 @@ function showToast(content, status, iconClass) {
     }, 8000);
 }
 
-export function editProfile(username) {
+function editProfile(username) {
     var formData = new FormData(); // FormData nesnesi oluştur
     var csrftoken = document.cookie.split('; ').find(row => row.startsWith('csrftoken')).split('=')[1];
     const lang = getCookie('selectedLanguage');
@@ -65,7 +65,7 @@ export function editProfile(username) {
     });
 };
 
-export function editPassword(username) {
+function editPassword(username) {
     var formData = new FormData(); // FormData nesnesi oluştur
     var csrftoken = document.cookie.split('; ').find(row => row.startsWith('csrftoken')).split('=')[1];
     formData.append('old_password', document.getElementById('id_old_password').value);
@@ -105,7 +105,7 @@ export function editPassword(username) {
     });
 };
 
-export function editSocial(username) {
+function editSocial(username) {
     var formData = new FormData(); // FormData nesnesi oluştur
     var csrftoken = document.cookie.split('; ').find(row => row.startsWith('csrftoken')).split('=')[1];
     formData.append('linkedin', document.getElementById('id_linkedin').value);
@@ -147,7 +147,7 @@ export function editSocial(username) {
 
 };
 
-export function deleteAccount(username) {
+function deleteAccount(username) {
     var formData = new FormData(); // FormData nesnesi oluştur
     var csrftoken = document.cookie.split('; ').find(row => row.startsWith('csrftoken')).split('=')[1];
     formData.append('email', document.getElementById('id_email').value);
@@ -169,7 +169,7 @@ export function deleteAccount(username) {
     });
 };
 
-export function changeAvatar(username) {
+function changeAvatar(username) {
         const fileInput = document.getElementById('id_avatar');
         var csrftoken = document.cookie.split('; ').find(row => row.startsWith('csrftoken')).split('=')[1];
         var file = fileInput.files[0];  
@@ -218,7 +218,7 @@ export function changeAvatar(username) {
         }
 }
 
-export function displaySection(sectionId) {
+function displaySection(sectionId) {
     var sections = ["editProfile", "addSocial", "closeAccount","blockedUsers", "changePassword"];
 
     for (var i = 0; i < sections.length; i++) {

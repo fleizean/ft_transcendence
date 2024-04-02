@@ -43,15 +43,6 @@
                       
                                 
                     </div>
-                    {% if not friend.social.stackoverflow and not friend.social.twitter and not friend.social.github and not friend.social.instagram %}
-                      <div class="buttons" style="margin-top: 60px !important;">
-                        <button class="button-message"><i class="bi bi-chat-right-dots-fill"></i> {{context.friendsMessageButtonText}}</button> 
-                      </div>
-                    {% else %}
-                      <div class="buttons">
-                        <button class="button-message"><i class="bi bi-chat-right-dots-fill"></i> {{context.friendsMessageButtonText}}</button>
-                      </div>
-                    {% endif %}
                       <div class="analytics">
                         <div class="data">
                           <i class="bi bi-dice-1-fill" style="color: #FF5733;"></i>

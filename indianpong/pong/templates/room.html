@@ -116,7 +116,7 @@
                 <button type="button" class="conversation-form-button" onclick="document.querySelector('#comment').value += '😀';"><i class="bi bi-emoji-laughing-fill"></i></button>
                 <div class="conversation-form-group">
                   <textarea class="conversation-form-input" rows="1" id="comment" placeholder="{{context.chatTypeHereText}}"></textarea>
-                  <button type="button" class="conversation-form-record" id="send"><i class="bi bi-send-fill"></i></button>
+                  <button type="button" class="conversation-form-record" id="send" onclick="sendButton()"><i class="bi bi-send-fill"></i></button>
                 </div>
               </div>
             </div>
@@ -127,6 +127,7 @@
         {{ request.user.username|json_script:"user" }}
         
         <script type="module" src="{% static "js/chat.js" %}"></script>
+
       </section>
     </div>
   </div>

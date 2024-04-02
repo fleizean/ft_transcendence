@@ -10,11 +10,11 @@
 <div class="container-top">
     <div class="search-card">
         <!-- Arama kutusu ve butonu -->
-        <form id="searchForm" method="POST" >
+        <form id="searchForm" method="POST" onsubmit="makeSearch(event)">
             {% csrf_token %}
             <div class="search-container">
                 <input type="text" name="search_query" placeholder="{{context.searchInputText}}" class="search-input" autocomplete="off" data-lpignore="true">
-                <button class="search-button" type="button" onclick="makeSearch()"><i class="bi bi-search"></i></button>
+                <button class="search-button" type="button" onclick="makeSearch(event)"><i class="bi bi-search"></i></button>
             </div>
         </form>
 
@@ -111,11 +111,4 @@
     </div>
   </div>
 
-  <script type="module" src="{% static "js/search.js" %}"></script>
-  <script>
-    window.onload = function() {
-      initializeSearch();
-      makeSearch();
-    };
-  </script>
 {% endblock app %}

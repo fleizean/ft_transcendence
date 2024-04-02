@@ -1,12 +1,8 @@
 import { initializeBurger } from './burger.js';
-import { initializeLogin, makeLogin } from './login.js';
-import { initializeSignup, makeRegister } from './signup.js';
-import { initializeProfile, toggleGame, matchHistoryChanger} from './profile.js';
-import { initializeSearch, makeSearch } from './search.js';
-import { initializeInventory } from './inventory.js';
-import { editProfile, editPassword, editSocial, deleteAccount, changeAvatar, displaySection } from './profile-settings.js';
 import { getChat } from './base-chat.js'
 import { innerChat } from './chat.js';
+
+let isChat = false;
 
 function getCookie(name) {
   const cookieValue = document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)');
@@ -65,22 +61,6 @@ function swapApp(path) {
 
 window.initializeBurger = initializeBurger;
 window.swapApp = swapApp;
-window.initializeLogin = initializeLogin;
-window.initializeSignup = initializeSignup;
-window.makeLogin = makeLogin;
-window.makeRegister = makeRegister;
-window.initializeProfile = initializeProfile;
-window.toggleGame = toggleGame;
-window.matchHistoryChanger = matchHistoryChanger;
-window.initializeSearch = initializeSearch;
-window.initializeInventory = initializeInventory;
-window.editProfile = editProfile;
-window.editPassword = editPassword;
-window.editSocial = editSocial;
-window.deleteAccount = deleteAccount;
-window.changeAvatar = changeAvatar;
-window.makeSearch = makeSearch;
-window.displaySection = displaySection;
 window.getChat = getChat;
 window.innerChat = innerChat;
 
@@ -90,30 +70,57 @@ window.onpopstate = function(event) {
   
 };
 
+function addScript(pathway) {
+  const script = document.createElement('script');
+  script.src = '/static/js/' + pathway + '.js';
+  document.body.appendChild(script);
+}
+
 function pageHandler(path) {
     const pathParts = path.split('/');
-    console.log(pathParts + ' ' + pathParts.length);
-    if (path.includes('/login'))
-      initializeLogin();
-    else if (path.includes('/signup'))
-      initializeSignup();
-    else if(path.includes('/settings'))
-    {
-      
+
+    if (path.includes('/login')) {
+      //addScript('login');
+      const script = document.createElement('script');
+      script.src = '/static/js/login.js';
+      document.body.appendChild(script);
     }
-    else if(path.includes('/profile/'))
-      initializeProfile();
+    else if (path.includes('/signup')) {
+      //addScript('signup');
+      const script = document.createElement('script');
+      script.src = '/static/js/signup.js';
+      document.body.appendChild(script);
+    }
+    else if(path.includes('/settings')) {
+      //addScript('profile-settings');
+      const script = document.createElement('script');
+      script.src = '/static/js/profile-settings.js';
+      document.body.appendChild(script);
+    }
+    else if(path.includes('/profile/')) {
+      //addScript('profile');
+      const script = document.createElement('script');
+      script.src = '/static/js/profile.js';
+      document.body.appendChild(script);
+    }
     else if(path.includes('/search')) {
-      initializeSearch();
-      makeSearch();
+      //addScript('search');
+      const script = document.createElement('script');
+      script.src = '/static/js/search.js';
+      document.body.appendChild(script);
     }
     else if(path.includes('/store/')) {
+      //addScript('store');
       const script = document.createElement('script');
       script.src = '/static/js/store.js';
       document.body.appendChild(script);
     }
-    else if(path.includes('/inventory/'))
-      initializeInventory();
+    else if(path.includes('/inventory/')) {
+      //addScript('inventory');
+      const script = document.createElement('script');
+      script.src = '/static/js/inventory.js';
+      document.body.appendChild(script);
+    }
     else if (pathParts[1] === 'chat' && pathParts.length === 3) {
       getChat();
     }

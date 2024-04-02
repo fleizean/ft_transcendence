@@ -45,9 +45,11 @@
                         {% if request.user.username != profile.username %}
                             {% csrf_token %}
                             {% if is_friend %}
-                                <button data-username="{{ profile.username }}" class="unfollow-btn" style="margin-top: -15px;"><i class="bi bi-heartbreak-fill"></i> {{context.profileFollowingButton}}</button>
+                                <button class="unfollow-btn" id="unfollowbtn" style="margin-top: -15px;" onclick="unfollowButton(`{{profile.username}}`)"><i class="bi bi-heartbreak-fill"></i> {{context.profileFollowingButton}}</button>
+                                <button class="btn btn-danger" id="followbtn" style="margin-top: -10px; display:none !important;" onclick="followButton(`{{profile.username}}`)"><i class="bi bi-heart-fill"></i> {{context.profileFollowButton}}</button>
                             {% else %}
-                                <button data-username="{{ profile.username }}" class="btn btn-danger" style="margin-top: -10px;"><i class="bi bi-heart-fill"></i> {{context.profileFollowButton}}</button>
+                                <button class="btn btn-danger" id="followbtn" style="margin-top: -10px;" onclick="followButton(`{{profile.username}}`)"><i class="bi bi-heart-fill"></i> {{context.profileFollowButton}}</button>
+                                <button class="unfollow-btn" id="unfollowbtn" style="margin-top: -15px; display: none !important;" onclick="unfollowButton(`{{profile.username}}`)"><i class="bi bi-heartbreak-fill"></i> {{context.profileFollowingButton}}</button>
                             {% endif %}
                         {% endif %}
                     </div>
@@ -312,12 +314,6 @@
         </div>
     </div>
 </div>
-<script type="module" src="{% static "js/profile.js" %}"></script>
-<script>
-  window.onload = function() {
-    initializeProfile();
-  };
-</script>
 
 
 {% endblock %}

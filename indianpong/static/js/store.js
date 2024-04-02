@@ -33,7 +33,6 @@ function showToast(content, status, iconClass) {
   }
   
   function submitStoreItemForm(username, itemName, formId, price) {
-        console.log(username + ' ' + itemName + ' ' + formId + ' ' + price);
       const form = document.getElementById('store_item_form' + formId);
       const formData = new FormData(form);
       var csrftoken = document.cookie.split('; ').find(row => row.startsWith('csrftoken')).split('=')[1];

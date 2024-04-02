@@ -1,4 +1,4 @@
-export function initializeLogin() {
+function initializeLogin() {
   const passwordInput = document.getElementById('id_password');
   const toggleButton = document.getElementById('togglePassword');
 
@@ -34,7 +34,7 @@ function showToast(content, status, iconClass) {
   toast.show();
   }
 
-export function makeLogin() {
+function makeLogin() {
   var form = document.getElementById('loginForm');
   var formData = new FormData(form);
   var csrftoken = document.cookie.split('; ').find(row => row.startsWith('csrftoken')).split('=')[1];

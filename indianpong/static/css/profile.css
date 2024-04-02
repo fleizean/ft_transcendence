@@ -25,7 +25,8 @@
 
 .unfollow-btn {
     background-color: #212529; /* Buton arka plan rengi */
-    padding: 5px 10px;
+    width: 300px !important;
+    height: 38px !important;
     border: none;
     color: #fff; /* Buton metin rengi */
     border-radius: 5px;

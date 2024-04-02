@@ -1,6 +1,6 @@
 var isRPSVisibleHistory = true; 
 
-export function matchHistoryChanger() {
+function matchHistoryChanger() {
     var switcherBtn = document.querySelector(".changer-btn");
     var historyPong = document.getElementById('match-history-pong');
     var historyRPS = document.getElementById('match-history-rps');
@@ -23,7 +23,7 @@ export function matchHistoryChanger() {
 
 var isRPSVisibleStats = true; 
 
-export function toggleGame() {
+function toggleGame() {
     var switcherBtn = document.querySelector(".switch-btn");
     var statsPong = document.getElementById('stats-info-pong');
     var statsRPS = document.getElementById('stats-info-rps');
@@ -44,35 +44,45 @@ export function toggleGame() {
     // Durumu tersine çevir
 }
 
-export function initializeProfile() {
-    const followButtons = document.querySelectorAll(".btn, .unfollow-btn");
-    followButtons.forEach((button) => {
-        button.addEventListener('click', (e) => {
-            const username = e.target.getAttribute('data-username');
-            var csrftoken = document.cookie.split('; ').find(row => row.startsWith('csrftoken')).split('=')[1];
-            const action = e.target.classList.contains('unfollow-btn') ? 'unfollow' : 'follow';
-            fetch(`/follow_unfollow/${username}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': csrftoken
-                },
-                body: JSON.stringify({ action: action })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data['status'] === 'ok') {
-                    if (action === 'follow') {
-                    e.target.innerHTML = '<i class="bi bi-heartbreak-fill"></i> Unfollow';
-                    e.target.classList.add('unfollow-btn');
-                    e.target.classList.remove('btn', 'btn-danger');
-                    } else {
-                    e.target.innerHTML = '<i class="bi bi-heart-fill"></i> Follow';
-                    e.target.classList.remove('unfollow-btn');
-                    e.target.classList.add('btn', 'btn-danger');
-                    }
-                }
-            });
-        });
+function followButton(username) {
+    console.log(username);
+    var csrftoken = document.cookie.split('; ').find(row => row.startsWith('csrftoken')).split('=')[1];
+    var button = document.getElementById('followbtn');
+    var button2 = document.getElementById('unfollowbtn');
+    fetch(`/follow_unfollow/${username}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': csrftoken
+        },
+        body: JSON.stringify({ action: "follow" })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data['status'] === 'ok') {
+            button.style.display = 'none';
+            button2.style.display = 'block';    
+        }
+    });
+}
+
+function unfollowButton(username) {
+    var csrftoken = document.cookie.split('; ').find(row => row.startsWith('csrftoken')).split('=')[1];
+    var button = document.getElementById('unfollowbtn');
+    var button2 = document.getElementById('followbtn');
+    fetch(`/follow_unfollow/${username}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': csrftoken
+        },
+        body: JSON.stringify({ action: "unfollow" })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data['status'] === 'ok') {
+            button.style.display = 'none';
+            button2.style.display = 'block';
+        }
     });
 }
