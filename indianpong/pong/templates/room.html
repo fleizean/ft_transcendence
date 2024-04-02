@@ -18,7 +18,7 @@
           <aside class="chat-sidebar">
             <ul class="chat-sidebar-menu">
               <li class="active">
-                <a href="#" data-title="{{context.chatDMText}}"><i class="bi bi-chat-square-fill"></i></a>
+                <a onclick="swapApp('/chat')" data-title="{{context.chatDMText}}"><i class="bi bi-chat-square-fill"></i></a>
               </li>
             </ul>
           </aside>
@@ -53,13 +53,13 @@
                 <div class="conversation-user">
                   {% if room.first_user == request.user %}
                     <a class="room-profile-click" onclick="swapApp('/profile/{{room.second_user}}')">
-                    <img class="content-message-image" src="{{ room.second_user.avatar.url }}" alt="" /></a>
+                    <img class="content-message-image" src="{{ room.second_user.avatar.url }}" alt=""/></a>
                     <div id="userNameOnChat" class="conversation-user-name" >
                       {{ room.second_user }}
                     </div>
                   {% else %}
-                    <a class="room-profile-click" onclick="swapApp('/profile/{{room.first_user}}')">{{ room.first_user }}</a>
-                    <img class="content-message-image" src="{{ room.first_user.avatar.url }}" alt="" />
+                    <a class="room-profile-click" onclick="swapApp('/profile/{{room.first_user}}')">
+                    <img class="content-message-image" src="{{ room.first_user.avatar.url }}" alt=""/></a>
                     <div id="userNameOnChat" class="conversation-user-name" >
                       {{ room.first_user }}
                     </div>

@@ -2,8 +2,7 @@ import { initializeBurger } from './burger.js';
 import { initializeLogin, makeLogin } from './login.js';
 import { initializeSignup, makeRegister } from './signup.js';
 import { initializeProfile, toggleGame, matchHistoryChanger} from './profile.js';
-import { initializeSearch } from './search.js';
-import { initializeStore } from './store.js';
+import { initializeSearch, makeSearch } from './search.js';
 import { initializeInventory } from './inventory.js';
 import { editProfile, editPassword, editSocial, deleteAccount, changeAvatar, displaySection } from './profile-settings.js';
 import { getChat } from './base-chat.js'
@@ -15,6 +14,10 @@ function getCookie(name) {
 }
 
 const fill = document.querySelector('.progress-bar-fill');
+
+document.addEventListener('DOMContentLoaded', function() {
+  updateApp(window.location.pathname);
+});
 
 function updateApp(path) {
   showLoadingScreen();
@@ -70,13 +73,13 @@ window.initializeProfile = initializeProfile;
 window.toggleGame = toggleGame;
 window.matchHistoryChanger = matchHistoryChanger;
 window.initializeSearch = initializeSearch;
-window.initializeStore = initializeStore;
 window.initializeInventory = initializeInventory;
 window.editProfile = editProfile;
 window.editPassword = editPassword;
 window.editSocial = editSocial;
 window.deleteAccount = deleteAccount;
 window.changeAvatar = changeAvatar;
+window.makeSearch = makeSearch;
 window.displaySection = displaySection;
 window.getChat = getChat;
 window.innerChat = innerChat;
@@ -84,6 +87,7 @@ window.innerChat = innerChat;
 window.onpopstate = function(event) {
   if (window.location.hash == '') // Eğer # ile başlayan bir path değilse değişim yaptırıyoruz çünkü profile-settings alanında # ile başlayan path yönlendirmeleri var onlarla çakışıp yönlendirmeyi engelliyor.
     updateApp(window.location.pathname);
+  
 };
 
 function pageHandler(path) {
@@ -99,18 +103,21 @@ function pageHandler(path) {
     }
     else if(path.includes('/profile/'))
       initializeProfile();
-    else if(path.includes('/search'))
+    else if(path.includes('/search')) {
       initializeSearch();
-    else if(path.includes('/store/'))
-      initializeStore();
+      makeSearch();
+    }
+    else if(path.includes('/store/')) {
+      const script = document.createElement('script');
+      script.src = '/static/js/store.js';
+      document.body.appendChild(script);
+    }
     else if(path.includes('/inventory/'))
       initializeInventory();
     else if (pathParts[1] === 'chat' && pathParts.length === 3) {
-      console.log('chat1');
       getChat();
     }
     else if (pathParts[1] === 'chat' && pathParts.length === 4) {
-      console.log('chat');
       innerChat();
     }
     if (path != '/' && path != '/login' && path != '/signup')

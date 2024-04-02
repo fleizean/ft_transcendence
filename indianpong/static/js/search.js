@@ -11,7 +11,6 @@ export function initializeSearch() {
       button.addEventListener('click', (e) => {
         const username = e.target.getAttribute('data-username');
         let action = e.target.innerHTML.trim();
-        console.log(action);
         if (action == "अनुसरण करना" || action == "Seguir" || action == "Takip Et" || action == "Follow") {
           action = "follow"
         } else if (action == "अनफ़ॉलो" || action == "Deixar" || action == "Takipten Çık" || action == "Unfollow") {
@@ -50,4 +49,25 @@ export function initializeSearch() {
     });
 
     
+}
+
+export function makeSearch() {
+  var form = document.getElementById('searchForm');
+  var formData = new FormData(form);
+  var csrftoken = document.cookie.split('; ').find(row => row.startsWith('csrftoken')).split('=')[1];
+  fetch('/search', {
+    method: 'POST',
+    headers: {
+      'X-CSRFToken': csrftoken
+    },
+    body: formData
+  })
+  .then(response => response.text())
+  .then(data => {
+    document.body.innerHTML = data;
+    initializeSearch();
+  })
+  .catch(error => {
+    console.error(error);
+  });
 }

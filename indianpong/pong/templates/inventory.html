@@ -94,7 +94,7 @@
                         <i class="bi bi-gear-fill" style="color:white; font-size: 1.1em;"></i>
                       </button>
                     {% endif %}
-                    <form id="store_item_form{{ item.item.name }}" method="POST"  data-is-equipped="{{ item.is_equipped }}" onsubmit="event.preventDefault(); submitStoreItemForm(`{{ item.item.name }}`);">
+                    <form id="store_item_form{{ item.item.name }}" method="POST"  data-is-equipped="{{ item.is_equipped }}" onsubmit="event.preventDefault(); submitInventoryItemForm(`{{ item.item.name }}`);">
                       {% csrf_token %}
                       <input type="hidden" name="name" value="{{ item.item.name }}">
                       <input type="hidden" name="action" value="equip">
@@ -203,7 +203,7 @@ function saveProperty(itemId) {
     });
 }
 
-function submitStoreItemForm(itemName) {
+function submitInventoryItemForm(itemName) {
   const form = document.getElementById('store_item_form' + itemName);
   const formData = new FormData(form);
   // Access the data-is-equipped attribute

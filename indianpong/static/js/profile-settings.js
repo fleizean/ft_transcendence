@@ -24,7 +24,7 @@ function showToast(content, status, iconClass) {
 export function editProfile(username) {
     var formData = new FormData(); // FormData nesnesi oluştur
     var csrftoken = document.cookie.split('; ').find(row => row.startsWith('csrftoken')).split('=')[1];
-    
+    const lang = getCookie('selectedLanguage');
 
     // Form verilerini al
     formData.append('username', document.getElementById('id_username_profile').value);
@@ -32,7 +32,7 @@ export function editProfile(username) {
     formData.append('displayname', document.getElementById('id_displayname_profile').value);
     formData.append('profile_form', 'profile_form');
     // CSRF token'ı eklemek
-
+    
     fetch(`/profile/${username}/settings`, {
         method: 'POST',
         body: formData,
@@ -44,13 +44,21 @@ export function editProfile(username) {
     .then(data => {
         document.body.innerHTML = data;
         const message = document.querySelector('.container-top').dataset.message;
-        const error = document.querySelector('.container-top').dataset.error;
         if (message)
-        {   
             showToast(message, 'text-bg-success', 'bi bi-check-circle-fill');
+        else {
+            
+            if (lang === 'tr') {
+                showToast('Bir hata oluştu.', 'text-bg-danger', 'bi bi-x-circle-fill');
+            } else if (lang === 'hi') {
+                showToast('कोई त्रुटि हुई।', 'text-bg-danger', 'bi bi-x-circle-fill');
+            } else if (lang === 'pt')
+                showToast('Ocorreu um erro.', 'text-bg-danger', 'bi bi-x-circle-fill');
+            else {
+                showToast('An error occurred.', 'text-bg-danger', 'bi bi-x-circle-fill');
+            }
         }
-        else
-            showToast(error, 'text-bg-danger', 'bi bi-x-circle-fill');
+        
     })
     .catch(error => {
         console.error('Error:', error);
@@ -76,16 +84,10 @@ export function editPassword(username) {
     .then(data => {
         document.body.innerHTML = data;
         const message = document.querySelector('.container-top').dataset.message;
-        const error = document.querySelector('.container-top').dataset.error;
         var currentFragment = window.location.hash.substring(1);
         displaySection(currentFragment);
         if (message) {
             showToast(message, 'text-bg-success', 'bi bi-check-circle-fill');
-        } else if (error) {
-            // Hata mesajlarını göster
-            for (let platform in error) {
-                showToast("oç4" + error[platform][0], 'text-bg-danger', 'bi bi-x-circle-fill');
-            }
         } else {
             if (lang === 'tr') {
                 showToast('Bir hata oluştu.', 'text-bg-danger', 'bi bi-x-circle-fill');
@@ -123,16 +125,10 @@ export function editSocial(username) {
     .then(data => {
         document.body.innerHTML = data;
         const message = document.querySelector('.container-top').dataset.message;
-        const error = document.querySelector('.container-top').dataset.error;
         var currentFragment = window.location.hash.substring(1);
         displaySection(currentFragment);
         if (message) {
             showToast(message, 'text-bg-success', 'bi bi-check-circle-fill');
-        } else if (error) {
-            // Hata mesajlarını göster
-            for (let platform in error) {
-                showToast("oç5" + error[platform][0], 'text-bg-danger', 'bi bi-x-circle-fill');
-            }
         } else {
             if (lang === 'tr') {
                 showToast('Bir hata oluştu.', 'text-bg-danger', 'bi bi-x-circle-fill');

@@ -115,25 +115,7 @@
   <script>
     window.onload = function() {
       initializeSearch();
+      makeSearch();
     };
-
-    function makeSearch() {
-        var form = document.getElementById('searchForm');
-        var formData = new FormData(form);
-        fetch('/search', {
-          method: 'POST',
-          headers: {
-            'X-CSRFToken': csrftoken
-          },
-          body: formData
-        })
-        .then(response => response.text())
-        .then(data => {
-          document.body.innerHTML = data;
-        })
-        .catch(error => {
-          console.error(error);
-        });
-    }
   </script>
 {% endblock app %}

@@ -63,7 +63,7 @@
                             {% if profile.social.linkedin %}
                                 <a href="https://www.linkedin.com/in/{{profile.social.linkedin}}" target="_blank" style="text-decoration: none;"><p class="mb-0">{{profile.social.linkedin}} - LinkedIn</p></a>
                             {% else %}
-                                <p class="mb-0">No LinkedIn</p>
+                                <p class="mb-0">{{context.profileLinkedinSocialText}}</p>
                             {% endif %}
                         </li>
                         <!-- GitHub -->
@@ -72,7 +72,7 @@
                             {% if profile.social.github %}
                                 <a href="https://github.com/{{profile.social.github}}" target="_blank" style="text-decoration: none;"><p class="mb-0">{{profile.social.github}} - Github</p></a>
                             {% else %}
-                                <p class="mb-0">No Github</p>
+                                <p class="mb-0">{{context.profileGithubSocialText}}</p>
                             {% endif %}
                         </li>
                         <!-- Twitter -->
@@ -81,7 +81,7 @@
                             {% if profile.social.twitter %}
                                 <a href="https://x.com/{{profile.social.twitter}}" target="_blank" style="text-decoration: none;"><p class="mb-0">{{profile.social.twitter}} - Twitter</p></a>
                             {% else %}
-                                <p class="mb-0">No Twitter</p>
+                                <p class="mb-0">{{context.profileTwitterSocialText}}</p>
                             {% endif %}
                         </li>
                         <!-- Instagram -->
@@ -90,7 +90,7 @@
                             {% if profile.social.intra42 %}
                                 <a href="https://profile.intra.42.fr/users/{{profile.social.intra42}}" target="_blank" style="text-decoration: none;"><p class="mb-0">{{profile.social.intra42}} - Intra42</p></a>
                             {% else %}
-                                <p class="mb-0">No Intra42</p>
+                                <p class="mb-0">{{context.profileIntra42SocialText}}</p>
                             {% endif %}
                         </li>
                     </ul>
@@ -251,7 +251,7 @@
                                 <button type="button" class="switch-btn" onclick="toggleGame()">✂️</button>
                             </div>
                             <!-- Proje Durumu Başlığı -->
-                            <p class="mb-4"><span class="text-primary font-italic me-1">{{profile.username}} </span>/ Stats</p>
+                            <p class="mb-4"><span class="text-primary font-italic me-1">{{profile.username}} </span>/ {{context.profileStatsText}}</p>
                             <div class="stats-info-pong" id="stats-info-pong">
                                 <div class="stats">
                                     <p class="stats-p"><i class="bi bi-dice-1-fill"></i> {{context.profileGameStats1}}</p>

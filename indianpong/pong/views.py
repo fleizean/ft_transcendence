@@ -308,7 +308,7 @@ def profile_view(request, username):
 def rps_game_find(request):
     lang = request.COOKIES.get('selectedLanguage', 'en')
     context = langs.get_langs(lang)
-    return render(request, "rps-game-find.html", {"context": context})
+    return HttpResponse(render_to_string("rps-game-find.html", {"context": context, "request": request}))
 
 
 ## Pong Game ##
@@ -317,7 +317,7 @@ def rps_game_find(request):
 def pong_game_find(request):
     lang = request.COOKIES.get('selectedLanguage', 'en')
     context = langs.get_langs(lang)
-    return render(request, "pong-game-find.html", {"context": context})
+    return HttpResponse(render_to_string("pong-game-find.html", {"context": context, "request": request}))
 
 ### Profile Settings ###
 @login_required()

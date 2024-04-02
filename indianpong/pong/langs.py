@@ -289,6 +289,11 @@ def get_lang_en():
         "profileTitleText1": "42 Kocaeli Student",
         "profileTitleText2": "Software Developer",
 
+        "profileLinkedinSocialText": "No Linkedin",
+        "profileGithubSocialText": "No Github",
+        "profileTwitterSocialText": "No Twitter",
+        "profileIntra42SocialText": "No Intra42",
+
         "profileMatchHistoryText1": "Opponent",
         "profileMatchHistoryText2": "Result",
         "profileMatchHistoryText3": "Score",
@@ -298,6 +303,7 @@ def get_lang_en():
         "profileMatchHistoryLoseText": "Lose",
 
         "profileRankText1": "Rank",
+        "profileStatsText": "Stats",
 
         "profileGameStats1": "Games Played:",
         "profileGameStats2": "Wins:",
@@ -640,6 +646,11 @@ def get_lang_tr():
         "profileTitleText1": "42 Kocaeli Öğrencisi",
         "profileTitleText2": "Yazılım Geliştirici",
 
+        "profileLinkedinSocialText": "LinkedIn Yok",
+        "profileGithubSocialText": "Github Yok",
+        "profileTwitterSocialText": "Twitter Yok",
+        "profileIntra42SocialText": "Intra42 Yok",
+
         "profileMatchHistoryText1": "Rakip",
         "profileMatchHistoryText2": "Sonuç",
         "profileMatchHistoryText3": "Puan",
@@ -649,6 +660,7 @@ def get_lang_tr():
         "profileMatchHistoryLoseText": "Kaybetti",
 
         "profileRankText1": "Sıra",
+        "profileStatsText": "İstatistikler",
 
         "profileGameStats1": "Oynanan Oyunlar:",
         "profileGameStats2": "Kazanmalar:",
@@ -989,6 +1001,11 @@ def get_lang_pt():
         "profileTitleText1": "Estudante da 42 Kocaeli",
         "profileTitleText2": "Desenvolvedor de Software",
 
+        "profileLinkedinSocialText": "Sem LinkedIn",
+        "profileGithubSocialText": "Sem Github",
+        "profileTwitterSocialText": "Sem Twitter",
+        "profileIntra42SocialText": "Sem Intra42",
+
         "profileMatchHistoryText1": "Oponente",
         "profileMatchHistoryText2": "Resultado",
         "profileMatchHistoryText3": "Pontos",
@@ -998,6 +1015,7 @@ def get_lang_pt():
         "profileMatchHistoryLoseText": "Perdeu",
 
         "profileRankText1": "Classificacão",
+        "profileStatsText": "Estatísticas",
 
         "profileGameStats1": "Jogos Jogados:",
         "profileGameStats2": "Vitórias:",
@@ -1339,6 +1357,11 @@ def get_lang_hi():
         "profileTitleText1": "42 स्कूल समुदाय",
         "profileTitleText2": "पॉन्ग खिलाड़ी",
 
+        "profileLinkedinSocialText": "कोई लिंक्डइन नहीं",
+        "profileTwitterSocialText": "कोई ट्विटर नहीं",
+        "profileGithubSocialText": "कोई गिटहब नहीं",
+        "profileIntraSocialText": "कोई इंट्रा नहीं",
+
         "profileMatchHistoryText1": "प्रतिद्वंद्वी",
         "profileMatchHistoryText2": "परिणाम",
         "profileMatchHistoryText3": "अंक",
@@ -1348,7 +1371,8 @@ def get_lang_hi():
         "profileMatchHistoryLoseText": "हारा",
 
         "profileRankText1": "रैंक",
-
+        "profileStatsText": "आंकड़े",
+        
         "profileGameStats1": "खेल खेले गए:",
         "profileGameStats2": "जीतें:",
         "profileGameStats3": "हारें:",
