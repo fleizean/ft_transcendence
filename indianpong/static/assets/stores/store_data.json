@@ -148,20 +148,5 @@
         "price": 200,
         "keypress": "2",
         "show_status": true
-    },
-    {
-        "category_name": "All",
-        "name": "DJ Give Me The Music",
-        "name_hi": "डीजे मुझे संगीत दे",
-        "name_pt": "DJ Me Dê a Música",
-        "name_tr": "DJ Bana Müzik Ver",
-        "image_url": "djplaythemusic.webp",
-        "description": "This feature activates in-game (pong, rps) music.",
-        "description_hi": "यह सुविधा खेल (पोंग, आरपीएस) संगीत को सक्रिय करती है।",
-        "description_pt": "Este recurso ativa a música do jogo (pong, rps).",
-        "description_tr": "Bu özellik oyun (pong, rps) müziğini etkinleştirir.",
-        "price": 100,
-        "keypress": "none",
-        "show_status": true
     }
 ]

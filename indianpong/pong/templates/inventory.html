@@ -81,7 +81,7 @@
                   <a onclick="swapApp('/inventory/?category_name={{item.item.category_name}}')">#{% if item.item.category_name == 'All' %}{{context.storeTagText }}{% else %}{{item.item.category_name}}{%endif%}</a>
                 </h4>
                 <span class="card__description">{% if selected_language == 'hi' and item.item.description_hi %} {{item.item.description_hi}} {% elif selected_language == 'pt' and item.item.description_pt %}{{item.item.description_pt}} {% elif selected_language == 'tr' and item.item.description_tr %}{{ item.item.description_tr }} {% else %} {{item.item.description}} {% endif %}</span>
-                {% if item.item.name != "My Playground" and item.item.name != "My Beautiful AI" and item.item.name != "My Beautiful Paddle" and item.item.name != "Giant-Man" and item.item.name != "Rage of Fire" and item.item.name != "DJ Give Me The Music" %}
+                {% if item.item.name != "My Playground" and item.item.name != "My Beautiful AI" and item.item.name != "My Beautiful Paddle" and item.item.name != "Giant-Man" and item.item.name != "Rage of Fire" %}
                   <span class="card__key-info"><span class="red">{{context.inventoryItemKeyboardInfoText}} <span style="font-weight: 500;">"{{item.item.keypress}}" </span> {{context.inventoryItemKeyboardInfoText2}}</span></span>
                 {% else %}
                   <span class="card__key-info orange">{{context.inventoryItemKeyboardInfoText3}}</span>

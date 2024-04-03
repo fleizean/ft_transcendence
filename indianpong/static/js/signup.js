@@ -1,4 +1,4 @@
-function initializeSignup() {
+export function initializeSignup() {
   const passwordInput1 = document.getElementById('id_password1');
   const passwordInput2 = document.getElementById('id_password2');
   const toggleButton1 = document.getElementById('togglePassword1');
@@ -89,7 +89,9 @@ function showToast(content, status, iconClass) {
   }, 8000);
 }
 
-function makeRegister() {
+export function makeRegister(check) {
+  if (!check)
+    return;
   var form = document.getElementById('registerForm');
   var formData = new FormData(form);
   var csrftoken = document.cookie.split('; ').find(row => row.startsWith('csrftoken')).split('=')[1];

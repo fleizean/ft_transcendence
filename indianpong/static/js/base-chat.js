@@ -1,6 +1,11 @@
 export function getChat(username) {
+    if (!username) {
+        return;
+    }
+
     var csrftoken = document.cookie.split('; ').find(row => row.startsWith('csrftoken')).split('=')[1];
-    fetch(`/start_chat/${username}`, {  // URL'yi dinamik olarak oluştur
+    
+    fetch(`/start_chat/${username}`, {
         method: 'POST',
         body: JSON.stringify({ username: username }),
         headers: {
@@ -8,15 +13,22 @@ export function getChat(username) {
             'X-CSRFToken': csrftoken
         },
     })
-    .then(response => response.json())
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json();
+    })
     .then(data => {
-        const roomId = data.room_id;
+        if (!data.room_id) {
+            throw new Error('Invalid response: missing room_id');
+        }
         
-        // Chat odası için yeni bir URL oluştur
-        const newUrl = `/chat/${roomId}/`;  // URL'yi bu şekilde güncelle
+        const roomId = data.room_id;
+        const newUrl = `/chat/${roomId}/`;
         swapApp(newUrl);
     })
     .catch(error => {
-        console.error('Error:', error);
+        console.error('Error:', error.message);
     });
 }

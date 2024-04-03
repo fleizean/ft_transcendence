@@ -108,9 +108,13 @@
                 </div>
             </div>
             <script type="module" src="{% static "js/navigation.js" %}"></script>
+            
             <script>
+                var animationId;
+
                 function setLanguage(language) {
                   document.cookie = "selectedLanguage=" + language;
+                  
                   swapApp(window.location.pathname);
                 }
             </script>

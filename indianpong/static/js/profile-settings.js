@@ -21,7 +21,10 @@ function showToast(content, status, iconClass) {
     }, 8000);
 }
 
-function editProfile(username) {
+export function editProfile(username) {
+    if (!username)
+        return;
+
     var formData = new FormData(); // FormData nesnesi oluştur
     var csrftoken = document.cookie.split('; ').find(row => row.startsWith('csrftoken')).split('=')[1];
     const lang = getCookie('selectedLanguage');
@@ -65,7 +68,10 @@ function editProfile(username) {
     });
 };
 
-function editPassword(username) {
+export function editPassword(username) {
+    if (!username)
+        return;
+
     var formData = new FormData(); // FormData nesnesi oluştur
     var csrftoken = document.cookie.split('; ').find(row => row.startsWith('csrftoken')).split('=')[1];
     formData.append('old_password', document.getElementById('id_old_password').value);
@@ -105,7 +111,10 @@ function editPassword(username) {
     });
 };
 
-function editSocial(username) {
+export function editSocial(username) {
+    if (!username)
+        return;
+
     var formData = new FormData(); // FormData nesnesi oluştur
     var csrftoken = document.cookie.split('; ').find(row => row.startsWith('csrftoken')).split('=')[1];
     formData.append('linkedin', document.getElementById('id_linkedin').value);
@@ -147,7 +156,10 @@ function editSocial(username) {
 
 };
 
-function deleteAccount(username) {
+export function deleteAccount(username) {
+    if (!username)
+        return;
+
     var formData = new FormData(); // FormData nesnesi oluştur
     var csrftoken = document.cookie.split('; ').find(row => row.startsWith('csrftoken')).split('=')[1];
     formData.append('email', document.getElementById('id_email').value);
@@ -169,58 +181,61 @@ function deleteAccount(username) {
     });
 };
 
-function changeAvatar(username) {
-        const fileInput = document.getElementById('id_avatar');
-        var csrftoken = document.cookie.split('; ').find(row => row.startsWith('csrftoken')).split('=')[1];
-        var file = fileInput.files[0];  
-        const lang = getCookie('selectedLanguage');
-        if (file.size > 2 * 1024 * 1024) { // 1MB
-            showToast("Photo must be under 2MB!", "text-bg-danger", "bi bi-image");
-        }
-        else {
-            var formData = new FormData(); // FormData nesnesini oluştur
+export function changeAvatar(username) {
 
-            formData.append('avatar', file);
+    if (!username)
+        return;
 
-            // avatar_form verisini ekle
-            formData.append('avatar_form', 'avatar_form');
-
-            // CSRF token'ı eklemek
-            fetch(`/profile/${username}/settings`, {
-                method: 'POST',
-                body: formData,
-                headers: {
-                    'X-CSRFToken': csrftoken
-                },
-            })
-            .then(response => response.text())
-            .then(data => {
-                document.body.innerHTML = data;
-                const message = document.querySelector('.container-top').dataset.message;
-                const error = document.querySelector('.container-top').dataset.error;
-                if (message) {
-                    showToast(message, 'text-bg-success', 'bi bi-check-circle-fill');
+    const fileInput = document.getElementById('id_avatar');
+    var csrftoken = document.cookie.split('; ').find(row => row.startsWith('csrftoken')).split('=')[1];
+    var file = fileInput.files[0];  
+    const lang = getCookie('selectedLanguage');
+    if (file.size > 2 * 1024 * 1024) { // 1MB
+        showToast("Photo must be under 2MB!", "text-bg-danger", "bi bi-image");
+    }
+    else {
+        var formData = new FormData(); // FormData nesnesini oluştur
+        formData.append('avatar', file);
+        // avatar_form verisini ekle
+        formData.append('avatar_form', 'avatar_form');
+        // CSRF token'ı eklemek
+        fetch(`/profile/${username}/settings`, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRFToken': csrftoken
+            },
+        })
+        .then(response => response.text())
+        .then(data => {
+            document.body.innerHTML = data;
+            const message = document.querySelector('.container-top').dataset.message;
+            const error = document.querySelector('.container-top').dataset.error;
+            if (message) {
+                showToast(message, 'text-bg-success', 'bi bi-check-circle-fill');
+            } else {
+                if (lang === 'tr') {
+                    showToast('Bir hata oluştu.', 'text-bg-danger', 'bi bi-x-circle-fill');
+                } else if (lang === 'hi') {
+                    showToast('कोई त्रुटि हुई।', 'text-bg-danger', 'bi bi-x-circle-fill');
+                } else if (lang === 'pt') {
+                    showToast('Ocorreu um erro.', 'text-bg-danger', 'bi bi-x-circle-fill');
                 } else {
-                    if (lang === 'tr') {
-                        showToast('Bir hata oluştu.', 'text-bg-danger', 'bi bi-x-circle-fill');
-                    } else if (lang === 'hi') {
-                        showToast('कोई त्रुटि हुई।', 'text-bg-danger', 'bi bi-x-circle-fill');
-                    } else if (lang === 'pt') {
-                        showToast('Ocorreu um erro.', 'text-bg-danger', 'bi bi-x-circle-fill');
-                    } else {
-                        showToast('An error occurred.', 'text-bg-danger', 'bi bi-x-circle-fill');
-                    }
+                    showToast('An error occurred.', 'text-bg-danger', 'bi bi-x-circle-fill');
                 }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
         }
 }
 
-function displaySection(sectionId) {
+export function displaySection(sectionId) {
     var sections = ["editProfile", "addSocial", "closeAccount","blockedUsers", "changePassword"];
 
+    if (!sectionId)
+        return;
     for (var i = 0; i < sections.length; i++) {
         var section = document.getElementById(sections[i]);
         if (sections[i] === sectionId) {

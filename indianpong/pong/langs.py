@@ -114,8 +114,7 @@ def get_lang_en():
             "aiGamePageTittle": "AI Game",
             "aiGameReactionDelayText": "Reaction Delay",
             "aiGameGetReadyText": "Get Ready",
-            "aiGamePresSpaceText": "Press 'Space' to start",
-            "aiGameCountdownText": "Starting in",
+            "aiGameStartButtonText": "Start",
 
             "aiGameGameOverText": "Game Over",
             "aiGameRestartButtonText": "Restart",
@@ -467,8 +466,7 @@ def get_lang_tr():
             "aiGamePageTittle": "Pong Yapay Zeka Oyunu",
             "aiGameReactionDelayText": "Tepki Gecikmesi",
             "aiGameGetReadyText": "Hazir Ol",
-            "aiGamePresSpaceText": "'Space' tuşuna basarak başla",
-            "aiGameCountdownText": "Başlıyor",
+            "aiGameStartButtonText": "Başlat",
 
             "aiGameGameOverText": "Oyun Bitti",
             "aiGameRestartButtonText": "Yeniden",
@@ -827,8 +825,7 @@ def get_lang_pt():
             "aiGamePageTittle": "Jogo de Pong com a IA",
             "aiGameReactionDelayText": "Atraso na Reacão",
             "aiGameGetReadyText": "Prepare-se",
-            "aiGamePresSpaceText": "Pressione 'Espaco' para iniciar",
-            "aiGameCountdownText": "Iniciando em",
+            "aiGameStartButtonText":"Começar",
 
             "aiGameGameOverText": "Fim de Jogo",
             "aiGameRestartButtonText": "Reiniciar",
@@ -1180,8 +1177,7 @@ def get_lang_hi():
             "aiGamePageTittle": "ए.आई. के साथ पॉन्ग खेल",
             "aiGameReactionDelayText": "प्रतिक्रिया में देरी",
             "aiGameGetReadyText": "तैयार हो जाओ",
-            "aiGamePresSpaceText": "शुरू करने के लिए 'स्पेस' दबाएं",
-            "aiGameCountdownText": "में शुरू हो रहा है",
+            "aiGameStartButtonText": "शुरू करें",
 
             "aiGameGameOverText": "खेल समाप्त हो गया",
             "aiGameRestartButtonText": "पुनः आरंभ",

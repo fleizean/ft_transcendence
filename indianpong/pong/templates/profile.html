@@ -105,7 +105,7 @@
             <div class="match-history-card" >
                 <div class="card-body">
                     <div class="select-history">
-                        <button type="button" class="changer-btn" onclick="matchHistoryChanger()">✂️</button>
+                        <button type="button" class="changer-btn" onclick="matchHistoryChanger('status')">✂️</button>
                     </div>
                     <div class="match-history-pong" id="match-history-pong">
                         <div class="pong-header">
@@ -250,7 +250,7 @@
                     <div class="card mb-4 mb-md-0" style="background-color:white !important; margin-top:10px; height: 328px;">
                         <div class="card-body">
                             <div class="switcher-game">
-                                <button type="button" class="switch-btn" onclick="toggleGame()">✂️</button>
+                                <button type="button" class="switch-btn" onclick="toggleGame('status')">✂️</button>
                             </div>
                             <!-- Proje Durumu Başlığı -->
                             <p class="mb-4"><span class="text-primary font-italic me-1">{{profile.username}} </span>/ {{context.profileStatsText}}</p>

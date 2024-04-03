@@ -268,6 +268,7 @@ def logout_view(request):
 def profile_view(request, username):
     profile = get_object_or_404(UserProfile, username=username)
     lang = request.COOKIES.get('selectedLanguage', 'en')
+    
     context = langs.get_langs(lang)
     game_records = Game.objects.filter(
         Q(player1=profile) | Q(player2=profile),
@@ -767,9 +768,8 @@ def play_ai(request, game_type, game_id):
     fastandfurious = get_equipped_item_value(user_items, "Fast and Furious", "None")
     rageoffire = get_equipped_item_value(user_items, "Rage of Fire", "None")
     frozenball = get_equipped_item_value(user_items, "Frozen Ball", "None")
-    givemethemusic = get_equipped_item_value(user_items, "DJ Give Me The Music", "None")
 
-    return HttpResponse(render_to_string("play-ai.html", {"ainametag": ainametag, "paddlecolor": paddlecolor, "playgroundcolor": playgroundcolor, "giantman": giantman, likeacheater: likeacheater, "fastandfurious": fastandfurious, "rageoffire": rageoffire, "frozenball": frozenball, "givemethemusic": givemethemusic, "context": context, "request": request, "username": username}))
+    return HttpResponse(render_to_string("play-ai.html", {"ainametag": ainametag, "paddlecolor": paddlecolor, "playgroundcolor": playgroundcolor, "giantman": giantman, likeacheater: likeacheater, "fastandfurious": fastandfurious, "rageoffire": rageoffire, "frozenball": frozenball, "context": context, "request": request, "username": username}))
 
 
 @never_cache

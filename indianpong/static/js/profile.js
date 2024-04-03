@@ -1,6 +1,9 @@
 var isRPSVisibleHistory = true; 
 
-function matchHistoryChanger() {
+export function matchHistoryChanger(status) {
+    
+    if (!status)
+        return;
     var switcherBtn = document.querySelector(".changer-btn");
     var historyPong = document.getElementById('match-history-pong');
     var historyRPS = document.getElementById('match-history-rps');
@@ -23,7 +26,9 @@ function matchHistoryChanger() {
 
 var isRPSVisibleStats = true; 
 
-function toggleGame() {
+export function toggleGame(status) {
+    if (!status)
+        return;
     var switcherBtn = document.querySelector(".switch-btn");
     var statsPong = document.getElementById('stats-info-pong');
     var statsRPS = document.getElementById('stats-info-rps');
@@ -44,8 +49,9 @@ function toggleGame() {
     // Durumu tersine çevir
 }
 
-function followButton(username) {
-    console.log(username);
+export function followButton(username) {
+    if(!username)
+        return;
     var csrftoken = document.cookie.split('; ').find(row => row.startsWith('csrftoken')).split('=')[1];
     var button = document.getElementById('followbtn');
     var button2 = document.getElementById('unfollowbtn');
@@ -66,7 +72,9 @@ function followButton(username) {
     });
 }
 
-function unfollowButton(username) {
+export function unfollowButton(username) {
+    if(!username)
+        return;
     var csrftoken = document.cookie.split('; ').find(row => row.startsWith('csrftoken')).split('=')[1];
     var button = document.getElementById('unfollowbtn');
     var button2 = document.getElementById('followbtn');

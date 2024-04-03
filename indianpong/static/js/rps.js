@@ -73,9 +73,7 @@ let score = 0;
 
 const ICON_PATH = document.querySelector('.container-top').dataset.iconpath;
 
-const MUSIC_PATH = document.querySelector('.container-top').dataset.musicpath;
 
-var GameSound = new Audio();
 // Game Logic
 choiceButtons.forEach((button) => {
     button.addEventListener("click", () => {
@@ -100,19 +98,11 @@ function choose(choice) {
         document.getElementById("godthings-choice").style.display = "none";
     }
     
-    findMusic(choice.name);
     displayResults([choice, aichoice]);
     displayWinner([choice, aichoice]);
 
 }
 
-function findMusic(string){
-
-    const music = `rps-${string}.mp3`;
-    console.log(music);
-    const SoundChoice = new Audio(MUSIC_PATH + music);
-    playMusic(SoundChoice);
-}
 
 function filterChoices(excludedChoices) {
     return CHOICES.filter(choice => !excludedChoices.includes(choice.name));
@@ -173,31 +163,25 @@ function displayResults(results) {
 function displayWinner(results) {
     setTimeout(() => {
         const winner = isWinner(results);
-        let tempmusicname = "";
         if (winner == "user") {
             resultText.innerText = selectedLanguage ? translationswin[selectedLanguage] : translationswin['en'] ;
             resultDivs[0].classList.toggle("winner");
             keepScore(1, results[0].name);
-            tempmusicname = "winonce";
         } else if (winner == "ai") {
             resultText.innerText = selectedLanguage ? translationslose[selectedLanguage] : translationslose['en'] ;
             resultDivs[1].classList.toggle("winner");
             keepScore(-1, results[1].name);
-            tempmusicname = "loseonce";
         } else {
             resultText.innerText = selectedLanguage === "hi" ? "खींचना" :
                 selectedLanguage === "pt" ? "empate" :
                 selectedLanguage === "tr" ? "berabere":
                 "draw";
-
-            tempmusicname = "drawonce";
         }
 
         if (MAX_SCORE_RPS == parseInt(scoreNumber1.innerText) || MAX_SCORE_RPS == parseInt(scoreNumber2.innerText)) {
             showGameOverScreenRPS();
         }
         else {
-            findMusic(tempmusicname);
             resultWinner.classList.toggle("hidden");
             resultsDiv.classList.toggle("show-winner");
         }
@@ -222,7 +206,6 @@ function showGameOverScreenRPS() {
         document.getElementById('gameOverScreen').style.backgroundColor = 'rgba(20, 5, 5, 0.8)';
     }
     
-    findMusic(Result);
     document.getElementById('gameOverScreen').style.display = 'block';
 }
 
@@ -359,19 +342,4 @@ function sendWinnerToBackend(winner, loser, winnerscore, loserscore, start_time)
     .catch(error => {
         console.error('There was a problem updating the winner:', error);
     });
-}
-
-function playMusic(Sound) {
-    if(GameSound){
-        GameSound.pause();
-        GameSound.currentTime = 0;
-    }
-    GameSound = Sound;
-
-    setTimeout(function() {
-        if (GameSound) {
-            //GameSound.currentTime = 0.2;
-            GameSound.play();
-        }
-    }, 50);  
 }

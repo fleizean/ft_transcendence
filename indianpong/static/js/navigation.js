@@ -1,6 +1,12 @@
 import { initializeBurger } from './burger.js';
 import { getChat } from './base-chat.js'
 import { innerChat } from './chat.js';
+import { makeRegister, initializeSignup } from './signup.js';
+import { makeLogin, initializeLogin } from './login.js';
+import { editProfile, editPassword, editSocial, deleteAccount, changeAvatar, displaySection } from './profile-settings.js';
+import { matchHistoryChanger, toggleGame, followButton, unfollowButton } from './profile.js';
+import { Game } from './game/play-ai.js';
+
 
 function getCookie(name) {
   const cookieValue = document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)');
@@ -61,45 +67,58 @@ window.initializeBurger = initializeBurger;
 window.swapApp = swapApp;
 window.getChat = getChat;
 window.innerChat = innerChat;
+window.makeRegister = makeRegister;
+window.initializeSignup = initializeSignup;
+window.makeLogin = makeLogin;
+window.initializeLogin = initializeLogin;
+window.editProfile = editProfile;
+window.editPassword = editPassword;
+window.editSocial = editSocial;
+window.deleteAccount = deleteAccount;
+window.changeAvatar = changeAvatar;
+window.displaySection = displaySection;
+window.matchHistoryChanger = matchHistoryChanger;
+window.toggleGame = toggleGame;
+window.followButton = followButton;
+window.unfollowButton = unfollowButton;
+window.Game = Game;
+
 
 window.onpopstate = function(event) {
-  if (window.location.hash == '') // Eğer # ile başlayan bir path değilse değişim yaptırıyoruz çünkü profile-settings alanında # ile başlayan path yönlendirmeleri var onlarla çakışıp yönlendirmeyi engelliyor.
+  if (window.location.hash == '') {
     updateApp(window.location.pathname);
+  }
   
 };
 
-function addScript(pathway) {
-  const script = document.createElement('script');
-  script.src = '/static/js/' + pathway + '.js';
-  document.body.appendChild(script);
-}
 
 function pageHandler(path) {
     const pathParts = path.split('/');
-
+    console.log('animation:' +animationId);
+    if (animationId) {
+      cancelAnimationFrame(animationId);
+    }
     if (path.includes('/login')) {
-      //addScript('login');
-      const script = document.createElement('script');
-      script.src = '/static/js/login.js';
-      document.body.appendChild(script);
+      makeLogin();
+      initializeLogin();
     }
     else if (path.includes('/signup')) {
-      //addScript('signup');
-      const script = document.createElement('script');
-      script.src = '/static/js/signup.js';
-      document.body.appendChild(script);
+      makeRegister();
+      initializeSignup();
     }
     else if(path.includes('/settings')) {
-      //addScript('profile-settings');
-      const script = document.createElement('script');
-      script.src = '/static/js/profile-settings.js';
-      document.body.appendChild(script);
+      editProfile();
+      editPassword();
+      editSocial();
+      deleteAccount();
+      changeAvatar();
+      displaySection();
     }
     else if(path.includes('/profile/')) {
-      //addScript('profile');
-      const script = document.createElement('script');
-      script.src = '/static/js/profile.js';
-      document.body.appendChild(script);
+      matchHistoryChanger();
+      toggleGame();
+      followButton();
+      unfollowButton();
     }
     else if(path.includes('/search')) {
       //addScript('search');
@@ -125,8 +144,9 @@ function pageHandler(path) {
     else if (pathParts[1] === 'chat' && pathParts.length === 4) {
       innerChat();
     }
-    else if (path.includes('/play-ai/'))
-    {
+    else if (path.includes('/play-ai/')) {
+      Game();
+     
     }
     if (path != '/' && path != '/login' && path != '/signup')
       initializeBurger();

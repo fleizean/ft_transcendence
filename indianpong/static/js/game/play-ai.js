@@ -1,70 +1,14 @@
 
-const canvas = document.getElementById('pongCanvas');
-var ctx = canvas.getContext("2d");
-canvas.width = 800;
-canvas.height = 600;
-
-
-const canvasContainer = document.querySelector('.ai-game');
-const username = document.querySelector('.container-top').dataset.username;
-const ainame = document.querySelector('.container-top').dataset.ainame;
-const paddleColor = document.querySelector('.container-top').dataset.paddlecolor;
-const playgroundColor = document.querySelector('.container-top').dataset.playgroundcolor;
-canvas.style.borderColor = playgroundColor; // Set the border color to the specified color
-
-// Pong Abilities
-const giantMan = document.querySelector('.container-top').dataset.giantman;
-const likeaCheater = document.querySelector('.container-top').dataset.likeacheater;
-const fastandFurious = document.querySelector('.container-top').dataset.fastandfurious;
-const rageofFire = document.querySelector('.container-top').dataset.rageoffire;
-const frozenBall = document.querySelector('.container-top').dataset.frozenball;
-const givemethemusic = document.querySelector('.container-top').dataset.givemethemusic;
-
-const MUSIC_PATH = document.querySelector('.container-top').dataset.musicpath;
-
-var gameMusic = false;
-var defeatMusic = false;
-var victoryMusic = false;
-var victorySound = new Audio(MUSIC_PATH+ 'pong-victory-sound.mp3');
-var defeatSound = new Audio(MUSIC_PATH+ 'pong-defeat-sound.mp3');
-var gameSound = new Audio(MUSIC_PATH+ 'pong-music.mp3');
-var lpaddleSound = new Audio(MUSIC_PATH+ 'one_beep_2_left.mp3');
-var rpaddleSound = new Audio(MUSIC_PATH+ 'one_beep_2_right.mp3');
-var wallSound = new Audio(MUSIC_PATH+ 'one_beep.mp3');
-
-/* Skill sounds */
-var fastandFuriousSound = new Audio(MUSIC_PATH+ 'fast-and-furious.mp3');
-var frozenBallSound = new Audio(MUSIC_PATH+ 'frozen-ball.mp3');
-
-/* gameSound.volume = 0.07; */
-/* Cordinates of the canvas */
-var textWidth1 = ctx.measureText(username + ": " + score1).width;
-var textWidth2 = ctx.measureText(ainame + ": " + score2).width;
-
+export function Game() {
 var usernameX = 10;
 var usernameY = 20;
 var start_time;
-// ainame metni sağ üst köşede
-var ainameX = canvas.width - textWidth2 - 10;
-var ainameY = 20;
 
-// if giantMan abilities equiped
-var abilities_paddleHeight = (giantMan == "true") ? 115 : 100;
-var paddleWidth = 10;
-var paddleHeight = 100;
-var paddleSpeed = 15;
-var paddleY = (canvas.height - paddleHeight) / 2;
-var paddle1 = {x: 0, y: paddleY, width: paddleWidth, height: abilities_paddleHeight, dy: paddleSpeed};
-var paddle2 = {x: canvas.width - paddleWidth, y: paddleY, width: paddleWidth, height: abilities_paddleHeight, dy: paddleSpeed};
 
-// Ball object
-var ball = {x: canvas.width / 2, y: canvas.height / 2, radius: 10, speed: 5, dx: 1, dy: 1};
-
-// Scores
 var score1 = 0;
 var score2 = 0;
 
-const MAX_SCORE = 3;
+const MAX_SCORE = 1;
 
 // Player Abilities
 var likeaCheaterCount = 0;
@@ -76,7 +20,6 @@ var aiFastandFuriousCount = 0;
 
 var isFrozenBallActive = false;
 
-// Add a new variable to track if the game is paused
 let isScored = false;
 var gameScreen = false;
 var gameStarted = false;
@@ -86,9 +29,73 @@ let downPressed = false;
 let upPressedAI = false;
 let firstMove = false;
 let downPressedAI = false;
-// Add a new variable for AI's target position
+
+
+
+
+var paddleWidth = 10;
+var paddleHeight = 100;
+var paddleSpeed = 15;
+
 let moveThreshold = 8;
-let targetY = paddle2.y;
+
+function utilizeGameUtils() {
+    const username = document.querySelector('.container-top').dataset.username;
+    var ainame = document.querySelector('.container-top').dataset.ainame;
+    const paddleColor = document.querySelector('.container-top').dataset.paddlecolor;
+    const giantMan = document.querySelector('.container-top').dataset.giantman;
+    const likeaCheater = document.querySelector('.container-top').dataset.likeacheater;
+    const fastandFurious = document.querySelector('.container-top').dataset.fastandfurious;
+    const rageofFire = document.querySelector('.container-top').dataset.rageoffire;
+    const frozenBall = document.querySelector('.container-top').dataset.frozenball;
+    const MUSIC_PATH = document.querySelector('.container-top').dataset.musicpath;
+    
+
+
+    var abilities_paddleHeight = (giantMan == "true") ? 115 : 100;
+
+    return { username, ainame, paddleColor, giantMan, likeaCheater, fastandFurious, rageofFire, frozenBall, abilities_paddleHeight, MUSIC_PATH};
+}
+
+var { username, ainame, paddleColor, giantMan, likeaCheater, fastandFurious, rageofFire, frozenBall, abilities_paddleHeight, MUSIC_PATH } = utilizeGameUtils();
+
+var gameMusic = false;
+var defeatMusic = false;
+var victoryMusic = false;
+var victorySound = new Audio(MUSIC_PATH+ 'pong-victory-sound.mp3');
+var defeatSound = new Audio(MUSIC_PATH+ 'pong-defeat-sound.mp3');
+var gameSound = new Audio(MUSIC_PATH+ 'pong-music.mp3');
+var lpaddleSound = new Audio(MUSIC_PATH+ 'one_beep_2_left.mp3');
+var rpaddleSound = new Audio(MUSIC_PATH+ 'one_beep_2_right.mp3');
+var wallSound = new Audio(MUSIC_PATH+ 'one_beep.mp3');
+
+
+/* Skill sounds */
+var fastandFuriousSound = new Audio(MUSIC_PATH+ 'fast-and-furious.mp3');
+var frozenBallSound = new Audio(MUSIC_PATH+ 'frozen-ball.mp3');
+
+function utilizeCanvas() {
+    const canvas = document.getElementById('pongCanvas');
+    var ctx = canvas.getContext("2d");
+    canvas.width = 800;
+    canvas.height = 600;
+    
+    
+    var ball = {x: canvas.width / 2, y: canvas.height / 2, radius: 10, speed: 5, dx: 1, dy: 1};
+    var paddleY = (canvas.height - paddleHeight) / 2;
+    var paddle1 = {x: 0, y: paddleY, width: paddleWidth, height: abilities_paddleHeight, dy: paddleSpeed};
+    var paddle2 = {x: canvas.width - paddleWidth, y: paddleY, width: paddleWidth, height: abilities_paddleHeight, dy: paddleSpeed};
+    
+    let targetY = paddle2.y;
+    return { canvas, ctx, ball, paddle1, paddle2, targetY };
+}
+
+var { canvas, ctx, ball, paddle1, paddle2, targetY } = utilizeCanvas();
+
+canvas.style.borderColor = document.querySelector('.container-top').dataset.playgroundcolor;
+
+// const playgroundColor = document.querySelector('.container-top').dataset.playgroundcolor;
+// canvas.style.borderColor = playgroundColor; // Set the border color to the specified color
 
 function resetAbilities() {
     likeaCheaterCount = 0;
@@ -99,104 +106,10 @@ function resetAbilities() {
     aiFastandFuriousCount = 0;
 }
 
-const lang = getCookie('selectedLanguage'); // [TODO] oyundaki javascriptlerde dil seçeneği değişmiyordu o yüzden eklendi
-
-// Update the ball and paddle positions
-function update() {
-    // If the game is paused, don't update anything
-    if (isPaused) return;
-    ball.x += ball.speed * ball.dx;
-    ball.y += ball.speed * ball.dy;
-    
-
-    // Check for collisions with paddles
-    if (ball.y + ball.radius >= paddle1.y && ball.y - ball.radius <= paddle1.y + paddle1.height && ball.dx < 0) {       
-        if (ball.x - ball.radius <= paddle1.x + paddle1.width) {
-            // Çarpışma var, topun x koordinatını paddle'ın yanına ayarla ve yönünü tersine çevir
-            startLPaddleSound();
-            if (rageofFire == "true") {
-                if (Math.random() <= 0.5) {
-                    ball.speed += 0.25;
-                }
-            }
-            ball.x = paddle1.x + paddle1.width + ball.radius;
-            ball.dx *= -1;
-            if (ball.y < paddle1.y + 0.2 * paddle1.height || ball.y > paddle1.y + 0.8 * paddle1.height) {
-                ball.speed *= 1.2; // Increase speed by 20%
-                paddleSpeed *= 1.2;
-            }
-        }
-    }
-    else if (ball.y + ball.radius >= paddle2.y && ball.y - ball.radius <= paddle2.y + paddle2.height && ball.dx > 0) {
-        if (ball.x + ball.radius >= paddle2.x) {
-            startRPaddleSound();
-            // Çarpışma var, topun x koordinatını paddle'ın yanına ayarla ve yönünü tersine çevir
-            ball.x = paddle2.x - ball.radius;
-            ball.dx *= -1;
-            if (ball.y < paddle2.y + 0.2 * paddle2.height || ball.y > paddle2.y + 0.8 * paddle2.height) {
-                ball.speed *= 1.2; // Increase speed by 20%
-                paddleSpeed *= 1.2;
-            }
-        }
-    }
-
-    // Check for collisions with top/bottom walls
-    if (ball.y + ball.radius > canvas.height || ball.y - ball.radius < 0) {
-        startWallSound();
-        ball.dy *= -1;
-    }
-
-    // Check for collisions with left/right walls (scoring)
-    if (ball.x + ball.radius > canvas.width) {
-        score1++;
-        resetBall();
-    } else if (ball.x - ball.radius < 0) {
-        score2++;
-        resetBall();
-    }
-
-    // Check for game over
-    if (score1 == MAX_SCORE || score2 == MAX_SCORE && gameScreen == false) {
-        gameScreen = true;
-        if (score1 == MAX_SCORE) {   
-            sendWinnerToBackend(username, "IndianAI", score1, score2, start_time);
-        } else {
-            sendWinnerToBackend("IndianAI", username, score2, score1, start_time);
-        }   
-        showGameOverScreen();
-        
-    }
-
-    // Move the paddles
-    if (upPressed && paddle1.y > 0 && !isScored) {
-        paddle1.y -= paddle1.dy;
-    } else if (downPressed && paddle1.y < canvas.height - paddle1.height && !isScored) {
-        paddle1.y += paddle1.dy;
-    }
-
-    // Move the AI paddle towards the target position
-    if (targetY < paddle2.y - moveThreshold && paddle2.y > 0 && !isScored) {
-        paddle2.y -= paddle2.dy;
-    } else if (targetY > paddle2.y + moveThreshold && paddle2.y < canvas.height - paddle2.height && !isScored) {
-        paddle2.y += paddle2.dy;
-    }
-
-    // Prevent the paddles from moving off the canvas
-    if (paddle1.y < 0) {
-        paddle1.y = 0;
-    } else if (paddle1.y > canvas.height - paddle1.height) {
-        paddle1.y = canvas.height - paddle1.height;
-    }
-    if (paddle2.y < 0) {
-        paddle2.y = 0;
-    } else if (paddle2.y > canvas.height - paddle2.height) {
-        paddle2.y = canvas.height - paddle2.height;
-    }
-}
-
-/// Draw everything
 function render() {
-
+    var textWidth1 = ctx.measureText(username + ": " + score1).width;
+    var textWidth2 = ctx.measureText(ainame + ": " + score2).width;
+    var ainameX = canvas.width - textWidth2 - 10;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     // Create a radial gradient for the background
@@ -255,15 +168,107 @@ function render() {
     ctx.font = "16px Roboto";
     ctx.fillStyle = 'white';
     ctx.fillText(username + ": " + score1, usernameX, usernameY);
-    ctx.fillText(ainame + ": " + score2, ainameX, ainameY);
+    ctx.fillText(ainame + ": " + score2, ainameX, 20);
+}
+
+// Update the ball and paddle positions
+function update() {
+    // If the game is paused, don't update anything
+    if (isPaused) return;
+    ball.x += ball.speed * ball.dx;
+    ball.y += ball.speed * ball.dy;
+
+    
+    // Check for collisions with paddles
+    if (ball.y + ball.radius >= paddle1.y && ball.y - ball.radius <= paddle1.y + paddle1.height && ball.dx < 0) {       
+        if (ball.x - ball.radius <= paddle1.x + paddle1.width) {
+            startLPaddleSound();
+            // Çarpışma var, topun x koordinatını paddle'ın yanına ayarla ve yönünü tersine çevir
+            if (rageofFire == "true") {
+                if (Math.random() <= 0.5) {
+                    ball.speed += 0.25;
+                }
+            }
+            ball.x = paddle1.x + paddle1.width + ball.radius;
+            ball.dx *= -1;
+            if (ball.y < paddle1.y + 0.2 * paddle1.height || ball.y > paddle1.y + 0.8 * paddle1.height) {
+                ball.speed *= 1.2; // Increase speed by 20%
+                paddleSpeed *= 1.2;
+            }
+        }
+    }
+    else if (ball.y + ball.radius >= paddle2.y && ball.y - ball.radius <= paddle2.y + paddle2.height && ball.dx > 0) {
+        if (ball.x + ball.radius >= paddle2.x) {
+            startRPaddleSound();
+            // Çarpışma var, topun x koordinatını paddle'ın yanına ayarla ve yönünü tersine çevir
+            ball.x = paddle2.x - ball.radius;
+            ball.dx *= -1;
+            if (ball.y < paddle2.y + 0.2 * paddle2.height || ball.y > paddle2.y + 0.8 * paddle2.height) {
+                ball.speed *= 1.2; // Increase speed by 20%
+                paddleSpeed *= 1.2;
+            }
+        }
+    }
+
+    // Check for collisions with top/bottom walls
+    if (ball.y + ball.radius > canvas.height || ball.y - ball.radius < 0) {
+        startWallSound();
+        ball.dy *= -1;
+    }
+
+    // Check for collisions with left/right walls (scoring)
+    if (ball.x + ball.radius > canvas.width) {
+        score1++;
+        resetBall();
+    } else if (ball.x - ball.radius < 0) {
+        score2++;
+        resetBall();
+    }
+
+    // Check for game over
+    if (score1 == MAX_SCORE || score2 == MAX_SCORE && gameScreen == false) {
+        gameScreen = true;
+        if (score1 == MAX_SCORE) {   
+            sendWinnerToBackend(username, "IndianAI", score1, score2, start_time);
+        } else {
+            sendWinnerToBackend("IndianAI", username, score2, score1, start_time);
+        }   
+        showGameOverScreen();
+    }
+
+    // Move the paddles
+    if (upPressed && paddle1.y > 0 && !isScored) {
+        paddle1.y -= paddle1.dy;
+    } else if (downPressed && paddle1.y < canvas.height - paddle1.height && !isScored) {
+        paddle1.y += paddle1.dy;
+    }
+
+    // Move the AI paddle towards the target position
+    if (targetY < paddle2.y - moveThreshold && paddle2.y > 0 && !isScored) {
+        paddle2.y -= paddle2.dy;
+    } else if (targetY > paddle2.y + moveThreshold && paddle2.y < canvas.height - paddle2.height && !isScored) {
+        paddle2.y += paddle2.dy;
+    }
+
+    // Prevent the paddles from moving off the canvas
+    if (paddle1.y < 0) {
+        paddle1.y = 0;
+    } else if (paddle1.y > canvas.height - paddle1.height) {
+        paddle1.y = canvas.height - paddle1.height;
+    }
+    if (paddle2.y < 0) {
+        paddle2.y = 0;
+    } else if (paddle2.y > canvas.height - paddle2.height) {
+        paddle2.y = canvas.height - paddle2.height;
+    }
 }
 
 
+
+
 // The main game loop
+
 var main = function () {
-    if (gameMusic === false && givemethemusic == "true") {
-        startBackgroundMusic();
-    }
     if (!start_time)
         start_time = new Date();
     // Request to do this again ASAP
@@ -271,9 +276,7 @@ var main = function () {
         update();
         render();
     }
-
-
-    requestAnimationFrame(main);
+    animationId = requestAnimationFrame(main);
 };
 
 // Cross-browser support for requestAnimationFrame
@@ -282,8 +285,18 @@ requestAnimationFrame = w.requestAnimationFrame || w.webkitRequestAnimationFrame
 
 // Let's play this game!
 function startGame() {
+    document.getElementById('countdown').style.display = 'none';
+    gameStarted = true;
     main();
 }
+
+function stopGame() {
+    cancelAnimationFrame(animationId);
+    if (score1 != MAX_SCORE && score2 != MAX_SCORE)
+        sendWinnerToBackend("IndianAI", username, 0, MAX_SCORE, start_time);
+}
+
+
 // Stop the background music
 function stopBackgroundMusic() {
     setTimeout(function() {
@@ -473,11 +486,6 @@ function likeaCheaterAbility(isAi) {
     }
 }
 
-function fastandFuriousAbility() {
-    startfastandFuriousSound();
-    ball.speed += 10;
-}
-
 // Control paddle1 with w, s keys
 document.addEventListener("keydown", function(event) {
     if (event.key === "w" || event.key === "W" || event.key === "ArrowUp") {
@@ -492,17 +500,14 @@ document.addEventListener("keydown", function(event) {
 
     }
     else if (event.key === '2' && fastandFuriousCount < 1 && fastandFurious == "true" && isFrozenBallActive == false) {
-        fastandFuriousAbility();
+        ball.speed += 10;
+        startfastandFuriousSound();
         fastandFuriousCount += 1;
 
     }
     else if (event.key === '3' && frozenBallCount < 1 && frozenBall == "true") {
         frozenBallAbility();
         frozenBallCount += 1;
-    }
-    if (event.code === 'Space' && gameStarted === false) { // Boşluk tuşu kodu
-        gameStarted = true;
-        startGameCountdown(); // Oyunu başlatmak için geri sayım başlat
     }
 });
 
@@ -518,13 +523,10 @@ document.addEventListener("keyup", function(event) {
 // Ai Player
 let reactionDelaySlider = document.getElementById('reactionDelay');
 let delayValueSpan = document.getElementById('delayValue');
-// Update the reactionDelay variable whenever the slider value changes
 reactionDelaySlider.oninput = function() {
-    // Delay in milliseconds
     reactionDelay = this.value / ball.speed;
     delayValueSpan.innerText = Math.round(reactionDelay); // Display the current value of the slider
     let value = (this.value-this.min)/(this.max-this.min)*100
-    /* this.style.background = 'linear-gradient(to right, violet, yellow ' + value + '%, #ccc ' + value + '%, #ccc)'; */
 }
 let reactionDelay = Math.round(reactionDelaySlider.value / ball.speed);
 let lastBallPosition = { x: ball.x, y: ball.y };
@@ -548,7 +550,8 @@ setInterval(() => {
         // Top rakip yarı sahaya doğru gidiyorsa ve topun X koordinatı AI'nın ceza sahasında ise
         if (ball.dx < 0 && ball.x > canvas.width / 2 && ball.x < canvas.width - paddle2.width && ball.speed > 5) {
             //console.log("AI Fast and Furious yeteneğini kullandı ve değerleri şu şekilde: ", ball.speed);
-            fastandFuriousAbility();
+            ball.speed += 10;
+            startfastandFuriousSound();
             aiFastandFuriousCount += 1;
         }
     }
@@ -590,33 +593,6 @@ function resetPaddles() {
     paddle2.y = (canvas.height - abilities_paddleHeight) / 2;
 }
 
-function startGameCountdown() {
-    // Geri sayım ekranını göster
-    // Örnek olarak bir HTML elementi üzerine yazıyorum, siz kendi tasarımınıza göre ayarlayabilirsiniz
-    var countdown = document.getElementById('countdownTimer');
-    var countdownElement = document.getElementById('countdown');
-    // 3 saniye sonra
-    setTimeout(function() {
-        countdown.textContent = '3';
-    }, 50);
-
-    // 2 saniye sonra
-    setTimeout(function() {
-        countdown.textContent = '2';
-    }, 1050);
-
-    // 1 saniye sonra
-    setTimeout(function() {
-        countdown.textContent = '1';
-    }, 2050);
-
-    // Oyunu başlat
-    setTimeout(function() {
-        countdownElement.style.display = 'none'; // Geri sayım elementini kaldır
-        startGame(); // Oyunu başlatan fonksiyon
-    }, 4000);
-}
-
 function resetGame() {
     start_time = null;
     gameScreen = false;
@@ -627,7 +603,7 @@ function resetGame() {
     resetAbilities();
 }
 
-function getOutcomeMessage(lang, outcome) {
+function getOutcomeMessage(selectedLanguage, outcome) {
     // Dil çevirilerini içeren bir sözlük oluşturalım
     const translations = {
         'hi': {
@@ -648,16 +624,14 @@ function getOutcomeMessage(lang, outcome) {
         }
     };
     // Seçilen dil ve sonucu kullanarak uygun metni belirleyelim
-    const message = translations[lang] ? translations[lang][outcome] : translations['en'][outcome];
+    const message = translations[selectedLanguage] ? translations[selectedLanguage][outcome] : translations['en'][outcome];
     return message;
 }
 
 // Oyun bitiş ekranını gösteren fonksiyon
-function showGameOverScreen() {
-    //var winnerText = (score1 == MAX_SCORE) ? username + " wins!" : ainame + " wins!";
-    
-    var winnerText = (score1 == MAX_SCORE) ? getOutcomeMessage(lang, "win") : "";
-    var loserText = (score2 == MAX_SCORE) ? getOutcomeMessage(lang, "lose") : "";
+function showGameOverScreen() {    
+    var winnerText = (score1 == MAX_SCORE) ? getOutcomeMessage(selectedLanguage, "win") : "";
+    var loserText = (score2 == MAX_SCORE) ? getOutcomeMessage(selectedLanguage, "lose") : "";
     if (score1 == MAX_SCORE) {
         playResultSound(true); // Zafer durumu
     } else {
@@ -665,16 +639,10 @@ function showGameOverScreen() {
     }
     document.getElementById('winnerText').innerText = winnerText;
     document.getElementById('loserText').innerText = loserText;
-/*     if (score1 > score2) {
-        document.getElementById('gameOverScreen').style.backgroundColor = 'rgba(11, 22, 8, 0.8)';
-    }
-    else {
-        document.getElementById('gameOverScreen').style.backgroundColor = 'rgba(20, 5, 5, 0.8)';
-    } */
     document.getElementById('gameOverScreen').style.display = 'block';
 }
 
-// Oyunu tekrar başlatan fonksiyon
+
 function restartGame() {
     document.getElementById('gameOverScreen').style.display = 'none';
     resetGame();
@@ -692,17 +660,16 @@ function restartGame() {
         }, 1000);
         defeatMusic = false;
     }
-    if (givemethemusic === "true")
-        startBackgroundMusic();
 }
 
 // Çıkış yapma işlemleri
 function exitGame() {
-    window.location.href = '/pong-game-find';  // ?
+    swapApp('/pong-game-find');  // ?
 }
 
 document.getElementById('restartButton').addEventListener('click', restartGame);
 document.getElementById('exitButton').addEventListener('click', exitGame);
+document.getElementById('startGame').addEventListener('click', startGame);
 
 var modal = document.getElementById('exampleModalGame');
 
@@ -719,7 +686,7 @@ modal.addEventListener('hide.bs.modal', function (event) {
 });
 
 function sendWinnerToBackend(winner, loser, winnerscore, loserscore, start_time) {
-    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    var csrftoken = document.cookie.split('; ').find(row => row.startsWith('csrftoken')).split('=')[1];
     var finish_time = new Date();
     const data = {
         game: "pong",
@@ -735,7 +702,7 @@ function sendWinnerToBackend(winner, loser, winnerscore, loserscore, start_time)
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            'X-CSRFToken': csrfToken,
+            'X-CSRFToken': csrftoken,
         },
         body: JSON.stringify(data)
     })
@@ -751,4 +718,5 @@ function sendWinnerToBackend(winner, loser, winnerscore, loserscore, start_time)
     .catch(error => {
         console.error('There was a problem updating the winner:', error);
     });
+    }
 }
