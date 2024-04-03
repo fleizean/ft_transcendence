@@ -107,21 +107,6 @@
 			</div>
 		</div>
     </div>
-    <script type=module src="{% static "js/game/play-ai.js" %}"></script>
-
-{% comment %} 	<script>
-	    var givemethemusic = {% if givemethemusic %} true {% else %} false {% endif %};
-	
-	    document.addEventListener("DOMContentLoaded", function() {
-	        if (givemethemusic) {
-	            var volumeControl = document.getElementById("volumeControl");
-	            volumeControl.style.display = "inline-block";
-	        }
-			else {
-	            var volumeControl = document.getElementById("volumeControl");
-	            volumeControl.style.display = "none";
-	        }
-	    });
-	</script> {% endcomment %}
+	<script src="{% static "js/game/play-ai.js" %}"></script>
     {% csrf_token %}
 {% endblock %}

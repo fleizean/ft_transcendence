@@ -139,8 +139,6 @@ function aiChoose() {
         filteredChoices = filterChoices(["cheater", "godthings"]);
     }
     var chosenOption = chooseRandom(filteredChoices);
-    console.log(filteredChoices);
-    console.log(chosenOption.name);
     if (chosenOption.name === "cheater") {
         aicheaterused = true;
     } else if (chosenOption.name === "godthings") {

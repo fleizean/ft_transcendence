@@ -125,6 +125,9 @@ function pageHandler(path) {
     else if (pathParts[1] === 'chat' && pathParts.length === 4) {
       innerChat();
     }
+    else if (path.includes('/play-ai/'))
+    {
+    }
     if (path != '/' && path != '/login' && path != '/signup')
       initializeBurger();
 }

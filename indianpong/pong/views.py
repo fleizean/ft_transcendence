@@ -755,6 +755,7 @@ def play_ai(request, game_type, game_id):
     user_items = UserItem.objects.filter(user=request.user)
     
     # Just Customizations - PONG
+    username = request.user.username
     ainametag = get_equipped_item_value(user_items, "My Beautiful AI", "IndianAI")
     paddlecolor = get_equipped_item_value(user_items, "My Beautiful Paddle", "black")
     playgroundcolor = get_equipped_item_value(user_items, "My Playground", "lightgrey")
@@ -768,7 +769,7 @@ def play_ai(request, game_type, game_id):
     frozenball = get_equipped_item_value(user_items, "Frozen Ball", "None")
     givemethemusic = get_equipped_item_value(user_items, "DJ Give Me The Music", "None")
 
-    return render(request, "play-ai.html", {"ainametag": ainametag, "paddlecolor": paddlecolor, "playgroundcolor": playgroundcolor, "giantman": giantman, "likeacheater": likeacheater, "fastandfurious": fastandfurious, "rageoffire": rageoffire, "frozenball": frozenball, "givemethemusic": givemethemusic, "context": context})
+    return HttpResponse(render_to_string("play-ai.html", {"ainametag": ainametag, "paddlecolor": paddlecolor, "playgroundcolor": playgroundcolor, "giantman": giantman, likeacheater: likeacheater, "fastandfurious": fastandfurious, "rageoffire": rageoffire, "frozenball": frozenball, "givemethemusic": givemethemusic, "context": context, "request": request, "username": username}))
 
 
 @never_cache
@@ -897,7 +898,6 @@ def start_chat(request, username):
             room = Room.objects.get(second_user=request.user, first_user=second_user)
         except Room.DoesNotExist:
             room = Room.objects.create(first_user=request.user, second_user=second_user)
-    print(room.id)
     return JsonResponse({'room_id': room.id})
 
 ### Tournaments ###

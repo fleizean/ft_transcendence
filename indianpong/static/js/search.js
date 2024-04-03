@@ -51,7 +51,6 @@ function initializeSearch() {
 
 function makeSearch(event) {
   event.preventDefault();
-  console.log('searching');
   var form = document.getElementById('searchForm');
   var formData = new FormData(form);
   var csrftoken = document.cookie.split('; ').find(row => row.startsWith('csrftoken')).split('=')[1];
