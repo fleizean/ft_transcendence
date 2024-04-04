@@ -141,7 +141,7 @@
                                             {% endif %}
                                         {% endif %}
                                         <td>
-                                            {% if game.winner.username == game.player1.username %}
+                                            {% if game.winner.username == profile.username %}
                                                 {{ game.winner_score }} - {{ game.loser_score }}
                                             {% else %}
                                                 {{ game.loser_score }} - {{ game.winner_score }}
@@ -189,7 +189,7 @@
                             <tbody>
                                 {% for game_rps in game_records_rps %}
                                     <tr>
-                                        {% if profile.username == game.player1.username %}
+                                        {% if profile.username == game_rps.player1.username %}
                                             <td class="mhistory-username">{{ game_rps.player2.username }}</td>
                                         {% else %}
                                             <td class="mhistory-username">{{ game_rps.player1.username }}</td>
@@ -208,10 +208,11 @@
                                             {% endif %}
                                         {% endif %}
                                         <td>
-                                            {% if game_rps.winner.username == game_rps.player1.username %}
+                                            {% if game_rps.winner.username == profile.username %}
                                                 {{ game_rps.winner_score }} - {{ game_rps.loser_score }}
+
                                             {% else %}
-                                                {{ game_rps.winner_score }} - {{ game_rps.loser_score }}
+                                                {{ game_rps.loser_score }} - {{ game_rps.winner_score }}
                                             {% endif %}
                                         </td>
                                         <td>

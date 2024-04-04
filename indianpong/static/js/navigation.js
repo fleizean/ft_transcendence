@@ -8,6 +8,8 @@ import { matchHistoryChanger, toggleGame, followButton, unfollowButton } from '.
 import { Game } from './game/play-ai.js';
 import { LocalGame } from './game/local-game.js';
 import { localTournament } from './game/localTournament.js';
+import { Rps } from './rps.js';
+import { RemoteRps } from './game/sockPong.js';
 
 function getCookie(name) {
   const cookieValue = document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)');
@@ -85,7 +87,7 @@ window.unfollowButton = unfollowButton;
 window.Game = Game;
 window.LocalGame = LocalGame;
 window.localTournament = localTournament;
-
+window.Rps = Rps;
 
 window.onpopstate = function(event) {
   if (window.location.hash == '') {
@@ -157,8 +159,14 @@ function pageHandler(path) {
       LocalGame();
     }
     else if (path.includes('/local-tournament')) {
-      console.log('local-tournament');
       localTournament();
+    }
+    else if (path.includes('/play-rps-ai')) {
+      Rps();
+    }
+    else if (path.includes('/remote-game/peer-to-peer/new')) {
+      console.log('Remote Game')
+      RemoteRps();
     }
     if (path != '/' && path != '/login' && path != '/signup')
       initializeBurger();

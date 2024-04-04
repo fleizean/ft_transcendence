@@ -1,4 +1,4 @@
-
+export function Rps() {
 // Prevent animation on load
 setTimeout(() => {
     document.body.classList.remove("preload");
@@ -322,7 +322,7 @@ function sendWinnerToBackend(winner, loser, winnerscore, loserscore, start_time)
         finish_time: finish_time
     };
 
-    fetch('/update_winner', {
+    fetch('/update_winner/', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -342,4 +342,6 @@ function sendWinnerToBackend(winner, loser, winnerscore, loserscore, start_time)
     .catch(error => {
         console.error('There was a problem updating the winner:', error);
     });
+}
+
 }
