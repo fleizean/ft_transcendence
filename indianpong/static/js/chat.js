@@ -4,8 +4,9 @@ export function innerChat() {
   const sendButton = document.getElementById("send");
   const conversation = document.getElementById("conversation")
   const inputField = document.getElementById("comment")
-
-
+  const blockButton = document.getElementById("block")
+  const userNameOnChat = document.getElementById("userNameOnChat").textContent.trim()
+  
   const chatsocket = new WebSocket("ws://" + window.location.host + "/ws/chat/" + roomName + "/")
 
   chatsocket.onopen = function (e) {
@@ -24,7 +25,8 @@ export function innerChat() {
   chatsocket.onmessage = function (e) {
       const data = JSON.parse(e.data)
       switch (data.type) {
-
+/*         case 'blocked':
+          console.log('blocked') */
         case 'chat.message':
           if (user === data.user) {
             var message = `                  
@@ -77,11 +79,19 @@ export function innerChat() {
 
   sendButton.onclick = function (e) {
       const message = inputField.value
+      console.log(userNameOnChat)
       chatsocket.send(JSON.stringify({
           "action": "chat",
           "user": user, 
           "message": message,
       }))
       inputField.value = ''
+  }
+
+  blockButton.onclick = function (e) {
+    chatsocket.send(JSON.stringify({
+        "action": "block",
+        "blocked": userNameOnChat,
+    }))
   }
 }
