@@ -20,7 +20,9 @@
 }
 
 .game-info-menu-tournament {
-  display: none;
+  position: absolute;
+  top: 0;
+  right: 0; 
 }
 
 .game-info-menu-local {

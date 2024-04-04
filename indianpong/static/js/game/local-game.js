@@ -1,10 +1,11 @@
-
+export function LocalGame() {
 const canvas = document.getElementById('pongCanvas');
 var gameStartInfos = document.getElementById("gameStartInfos");
 var startButton = document.getElementById("startButton");
 var ctx = canvas.getContext("2d");
 canvas.width = 800;
 canvas.height = 600;
+
 
 
 const translationswin = {
@@ -244,7 +245,7 @@ var main = function () {
         render();
     }
 
-    requestAnimationFrame(main);
+    localGameAnimationId = requestAnimationFrame(main);
 };
 
 // Cross-browser support for requestAnimationFrame
@@ -410,3 +411,5 @@ startButton.addEventListener("click", function() {
     gameMode = document.getElementById("gameMode").value;
     showCanvas();
 });
+
+}

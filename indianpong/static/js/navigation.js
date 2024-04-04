@@ -6,7 +6,8 @@ import { makeLogin, initializeLogin } from './login.js';
 import { editProfile, editPassword, editSocial, deleteAccount, changeAvatar, displaySection } from './profile-settings.js';
 import { matchHistoryChanger, toggleGame, followButton, unfollowButton } from './profile.js';
 import { Game } from './game/play-ai.js';
-
+import { LocalGame } from './game/local-game.js';
+import { localTournament } from './game/localTournament.js';
 
 function getCookie(name) {
   const cookieValue = document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)');
@@ -82,6 +83,8 @@ window.toggleGame = toggleGame;
 window.followButton = followButton;
 window.unfollowButton = unfollowButton;
 window.Game = Game;
+window.LocalGame = LocalGame;
+window.localTournament = localTournament;
 
 
 window.onpopstate = function(event) {
@@ -94,10 +97,13 @@ window.onpopstate = function(event) {
 
 function pageHandler(path) {
     const pathParts = path.split('/');
-    console.log('animation:' +animationId);
-    if (animationId) {
+    if (animationId)
       cancelAnimationFrame(animationId);
-    }
+    if (localTournamentAnimationId)
+      cancelAnimationFrame(localTournamentAnimationId);
+    if (localGameAnimationId)
+      cancelAnimationFrame(localGameAnimationId);
+
     if (path.includes('/login')) {
       makeLogin();
       initializeLogin();
@@ -146,7 +152,13 @@ function pageHandler(path) {
     }
     else if (path.includes('/play-ai/')) {
       Game();
-     
+    }
+    else if (path.includes('/local-game')) {
+      LocalGame();
+    }
+    else if (path.includes('/local-tournament')) {
+      console.log('local-tournament');
+      localTournament();
     }
     if (path != '/' && path != '/login' && path != '/signup')
       initializeBurger();

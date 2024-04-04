@@ -1,4 +1,4 @@
-
+export function localTournament() {
 const canvas = document.getElementById('pongCanvas');
 var gameStartInfos = document.getElementById("tournament-start-info");
 var gameInfoTournament = document.getElementById("game-info-tournament");
@@ -252,7 +252,7 @@ var main = function () {
         render();
     }
 
-    requestAnimationFrame(main);
+    localTournamentAnimationId = requestAnimationFrame(main);
 };
 
 // Cross-browser support for requestAnimationFrame
@@ -541,3 +541,4 @@ modal.addEventListener('hide.bs.modal', function (event) {
     // Oyunu devam ettir
     isPaused = false;
 });
+}
