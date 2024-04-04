@@ -1008,7 +1008,7 @@ def tournament_create(request):
             messages.success(
                 request, f'Tournament "{tournament.name}" created successfully.'
             )
-            return redirect("tournament-room", tournament.id)
+            return HttpResponse("/tournament-room/" + str(tournament.id))
         #else:
             #print(form.errors)
     else:

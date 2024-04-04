@@ -11,6 +11,7 @@ import { localTournament } from './game/localTournament.js';
 import { Rps } from './rps.js';
 import { RemotePong } from './game/sockPong.js';
 import { RemoteRps } from './sockRps.js';
+import { createTournament } from './create-tournament.js';
 
 function getCookie(name) {
   const cookieValue = document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)');
@@ -89,6 +90,7 @@ window.Game = Game;
 window.LocalGame = LocalGame;
 window.localTournament = localTournament;
 window.Rps = Rps;
+window.createTournament = createTournament;
 
 window.onpopstate = function(event) {
   if (window.location.hash == '') {

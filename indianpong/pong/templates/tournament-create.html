@@ -13,7 +13,7 @@
             {{context.tournamentCreateSubHeaderText}}
         </div>
         <div class="tournament-create">
-          <form method="post" action="">
+          <form method="post" action="" id="TournamentForm">
             {% csrf_token %}
             <div id="tournamentInfos" class="tournamentInfos">
                 <div class="input-box">
@@ -32,7 +32,7 @@
                   </select>
                 </div>
               </div>
-              <button class="btn btn-outline-success" id="startButton" type="submit">{{context.tournamentCreateButtonCreate}}</button>
+              <button class="btn btn-outline-success" id="startButton" type="button" onclick="createTournament()">{{context.tournamentCreateButtonCreate}}</button>
             </div>
           </form>
         </div>
