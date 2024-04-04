@@ -224,7 +224,7 @@ function resetGameRPS() {
 }
 
 function exitGame() {
-    window.location.href = '/rps-game-find';  // ?
+    swapApp('/rps-game-find')
 }
 
 function isWinner(results) {

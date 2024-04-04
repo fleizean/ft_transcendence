@@ -1,4 +1,4 @@
-export function RemoteRps() {
+export function RemotePong() {
 
 const lang = getCookie('selectedLanguage');
  
@@ -638,7 +638,8 @@ function exitGame() {
         action: 'exit',
         game_id: my.game_id,
     });
-    window.location.href = '/pong-game-find'; // ?
+    
+    swapApp('/pong-game-find')
 }
 
 function accept(inviter) {

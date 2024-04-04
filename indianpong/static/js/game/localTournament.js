@@ -491,7 +491,7 @@ function restartTournament() {
 
 // Çıkış yapma işlemleri
 function exitGame() {
-    window.location.href = '/dashboard';  // ?
+    swapApp('/pong-game-find')
 }
 
 document.getElementById('restartButton').addEventListener('click', restartGame);

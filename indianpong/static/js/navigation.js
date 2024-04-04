@@ -9,7 +9,8 @@ import { Game } from './game/play-ai.js';
 import { LocalGame } from './game/local-game.js';
 import { localTournament } from './game/localTournament.js';
 import { Rps } from './rps.js';
-import { RemoteRps } from './game/sockPong.js';
+import { RemotePong } from './game/sockPong.js';
+import { RemoteRps } from './sockRps.js';
 
 function getCookie(name) {
   const cookieValue = document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)');
@@ -165,9 +166,13 @@ function pageHandler(path) {
       Rps();
     }
     else if (path.includes('/remote-game/peer-to-peer/new')) {
-      console.log('Remote Game')
+      RemotePong();
+    }
+    else if (path.includes('/play-rps')) {
+      console.log('rps');
       RemoteRps();
     }
+
     if (path != '/' && path != '/login' && path != '/signup')
       initializeBurger();
 }
