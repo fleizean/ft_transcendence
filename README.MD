@@ -104,11 +104,11 @@ of the project.</b>
   </details>
   
   <details>
-      <summary> <b> Remote players ⌛</b></summary>
+      <summary> <b> Remote players ✅</b></summary>
       It is possible to have two distant players. Each player is located on a   separated
   computer, accessing the same website and playing the same Pong game. <br>
-  💡 <i>Think about network issues, like unexpected disconnection or lag.
-  You have to offer the best user experience possible. </i>
+  ✅ <i>Think about network issues, like unexpected disconnection or lag.
+  You have to offer the best user experience possible. </i> (Not needed)
   </details>
   
   <details>
