@@ -134,6 +134,9 @@ function pageHandler(path) {
       followButton();
       unfollowButton();
     }
+    else if (path.includes('/friends/')) {
+      getChat();
+    }
     else if(path.includes('/search')) {
       //addScript('search');
       const script = document.createElement('script');
@@ -174,7 +177,6 @@ function pageHandler(path) {
       RemotePong();
     }
     else if (path.includes('/play-rps')) {
-      console.log('rps');
       RemoteRps();
     }
 

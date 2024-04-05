@@ -140,6 +140,7 @@ const langMessages = {
             unblockButton.style.display = 'block';
             blockButton.style.display = 'none';
             sendButton.disabled = true;
+            sendButton.style.color = 'red';
             messages.style.display = 'none';
             showToast(`${data.blocked} ${langMessages[lang][data.type]}`, 'text-bg-danger', 'bi bi-bug-fill');
           }
@@ -148,6 +149,7 @@ const langMessages = {
           if (data.unblocker === user) {
             unblockButton.style.display = 'none';
             blockButton.style.display = 'block';
+            sendButton.style.color = '#94a3b8';
             sendButton.disabled = false;
             messages.style.display = 'block';
             showToast(`${data.unblocked} ${langMessages[lang][data.type]}`, 'text-bg-success', 'bi bi-bug-fill');

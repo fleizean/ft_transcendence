@@ -39,10 +39,17 @@
                       {% endif %}
                       {% if friend.social.github %}
                         <a href="https://github.com/{{friend.social.github}}" target="_blank" class="medialinks github"><i class="bi bi-github"></i></a>
-                      {% endif %}
-                      
-                                
+                      {% endif %}         
                     </div>
+                    {% if not friend.social.stackoverflow and not friend.social.twitter and not friend.social.github and not friend.social.instagram %}
+                      <div class="buttons" style="margin-top: 60px !important;">
+                        <a onclick="getChat('{{friend.username}}')"><button class="button-message"><i class="bi bi-chat-right-dots-fill"></i> {{context.friendsMessageButtonText}}</button></a>
+                      </div>
+                    {% else %}
+                      <div class="buttons">
+                        <a onclick="getChat('{{friend.username}}')"><button class="button-message"><i class="bi bi-chat-right-dots-fill"></i> {{context.friendsMessageButtonText}}</button></a>
+                      </div>
+                    {% endif %}
                       <div class="analytics">
                         <div class="data">
                           <i class="bi bi-dice-1-fill" style="color: #FF5733;"></i>

@@ -87,9 +87,9 @@
                   <div class="coversation-divider">
                     <span>{{context.chatTodayText}}</span>
                   </div>
-                  <div id="messages">
+                  <div id="messages" {% if user_blocked_status|get_item:room.second_user.username %} style="display:none" {% endif %}>
                   {% for message in messages %}
-                    {% if not user_blocked_status|get_item:room.second_user.username %}
+                    
                     {% if request.user == message.user %} 
                     <li class="conversation-item me">
                     <div class="conversation-item-content">
@@ -121,7 +121,6 @@
                           </div>
                         </li>
                         
-                    {% endif %}
                     {% endif %}
                   {% endfor %}
                 </div>
