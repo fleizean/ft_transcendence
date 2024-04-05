@@ -29,6 +29,7 @@ const selectedGameModeLabel = document.getElementById('selectedGameMode');
 const gameArea = document.getElementById('container-top');
 const cheaterButton = document.getElementById('cheater-choice');
 const godthingsButton = document.getElementById('godthings-choice');
+var gameMode = document.getElementById('selectedGameMode');
 const matchmakingButton = document.getElementById('matchmakingButtons');
 
 const ICON_PATH = document.querySelector('.container-top').dataset.iconpath;
@@ -213,6 +214,7 @@ websocket.onmessage = function (e) {
     }
 
 function addUserCount(count) {
+    console.log('User count', count);
     var userCountElement = document.getElementById('userCount');
     var currentCount = parseInt(userCountElement.innerText);
     

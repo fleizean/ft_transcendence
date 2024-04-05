@@ -44,7 +44,9 @@ const langMessages = {
   const inputField = document.getElementById("comment");
   const userNameOnChat = document.getElementById("userNameOnChat").textContent.trim();
   const blockButton = document.getElementById("block");
+  const inviteButton = document.getElementById("invite");
   const unblockButton = document.getElementById("unblock");
+  const messages = document.getElementById("messages");
 
   const chatsocket = new WebSocket("ws://" + window.location.host + "/ws/chat/" + roomName + "/")
 
@@ -60,6 +62,44 @@ const langMessages = {
       console.error("socket error")
   }
 
+  function messageMe(data){
+    var message = `                  
+    <li class="conversation-item me">
+      <div class="conversation-item-content">
+        <div class="conversation-item-wrapper">
+          <div class="conversation-item-box">
+          </div>
+        </div>
+        <div class="conversation-item-wrapper">
+          <div class="conversation-item-box">
+            <div class="conversation-item-text">
+            ${data.message}
+              <div class="conversation-item-time">${data.created_date}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </li>`
+    return message
+  }
+
+  function messageOthers(data) {
+    var message = `
+    <li class="conversation-item">
+      <div class="conversation-item-content">
+        <div class="conversation-item-wrapper">
+          <div class="conversation-item-box">
+            <div class="conversation-item-text">
+              <p>${data.message}</p>
+              <div class="conversation-item-time">${data.created_date}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </li>`
+    return message
+  }
+
 
   chatsocket.onmessage = function (e) {
       const lang = document.cookie.split('; ').find(row => row.startsWith('selectedLanguage=')).split('=')[1];
@@ -69,48 +109,38 @@ const langMessages = {
           console.log('blocked') */
         case 'chat.message':
           if (user === data.user) {
-            var message = `                  
-              <li class="conversation-item me">
-                <div class="conversation-item-content">
-                  <div class="conversation-item-wrapper">
-                    <div class="conversation-item-box">
-                    </div>
-                  </div>
-                  <div class="conversation-item-wrapper">
-                    <div class="conversation-item-box">
-                      <div class="conversation-item-text">
-                      ${data.message}
-                        <div class="conversation-item-time">${data.created_date}</div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </li>`
+            var message = messageMe(data);
           } else {
-            var message = `
-              <li class="conversation-item">
-                <div class="conversation-item-content">
-                  <div class="conversation-item-wrapper">
-                    <div class="conversation-item-box">
-                      <div class="conversation-item-text">
-                        <p>${data.message}</p>
-                        <div class="conversation-item-time">${data.created_date}</div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </li>`
+            var message = messageOthers(data);
           }
           conversation.innerHTML += message
           setTimeout(() => {
             conversation.scrollTop = conversation.scrollHeight;
           }, 0);
           break;
+        case 'accept':
+          if (user === data.accepted) {
+            showToast(`Your invitation accepted`, 'text-bg-success', 'bi bi-bug-fill');
+          } else {
+            showToast(`You accepted invitation`, 'text-bg-success', 'bi bi-bug-fill');
+          }
+          swapApp(`/remote-game/invite/${data.game_id}`);
+          break;
+
+        case 'decline':
+          if (user === data.declined) {
+            showToast(`Your invitation declined`, 'text-bg-danger', 'bi bi-bug-fill');
+          } else {
+            showToast(`You declined invitation`, 'text-bg-danger', 'bi bi-bug-fill');
+          }
+          break;
+
         case 'blocked':
           if (data.blocker === user) {
             unblockButton.style.display = 'block';
             blockButton.style.display = 'none';
             sendButton.disabled = true;
+            messages.style.display = 'none';
             showToast(`${data.blocked} ${langMessages[lang][data.type]}`, 'text-bg-danger', 'bi bi-bug-fill');
           }
           break;
@@ -119,7 +149,8 @@ const langMessages = {
             unblockButton.style.display = 'none';
             blockButton.style.display = 'block';
             sendButton.disabled = false;
-            showToast(`${data.unblocked} ${langMessages[lang][data.type]}`, 'text-bg-success', 'bi bi-check2-circle');
+            messages.style.display = 'block';
+            showToast(`${data.unblocked} ${langMessages[lang][data.type]}`, 'text-bg-success', 'bi bi-bug-fill');
           }
           break;
       };
@@ -154,10 +185,17 @@ const langMessages = {
   }
 
   unblockButton.onclick = function (e) {
-    console.log(userNameOnChat);
     chatsocket.send(JSON.stringify({
         "action": "unblock",
         "unblocked": userNameOnChat,
     }))
+  }
+
+  inviteButton.onclick = function (e) {
+    chatsocket.send(JSON.stringify({
+      "action": "invite",
+      "inviter": user,
+      "invited": userNameOnChat,
+  }))
   }
 }

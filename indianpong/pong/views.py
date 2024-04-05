@@ -847,13 +847,13 @@ def local_tournament(request):
 @login_required()
 def remote_game(request, game_type, game_id):
     # Validation checks
-    if game_type not in ['peer-to-peer', 'tournament']:
+    if game_type not in ['peer-to-peer', 'tournament', 'invite']:
         raise Http404("Invalid game type. It should be either 'peer-to-peer' or 'tournament'.")
 
     if game_type == 'peer-to-peer' and game_id != 'new':
         raise Http404("Invalid game id for peer-to-peer. It should be 'new'.")
 
-    if game_type == 'tournament':
+    if game_type == 'tournament' or game_type == 'invite':
         game = get_object_or_404(Game, id=game_id)
         if game.winner is not None:
             raise Http404("The game is already finished.")

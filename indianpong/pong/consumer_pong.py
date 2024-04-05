@@ -19,7 +19,7 @@ class PongConsumer(AsyncWebsocketConsumer):
 
     async def connect(self):
 
-        self.game_type = self.scope['url_route']['kwargs']['game_type'] # tournament or peer-to-peer
+        self.game_type = self.scope['url_route']['kwargs']['game_type'] # tournament or peer-to-peer or invite
         self.game_id = self.scope['url_route']['kwargs']['game_id'] # game_id or new
         self.user = self.scope['user']
 
@@ -46,6 +46,8 @@ class PongConsumer(AsyncWebsocketConsumer):
         })
         if self.game_type == 'tournament':
             await self.tournament_match_handler()
+        elif self.game_type == 'invite':
+            await self.from_chat_handler()
 
     async def disconnect(self, close_code):
         game_id = await USER_STATUS.get(self.user.username)
@@ -246,7 +248,23 @@ class PongConsumer(AsyncWebsocketConsumer):
                 'player2': player2,
             })
         
+    async def from_chat_handler(self):
+        game_id, player1, player2, group_name, tournament_id = await self.match_details()
+        if await self.check_is_user_inlobby(player1) and await self.check_is_user_inlobby(player2):
+            player1_channel_name = await USER_CHANNEL_NAME.get(player1)
+            player2_channel_name = await USER_CHANNEL_NAME.get(player2)
 
+            await self.channel_layer.group_add(group_name, player1_channel_name)
+            await self.channel_layer.group_add(group_name, player2_channel_name)
+
+            await GAMES.set(game_id, PongGame(player1, player2))
+
+            await self.channel_layer.group_send(group_name, {
+                'type': 'chat.game',
+                'game_id': game_id,
+                'player1': player1,
+                'player2': player2,
+            })
 
     async def accept_handler(self, inviter_username):
         inviter_channel_name = await USER_CHANNEL_NAME.get(inviter_username)
@@ -401,6 +419,17 @@ class PongConsumer(AsyncWebsocketConsumer):
         await self.send(text_data=json.dumps({
             'type': 'tournament.match',
             'tournament_id': tournament_id,
+            'game_id': game_id,
+            'player1': player1,
+            'player2': player2,
+        }))
+
+    async def chat_game(self, event):
+        game_id = event['game_id']
+        player1 = event['player1']
+        player2 = event['player2']
+        await self.send(text_data=json.dumps({
+            'type': 'tournament.match',
             'game_id': game_id,
             'player1': player1,
             'player2': player2,

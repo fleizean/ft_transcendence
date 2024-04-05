@@ -69,9 +69,9 @@
                 </div>
                 <div class="conversation-buttons">
                   <button type="button"><i class="bi bi-person-add"></i></button>
-                  <button type="button"><i class="bi bi-controller" id="inviteButton"></i></button>
+                  <button type="button"><i class="bi bi-controller" id="invite"></i></button>
                   {% if user_blocked_status|get_item:room.second_user.username %}
-                      <button type="button" id="unblock" style="display: block;"><i class="bi bi-patch-check-fill"></i></button>
+                      <button type="button" id="unblock"><i class="bi bi-patch-check-fill"></i></button>
                       <button type="button" id="block" style="display: none;"><i class="bi bi-ban"></i></button>
                   {% else %}
                       <button type="button" id="block" style="display: block;"><i class="bi bi-ban"></i></button>
@@ -87,6 +87,7 @@
                   <div class="coversation-divider">
                     <span>{{context.chatTodayText}}</span>
                   </div>
+                  <div id="messages">
                   {% for message in messages %}
                     {% if not user_blocked_status|get_item:room.second_user.username %}
                     {% if request.user == message.user %} 
@@ -119,9 +120,11 @@
                             </div>
                           </div>
                         </li>
+                        
                     {% endif %}
                     {% endif %}
                   {% endfor %}
+                </div>
                 </ul>
               </div>
               <div class="conversation-form">

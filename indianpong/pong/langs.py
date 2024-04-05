@@ -55,6 +55,8 @@ def get_lang_en():
         "signupInputPasswordText": "Password",
         "signupInputConfirmPasswordText": "Password (again)",
         "signupImageUploadText": "Upload Image",
+        "signupGdprText1": "I accept the",
+        "signupGdprText2": "GDPR Privacy Policy",
         "signupButtonSignup": "Let's shine!",
 
         #ForgotPassword
@@ -408,6 +410,8 @@ def get_lang_tr():
         "signupInputPasswordText": "Şifre",
         "signupInputConfirmPasswordText": "Şifreyi Onayla",
         "signupImageUploadText": "Resim Yükle",
+        "signupGdprText1": "Kabul ediyorum",
+        "signupGdprText2": "GDPR Gizlilik Politikası",
         "signupButtonSignup": "Kayıt Ol",
 
         #ForgotPassword
@@ -765,6 +769,8 @@ def get_lang_pt():
         "signupInputPasswordText": "Senha",
         "signupInputConfirmPasswordText": "Senha (novamente)",
         "signupImageUploadText": "Imagem",
+        "signupGdprText1": "Eu concordo com o",
+        "signupGdprText2": "GDPR Política de Privacidade",
         "signupButtonSignup": "Vamos!",
 
         #ForgotPassword
@@ -1117,6 +1123,8 @@ def get_lang_hi():
         "signupInputPasswordText": "पासवर्ड",
         "signupInputConfirmPasswordText": "पासवर्ड (फिर से)",
         "signupImageUploadText": "छवि अपलोड करें",
+        "signupGdprText1": "मैं सहमत हूं",
+        "signupGdprText2": "GDPR गोपनीयता नीति",
         "signupButtonSignup": "चमकाओ!",
 
         #ForgotPassword

@@ -167,7 +167,7 @@ function pageHandler(path) {
     else if (path.includes('/local-tournament')) {
       localTournament();
     }
-    else if (path.includes('/play-rps-ai')) {
+    else if (path.includes('/play-rps-ai')) {
       Rps();
     }
     else if (path.includes('/remote-game/peer-to-peer/new')) {

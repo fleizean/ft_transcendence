@@ -15,6 +15,7 @@
     left: 50%;
     transform: translate(-50%, -50%);
     text-align: center;
+    
   }
 
   .toast-close {
@@ -23,6 +24,66 @@
     margin-left: auto;
     margin-top: auto;
     margin-bottom: auto;
+  }
+
+  .checkbox-gpdr {
+    --input-focus: #2d8cf0;
+    --input-out-of-focus: #ccc;
+    --bg-color: #fff;
+    --bg-color-alt: #666;
+    --main-color: #323232;
+    position: relative;
+    cursor: pointer;
+  }
+  
+  .checkbox-gpdr input {
+    position: absolute;
+    opacity: 0;
+  }
+
+  .checkbox-gpdr .gdpr-text {
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 10px; /* veya istediğiniz bir mesafe */
+    color: var(--main-color);
+    font-size: 10px;
+}
+
+  
+  .checkmark {
+    width: 30px;
+    height: 30px;
+    position: relative;
+    top: 0;
+    left: 0;
+    border: 2px solid var(--main-color);
+    border-radius: 5px;
+    box-shadow: 4px 4px var(--main-color);
+    background-color: var(--input-out-of-focus);
+    transition: all 0.3s;
+    display: inline-block; /* Yeni eklenen stil */
+    vertical-align: middle; /* Yeni eklenen stil */
+  }
+  
+  .checkbox-gpdr input:checked ~ .checkmark {
+    background-color: var(--input-focus);
+  }
+  
+  .checkmark:after {
+    content: "";
+    width: 7px;
+    height: 15px;
+    position: absolute;
+    top: 2px;
+    left: 8px;
+    display: none;
+    border: solid var(--bg-color);
+    border-width: 0 2.5px 2.5px 0;
+    transform: rotate(45deg);
+  }
+  
+  .checkbox-gpdr input:checked ~ .checkmark:after {
+    display: block;
   }
 
   .text-danger {
@@ -46,6 +107,31 @@
     text-decoration:none;
   }
   
+  .form-register {
+    --input-focus: #f0302d;
+    --font-color: #323232;
+    --font-color-sub: #666;
+    --bg-color: beige;
+    --main-color: black;
+    padding: 20px;
+    background: #f5f2ee;
+    max-width: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 20px;
+    border-radius: 5px;
+    border: 2px solid var(--main-color);
+    box-shadow: 4px 4px var(--main-color);
+    height: 700px;
+    max-height: 700px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    box-sizing: border-box; 
+
+
+  }
+
   .form {
     --input-focus: #f0302d;
     --font-color: #323232;

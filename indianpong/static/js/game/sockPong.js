@@ -338,7 +338,27 @@ matchsocket.onmessage = function (e) {
             console.log(`Tournament Id: ${data.tournament_id}, Match Id: ${data.game_id} => ${data.player1} vs ${data.player2}`);
             break;
 
-        
+        case 'chat.game':
+            player1.username = data.player1;
+            player2.username = data.player2;
+            my.game_id = data.game_id;
+            if (lang === 'tr')
+                showToast(`Chat maçı başladı! ${player1.username} vs ${player2.username}`, 'text-bg-success', 'bi bi-check-circle-fill');
+            else if (lang === 'hi')
+                showToast(`टूर्नामेंट मैच शुरू हो गया! ${player1.username} vs ${player2.username}`, 'text-bg-success', 'bi bi-check-circle-fill');
+            else if (lang === 'pt')
+                showToast(`Jogo de torneio começou! ${player1.username} vs ${player2.username}`, 'text-bg-success', 'bi bi-check-circle-fill');
+            else
+                showToast(`Chat match started! ${player1.username} vs ${player2.username}`, 'text-bg-success', 'bi bi-check-circle-fill');
+
+            render();
+            showToast('Press Space to start the game', 'text-bg-primary', 'bi bi-exclamation-triangle-fill')
+
+            document.addEventListener("keydown", SpaceKeyDown);
+
+            console.log(`Match Id: ${data.game_id} => ${data.player1} vs ${data.player2}`);
+            break;
+
         case 'game.accept':
             player1.username = data.accepted;
             player2.username = data.accepter;

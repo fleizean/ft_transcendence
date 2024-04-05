@@ -76,6 +76,7 @@ function showToast(content, status, iconClass) {
   var toastContent = document.querySelector('#liveToast .fw-semibold');
   var toastIcon = document.querySelector('.toast-body .i-class i');
 
+
   toastIcon.className = iconClass;
   liveToast.classList.remove('text-bg-danger'); 
   liveToast.className = 'toast'; 
@@ -92,9 +93,32 @@ function showToast(content, status, iconClass) {
 export function makeRegister(check) {
   if (!check)
     return;
+  const selectedLanguage = getCookie('selectedLanguage');
+  if (document.getElementById('gdprCheckbox').checked == false) {
+    if (selectedLanguage == 'en')
+      showToast("Please accept the terms and conditions", "text-bg-danger", "bi bi-exclamation-triangle-fill");
+    else if (selectedLanguage == 'tr')
+      showToast("Lütfen şartları ve koşulları kabul edin", "text-bg-danger", "bi bi-exclamation-triangle-fill");
+    else if (selectedLanguage == 'hi')
+      showToast("कृपया नियम और शर्तों को स्वीकार करें", "text-bg-danger", "bi bi-exclamation-triangle-fill");
+    else if (selectedLanguage == 'pt')
+      showToast("Por favor, aceite os termos e condições", "text-bg-danger", "bi bi-exclamation-triangle-fill");
+    return;
+  }
   var form = document.getElementById('registerForm');
   var formData = new FormData(form);
   var csrftoken = document.cookie.split('; ').find(row => row.startsWith('csrftoken')).split('=')[1];
+
+  if (formData.get['username'] == 'IndianAI') {
+    if (selectedLanguage == 'en')
+      showToast("Username is not allowed", "text-bg-danger", "bi bi-person-x-fill");
+    else if (selectedLanguage == 'tr')
+      showToast("Kullanıcı adı izin verilmiyor", "text-bg-danger", "bi bi-person-x-fill");
+    else if (selectedLanguage == 'hi')
+      showToast("उपयोगकर्ता नाम अनुमत नहीं है", "text-bg-danger", "bi bi-person-x-fill");
+    else if (selectedLanguage == 'pt')
+      showToast("Nome de usuário não permitido", "text-bg-danger", "bi bi-person-x-fill");  
+  }
   fetch('/signup', {
       method: 'POST',
       headers: {
