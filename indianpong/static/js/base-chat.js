@@ -25,6 +25,7 @@ export function getChat(username) {
         }
         
         const roomId = data.room_id;
+        const username = data.username;
         const newUrl = `/chat/${roomId}/`;
         swapApp(newUrl);
     })

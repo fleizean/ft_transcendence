@@ -22,7 +22,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         from .models import UserProfile, Message, Game
         data = json.loads(text_data)
         action = data["action"]
-
+        print(action)
         if action == "chat":
             message =data["message"]
             user = await UserProfile.objects.aget(username=self.user.username)
@@ -96,7 +96,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
         elif action == "unblock":
             # remove user from block list
-            blocked = data["blocked"]
+            blocked = data["unblocked"]
             # add user to block list
             me = await UserProfile.objects.aget(username=self.user.username)
             blocked = await UserProfile.objects.aget(username=blocked)
@@ -121,4 +121,26 @@ class ChatConsumer(AsyncWebsocketConsumer):
             "message": message,
             "user": user,
             "created_date": created_date,
+        }))
+    
+    async def blocked(self, event):
+        # Handle the "blocked" message
+        blocker = event["blocker"]
+        blocked = event["blocked"]
+
+        await self.send(text_data=json.dumps({
+            "type": "blocked",
+            "blocker": blocker,
+            "blocked": blocked,
+        }))
+
+    async def unblocked(self, event):
+        # Handle the "unblocked" message
+        unblocker = event["unblocker"]
+        unblocked = event["unblocked"]
+
+        await self.send(text_data=json.dumps({
+            "type": "unblocked",
+            "unblocker": unblocker,
+            "unblocked": unblocked,
         }))

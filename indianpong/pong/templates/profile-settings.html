@@ -189,42 +189,24 @@
                         <h4>{{context.blockedUsersHeaderText}}</h4>
                         <p class="blocked-users-info">{{context.blockedUsersSubHeaderText}}</p>
                         <div class="accounts-list">
-                            {% for blocked in blocked_page_obj %}
+                            {% for blocked in blocked_users %}
                                 <div class="account">
                                     <!-- form post edileceği yer -->
                                     <div class="profile-info">
-                                        <a href="/profile" data-link><img src="{{ blocked.avatar }}"
+                                        <a onclick="swapApp('/profile/{{blocked.username}}')"><img src="{{ blocked.avatar.url }}"
                                                 alt="Profile Image"></a>
                                         <div class="user-details">
-                                            <a href="/profile" data-link>
+                                            <a onclick="swapApp('/profile/{{blocked.username}}')">
                                                 <h5>{{ blocked.displayname }}</h5>
                                             </a>
                                             <p>{{ blocked.username }}</p>
                                         </div>
-                                        <button type="button" class="btn-block" data-username="{{ blocked.username }}"> {{context.blockedStatusText}}</button> <!--kişi blockladığı kişiyi çıkarmak için isim karşılığına button -->
+                                        <button type="button" class="btn-block" onclick="unblockButon(`{{user_info.username}}`,`{{blocked.username}}`)"> {{context.blockedStatusText}}</button> <!--kişi blockladığı kişiyi çıkarmak için isim karşılığına button -->
                                     </div>
                                 </div>
                             {% endfor %}
                             
-                            <nav aria-label="Page navigation example " class="mt-4">
-                                <ul class="pagination justify-content-center">
-                                  <li class="page-item {% if not blocked_page_obj.has_previous %}disabled{% endif %}">
-                                    <a class="page-link" href="{% if blocked_page_obj.has_previous %}?page={{ blocked_page_obj.previous_page_number }}{% endif %}" aria-label="Previous">
-                                      <span aria-hidden="true">&laquo;</span>
-                                    </a>
-                                  </li>
-                                  {% for page_num in blocked_page_obj.paginator.page_range %}
-                                    <li class="page-item {% if page_num == blocked_page_obj.number %}active{% endif %}">
-                                      <a class="page-link" href="?page={{ page_num }}">{{ page_num }}</a>
-                                    </li>
-                                  {% endfor %}
-                                  <li class="page-item {% if not blocked_page_obj.has_next %}disabled{% endif %}">
-                                    <a class="page-link" href="{% if blocked_page_obj.has_next %}?page={{ blocked_page_obj.next_page_number }}{% endif %}" aria-label="Next">
-                                      <span aria-hidden="true">&raquo;</span>
-                                    </a>
-                                  </li>
-                                </ul>
-                              </nav>     
+                              
                         </div>
                     </form>
                 </section>

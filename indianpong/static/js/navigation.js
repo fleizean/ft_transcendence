@@ -3,7 +3,7 @@ import { getChat } from './base-chat.js'
 import { innerChat } from './chat.js';
 import { makeRegister, initializeSignup } from './signup.js';
 import { makeLogin, initializeLogin } from './login.js';
-import { editProfile, editPassword, editSocial, deleteAccount, changeAvatar, displaySection } from './profile-settings.js';
+import { editProfile, editPassword, editSocial, deleteAccount, changeAvatar, displaySection, unblockButon } from './profile-settings.js';
 import { matchHistoryChanger, toggleGame, followButton, unfollowButton } from './profile.js';
 import { Game } from './game/play-ai.js';
 import { LocalGame } from './game/local-game.js';
@@ -13,7 +13,7 @@ import { RemotePong } from './game/sockPong.js';
 import { RemoteRps } from './sockRps.js';
 import { createTournament } from './create-tournament.js';
 
-function getCookie(name) {
+export function getCookie(name) {
   const cookieValue = document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)');
   return cookieValue ? cookieValue.pop() : '';
 }
@@ -91,6 +91,7 @@ window.LocalGame = LocalGame;
 window.localTournament = localTournament;
 window.Rps = Rps;
 window.createTournament = createTournament;
+window.unblockButon = unblockButon;
 
 window.onpopstate = function(event) {
   if (window.location.hash == '') {
@@ -102,6 +103,7 @@ window.onpopstate = function(event) {
 
 function pageHandler(path) {
     const pathParts = path.split('/');
+    getCookie();
     if (animationId)
       cancelAnimationFrame(animationId);
     if (localTournamentAnimationId)
@@ -124,6 +126,7 @@ function pageHandler(path) {
       deleteAccount();
       changeAvatar();
       displaySection();
+      unblockButon();
     }
     else if(path.includes('/profile/')) {
       matchHistoryChanger();
@@ -195,3 +198,4 @@ function hideLoadingScreen() {
 function hideProgressBar() {
   document.querySelector('.progress-bar').style.display = 'none';
 } */
+

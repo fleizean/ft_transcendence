@@ -10,6 +10,8 @@
 {% block stylesheet %}<link rel="stylesheet" href="{% static "css/chat.css" %}">{% endblock  %} 
 {% block app %}
 
+{% load custom_filters %}
+
   <div class="container-top">
     <div class="card">
       <section class="chat-section">
@@ -68,8 +70,16 @@
                 <div class="conversation-buttons">
                   <button type="button"><i class="bi bi-person-add"></i></button>
                   <button type="button"><i class="bi bi-controller" id="inviteButton"></i></button>
-           
-                  <button type="button" id="block"><i class="bi bi-ban"></i></button>
+                  {% if user_blocked_status|get_item:room.second_user.username %}
+                      <button type="button" id="unblock" style="display: block;"><i class="bi bi-patch-check-fill"></i></button>
+                      <button type="button" id="block" style="display: none;"><i class="bi bi-ban"></i></button>
+                  {% else %}
+                      <button type="button" id="block" style="display: block;"><i class="bi bi-ban"></i></button>
+                      <button type="button" id="unblock" style="display: none;"><i class="bi bi-patch-check-fill"></i></button>
+                  {% endif %}
+              
+                 <!--  <button type="button" id="block"><i class="bi bi-ban"></i></button>
+                  <button type="button" id="unblock" style="display: none;"><i class="bi bi-patch-check-fill"></i></button> -->
                 </div>
               </div>
               <div class="conversation-main" id="conversation">
@@ -78,6 +88,7 @@
                     <span>{{context.chatTodayText}}</span>
                   </div>
                   {% for message in messages %}
+                    {% if not user_blocked_status|get_item:room.second_user.username %}
                     {% if request.user == message.user %} 
                     <li class="conversation-item me">
                     <div class="conversation-item-content">
@@ -109,6 +120,7 @@
                           </div>
                         </li>
                     {% endif %}
+                    {% endif %}
                   {% endfor %}
                 </ul>
               </div>
@@ -116,7 +128,8 @@
                 <button type="button" class="conversation-form-button" onclick="document.querySelector('#comment').value += '😀';"><i class="bi bi-emoji-laughing-fill"></i></button>
                 <div class="conversation-form-group">
                   <textarea class="conversation-form-input" rows="1" id="comment" placeholder="{{context.chatTypeHereText}}"></textarea>
-                  <button type="button" class="conversation-form-record" id="send" onclick="sendButton()"><i class="bi bi-send-fill"></i></button>
+                  
+                  <button type="button" class="conversation-form-record" id="send" onclick="sendButton()" {% if user_blocked_status|get_item:room.second_user.username %} disabled style="color: red !important;" {% endif %}><i class="bi bi-send-fill"></i></button>
                 </div>
               </div>
             </div>
@@ -128,6 +141,19 @@
         
 
       </section>
+    </div>
+    <div class="toast-container position-fixed bottom-0 end-0 p-6" style="margin-right: 20px; margin-bottom: 20px">
+      <div class="toast text-bg-danger" id="liveToast" role="alert">
+          <div class="toast-body">
+              <div class="d-flex gap-4">
+                  <span class="i-class"><i class="bi bi-image"></i></span>
+                  <div class="d-flex flex-grow-1 align-items-center">
+                      <span class="fw-semibold"></span>
+                      <span class="toast-close" data-bs-dismiss="toast" style="margin-left: auto; cursor:pointer"><i class="bi bi-x-circle-fill"></i></span>
+                  </div>
+              </div>
+          </div>
+      </div>
     </div>
   </div>
 {% endblock %}

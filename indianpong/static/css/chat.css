@@ -20,6 +20,14 @@
 }
 /* end: Chat */
 
+#unblock {
+  color:#059669 !important;
+}
+
+#block {
+  color:rgb(225, 34, 34) !important;
+}
+
 .room-profile-click {
   cursor: pointer !important;
 }

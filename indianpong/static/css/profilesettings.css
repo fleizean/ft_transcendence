@@ -170,77 +170,7 @@
 .file-input {
   display: none;
 }
-
-.google2fa-refresh {
-  color: white;
-  background-color: #222;
-  font-weight: 500;
-  border-radius: 0.5rem;
-  font-size: 1rem;
-  line-height: 2rem;
-  padding-left: 2rem;
-  padding-right: 2rem;
-  padding-top: 0.7rem;
-  padding-bottom: 0.7rem;
-  text-align: center;
-  margin-right: 0.5rem;
-  display: inline-flex;
-  align-items: center;
-  border: none;
-}
-
-.google2fa-refresh:hover {
-  background-color: #333;
-}
-
-
-.google2fa-disable {
-  color: white;
-  background-color: #c20f0f;
-  font-weight: 500;
-  border-radius: 0.5rem;
-  font-size: 1rem;
-  line-height: 2rem;
-  padding-left: 2rem;
-  padding-right: 2rem;
-  padding-top: 0.7rem;
-  padding-bottom: 0.7rem;
-  text-align: center;
-  margin-right: 0.5rem;
-  display: inline-flex;
-  align-items: center;
-  border: none;
-}
-
-.google2fa-disable:hover {
-  background-color: #3d0303;
-}
-
-.google2fa-active {
-  color: white;
-  background-color: #13d13c;
-  font-weight: 500;
-  border-radius: 0.5rem;
-  font-size: 1rem;
-  line-height: 2rem;
-  padding-left: 2rem;
-  padding-right: 2rem;
-  padding-top: 0.7rem;
-  padding-bottom: 0.7rem;
-  text-align: center;
-  margin-right: 0.5rem;
-  display: inline-flex;
-  align-items: center;
-  border: none;
-}
-
-.google2fa-active:hover {
-  background-color: #043e10;
-}
-  
-
 /* Blocked Accounts */
-
 
 .blocked-users-info {
   font-size: 13px;
@@ -253,20 +183,18 @@
   position: relative;
   width: 900px;
   margin-bottom: 1em;
-  height: 500px;
-
-}
-
-.accounts-list .account:first-child {
-  margin-top: 3.5px; /* İstenilen boşluğu piksel cinsinden ayarlayabilirsiniz */
+  height: 450px;
+  max-height: 450px;
+  overflow-y: auto; /* Gerektiğinde kaydırma çubuğunu aktif hale getirir */
+  box-sizing: border-box; 
 }
 
 .account {
   font-family: 'Roboto', sans-serif;
   font-size: 15px;
-
+  min-height: 60px; /* Her bir hesap için minimum yükseklik */
+  box-sizing: border-box; /* İçeriğin padding ve border'ını hesaplar */
 }
-
 
 .profile-info {
   display: flex;
@@ -293,7 +221,7 @@
 }
 
 .profile-info h5 {
-  color: #000; /* veya istediğiniz renk kodunu kullanabilirsiniz */
+  color: #000;
   font-size: 15px;
   font-weight: 800;
   margin: 0;
@@ -302,11 +230,8 @@
 .user-details a,
 .user-details a:link,
 .user-details a:visited  {
-  color: #000; /* veya istediğiniz renk kodunu kullanabilirsiniz */
-  text-decoration: none !important; /* Altı çiziyi kaldır */
-  text-decoration-line:none;
-  text-decoration-style: none;
-
+  color: #000;
+  text-decoration: none !important;
 }
 
 .profile-info h5:hover {
@@ -319,15 +244,12 @@
 }
 
 .profile-info h5:hover {
-  text-decoration: underline; /* Mouse hover olduğunda altı çizili yap */
+  text-decoration: underline;
 }
 
 .user-details {
   margin-top: 1em;
-
 }
-
-
 
 .user-details p {
   color: #888;
@@ -339,7 +261,7 @@
   background-color: rgb(244, 33, 46);
   color: #fff;
   border: none;
-  padding: 8px 20px; /* Sağa ve sola genişlik ekledik */
+  padding: 8px 20px;
   position:absolute;
   cursor: pointer;
   border-radius: 25px;

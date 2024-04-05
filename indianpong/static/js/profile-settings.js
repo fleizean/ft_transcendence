@@ -231,6 +231,44 @@ export function changeAvatar(username) {
         }
 }
 
+export function unblockButon(username, blockedusername) {
+    if (!blockedusername || !username)
+        return;
+
+    var formData = new FormData(); // FormData nesnesi oluştur
+    var csrftoken = document.cookie.split('; ').find(row => row.startsWith('csrftoken')).split('=')[1];
+    formData.append('blockedusername', blockedusername);
+    formData.append('unblock_form', 'unblock_form');
+    const lang = getCookie('selectedLanguage');
+    fetch(`/profile/${username}/settings`, {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'X-CSRFToken': csrftoken
+        }
+    })
+    .then(response => response.text())
+    .then(data => {
+        document.body.innerHTML = data;
+        var currentFragment = window.location.hash.substring(1);
+        displaySection(currentFragment);
+        const message = document.querySelector('.container-top').dataset.message;
+        if (message) {
+            showToast(message, 'text-bg-success', 'bi bi-check-circle-fill');
+        } else {
+            if (lang === 'tr') {
+                showToast('Bir hata oluştu.', 'text-bg-danger', 'bi bi-x-circle-fill');
+            } else if (lang === 'hi') {
+                showToast('कोई त्रुटि हुई।', 'text-bg-danger', 'bi bi-x-circle-fill');
+            } else if (lang === 'pt')
+                showToast('Ocorreu um erro.', 'text-bg-danger', 'bi bi-x-circle-fill');
+            else {
+                showToast('An error occurred.', 'text-bg-danger', 'bi bi-x-circle-fill');
+            }
+        }
+    })
+}
+
 export function displaySection(sectionId) {
     var sections = ["editProfile", "addSocial", "closeAccount","blockedUsers", "changePassword"];
 
@@ -247,6 +285,8 @@ export function displaySection(sectionId) {
     }
 }
 
+
+
 window.onload = function() {
     // Get the hash from the URL
     var hash = window.location.hash;        
@@ -256,7 +296,10 @@ window.onload = function() {
         var sectionId = hash.substring(1);
     
         // Call the displaySection function with the sectionId
-        displaySection(sectionId);
+        console.log(sectionId);
+        setTimeout(function() {
+            displaySection(sectionId);
+        }, 50); 
     }
 };
 

@@ -1,12 +1,51 @@
 export function innerChat() {
-  const roomName = JSON.parse(document.getElementById("room-name").textContent)
-  const user = JSON.parse(document.getElementById("user").textContent)
+
+function showToast(content, status, iconClass) {
+  const liveToast = document.getElementById('liveToast');
+  var toastContent = document.querySelector('#liveToast .fw-semibold');
+  var toastIcon = document.querySelector('.toast-body .i-class i');
+
+  toastIcon.className = iconClass;
+  liveToast.classList.remove('text-bg-danger'); 
+  liveToast.className = 'toast'; 
+  liveToast.classList.add(status);
+
+  toastContent.textContent = content;
+  const toast = new bootstrap.Toast(liveToast);
+  toast.show();
+  setTimeout(function() {
+      toast.hide();
+  }, 8000);
+}
+
+const langMessages = {
+  hi: {
+      blocked: "ब्लॉक किया गया है",
+      unblocked: "अनब्लॉक किया गया है"
+  },
+  pt: {
+      blocked: "foi bloqueado",
+      unblocked: "foi desbloqueado"
+  },
+  en: {
+      blocked: "has been blocked",
+      unblocked: "has been unblocked"
+  },
+  tr: {
+      blocked: "engellendi",
+      unblocked: "engeli kaldırıldı"
+  }
+};
+
+  const roomName = JSON.parse(document.getElementById("room-name").textContent);
+  const user = JSON.parse(document.getElementById("user").textContent);
   const sendButton = document.getElementById("send");
-  const conversation = document.getElementById("conversation")
-  const inputField = document.getElementById("comment")
-  const blockButton = document.getElementById("block")
-  const userNameOnChat = document.getElementById("userNameOnChat").textContent.trim()
-  
+  const conversation = document.getElementById("conversation");
+  const inputField = document.getElementById("comment");
+  const userNameOnChat = document.getElementById("userNameOnChat").textContent.trim();
+  const blockButton = document.getElementById("block");
+  const unblockButton = document.getElementById("unblock");
+
   const chatsocket = new WebSocket("ws://" + window.location.host + "/ws/chat/" + roomName + "/")
 
   chatsocket.onopen = function (e) {
@@ -23,6 +62,7 @@ export function innerChat() {
 
 
   chatsocket.onmessage = function (e) {
+      const lang = document.cookie.split('; ').find(row => row.startsWith('selectedLanguage=')).split('=')[1];
       const data = JSON.parse(e.data)
       switch (data.type) {
 /*         case 'blocked':
@@ -65,6 +105,23 @@ export function innerChat() {
           setTimeout(() => {
             conversation.scrollTop = conversation.scrollHeight;
           }, 0);
+          break;
+        case 'blocked':
+          if (data.blocker === user) {
+            unblockButton.style.display = 'block';
+            blockButton.style.display = 'none';
+            sendButton.disabled = true;
+            showToast(`${data.blocked} ${langMessages[lang][data.type]}`, 'text-bg-danger', 'bi bi-bug-fill');
+          }
+          break;
+        case 'unblocked':
+          if (data.unblocker === user) {
+            unblockButton.style.display = 'none';
+            blockButton.style.display = 'block';
+            sendButton.disabled = false;
+            showToast(`${data.unblocked} ${langMessages[lang][data.type]}`, 'text-bg-success', 'bi bi-check2-circle');
+          }
+          break;
       };
   }
 
@@ -89,9 +146,18 @@ export function innerChat() {
   }
 
   blockButton.onclick = function (e) {
+    console.log(userNameOnChat);
     chatsocket.send(JSON.stringify({
         "action": "block",
         "blocked": userNameOnChat,
+    }))
+  }
+
+  unblockButton.onclick = function (e) {
+    console.log(userNameOnChat);
+    chatsocket.send(JSON.stringify({
+        "action": "unblock",
+        "unblocked": userNameOnChat,
     }))
   }
 }

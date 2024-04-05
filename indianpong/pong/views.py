@@ -346,6 +346,7 @@ def profile_settings(request, username):
     password_form = PasswordChangeUserForm(request.user, lang = request.COOKIES.get('selectedLanguage', 'en'))
     social_form = SocialForm(instance=request.user.social, lang = request.COOKIES.get('selectedLanguage', 'en'))
     delete_account_form = DeleteAccountForm(user=request.user, lang = request.COOKIES.get('selectedLanguage', 'en'))
+    blocked_users = request.user.blocked_users.all()
     
     if request.method == "POST":
         data = request.POST
@@ -431,10 +432,24 @@ def profile_settings(request, username):
                 return redirect("login")
             else:
                 error = delete_account_form.errors
+        elif "unblock_form" in data:
+            blocked_username = data.get("blockedusername")
+            blocked_user = UserProfile.objects.get(username=blocked_username)
+            request.user.blocked_users.remove(blocked_user)
+            blocked_users = request.user.blocked_users.all()
+            if (lang == 'tr'):
+                message = "Kullanıcı engeli kaldırıldı."
+            elif (lang == 'hi'):
+                message = "उपयोगकर्ता ब्लॉक हटा दिया गया।"
+            elif (lang == 'pt'):
+                message = "Usuário desbloqueado."
+            else:
+                message = "User unblocked."
         else:
             error = "Invalid form submission."
+
     
-    return HttpResponse(render_to_string("profile-settings.html", {"profile": request.user, "avatar_form": avatar_form, "profile_form": profile_form, "password_form": password_form, "social_form": social_form, "delete_account_form": delete_account_form, "context": context, "changepassword": changepassword, "message": message, "error": error}, request=request))
+    return HttpResponse(render_to_string("profile-settings.html", {"profile": request.user, "avatar_form": avatar_form, "profile_form": profile_form, "password_form": password_form, "social_form": social_form, "delete_account_form": delete_account_form, "context": context, "changepassword": changepassword, "message": message, "error": error, "blocked_users": blocked_users}, request=request))
 
 @never_cache
 @login_required()
@@ -882,9 +897,13 @@ def room(request, room_name):
     users = UserProfile.objects.all().exclude(username=request.user).exclude(username="IndianAI")
     room = Room.objects.get(id=room_name)
     lang = request.COOKIES.get('selectedLanguage', 'en')
+    blocked_users = request.user.blocked_users.all()
     context = langs.get_langs(lang)
+    user_blocked_status = {}
+    for user in users:
+        user_blocked_status[user.username] = user in blocked_users
     messages = Message.objects.filter(room=room) #? html için mark_safe kullnabilini
-    return HttpResponse(render_to_string("room.html", {"room_name": room_name, "room": room, "users": users, "messages": messages, "context": context, "request": request}))
+    return HttpResponse(render_to_string("room.html", {"room_name": room_name, "room": room, "users": users, "messages": messages, "context": context, "request": request, "user_blocked_status": user_blocked_status}))
 
 
 
