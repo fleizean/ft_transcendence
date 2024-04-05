@@ -221,6 +221,18 @@ of the project.</b>
           This minor module aims to enhance the accessibility and inclusivity of  your website by offering content in multiple languages, making it more   user-friendly for a diverse international audience.
   </details>
 
+<details>
+      <summary> <b> GDPR Compliance Options with User Anonymization, Local Data Management, and Account Deletion. ✅</b></summary>
+      In this minor module, the goal is to introduce GDPR compliance options that allow users to exercise their data privacy rights. Key features and objectives include:
+          <ul>
+          <li>✅ Implement GDPR-compliant features that enable users to request anonymization of their personal data, ensuring that their identity and sensitive information are protected. </li>
+          <li>✅ Provide tools for users to manage their local data, including the ability to view, edit, or delete their personal information stored within the system. </li>
+          <li>✅ Offer a streamlined process for users to request the permanent deletion of their accounts, including all associated data, ensuring compliance with data protection regulations.. </li>
+          <li>✅ Maintain clear and transparent communication with users regarding their data privacy rights, with easily accessible options to exercise these rights. </li>
+          </ul>
+          This minor module aims to enhance user privacy and data protection by offering GDPR compliance options that empower users to control their personal information and exercise their data privacy rights within the system.
+  </details>
+
 
 <hr>
 <br>
