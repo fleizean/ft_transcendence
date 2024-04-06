@@ -4,12 +4,13 @@ function getCookie(name) {
 }
 
 function initializeSearch() {
-    const lang = getCookie('selectedLanguage');
+    
     const followButtons = document.querySelectorAll(".button-follow");
     var csrftoken = document.cookie.split('; ').find(row => row.startsWith('csrftoken')).split('=')[1];
     followButtons.forEach((button) => {
       button.addEventListener('click', (e) => {
         const username = e.target.getAttribute('data-username');
+        const lang = getCookie('selectedLanguage');
         let action = e.target.innerHTML.trim();
         if (action == "अनुसरण करना" || action == "Seguir" || action == "Takip Et" || action == "Follow") {
           action = "follow"

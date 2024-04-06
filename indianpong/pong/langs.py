@@ -1364,7 +1364,7 @@ def get_lang_hi():
         "profileLinkedinSocialText": "कोई लिंक्डइन नहीं",
         "profileTwitterSocialText": "कोई ट्विटर नहीं",
         "profileGithubSocialText": "कोई गिटहब नहीं",
-        "profileIntraSocialText": "कोई इंट्रा नहीं",
+        "profileIntra42SocialText": "कोई इंट्रा नहीं",
 
         "profileMatchHistoryText1": "प्रतिद्वंद्वी",
         "profileMatchHistoryText2": "परिणाम",
