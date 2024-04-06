@@ -54,9 +54,11 @@ function updateTitle(path) {
   }
   else {
     // If there are no parts, set the title to 'Home'
-    var title = 'IndianPong';
+    var title = 'Indian-Pong';
   }
 
+  if (!title)
+    title = 'Indian-Pong';
   // Set the document title
   document.title = title;
 }
