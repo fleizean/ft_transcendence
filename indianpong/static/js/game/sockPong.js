@@ -287,6 +287,9 @@ matchsocket.onmessage = function (e) {
             console.log('Game invite', data.inviter);
             console.log('data: ', data.invitee + " " + my.username)
             // Display the modal for accepting or declining the invitation
+
+            hideInviteButtons(data.inviter, data.invitee);
+            
             const acceptButton = document.getElementById(`acceptButton${data.inviter}`);
             const declineButton = document.getElementById(`declineButton${data.inviter}`);
             if (data.invitee === my.username)  {
@@ -658,6 +661,16 @@ matchmakingButton.onclick = function () {
 }
 
 //----------------------------------------------
+
+function hideInviteButtons(username1, username2) {
+    // Get the invite buttons for the two users
+    const inviteButton1 = document.getElementById(`inviteButton${username1}`);
+    const inviteButton2 = document.getElementById(`inviteButton${username2}`);
+
+    // Hide the invite buttons
+    if (inviteButton1) inviteButton1.style.display = 'none';
+    if (inviteButton2) inviteButton2.style.display = 'none';
+}
 
 function exitGame() {
     console.log("id: " + my.game_id);
