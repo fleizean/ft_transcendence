@@ -8,7 +8,7 @@ var start_time;
 var score1 = 0;
 var score2 = 0;
 
-const MAX_SCORE = 1;
+const MAX_SCORE = 10;
 
 // Player Abilities
 var likeaCheaterCount = 0;
