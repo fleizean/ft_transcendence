@@ -1,4 +1,4 @@
-export function getChat(username) {
+    export function getChat(username) {
     if (!username) {
         return;
     }

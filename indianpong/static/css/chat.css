@@ -18,14 +18,26 @@
   background-color: white;
   position: relative;
 }
+
+#follow {
+  color: #e31b23 !important;
+}
+
+#unfollow {
+  color:#515151 !important;
+}
+
+#invite {
+  color:#0d8d45 !important;
+}
 /* end: Chat */
 
 #unblock {
-  color:#059669 !important;
+  color:#515151 !important;
 }
 
 #block {
-  color:rgb(225, 34, 34) !important;
+  color: #e31b23 !important;
 }
 
 .room-profile-click {

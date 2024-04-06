@@ -898,12 +898,15 @@ def room(request, room_name):
     room = Room.objects.get(id=room_name)
     lang = request.COOKIES.get('selectedLanguage', 'en')
     blocked_users = request.user.blocked_users.all()
+    friends = request.user.friends.all()
     context = langs.get_langs(lang)
     user_blocked_status = {}
+    user_friends_status = {}
     for user in users:
         user_blocked_status[user.username] = user in blocked_users
+        user_friends_status[user.username] = user in friends
     messages = Message.objects.filter(room=room) #? html için mark_safe kullnabilini
-    return HttpResponse(render_to_string("room.html", {"room_name": room_name, "room": room, "users": users, "messages": messages, "context": context, "request": request, "user_blocked_status": user_blocked_status}))
+    return HttpResponse(render_to_string("room.html", {"room_name": room_name, "room": room, "users": users, "messages": messages, "context": context, "request": request, "user_blocked_status": user_blocked_status, "user_friends_status": user_friends_status}))
 
 
 

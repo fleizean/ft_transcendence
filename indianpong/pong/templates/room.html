@@ -68,10 +68,16 @@
                   {% endif %}
                 </div>
                 <div class="conversation-buttons">
-                  <button type="button"><i class="bi bi-person-add"></i></button>
+                  {% if not user_friends_status|get_item:room.second_user.username %}
+                    <button type="button" id="follow" style="display: block;"><i class="bi bi-heart-fill"></i></button>
+                    <button type="button" id="unfollow" style="display: none;"><i class="bi bi-heartbreak-fill"></i></button>
+                  {% else %}
+                    <button type="button" id="follow" style="display: none;"><i class="bi bi-heart-fill"></i></button>
+                    <button type="button" id="unfollow" style="display: block;"><i class="bi bi-heartbreak-fill"></i></button>
+                  {% endif %}
                   <button type="button"><i class="bi bi-controller" id="invite"></i></button>
                   {% if user_blocked_status|get_item:room.second_user.username %}
-                      <button type="button" id="unblock"><i class="bi bi-patch-check-fill"></i></button>
+                      <button type="button" id="unblock" style="display: block;"><i class="bi bi-patch-check-fill"></i></button>
                       <button type="button" id="block" style="display: none;"><i class="bi bi-ban"></i></button>
                   {% else %}
                       <button type="button" id="block" style="display: block;"><i class="bi bi-ban"></i></button>
@@ -158,4 +164,5 @@
       </div>
     </div>
   </div>
+  {% csrf_token %}
 {% endblock %}

@@ -21,19 +21,31 @@ function showToast(content, status, iconClass) {
 const langMessages = {
   hi: {
       blocked: "ब्लॉक किया गया है",
-      unblocked: "अनब्लॉक किया गया है"
+      unblocked: "अनब्लॉक किया गया है",
+      followed: "को फॉलो किया गया है",
+      unfollowed: "का अनुसरण किया गया है",
+      blockedfollow: "ब्लॉक किया गया है आप उसे फॉलो नहीं कर सकते",
   },
   pt: {
       blocked: "foi bloqueado",
-      unblocked: "foi desbloqueado"
+      unblocked: "foi desbloqueado",
+      followed: "foi seguido",
+      unfollowed: "deixou de seguir",
+      blockedfollow: "foi bloqueado você não pode segui-lo",
   },
   en: {
       blocked: "has been blocked",
-      unblocked: "has been unblocked"
+      unblocked: "has been unblocked",
+      followed: "has been followed",
+      unfollowed: "has been unfollowed",
+      blockedfollow: "has been blocked you can't follow him/her",
   },
   tr: {
       blocked: "engellendi",
-      unblocked: "engeli kaldırıldı"
+      unblocked: "engeli kaldırıldı",
+      followed: "takip edildi",
+      unfollowed: "takipten çıkarıldı",
+      blockedfollow: "engellendi takip edemezsiniz",
   }
 };
 
@@ -46,6 +58,8 @@ const langMessages = {
   const blockButton = document.getElementById("block");
   const inviteButton = document.getElementById("invite");
   const unblockButton = document.getElementById("unblock");
+  const followButton = document.getElementById("follow");
+  const unfollowButton = document.getElementById("unfollow");
   const messages = document.getElementById("messages");
 
   const chatsocket = new WebSocket("ws://" + window.location.host + "/ws/chat/" + roomName + "/")
@@ -143,6 +157,7 @@ const langMessages = {
             sendButton.style.color = 'red';
             messages.style.display = 'none';
             showToast(`${data.blocked} ${langMessages[lang][data.type]}`, 'text-bg-danger', 'bi bi-bug-fill');
+            unfollowButton.click();
           }
           break;
         case 'unblocked':
@@ -200,4 +215,52 @@ const langMessages = {
       "invited": userNameOnChat,
   }))
   }
+
+  followButton.onclick = function (e) {
+    const lang = document.cookie.split('; ').find(row => row.startsWith('selectedLanguage=')).split('=')[1];
+    if (unblockButton.style.display === 'block') {
+      showToast(`${userNameOnChat} ${langMessages[lang].blockedfollow}`, 'text-bg-danger', 'bi bi-bug-fill');
+      return;
+    }
+    var csrftoken = document.cookie.split('; ').find(row => row.startsWith('csrftoken')).split('=')[1];
+    fetch(`/follow_unfollow/${userNameOnChat}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': csrftoken
+        },
+        body: JSON.stringify({ action: "follow" })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data['status'] === 'ok') {
+            showToast(`${userNameOnChat} ${langMessages[lang].followed}`, 'text-bg-success', 'bi bi-bug-fill');
+            followButton.style.display = 'none';
+            unfollowButton.style.display = 'block';
+      }
+    });
+  }
+
+  unfollowButton.addEventListener('click', function(e) {
+    const lang = document.cookie.split('; ').find(row => row.startsWith('selectedLanguage=')).split('=')[1];
+
+    var csrftoken = document.cookie.split('; ').find(row => row.startsWith('csrftoken')).split('=')[1];
+    fetch(`/follow_unfollow/${userNameOnChat}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': csrftoken
+        },
+        body: JSON.stringify({ action: "unfollow" })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data['status'] === 'ok') {
+            showToast(`${userNameOnChat} ${langMessages[lang].unfollowed}`, 'text-bg-danger', 'bi bi-bug-fill');
+            unfollowButton.style.display = 'none';
+            followButton.style.display = 'block';
+        }
+      });
+    });
+
 }
