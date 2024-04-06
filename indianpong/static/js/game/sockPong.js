@@ -41,6 +41,7 @@ const selectedGameModeLabel = document.getElementById('selectedGameMode');
 let gameMode = "Vanilla";
 
 // Custom items
+const leftArea = document.getElementById('left-area-display');
 const paddleColor = document.querySelector('.left-card').dataset.paddlecolor;
 const playgroundColor = document.querySelector('.left-card').dataset.playgroundcolor;
 canvas.style.borderColor = playgroundColor;
@@ -386,7 +387,8 @@ matchsocket.onmessage = function (e) {
                 my.opponent_username = data.accepter; // if gerekir mi?
             }
             render();
-            showToast('Press Space to start the game', 'text-bg-primary', 'bi bi-exclamation-triangle-fill')
+            showToast('Press Space to start the game', 'text-bg-primary', 'bi bi-exclamation-triangle-fill');
+            
 
             document.addEventListener("keydown", SpaceKeyDown);
 
@@ -411,6 +413,7 @@ matchsocket.onmessage = function (e) {
             // if they vote for Start, start the game otherwise update votes
             // Start the game
             checkbox.disabled = true;
+            leftArea.style.display = 'none';
             if (data.vote == 2) {
                 if (lang === 'tr')
                     showToast(`3 saniye içinde ${player1.username} ve ${player2.username} arasında oyun başlıyor`, 'text-bg-success', 'bi bi-check-circle-fill');
@@ -485,11 +488,12 @@ matchsocket.onmessage = function (e) {
 
         case 'game.leave':
             //clearInterval(BallRequest);
+            leftArea.style.display = 'block';
             stopGame();
-            left_score = data.left_score;
-            opponent_score = data.opponent_score;
-            winner = data.winner;
-            loser = data.loser;
+            var left_score = data.left_score;
+            var opponent_score = data.opponent_score;
+            var winner = data.winner;
+            var loser = data.loser;
             document.getElementById('winnerText').innerText = winner;
             document.getElementById('loserText').innerText = loser;
             gameOverScreen.style.display = 'block';
@@ -502,12 +506,15 @@ matchsocket.onmessage = function (e) {
 
         case 'game.end':
             //clearInterval(BallRequest);
+            leftArea.style.display = 'block';
             stopGame();
             checkbox.disabled = false;
-            player1_score = data.player1_score;
-            player2_score = data.player2_score;
-            winner = data.winner;
-            loser = data.loser;
+            player1.score = data.player1_score;
+            player2.score = data.player2_score;
+           
+            var winner = data.winner;
+            var loser = data.loser;
+            console.log('Winner: ' + winner + ' Loser: ' + loser + ' Player1 score: ' + player1.score + ' Player2 score: ' + player2.score);
             document.getElementById('winnerText').innerText = winner;
             document.getElementById('loserText').innerText = loser;
             gameOverScreen.style.display = 'block';
