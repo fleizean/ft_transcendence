@@ -1083,12 +1083,49 @@ body {
   margin-right: 1em;
   font-size: 10px;
   text-align: left;
+  padding: 0 20px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .language-menu:hover .language-submenu {
   display: block;
   z-index: 900;
+}
+
+.language-submenu a {
+  font-size: 1.2em;
+  color: greenyellow;
+  position: relative;
+  /* cursor: url('../assets/scrool/crossedsword.png'), auto; */
+  padding: 0.4rem 0;
+}
+
+.language-submenu a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px; /* Çizgi kalınlığını ayarlayabilirsiniz */
+  background-color: #F99601; /* Çizgi rengini ayarlayabilirsiniz */
+  visibility: hidden;
+  transform: scaleX(0);
+  transition: transform 0.3s ease, visibility 0.3s ease;
+}
+
+.language-submenu a:hover::after {
+  visibility: visible;
+  transform: scaleX(1);
+}
+
+/* Opsiyonel: Çizgi ile metin arasındaki boşluğu ayarlar */
+.language-submenu a:hover {
+  padding-bottom: px;
+}
+
+/* Opsiyonel: Çizgiyi blurlamak için */
+.language-submenu a:hover::after {
+  backdrop-filter: blur(50px); /* Blurlama miktarını ayarlayabilirsiniz */
 }
 
 .info-menu:hover .info-icon,
@@ -1103,11 +1140,6 @@ body {
   display: flex;
   font-size: 10px;
   padding: 10px;
-}
-
-.language-item:hover {
-  color: #007bff;
-  background-color: #1b6718; /* Hover rengi */
 }
 
 .gohome-button-container {
