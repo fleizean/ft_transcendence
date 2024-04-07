@@ -769,7 +769,7 @@ def get_lang_pt():
         "signupInputPasswordText": "Senha",
         "signupInputConfirmPasswordText": "Senha (novamente)",
         "signupImageUploadText": "Imagem",
-        "signupGdprText1": "Eu concordo com o",
+        "signupGdprText1": "Concordo ",
         "signupGdprText2": "GDPR Política de Privacidade",
         "signupButtonSignup": "Vamos!",
 
