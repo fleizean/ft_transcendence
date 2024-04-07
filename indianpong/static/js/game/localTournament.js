@@ -532,20 +532,4 @@ startTournament.addEventListener("click", function() {
     document.getElementById('show-bracket').style.display = 'none';
     showCanvas();
 });
-
-var modal = document.getElementById('exampleModalGame');
-
-// Modal açılma olayını dinle
-modal.addEventListener('show.bs.modal', function (event) {
-    // Oyunu duraklat
-    
-    isPaused = true;
-});
-
-// Modal kapatılma olayını dinle
-modal.addEventListener('hide.bs.modal', function (event) {
-    // Oyunu devam ettir
-    if (isGameStarted)
-        isPaused = false;
-});
 }

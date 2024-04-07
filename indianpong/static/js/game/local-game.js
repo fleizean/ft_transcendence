@@ -8,6 +8,7 @@ canvas.height = 600;
 
 
 
+
 const translationswin = {
     'hi': ' आप जीत गए',
     'pt': ' você ganhou',
