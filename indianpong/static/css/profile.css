@@ -120,6 +120,14 @@
       font-size: 1.17em !important;
 }
 
+.page-link {
+    cursor:pointer;
+}
+
+.page-link-search {
+  cursor:auto !important;
+  color: tomato;
+}
 
 .page-item.active .page-link-rankings,
 .page-link-rankings.active {

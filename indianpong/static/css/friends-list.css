@@ -163,6 +163,15 @@
     }
   }
   
+  .page-link {
+    cursor:pointer;
+}
+
+.page-link-search {
+  cursor:auto !important;
+  color: tomato;
+}
+
 .page-item.active .page-link-friends,
 .page-link-friends.active {
     background-color: #ff9500 !important;

@@ -179,6 +179,21 @@
     top: 0;
   }
 
+  .right-refresh {
+    position: absolute;
+    right:25px;
+    
+    font-size: 1.2em;
+  }
+
+  .refresh-button {
+    cursor: pointer;
+    color: white;
+  }
+
+  .refresh-button:hover {
+    color: greenyellow;
+  }
   
 
 /* Game Room Area */

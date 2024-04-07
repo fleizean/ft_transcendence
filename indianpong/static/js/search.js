@@ -3,7 +3,7 @@ function getCookie(name) {
   return cookieValue ? cookieValue.pop() : '';
 }
 
-function initializeSearch() {
+export function initializeSearch() {
     
     const followButtons = document.querySelectorAll(".button-follow");
     var csrftoken = document.cookie.split('; ').find(row => row.startsWith('csrftoken')).split('=')[1];
@@ -50,7 +50,7 @@ function initializeSearch() {
     });
 }
 
-function makeSearch(event) {
+export function makeSearch(event) {
   event.preventDefault();
   var form = document.getElementById('searchForm');
   var formData = new FormData(form);

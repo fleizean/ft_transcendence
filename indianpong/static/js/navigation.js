@@ -12,6 +12,7 @@ import { Rps } from './rps.js';
 import { RemotePong } from './game/sockPong.js';
 import { RemoteRps } from './sockRps.js';
 import { createTournament } from './create-tournament.js';
+import { initializeSearch, makeSearch } from './search.js';
 
 export function getCookie(name) {
   const cookieValue = document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)');
@@ -94,6 +95,10 @@ window.localTournament = localTournament;
 window.Rps = Rps;
 window.createTournament = createTournament;
 window.unblockButon = unblockButon;
+window.RemotePong = RemotePong;
+window.RemoteRps = RemoteRps;
+window.initializeSearch = initializeSearch;
+window.makeSearch = makeSearch;
 
 window.onpopstate = function(event) {
   if (window.location.hash == '') {
@@ -141,9 +146,8 @@ function pageHandler(path) {
     }
     else if(path.includes('/search')) {
       //addScript('search');
-      const script = document.createElement('script');
-      script.src = '/static/js/search.js';
-      document.body.appendChild(script);
+      initializeSearch();
+      makeSearch();
     }
     else if(path.includes('/store/')) {
       //addScript('store');
