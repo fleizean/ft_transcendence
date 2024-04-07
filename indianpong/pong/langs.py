@@ -124,7 +124,7 @@ def get_lang_en():
 
             "aiGameInfoHeaderText": "About the Game",
             "aiGameInfoSubHeaderText": "How to Play the Game?",
-            "aiGameInfoSubHeaderDescription1": "In Pong game, players engage in a table tennis match against their opponents. The W-A-S-D keys (or up-down-left-right arrow keys) are used to control the ball.",
+            "aiGameInfoSubHeaderDescription1": "In Pong game, players engage in a table tennis match against their opponents. The W-S keys (or up-down arrow keys) are used to control the ball.",
             "aiGameInfoSubHeaderText2": "Win and Improve",
             "aiGameInfoSubHeaderDescription2": "You earn Pong Points with every game you win. With these points, you can purchase new items, rackets, and tables from the store to enhance your gaming experience.",
             "aiGameInfoSubHeaderText3": "Get Started Now",
@@ -478,7 +478,7 @@ def get_lang_tr():
 
             "aiGameInfoHeaderText": "Oyun Hakkında",
             "aiGameInfoSubHeaderText": "Oyunu Nasıl Oynarım?",
-            "aiGameInfoSubHeaderDescription1": "Pong oyununda oyuncular rakiplerine karsı bir masa tenisi macı yaparlar. W-A-S-D tusları (veya yukarı-asagı-sol-sag ok tusları) topu kontrol etmek icin kullanılır.",
+            "aiGameInfoSubHeaderDescription1": "Pong oyununda oyuncular rakiplerine karşı bir masa tenisi maçı yaparlar. W-S tuşları (veya yukarı-aşağı ok tuşları) topu kontrol etmek için kullanılır.",
             "aiGameInfoSubHeaderText2": "Kazan ve Geliş",
             "aiGameInfoSubHeaderDescription2": "Her oyun kazandığında Pong Puan kazanırsın. Bu puanlarla mağazadan yeni eşyalar, raket ve masalar satın alarak oyun deneyimini geliştirebilirsin.",
             "aiGameInfoSubHeaderText3": "Hemen Başla",
@@ -839,7 +839,7 @@ def get_lang_pt():
 
             "aiGameInfoHeaderText": "Sobre o Jogo",
             "aiGameInfoSubHeaderText": "Como Jogar o Jogo?",
-            "aiGameInfoSubHeaderDescription1": "No jogo Pong, os jogadores participam de uma partida de tênis de mesa contra seus oponentes. As teclas W-A-S-D (ou as setas cima-baixo-esquerda-direita) são usadas para controlar a bola.",
+            "aiGameInfoSubHeaderDescription1": "No jogo Pong, os jogadores participam de uma partida de tênis de mesa contra seus oponentes. As teclas W-S (ou as setas cima-baixo) são usadas para controlar a bola.",
             "aiGameInfoSubHeaderText2": "Ganhe e Melhore",
             "aiGameInfoSubHeaderDescription2": "Você ganha Pong Points a cada jogo que vence. Com esses pontos, você pode comprar novos itens, raquetes e mesas da loja para aprimorar sua experiência de jogo.",
             "aiGameInfoSubHeaderText3": "Comece Agora",
@@ -1193,7 +1193,7 @@ def get_lang_hi():
 
             "aiGameInfoHeaderText": "खेल के बारे में",
             "aiGameInfoSubHeaderText": "खेल कैसे खेलें?",
-            "aiGameInfoSubHeaderDescription1": "पॉन्ग खेल में खिलाड़ी अपने प्रतिद्वंद्वी के खिलाफ एक टेनिस की मैच खेलते हैं। W-A-S-D (या ऊपर-नीचे-बाएं-दाएं तीर) तीरों को नियंत्रित करने के लिए उपयोग किया जाता है।",
+            "aiGameInfoSubHeaderDescription1": "पॉन्ग खेल में खिलाड़ी अपने प्रतिद्वंद्वी के खिलाफ एक टेनिस की मैच खेलते हैं। W-S (या ऊपर-नीचे तीर) तीरों को नियंत्रित करने के लिए उपयोग किया जाता है।",
             "aiGameInfoSubHeaderText2": "जीतें और सुधारें",
             "aiGameInfoSubHeaderDescription2": "आप हर जीते खेल के बाद पॉन्ग पॉइंट्स कमाते हैं। इन पॉइंट्स के साथ आप खेल का अनुभव बेहतर बनाने के लिए दुकान से नए आइटम, रैकेट और टेबल खरीद सकते हैं।",
             "aiGameInfoSubHeaderText3": "अभी शुरू करें",
