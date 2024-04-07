@@ -54,6 +54,7 @@ function showToast(content, status, iconClass) {
   }
   
   function saveProperty(username ,itemId) {
+    const lang = document.cookie.split('; ').find(row => row.startsWith('selectedLanguage=')).split('=')[1];
       var itemName = document.getElementById('itemNameInput').value;
       if (itemName === "My Playground" || itemName === "My Beautiful Paddle") {
           whatis = document.getElementById('color').value;
@@ -77,7 +78,14 @@ function showToast(content, status, iconClass) {
       .then(text => {
         let button = document.getElementById(`button-${itemName}`);
         button.setAttribute('data-whatis', whatis);
-        showToast(`${itemName} öğesini başarıyla özelleştirdin!`, `text-bg-success`, `bi bi-shop`);
+        if (lang === 'tr')
+          showToast(`${itemName} öğesini başarıyla özelleştirdin!`, `text-bg-success`, `bi bi-shop`);
+        else if (lang === 'hi')
+          showToast(`आपने ${itemName} आइटम को सफलतापूर्वक अनुकूलित किया है!`, `text-bg-success`, `bi bi-shop`);
+        else if (lang === 'pt')
+          showToast(`Você personalizou com sucesso o item ${itemName}!`, `text-bg-success`, `bi bi-shop`);
+        else
+          showToast(`You have successfully customized ${itemName} item!`, `text-bg-success`, `bi bi-shop`);
       })
       .catch((error) => {
         console.error('Error:', error);
@@ -85,6 +93,7 @@ function showToast(content, status, iconClass) {
   }
   
   function submitInventoryItemForm(username, itemName) {
+    const lang = document.cookie.split('; ').find(row => row.startsWith('selectedLanguage=')).split('=')[1];
     const form = document.getElementById('store_item_form' + itemName);
     const formData = new FormData(form);
     // Access the data-is-equipped attribute
@@ -95,10 +104,24 @@ function showToast(content, status, iconClass) {
     let toastMessage;
     let toastIcon;
     if (isEquipped == 'True') {
-      toastMessage = `${itemName} öğesini başarıyla çıkardın!`; // You successfully unequipped the item!
+      if (lang === 'tr')
+        toastMessage = `${itemName} öğesini başarıyla çıkardın!`; // You successfully unequipped the item!
+      else if (lang === 'hi')
+        toastMessage = `आपने ${itemName} आइटम को सफलतापूर्वक अनइक्विप किया है!`;
+      else if (lang === 'pt')
+        toastMessage = `Você desequipou com sucesso o item ${itemName}!`;
+      else
+        toastMessage = `You have successfully unequipped ${itemName} item!`;
       toastIcon = `bi bi-x-circle-fill`; // Change this to the icon you want to show when unequipping
     } else {
-      toastMessage = `${itemName} öğesini başarıyla kuşandın!`; // You successfully equipped the item!
+      if (lang === 'tr')
+        toastMessage = `${itemName} öğesini başarıyla kuşandın!`; // You successfully equipped the item!
+      else if (lang === 'hi')
+        toastMessage = `आपने ${itemName} आइटम को सफलतापूर्वक इक्विप किया है!`;
+      else if (lang === 'pt')
+        toastMessage = `Você equipou com sucesso o item ${itemName}!`;
+      else
+        toastMessage = `You have successfully equipped ${itemName} item!`;
       toastIcon = `bi bi-check-circle-fill`;
     }
     

@@ -46,6 +46,8 @@ var paddle2 = {x: canvas.width - paddleWidth, y: paddleY, width: paddleWidth, he
 var ball = {x: canvas.width / 2, y: canvas.height / 2, radius: 10, speed: 10, dx: 1, dy: 1};
 
 // Scores
+var isGameStarted = false;
+
 var score1 = 0;
 var score2 = 0;
 
@@ -373,6 +375,7 @@ function showCanvas() {
     gameStartInfos.style.display = "none";
     gameInfoTournament.style.display = "block";
     isPaused = false;
+    isGameStarted = true;
   }
 
 // Reset the paddle1 position?
@@ -415,6 +418,7 @@ function showGameOverScreen(player1, player2) {
 }
 
 function showGameOverTournament(winner) {
+    isGameStarted = false;
     gameInfoTournament.style.display = "none";
     var winnerText = winner + " wins the tournament!";
     if (selectedLanguage === "tr") {
@@ -520,6 +524,7 @@ startButton.addEventListener("click", function() {
     playerNames.push(player4Name);
     MAX_SCORE = document.getElementById("maxScore").value;
     gameMode = document.getElementById("gameMode").value;
+    
     showBracket();
 });
 
@@ -533,12 +538,14 @@ var modal = document.getElementById('exampleModalGame');
 // Modal açılma olayını dinle
 modal.addEventListener('show.bs.modal', function (event) {
     // Oyunu duraklat
+    
     isPaused = true;
 });
 
 // Modal kapatılma olayını dinle
 modal.addEventListener('hide.bs.modal', function (event) {
     // Oyunu devam ettir
-    isPaused = false;
+    if (isGameStarted)
+        isPaused = false;
 });
 }

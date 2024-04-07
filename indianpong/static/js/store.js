@@ -1,4 +1,3 @@
-
 function initializeStore() {
 
     const storeInfos = document.getElementsByClassName('store-info'); // .store-info'ya erişim
@@ -33,6 +32,7 @@ function showToast(content, status, iconClass) {
   }
   
   function submitStoreItemForm(username, itemName, formId, price) {
+    const lang = document.cookie.split('; ').find(row => row.startsWith('selectedLanguage=')).split('=')[1];
       const form = document.getElementById('store_item_form' + formId);
       const formData = new FormData(form);
       var csrftoken = document.cookie.split('; ').find(row => row.startsWith('csrftoken')).split('=')[1];
@@ -52,7 +52,14 @@ function showToast(content, status, iconClass) {
         const walletAmount = document.querySelector('.wallet-amount');
         walletAmount.textContent = (parseInt(walletAmount.textContent) - price) + 'N₩';
         document.body.innerHTML = data;
-        showToast(`${itemName} öğesini başarıyla satın aldın!`, `text-bg-success`, `bi bi-shop`);
+        if (lang === 'tr')
+          showToast(`${itemName} öğesini başarıyla satın aldın!`, `text-bg-success`, `bi bi-shop`);
+        else if (lang === 'hi')
+          showToast(`आपने ${itemName} आइटम सफलतापूर्वक खरीद लिया है!`, `text-bg-success`, `bi bi-shop`);
+        else if (lang === 'pt')
+          showToast(`Você comprou com sucesso o item ${itemName}!`, `text-bg-success`, `bi bi-shop`);
+        else
+          showToast(`You have successfully bought ${itemName} item!`, `text-bg-success`, `bi bi-shop`);
       })
       .catch((error) => {
         console.error('Error:', error);
