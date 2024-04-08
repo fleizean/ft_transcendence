@@ -57,6 +57,8 @@ const langMessages = {
   const userNameOnChat = document.getElementById("userNameOnChat").textContent.trim();
   const blockButton = document.getElementById("block");
   const inviteButton = document.getElementById("invite");
+  const acceptButton = document.getElementById("accept");
+  const declineButton = document.getElementById("decline");
   const unblockButton = document.getElementById("unblock");
   const followButton = document.getElementById("follow");
   const unfollowButton = document.getElementById("unfollow");
@@ -132,11 +134,22 @@ const langMessages = {
             conversation.scrollTop = conversation.scrollHeight;
           }, 0);
           break;
+        case 'invite':
+          if (user === data.inviter) {
+            showToast(`You sent an invitation`, 'text-bg-info', 'bi bi-bug-fill');
+          } else {
+            showToast(`You received an invitation`, 'text-bg-info', 'bi bi-bug-fill');
+            acceptButton.style.display = 'block';
+            declineButton.style.display = 'block';
+          }
+          break;
         case 'accept':
           if (user === data.accepted) {
             showToast(`Your invitation accepted`, 'text-bg-success', 'bi bi-bug-fill');
           } else {
             showToast(`You accepted invitation`, 'text-bg-success', 'bi bi-bug-fill');
+            acceptButton.style.display = 'none';
+            declineButton.style.display = 'none';
           }
           swapApp(`/remote-game/invite/${data.game_id}`);
           break;
@@ -209,6 +222,7 @@ const langMessages = {
   }
 
   inviteButton.onclick = function (e) {
+    console.log("invite button clicked");
     chatsocket.send(JSON.stringify({
       "action": "invite",
       "inviter": user,
