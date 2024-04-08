@@ -276,5 +276,28 @@
         }
     }
 }
+
+document.querySelector('.refresh-button').addEventListener('click', function() {
+    fetch('/tournament-room/{{tournament.id}}')
+        .then(response => response.json())
+        .then(data => {
+            let participantsList = document.querySelector('.player-wrapper');
+            participantsList.innerHTML = ''; // Clear the existing list
+            data.forEach(participant => {
+                // Update this with how you want to display each participant
+                participantsList.innerHTML += `
+                    <div class="place">
+                        <div class="place-container">
+                            <div class="avatar-container">
+                                <img src="${participant.fields.avatar.url}" alt="Avatar" class="game-room-avatar">
+                            </div>
+                            <div class="clash-info player-info">
+                                <p class="truncate-pseudo" title="${participant.fields.username}">${participant.fields.username}</p>
+                            </div>
+                        </div>
+                    </div>`;
+            });
+        });
+});
 </script>
 {% endblock %}

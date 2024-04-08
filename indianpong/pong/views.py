@@ -9,6 +9,7 @@ from django.http import HttpResponse, HttpResponseBadRequest
 from django.http import HttpResponseRedirect
 from django.http import Http404
 from django.utils import timezone
+from django.core import serializers
 from django.template import loader
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 import ssl
@@ -941,6 +942,9 @@ def tournament_room(request, id):
     tournament = Tournament.objects.filter(id=id).first()
     if not tournament:
         return redirect('tournament_room_list')
+    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        participants = serializers.serialize('json', tournament.participants.all())
+        return JsonResponse(participants, safe=False)
 
     if 'start_tournament' in request.POST:
         # Check if there are at least 3 participants
