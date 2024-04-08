@@ -25,6 +25,12 @@ const langMessages = {
       followed: "को फॉलो किया गया है",
       unfollowed: "का अनुसरण किया गया है",
       blockedfollow: "ब्लॉक किया गया है आप उसे फॉलो नहीं कर सकते",
+      inviteyou: "आपने एक निमंत्रण भेजा है",
+      invitehe: "आपने एक निमंत्रण प्राप्त किया है",
+      acceptyou: "आपका निमंत्रण स्वीकृत हुआ",
+      accepthe: "आपने निमंत्रण स्वीकार किया",
+      declineyou: "आपका निमंत्रण अस्वीकृत हुआ",
+      declinehe: "आपने निमंत्रण अस्वीकार किया",
   },
   pt: {
       blocked: "foi bloqueado",
@@ -32,6 +38,12 @@ const langMessages = {
       followed: "foi seguido",
       unfollowed: "deixou de seguir",
       blockedfollow: "foi bloqueado você não pode segui-lo",
+      inviteyou: "Você enviou um convite",
+      invitehe: "Você recebeu um convite",
+      acceptyou: "Seu convite foi aceito",
+      accepthe: "Você aceitou o convite",
+      declineyou: "Seu convite foi recusado",
+      declinehe: "Você recusou o convite",
   },
   en: {
       blocked: "has been blocked",
@@ -39,6 +51,13 @@ const langMessages = {
       followed: "has been followed",
       unfollowed: "has been unfollowed",
       blockedfollow: "has been blocked you can't follow him/her",
+      inviteyou: "You sent an invitation",
+      invitehe: "You received an invitation",
+      acceptyou: "Your invitation accepted",
+      accepthe: "You accepted invitation",
+      declineyou: "Your invitation declined",
+      declinehe: "You declined invitation",
+     
   },
   tr: {
       blocked: "engellendi",
@@ -46,6 +65,12 @@ const langMessages = {
       followed: "takip edildi",
       unfollowed: "takipten çıkarıldı",
       blockedfollow: "engellendi takip edemezsiniz",
+      inviteyou: "Davet gönderdiniz",
+      invitehe: "Davet aldınız",
+      acceptyou: "Davetiniz kabul edildi",
+      accepthe: "Davet kabul edildi",
+      declineyou: "Davetiniz reddedildi",
+      declinehe: "Davet reddedildi",
   }
 };
 
@@ -136,18 +161,18 @@ const langMessages = {
           break;
         case 'invite':
           if (user === data.inviter) {
-            showToast(`You sent an invitation`, 'text-bg-info', 'bi bi-bug-fill');
+            showToast(`${langMessages[lang]['inviteyou']}`, 'text-bg-info', 'bi bi-bug-fill');
           } else {
-            showToast(`You received an invitation`, 'text-bg-info', 'bi bi-bug-fill');
+            showToast(`${langMessages[lang]['invitehe']}`, 'text-bg-info', 'bi bi-bug-fill');
             acceptButton.style.display = 'block';
             declineButton.style.display = 'block';
           }
           break;
         case 'accept':
           if (user === data.accepted) {
-            showToast(`Your invitation accepted`, 'text-bg-success', 'bi bi-bug-fill');
+            showToast(`${langMessages[lang]['acceptyou']}`, 'text-bg-success', 'bi bi-bug-fill');
           } else {
-            showToast(`You accepted invitation`, 'text-bg-success', 'bi bi-bug-fill');
+            showToast(`${langMessages[lang]['accepthe']}`, 'text-bg-success', 'bi bi-bug-fill');
             acceptButton.style.display = 'none';
             declineButton.style.display = 'none';
           }
@@ -156,9 +181,9 @@ const langMessages = {
 
         case 'decline':
           if (user === data.declined) {
-            showToast(`Your invitation declined`, 'text-bg-danger', 'bi bi-bug-fill');
+            showToast(`${langMessages[lang]['declineyou']}`, 'text-bg-success', 'bi bi-bug-fill');
           } else {
-            showToast(`You declined invitation`, 'text-bg-danger', 'bi bi-bug-fill');
+            showToast(`${langMessages[lang]['declinehe']}`, 'text-bg-success', 'bi bi-bug-fill');
           }
           break;
 
