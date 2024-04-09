@@ -1001,7 +1001,8 @@ def tournament_room(request, id):
         last_game_id = games.last().id
     final_game = tournament.final_round_matches.first()
     final_game_id = final_game.id if final_game else None
-    return render(request, "tournament-room.html", {"tournament": tournament, 'user': request.user, 'is_participants': is_participants, 'empty_slots': empty_slots, "context": context, 'first_game_id': first_game_id, 'last_game_id': last_game_id, 'final_game_id': final_game_id})
+
+    return HttpResponse(render_to_string("tournament-room.html", {"tournament": tournament, 'user': request.user, 'is_participants': is_participants, 'empty_slots': empty_slots, "context": context, 'first_game_id': first_game_id, 'last_game_id': last_game_id, 'final_game_id': final_game_id}, request=request))
 
 @never_cache
 @login_required()

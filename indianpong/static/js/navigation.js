@@ -13,6 +13,7 @@ import { RemotePong } from './game/sockPong.js';
 import { RemoteRps } from './sockRps.js';
 import { createTournament } from './create-tournament.js';
 import { initializeSearch, makeSearch } from './search.js';
+import { displaySectionGame } from './tournament-room.js';
 
 export function getCookie(name) {
   const cookieValue = document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)');
@@ -99,6 +100,7 @@ window.RemotePong = RemotePong;
 window.RemoteRps = RemoteRps;
 window.initializeSearch = initializeSearch;
 window.makeSearch = makeSearch;
+window.displaySectionGame = displaySectionGame;
 
 window.onpopstate = function(event) {
   if (window.location.hash == '') {
@@ -179,11 +181,14 @@ function pageHandler(path) {
     else if (path.includes('/play-rps-ai')) {
       Rps();
     }
-    else if (path.includes('/remote-game/peer-to-peer/new')) {
+    else if (path.includes('/remote-game/')) {
       RemotePong();
     }
     else if (path.includes('/play-rps')) {
       RemoteRps();
+    }
+    else if (path.includes('/tournament-room/')) {
+      displaySectionGame();
     }
 
     if (path != '/' && path != '/login' && path != '/signup')

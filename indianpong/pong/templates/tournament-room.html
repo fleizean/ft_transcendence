@@ -252,52 +252,5 @@
     </div>
 </div>
 
-<script>
-    function displaySectionGame(sectionId) {
-    var sections = ["game-bracket-section", "game-room-section"];
-    var buttons = ["checkbracket", "gameroombracket"];
 
-    var button = document.getElementById(buttons[1]);
-    var button2 = document.getElementById(buttons[0]);
-    for (var i = 0; i < sections.length; i++) {
-        var section = document.getElementById(sections[i]);
-        if (sections[i] === sectionId) {
-            section.style.display = 'block';
-            if (sectionId === "game-bracket-section") {
-                button.style.display = 'inline';
-                button2.style.display = 'none';
-            }
-            else {
-                button.style.display = 'none';
-                button2.style.display = 'inline';
-            }
-        } else {
-            section.style.display = 'none';
-        }
-    }
-}
-
-document.querySelector('.refresh-button').addEventListener('click', function() {
-    fetch('/tournament-room/{{tournament.id}}')
-        .then(response => response.json())
-        .then(data => {
-            let participantsList = document.querySelector('.player-wrapper');
-            participantsList.innerHTML = ''; // Clear the existing list
-            data.forEach(participant => {
-                // Update this with how you want to display each participant
-                participantsList.innerHTML += `
-                    <div class="place">
-                        <div class="place-container">
-                            <div class="avatar-container">
-                                <img src="${participant.fields.avatar.url}" alt="Avatar" class="game-room-avatar">
-                            </div>
-                            <div class="clash-info player-info">
-                                <p class="truncate-pseudo" title="${participant.fields.username}">${participant.fields.username}</p>
-                            </div>
-                        </div>
-                    </div>`;
-            });
-        });
-});
-</script>
 {% endblock %}
