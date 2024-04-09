@@ -17,6 +17,13 @@
     justify-content: center;
     align-items: center;
   }
+
+  .tournament-description {
+    text-align: center;
+    color: red;
+    font-weight: bold;
+    font-size: 12px;
+  }
   
   .leave-button {
       text-align: center;

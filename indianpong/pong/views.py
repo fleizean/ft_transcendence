@@ -940,6 +940,8 @@ def tournament_room(request, id):
     lang = request.COOKIES.get('selectedLanguage', 'en')
     context = langs.get_langs(lang)
     tournament = Tournament.objects.filter(id=id).first()
+    error = ""
+    sucess = ""
     if not tournament:
         return redirect('tournament_room_list')
     if request.headers.get('x-requested-with') == 'XMLHttpRequest':
@@ -949,18 +951,46 @@ def tournament_room(request, id):
     if 'start_tournament' in request.POST:
         # Check if there are at least 3 participants
         if tournament.participants.count() < 4:
-            messages.error(request, '4 participants are required to start the tournament.')
+            if (lang == 'tr'):
+                error = 'Turnuvada en az 4 katılımcı olmalıdır.'
+            elif (lang == 'hi'):
+                error = 'टूर्नामेंट में कम से कम 4 प्रतियोगी होने चाहिए।'
+            elif (lang == 'pt'):
+                error = 'O torneio deve ter pelo menos 4 participantes.'
+            else:
+                error = 'The tournament must have at least 4 participants.'
         else:
             tournament.create_first_round_matches()
             # Fetch the games that belong to the current tournament
-            messages.success(request, 'Tournament started successfully.')
+            if (lang == 'tr'):
+                sucess = 'Turnuva başarıyla başlatıldı.'
+            elif (lang == 'hi'):
+                sucess = 'टूर्नामेंट सफलतापूर्वक शुरू हुआ।'
+            elif (lang == 'pt'):
+                sucess = 'O torneio foi iniciado com sucesso.'
+            else:
+                sucess = 'The tournament has been started successfully.'
 
     elif 'join_tournament' in request.POST:
         if tournament.participants.count() >= 4:
-            messages.error(request, 'The tournament is full.')
+            if (lang == 'tr'):
+                error = 'Turnuva dolu.'
+            elif (lang == 'hi'):
+                error = 'टूर्नामेंट भरा हुआ है।'
+            elif (lang == 'pt'):
+                error = 'O torneio está cheio.'
+            else:
+                error = 'The tournament is full.'
         else:
             tournament.participants.add(request.user)
-            messages.success(request, 'You have joined the tournament.')
+            if (lang == 'tr'):
+                sucess = 'Turnuvaya katıldınız.'
+            elif (lang == 'hi'):
+                sucess = 'आपने टूर्नामेंट में शामिल हो गए हैं।'
+            elif (lang == 'pt'):
+                sucess = 'Você entrou no torneio.'
+            else:
+                sucess = 'You have joined the tournament.'
     
     elif 'leave_tournament' in request.POST:
         if not (tournament.status == 'started' or tournament.status == 'ended'):
@@ -971,8 +1001,14 @@ def tournament_room(request, id):
                     tournament.save()
                 else:
                     tournament.delete()
-                return redirect('tournament_room_list')
-            messages.success(request, 'You have left the tournament.')
+            if (lang == 'tr'):
+                sucess = 'Turnuvadan ayrıldınız.'
+            elif (lang == 'hi'):
+                sucess = 'आपने टूर्नामेंट छोड़ दिया है।'
+            elif (lang == 'pt'):
+                sucess = 'Você saiu do torneio.'
+            else:
+                sucess = 'You have left the tournament.'
         else:
             #Find the game that the user is in first_round_matches or final_round_matches which winner is not determined yet
             match = Game.objects.filter(
@@ -1002,7 +1038,7 @@ def tournament_room(request, id):
     final_game = tournament.final_round_matches.first()
     final_game_id = final_game.id if final_game else None
 
-    return HttpResponse(render_to_string("tournament-room.html", {"tournament": tournament, 'user': request.user, 'is_participants': is_participants, 'empty_slots': empty_slots, "context": context, 'first_game_id': first_game_id, 'last_game_id': last_game_id, 'final_game_id': final_game_id}, request=request))
+    return HttpResponse(render_to_string("tournament-room.html", {"tournament": tournament, 'user': request.user, 'is_participants': is_participants, 'empty_slots': empty_slots, "context": context, 'first_game_id': first_game_id, 'last_game_id': last_game_id, 'final_game_id': final_game_id, "error": error, "sucess": sucess}, request=request))
 
 @never_cache
 @login_required()
@@ -1020,7 +1056,7 @@ def tournament_room_list(request):
     except EmptyPage:
         # Geçersiz bir sayfa numarası istenirse, son sayfayı al
         tournament_page_obj = paginator.page(paginator.num_pages)
-    return render(request, "tournament-room-list.html", {"tournaments": tournament_page_obj, "context": context})
+    return HttpResponse(render_to_string("tournament-room-list.html", {"tournaments": tournament_page_obj, "context": context}, request=request))
 
 
 @never_cache
@@ -1040,7 +1076,7 @@ def tournament_create(request):
             #print(form.errors)
     else:
         form = TournamentForm(request=request)
-    return render(request, "tournament-create.html", {"form": form, "context": context})
+    return HttpResponse(render_to_string("tournament-create.html", {"form": form, "context": context}, request=request))
 
 
 """ @never_cache
