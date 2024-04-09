@@ -13,7 +13,7 @@ import { RemotePong } from './game/sockPong.js';
 import { RemoteRps } from './sockRps.js';
 import { createTournament } from './create-tournament.js';
 import { initializeSearch, makeSearch } from './search.js';
-import { displaySectionGame } from './tournament-room.js';
+import { displaySectionGame, joinTournament, startTournament } from './tournament-room.js';
 
 export function getCookie(name) {
   const cookieValue = document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)');
@@ -101,6 +101,8 @@ window.RemoteRps = RemoteRps;
 window.initializeSearch = initializeSearch;
 window.makeSearch = makeSearch;
 window.displaySectionGame = displaySectionGame;
+window.startTournament = startTournament;
+window.joinTournament = joinTournament;
 
 window.onpopstate = function(event) {
   if (window.location.hash == '') {
@@ -189,6 +191,8 @@ function pageHandler(path) {
     }
     else if (path.includes('/tournament-room/')) {
       displaySectionGame();
+      startTournament();
+      joinTournament();
     }
 
     if (path != '/' && path != '/login' && path != '/signup')

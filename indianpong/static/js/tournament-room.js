@@ -25,3 +25,48 @@ export function displaySectionGame(sectionId) {
     }
 }
 
+export function joinTournament(tournamentId) {
+    if (!tournamentId)
+        return;
+    const csrfToken = document.cookie.split('; ').find(row => row.startsWith('csrftoken')).split('=')[1];
+    const formData = new FormData();
+    formData.append('join_tournament', 'true');
+
+    fetch(`/tournament-room/${tournamentId}`, {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'X-CSRFToken': csrfToken
+        }, 
+    })
+    .then(response => response.text())
+    .then(data => {
+        document.body.innerHTML = data;
+    })
+    .catch(error => {
+        console.error('Error joining tournament:', error);
+    });
+}
+
+export function startTournament(tournamentId) {
+    if (!tournamentId)
+        return;
+    const csrfToken = document.cookie.split('; ').find(row => row.startsWith('csrftoken')).split('=')[1];
+    const formData = new FormData();
+    formData.append('start_tournament', 'true');
+
+    fetch(`/tournament-room/${tournamentId}`, {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'X-CSRFToken': csrfToken
+        }, 
+    })
+    .then(response => response.text())
+    .then(data => {
+        document.body.innerHTML = data;
+    })
+    .catch(error => {
+        console.error('Error starting tournament:', error);
+    });
+}

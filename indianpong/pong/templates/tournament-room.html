@@ -30,14 +30,14 @@
                     <form method="POST">
                         {% csrf_token %}
                         <input type="hidden" name="join_tournament" value="true">
-                        <button class="leave-button" type="submit"><i class="bi bi-plus-circle-fill"></i>{{context.tournamentroomJoinButtonText}}</button>
+                        <button class="leave-button" onclick="joinTournament(`{{tournament.id}}`)" type="button"><i class="bi bi-plus-circle-fill"></i>{{context.tournamentroomJoinButtonText}}</button>
                     </form>
                 {% endif %}
                 {% if tournament.creator == user %}
                     <form method="POST">
                         {% csrf_token %}
                         <input type="hidden" name="start_tournament" value="true">
-                        <button class="leave-button" type="submit"><i class="bi bi-flag-fill"></i>{{context.tournamentroomStartButtonText}}</button>
+                        <button class="leave-button" onclick="startTournament(`{{tournament.id}}`)" type="button"><i class="bi bi-flag-fill"></i>{{context.tournamentroomStartButtonText}}</button>
                     </form>
                 {% endif %}
             {% endif %}
