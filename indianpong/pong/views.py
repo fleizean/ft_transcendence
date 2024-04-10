@@ -848,6 +848,8 @@ def local_tournament(request):
 @login_required()
 def remote_game(request, game_type, game_id):
     # Validation checks
+
+    tournament = ""
     if game_type not in ['peer-to-peer', 'tournament', 'invite']:
         raise Http404("Invalid game type. It should be either 'peer-to-peer' or 'tournament'.")
 
@@ -856,12 +858,14 @@ def remote_game(request, game_type, game_id):
 
     if game_type == 'tournament' or game_type == 'invite':
         game = get_object_or_404(Game, id=game_id)
+        tournament = get_object_or_404(Tournament, id=game.tournament_id)
         if game.winner is not None:
             raise Http404("The game is already finished.")
 
     lang = request.COOKIES.get('selectedLanguage', 'en')
     context = langs.get_langs(lang)
     user_items = UserItem.objects.filter(user=request.user)
+    
     
     # Just Customizations - PONG
     paddlecolor = get_equipped_item_value(user_items, "My Beautiful Paddle", "black")
@@ -874,7 +878,7 @@ def remote_game(request, game_type, game_id):
     rageoffire = get_equipped_item_value(user_items, "Rage of Fire", "None")
     frozenball = get_equipped_item_value(user_items, "Frozen Ball", "None")
 
-    return render(request, "remote-game.html", {"paddlecolor": paddlecolor, "playgroundcolor": playgroundcolor, "giantman": giantman, "likeacheater": likeacheater, "fastandfurious": fastandfurious, "rageoffire": rageoffire, "frozenball": frozenball, "context": context})
+    return render(request, "remote-game.html", {"paddlecolor": paddlecolor, "playgroundcolor": playgroundcolor, "giantman": giantman, "likeacheater": likeacheater, "fastandfurious": fastandfurious, "rageoffire": rageoffire, "frozenball": frozenball, "context": context, "tournament": tournament})
 
 
 @never_cache
@@ -1217,7 +1221,6 @@ def update_winner_pong(data):
     # Game Stats #
     update_stats_pong(winner_profile, loser_profile, winnerscore, loserscore, game_duration, "not_remote")
 
-    
 
 def update_winner_rps(data):
     from .update import update_wallet_elo, update_stats_rps

@@ -15,6 +15,8 @@ var gameMode = "Vanilla";
 /* Tournament */
 var playerNames = [];
 var matches = [];
+const cookie = document.cookie.split('; ').find(row => row.startsWith('selectedLanguage='));
+const selectedLanguage = cookie ? cookie.split('=')[1] : 'en';
 
 var matchCount = 0;
 
@@ -137,8 +139,9 @@ function update() {
 
     // Check for game over
     if (score1 == MAX_SCORE || score2 == MAX_SCORE) {
-        if (matchCount < 2)
+        if (matchCount < 2) {
             showGameOverScreen(score1 == MAX_SCORE ? matches[matchCount].player1 : matches[matchCount].player2);
+        }
         else {
             isPaused = true;
             showGameOverTournament(score1 == MAX_SCORE ? matches[matchCount].player1 : matches[matchCount].player2);
@@ -231,6 +234,7 @@ function render() {
     ctx.font = "16px Roboto";
     ctx.fillStyle = 'white';
     
+    
     if (matchCount === 0) {        
         ctx.fillText(matches[matchCount].player1 + ": " + score1, usernameX, usernameY);
         ctx.fillText(matches[matchCount].player2 + ": " + score2, player2nameX, player2nameY);
@@ -301,6 +305,7 @@ function likeaCheaterAbility(whichPlayer) {
     }
     else if (whichPlayer == "Player1") {
         score1++;
+
         if (score2 > 0) {
             score2--;
         }
@@ -395,7 +400,26 @@ function resetGame() {
 // Oyun bitiş ekranını gösteren fonksiyon
 function showGameOverScreen(player1, player2) {
     gameInfoTournament.style.display = "none";
-    var winnerText = (score1 == MAX_SCORE) ? player1 + " wins!" : player2 + " wins!";
+    var message = " wins!";
+    var tournamentText = "Tournament is over! ";
+    if (selectedLanguage == 'hi') {
+        message = " जीत!";
+        tournamentText = "टूर्नामेंट ख़त्म हो गया है! ";
+    }
+    else if (selectedLanguage == 'pt') {
+        message = " vence!";
+        tournamentText = "O torneio acabou! ";
+    }
+    else if (selectedLanguage == 'tr') {
+        message = " kazandI!";
+        tournamentText = "Turnuva bitti! ";
+    }
+    else {
+        message = " wins!";
+        tournamentText = "Tournament is over! ";
+    }
+
+    var winnerText = (score1 == MAX_SCORE) ? player1 + message : player2 + message;
     document.getElementById('winnerText').innerText = winnerText;
     document.getElementById('gameOverScreen').style.display = 'block';
     var winnerName = (score1 == MAX_SCORE) ? player1 : player2;
@@ -412,7 +436,7 @@ function showGameOverScreen(player1, player2) {
     if (isPaused == false) {
         matchCount++;
         if (matchCount === 3)
-            document.getElementById('winnerText').innerText = "Tournament is over! " + winnerName + " wins!";
+            document.getElementById('winnerText').innerText = tournamentText + winnerName + message;
     }
     isPaused = true;
 }

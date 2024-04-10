@@ -110,7 +110,8 @@ export function startTournament(tournamentId) {
 export function leaveTournament(tournamentId) {
     if (!tournamentId)
         return;
-    const lang = document.cookie.split('; ').find(row => row.startsWith('selectedLanguage=')).split('=')[1];
+    const cookie = document.cookie.split('; ').find(row => row.startsWith('selectedLanguage='));
+    const lang = cookie ? cookie.split('=')[1] : 'en';
     const csrfToken = document.cookie.split('; ').find(row => row.startsWith('csrftoken')).split('=')[1];
     const formData = new FormData();
     formData.append('leave_tournament', 'true');

@@ -71,6 +71,7 @@
                   <button type="button" id="accept" style="display: none; color: #3CB371;"><i class="bi bi-check-circle-fill"></i></button>
                   <button type="button" id="decline" style="display: none; color: #DC143C;"><i class="bi bi-x-circle-fill"></i></button>
                   <button type="button" id="invite"><i class="bi bi-controller"></i></button>
+                  {{user_blocked_status|get_item:room.second_user.username}}
                   {% if not user_friends_status|get_item:room.second_user.username %}
                     <button type="button" id="follow" style="display: block;"><i class="bi bi-heart-fill"></i></button>
                     <button type="button" id="unfollow" style="display: none;"><i class="bi bi-heartbreak-fill"></i></button>
@@ -78,7 +79,7 @@
                     <button type="button" id="follow" style="display: none;"><i class="bi bi-heart-fill"></i></button>
                     <button type="button" id="unfollow" style="display: block;"><i class="bi bi-heartbreak-fill"></i></button>
                   {% endif %}
-                  {% if user_blocked_status|get_item:room.second_user.username %}
+                  {% if user_blocked_status|get_item:room.second_user.username or user_blocked_status|get_item:room.first_user.username %}
                       <button type="button" id="unblock" style="display: block;"><i class="bi bi-patch-check-fill"></i></button>
                       <button type="button" id="block" style="display: none;"><i class="bi bi-ban"></i></button>
                   {% else %}
@@ -90,12 +91,12 @@
                   <button type="button" id="unblock" style="display: none;"><i class="bi bi-patch-check-fill"></i></button> -->
                 </div>
               </div>
-              <div class="conversation-main" id="conversation">
+              <div class="conversation-main" id="conversation"  {% if user_blocked_status|get_item:room.second_user.username or user_blocked_status|get_item:room.first_user.username %} style="display:none" {% endif %}>
                 <ul class="conversation-wrapper">
                   <div class="coversation-divider">
                     <span>{{context.chatTodayText}}</span>
                   </div>
-                  <div id="messages" {% if user_blocked_status|get_item:room.second_user.username %} style="display:none" {% endif %}>
+                  <div id="messages">
                   {% for message in messages %}
                     
                     {% if request.user == message.user %} 

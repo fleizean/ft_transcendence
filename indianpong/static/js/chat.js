@@ -141,23 +141,23 @@ const langMessages = {
     return message
   }
 
-
   chatsocket.onmessage = function (e) {
-      const lang = document.cookie.split('; ').find(row => row.startsWith('selectedLanguage=')).split('=')[1];
+      const cookie = document.cookie.split('; ').find(row => row.startsWith('selectedLanguage='));
+      const lang = cookie ? cookie.split('=')[1] : 'en';
       const data = JSON.parse(e.data)
+      
+      
       switch (data.type) {
-/*         case 'blocked':
-          console.log('blocked') */
         case 'chat.message':
           if (user === data.user) {
-            var message = messageMe(data);
+              var message = messageMe(data);
           } else {
-            var message = messageOthers(data);
+              var message = messageOthers(data);
           }
-          conversation.innerHTML += message
-          setTimeout(() => {
-            conversation.scrollTop = conversation.scrollHeight;
-          }, 0);
+            conversation.innerHTML += message
+            setTimeout(() => {
+              conversation.scrollTop = conversation.scrollHeight;
+            }, 0);
           break;
         case 'invite':
           if (user === data.inviter) {
@@ -193,9 +193,8 @@ const langMessages = {
             blockButton.style.display = 'none';
             sendButton.disabled = true;
             sendButton.style.color = 'red';
-            messages.style.display = 'none';
+            conversation.style.display = 'none';
             showToast(`${data.blocked} ${langMessages[lang][data.type]}`, 'text-bg-danger', 'bi bi-bug-fill');
-            unfollowButton.click();
           }
           break;
         case 'unblocked':
@@ -204,7 +203,7 @@ const langMessages = {
             blockButton.style.display = 'block';
             sendButton.style.color = '#94a3b8';
             sendButton.disabled = false;
-            messages.style.display = 'block';
+            conversation.style.display = 'block';
             showToast(`${data.unblocked} ${langMessages[lang][data.type]}`, 'text-bg-success', 'bi bi-bug-fill');
           }
           break;
@@ -232,7 +231,7 @@ const langMessages = {
   }
 
   blockButton.onclick = function (e) {
-    console.log(userNameOnChat);
+    console.log(userNameOnChat + ' clicked');
     chatsocket.send(JSON.stringify({
         "action": "block",
         "blocked": userNameOnChat,
@@ -256,7 +255,8 @@ const langMessages = {
   }
 
   followButton.onclick = function (e) {
-    const lang = document.cookie.split('; ').find(row => row.startsWith('selectedLanguage=')).split('=')[1];
+    const cookie = document.cookie.split('; ').find(row => row.startsWith('selectedLanguage='));
+    const lang = cookie ? cookie.split('=')[1] : 'en';
     if (unblockButton.style.display === 'block') {
       showToast(`${userNameOnChat} ${langMessages[lang].blockedfollow}`, 'text-bg-danger', 'bi bi-bug-fill');
       return;
@@ -281,7 +281,8 @@ const langMessages = {
   }
 
   unfollowButton.addEventListener('click', function(e) {
-    const lang = document.cookie.split('; ').find(row => row.startsWith('selectedLanguage=')).split('=')[1];
+    const cookie = document.cookie.split('; ').find(row => row.startsWith('selectedLanguage='));
+    const lang = cookie ? cookie.split('=')[1] : 'en';
 
     var csrftoken = document.cookie.split('; ').find(row => row.startsWith('csrftoken')).split('=')[1];
     fetch(`/follow_unfollow/${userNameOnChat}`, {

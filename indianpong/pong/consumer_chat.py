@@ -22,9 +22,8 @@ class ChatConsumer(AsyncWebsocketConsumer):
         from .models import UserProfile, Message, Game
         data = json.loads(text_data)
         action = data["action"]
-        print(action)
         if action == "chat":
-            message =data["message"]
+            message = data["message"]
             user = await UserProfile.objects.aget(username=self.user.username)
             m = await Message.objects.acreate(content=message, user=user, room_id=self.room_name) #room_id is the room name
             # Send message to room group

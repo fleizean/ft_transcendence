@@ -76,6 +76,6 @@
     <button id="exitButton">{{context.rpsGameExitButtonText}}</button>
   </div>
 
-  <script src="{% static 'js/rps.js' %}"></script>
+  <script type="module" src="{% static 'js/rps.js' %}"></script>
   {% csrf_token %}
 {% endblock %}

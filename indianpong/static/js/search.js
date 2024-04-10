@@ -50,8 +50,10 @@ export function initializeSearch() {
     });
 }
 
-export function makeSearch(event) {
-  event.preventDefault();
+export function makeSearch(action) {
+  if (!action)
+    return;
+
   var form = document.getElementById('searchForm');
   var formData = new FormData(form);
   var csrftoken = document.cookie.split('; ').find(row => row.startsWith('csrftoken')).split('=')[1];

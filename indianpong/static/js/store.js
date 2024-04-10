@@ -32,7 +32,8 @@ function showToast(content, status, iconClass) {
   }
   
   function submitStoreItemForm(username, itemName, formId, price) {
-    const lang = document.cookie.split('; ').find(row => row.startsWith('selectedLanguage=')).split('=')[1];
+      const cookie = document.cookie.split('; ').find(row => row.startsWith('selectedLanguage='));
+      const lang = cookie ? cookie.split('=')[1] : 'en';
       const form = document.getElementById('store_item_form' + formId);
       const formData = new FormData(form);
       var csrftoken = document.cookie.split('; ').find(row => row.startsWith('csrftoken')).split('=')[1];

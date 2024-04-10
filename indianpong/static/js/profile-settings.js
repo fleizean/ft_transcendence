@@ -271,39 +271,14 @@ export function unblockButon(username, blockedusername) {
 
 export function displaySection(sectionId) {
     var sections = ["editProfile", "addSocial", "closeAccount","blockedUsers", "changePassword"];
-
     if (!sectionId)
         return;
     for (var i = 0; i < sections.length; i++) {
         var section = document.getElementById(sections[i]);
         if (sections[i] === sectionId) {
             section.style.display = 'block';
-            window.location.hash = sectionId;
         } else {
             section.style.display = 'none';
         }
     }
 }
-
-
-
-window.onload = function() {
-    // Get the hash from the URL
-    var hash = window.location.hash;        
-    // If there's a hash
-    if(hash) {
-        // Remove the '#' from the start of the hash
-        var sectionId = hash.substring(1);
-    
-        // Call the displaySection function with the sectionId
-        console.log(sectionId);
-        setTimeout(function() {
-            displaySection(sectionId);
-        }, 50); 
-    }
-};
-
-window.onhashchange = function() {
-    var currentFragment = window.location.hash.substring(1);
-    displaySection(currentFragment);
-};

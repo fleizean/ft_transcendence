@@ -1,6 +1,7 @@
 export function RemotePong() {
 
-const lang = getCookie('selectedLanguage');
+const cookie = document.cookie.split('; ').find(row => row.startsWith('selectedLanguage='));
+const lang = cookie ? cookie.split('=')[1] : 'en';
  
 function showToast(content, status, iconClass) {
     const liveToast = document.getElementById('liveToast');
@@ -50,6 +51,7 @@ const likeaCheater = document.querySelector('.left-card').dataset.likeacheater;
 const fastandFurious = document.querySelector('.left-card').dataset.fastandfurious;
 const rageofFire = document.querySelector('.left-card').dataset.rageoffire;
 const frozenBall = document.querySelector('.left-card').dataset.frozenball;
+const tournament = document.querySelector('.left-card').dataset.tournament;
 
 let likeaCheaterCount = 0;
 let fastandFuriousCount = 0;
@@ -179,9 +181,9 @@ function gameUtilsReset() {
     frozenBallCount = 0;
     isFrozenBallActive = false;
 
-    if (giantMan == "true" && gameMode === "Abilities")
+    if (giantMan == "true" && (gameMode === "Abilities" || tournament === "abilities"))
         sendAbility("giantMan");
-    if (rageofFire == "true" && gameMode === "Abilities")
+    if (rageofFire == "true" && (gameMode === "Abilities" || tournament === "abilities"))
         sendAbility("rageofFire");
 }
 
@@ -325,6 +327,7 @@ matchsocket.onmessage = function (e) {
             player2.username = data.player2;
             my.game_id = data.game_id;
             my.tournament_id = data.tournament_id;
+            leftArea.style.display = 'none';
             if (lang === 'tr')
                 showToast(`Turnuva maçı başladı! ${player1.username} vs ${player2.username}`, 'text-bg-success', 'bi bi-check-circle-fill');
             else if (lang === 'hi')
@@ -444,17 +447,17 @@ matchsocket.onmessage = function (e) {
                     } else if (event.key === "s" || event.key === "S"|| event.key === "ArrowDown") {
                         downPressed = true;
                     }
-                    if (event.key === '1' && likeaCheaterCount < 1 && likeaCheater == "true" && gameMode === "Abilities") {
+                    if (event.key === '1' && likeaCheaterCount < 1 && likeaCheater == "true" && (gameMode === "Abilities" || tournament === "abilities")) {
                         sendAbility("likeaCheater");
                         showToast('You used like a cheater!', 'text-bg-primary', 'bi bi-exclamation-triangle-fill');
                         likeaCheaterCount += 1;
                     }
-                    else if (event.key === '2' && fastandFuriousCount < 1 && fastandFurious == "true" && isFrozenBallActive == false && gameMode === "Abilities") {
+                    else if (event.key === '2' && fastandFuriousCount < 1 && fastandFurious == "true" && isFrozenBallActive == false && (gameMode === "Abilities" || tournament === "abilities")) {
                         sendAbility("fastandFurious");
                         showToast('You used fast and furious!', 'text-bg-primary', 'bi bi-exclamation-triangle-fill');
                         fastandFuriousCount += 1;
                     }
-                    else if (event.key === '3' && frozenBallCount < 1 && frozenBall == "true" && gameMode === "Abilities") {
+                    else if (event.key === '3' && frozenBallCount < 1 && frozenBall == "true" && (gameMode === "Abilities" || tournament === "abilities")) {
                         sendAbility("frozenBall");
                         showToast('You used frozen ball!', 'text-bg-primary', 'bi bi-exclamation-triangle-fill');
                         isFrozenBallActive = true;
@@ -560,7 +563,7 @@ matchsocket.onmessage = function (e) {
 
         case 'game.ability':
             console.log(data.ability + ' is used!')
-            if (data.ability == 'giantMan' && gameMode === "Abilities") {
+            if (data.ability == 'giantMan' && (gameMode === "Abilities" || tournament === "abilities")) {
                 if (data.player == player1.username)
                     paddle1.height = 115
                 else if (data.player == player2.username)

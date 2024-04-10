@@ -54,7 +54,8 @@ function showToast(content, status, iconClass) {
   }
   
   function saveProperty(username ,itemId) {
-    const lang = document.cookie.split('; ').find(row => row.startsWith('selectedLanguage=')).split('=')[1];
+    const cookie = document.cookie.split('; ').find(row => row.startsWith('selectedLanguage='));
+      const lang = cookie ? cookie.split('=')[1] : 'en';
       var itemName = document.getElementById('itemNameInput').value;
       if (itemName === "My Playground" || itemName === "My Beautiful Paddle") {
           whatis = document.getElementById('color').value;
@@ -93,7 +94,8 @@ function showToast(content, status, iconClass) {
   }
   
   function submitInventoryItemForm(username, itemName) {
-    const lang = document.cookie.split('; ').find(row => row.startsWith('selectedLanguage=')).split('=')[1];
+    const cookie = document.cookie.split('; ').find(row => row.startsWith('selectedLanguage='));
+    const lang = cookie ? cookie.split('=')[1] : 'en';
     const form = document.getElementById('store_item_form' + itemName);
     const formData = new FormData(form);
     // Access the data-is-equipped attribute

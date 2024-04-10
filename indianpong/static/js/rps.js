@@ -4,6 +4,9 @@ setTimeout(() => {
     document.body.classList.remove("preload");
 }, 200);
 
+const cookie = document.cookie.split('; ').find(row => row.startsWith('selectedLanguage='));
+const selectedLanguage = cookie ? cookie.split('=')[1] : 'en'; 
+
 const translationswin = {
     'hi': 'आप जीत गए',
     'pt': 'você ganhou',
