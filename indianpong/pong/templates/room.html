@@ -71,7 +71,6 @@
                   <button type="button" id="accept" style="display: none; color: #3CB371;"><i class="bi bi-check-circle-fill"></i></button>
                   <button type="button" id="decline" style="display: none; color: #DC143C;"><i class="bi bi-x-circle-fill"></i></button>
                   <button type="button" id="invite"><i class="bi bi-controller"></i></button>
-                  {{user_blocked_status|get_item:room.second_user.username}}
                   {% if not user_friends_status|get_item:room.second_user.username %}
                     <button type="button" id="follow" style="display: block;"><i class="bi bi-heart-fill"></i></button>
                     <button type="button" id="unfollow" style="display: none;"><i class="bi bi-heartbreak-fill"></i></button>

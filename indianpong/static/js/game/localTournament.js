@@ -503,19 +503,6 @@ function restartGame() {
     resetGame();
 }
 
-function restartTournament() {
-    document.getElementById('gameOverScreenTournament').style.display = 'none';
-    score1 = 0;
-    score2 = 0;
-    resetPaddles();
-    resetAbilities();
-    matches = [];
-    playerNames = [];
-    matchCount = 0;
-    document.getElementById('show-bracket').style.display = 'none';
-    canvas.style.display = "none";
-    document.getElementById('tournament-start-info').style.display = 'block';
-}
 
 // Çıkış yapma işlemleri
 function exitGame() {
@@ -523,8 +510,7 @@ function exitGame() {
 }
 
 document.getElementById('restartButton').addEventListener('click', restartGame);
-document.getElementById('exitButton').addEventListener('click', exitGame);
-document.getElementById('restartButtonTournament').addEventListener('click', restartTournament);
+document.getElementById('exitButtonTournament').addEventListener('click', exitGame);
 
 function replaceTurkishCharacters(str) {
     var turkishMap = {

@@ -353,7 +353,7 @@ class Tournament(models.Model):
             player2=winners[1]
         )
         self.final_round_matches.add(final_game)
-        self.message_for_match(game)
+        self.message_for_match(final_game)
     
     def message_for_match(self, game):
         # Create room between players if does not exist
@@ -365,7 +365,7 @@ class Tournament(models.Model):
             except Room.DoesNotExist:
                 room = Room.objects.create(first_user=game.player1, second_user=game.player2)
         # Create message for the room with game link
-        message = f"/remote-game/tournament/{game.id}"
+        message = f"http://localhost:8000/remote-game/tournament/{game.id}"
         Message.objects.create(user=game.player1, room=room, content=message)
     
 

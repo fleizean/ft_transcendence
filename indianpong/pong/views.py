@@ -948,10 +948,6 @@ def tournament_room(request, id):
     sucess = ""
     if not tournament:
         return redirect('tournament_room_list')
-    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
-        participants = serializers.serialize('json', tournament.participants.all())
-        return JsonResponse(participants, safe=False)
-
     if 'start_tournament' in request.POST:
         # Check if there are at least 3 participants
         if tournament.participants.count() < 4:

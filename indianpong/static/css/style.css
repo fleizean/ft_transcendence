@@ -947,6 +947,20 @@ body {
   cursor: pointer;
 }
 
+#exitButtonTournament {
+  font-family: 'Pixeboy-z8XGD', sans-serif;
+    font-size: 20px;
+    background-color: #d75151;
+    width: 120px;
+    height: 50px;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    margin: 0 10px;
+    cursor: pointer;
+}
+
 #exitButton {
     font-family: 'Pixeboy-z8XGD', sans-serif;
     font-size: 20px;
@@ -983,6 +997,11 @@ body {
 #exitButton:hover {
     background-color: #ce3737;
     border: red;
+}
+
+#exitButtonTournament:hover {
+  background-color: #ce3737;
+  border: red;
 }
 
 .winnerName {

@@ -109,7 +109,6 @@ window.onpopstate = function(event) {
   if (window.location.hash == '') {
     updateApp(window.location.pathname);
   }
-  
 };
 
 

@@ -270,7 +270,7 @@ export function unblockButon(username, blockedusername) {
 }
 
 export function displaySection(sectionId) {
-    var sections = ["editProfile", "addSocial", "closeAccount","blockedUsers", "changePassword"];
+    var sections = ["editProfile", "addSocial", "closeAccount", "blockedUsers", "changePassword"];
     if (!sectionId)
         return;
     for (var i = 0; i < sections.length; i++) {
