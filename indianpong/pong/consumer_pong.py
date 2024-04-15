@@ -428,7 +428,7 @@ class PongConsumer(AsyncWebsocketConsumer):
         player1 = event['player1']
         player2 = event['player2']
         await self.send(text_data=json.dumps({
-            'type': 'tournament.match',
+            'type': 'chat.game',
             'game_id': game_id,
             'player1': player1,
             'player2': player2,

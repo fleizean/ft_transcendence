@@ -122,24 +122,34 @@ const langMessages = {
       </div>
     </li>`
     return message
-  }
+}
 
-  function messageOthers(data) {
-    var message = `
-    <li class="conversation-item">
-      <div class="conversation-item-content">
-        <div class="conversation-item-wrapper">
-          <div class="conversation-item-box">
-            <div class="conversation-item-text">
+function messageOthers(data) {
+  var message = `
+  <li class="conversation-item">
+    <div class="conversation-item-content">
+      <div class="conversation-item-wrapper">
+        <div class="conversation-item-box">
+          <div class="conversation-item-text">
               <p>${data.message}</p>
-              <div class="conversation-item-time">${data.created_date}</div>
-            </div>
+            <div class="conversation-item-time">${data.created_date}</div>
           </div>
         </div>
       </div>
-    </li>`
-    return message
+    </div>
+  </li>`
+  return message
+}
+
+document.addEventListener('click', function(e) {
+  if (e.target.tagName === 'A' && e.target.hasAttribute('data-url')) {
+    var url = e.target.getAttribute('data-url');
+    if (url.includes('/remote-game/tournament/')) {
+      e.preventDefault();
+      swapApp(url);
+    }
   }
+});
 
   chatsocket.onmessage = function (e) {
       const cookie = document.cookie.split('; ').find(row => row.startsWith('selectedLanguage='));
@@ -249,9 +259,21 @@ const langMessages = {
     //console.log("invite button clicked");
     chatsocket.send(JSON.stringify({
       "action": "invite.game",
-      "inviter": user,
-      "invited": userNameOnChat,
   }))
+  }
+
+  acceptButton.onclick = function (e) {
+    chatsocket.send(JSON.stringify({
+      "action": "accept.game",
+      "accepted": userNameOnChat,
+      "accepter": user,
+    }))
+  }
+
+  declineButton.onclick = function (e) {
+    chatsocket.send(JSON.stringify({
+      "action": "decline.game",
+    }))
   }
 
   followButton.onclick = function (e) {

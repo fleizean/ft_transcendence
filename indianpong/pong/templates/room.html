@@ -108,7 +108,11 @@
                       <div class="conversation-item-wrapper">
                         <div class="conversation-item-box">
                           <div class="conversation-item-text">
-                            {{ message.content }}
+                            {% if '/remote-game/tournament/' in message.content %}
+                              <a href="#" data-url="{{ message.content }}" style="color: black">Tournament Match</a>
+                            {% else %}
+                                {{ message.content }}
+                            {% endif %}
                             <div class="conversation-item-time">{{ message.get_short_date }}</div>
                           </div>
                         </div>
@@ -121,7 +125,11 @@
                             <div class="conversation-item-wrapper">
                               <div class="conversation-item-box">
                                 <div class="conversation-item-text">
-                                  {{ message.content }}
+                                  {% if '/remote-game/tournament/' in message.content %}
+                                    <a href="#" data-url="{{ message.content }}" style="color: red">Tournament Match</a>
+                                  {% else %}
+                                      {{ message.content }}
+                                  {% endif %}
                                   <div class="conversation-item-time">{{ message.get_short_date }}</div>
                                 </div>
                               </div>

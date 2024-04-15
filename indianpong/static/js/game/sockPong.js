@@ -323,6 +323,8 @@ matchsocket.onmessage = function (e) {
             break;
 
         case 'tournament.match':
+            checkbox.disabled = true;
+            leftArea.style.display = 'none';
             player1.username = data.player1;
             player2.username = data.player2;
             my.game_id = data.game_id;
@@ -346,9 +348,12 @@ matchsocket.onmessage = function (e) {
             break;
 
         case 'chat.game':
+            checkbox.disabled = true;
+            leftArea.style.display = 'none';
             player1.username = data.player1;
             player2.username = data.player2;
             my.game_id = data.game_id;
+            my.opponent_username = data.player1 === my.username ? data.player2 : data.player1;
             if (lang === 'tr')
                 showToast(`Chat maçı başladı! ${player1.username} vs ${player2.username}`, 'text-bg-success', 'bi bi-check-circle-fill');
             else if (lang === 'hi')
