@@ -89,7 +89,7 @@ const langMessages = {
   const unfollowButton = document.getElementById("unfollow");
   const messages = document.getElementById("messages");
 
-  const chatsocket = new WebSocket("ws://" + window.location.host + "/ws/chat/" + roomName + "/")
+  const chatsocket = new WebSocket("wss://" + window.location.host + "/ws/chat/" + roomName + "/")
 
   chatsocket.onopen = function (e) {
       console.log("socket opened")
