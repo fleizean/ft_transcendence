@@ -20,7 +20,7 @@ function showToast(content, status, iconClass) {
     }, 8000);
 }
 
-const wsEndpoint = 'ws://' + window.location.host + '/ws/rps/';
+const wsEndpoint = 'wss://' + window.location.host + '/ws/rps/';
 const websocket = new WebSocket(wsEndpoint);
 
 
