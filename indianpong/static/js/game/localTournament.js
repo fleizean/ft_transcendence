@@ -1,4 +1,4 @@
-
+export function localTournament() {
 const canvas = document.getElementById('pongCanvas');
 var gameStartInfos = document.getElementById("tournament-start-info");
 var gameInfoTournament = document.getElementById("game-info-tournament");
@@ -15,6 +15,8 @@ var gameMode = "Vanilla";
 /* Tournament */
 var playerNames = [];
 var matches = [];
+const cookie = document.cookie.split('; ').find(row => row.startsWith('selectedLanguage='));
+const selectedLanguage = cookie ? cookie.split('=')[1] : 'en';
 
 var matchCount = 0;
 
@@ -46,6 +48,8 @@ var paddle2 = {x: canvas.width - paddleWidth, y: paddleY, width: paddleWidth, he
 var ball = {x: canvas.width / 2, y: canvas.height / 2, radius: 10, speed: 10, dx: 1, dy: 1};
 
 // Scores
+var isGameStarted = false;
+
 var score1 = 0;
 var score2 = 0;
 
@@ -135,8 +139,9 @@ function update() {
 
     // Check for game over
     if (score1 == MAX_SCORE || score2 == MAX_SCORE) {
-        if (matchCount < 2)
+        if (matchCount < 2) {
             showGameOverScreen(score1 == MAX_SCORE ? matches[matchCount].player1 : matches[matchCount].player2);
+        }
         else {
             isPaused = true;
             showGameOverTournament(score1 == MAX_SCORE ? matches[matchCount].player1 : matches[matchCount].player2);
@@ -229,6 +234,7 @@ function render() {
     ctx.font = "16px Roboto";
     ctx.fillStyle = 'white';
     
+    
     if (matchCount === 0) {        
         ctx.fillText(matches[matchCount].player1 + ": " + score1, usernameX, usernameY);
         ctx.fillText(matches[matchCount].player2 + ": " + score2, player2nameX, player2nameY);
@@ -252,7 +258,7 @@ var main = function () {
         render();
     }
 
-    requestAnimationFrame(main);
+    localTournamentAnimationId = requestAnimationFrame(main);
 };
 
 // Cross-browser support for requestAnimationFrame
@@ -299,6 +305,7 @@ function likeaCheaterAbility(whichPlayer) {
     }
     else if (whichPlayer == "Player1") {
         score1++;
+
         if (score2 > 0) {
             score2--;
         }
@@ -373,6 +380,7 @@ function showCanvas() {
     gameStartInfos.style.display = "none";
     gameInfoTournament.style.display = "block";
     isPaused = false;
+    isGameStarted = true;
   }
 
 // Reset the paddle1 position?
@@ -392,7 +400,26 @@ function resetGame() {
 // Oyun bitiş ekranını gösteren fonksiyon
 function showGameOverScreen(player1, player2) {
     gameInfoTournament.style.display = "none";
-    var winnerText = (score1 == MAX_SCORE) ? player1 + " wins!" : player2 + " wins!";
+    var message = " wins!";
+    var tournamentText = "Tournament is over! ";
+    if (selectedLanguage == 'hi') {
+        message = " जीत!";
+        tournamentText = "टूर्नामेंट ख़त्म हो गया है! ";
+    }
+    else if (selectedLanguage == 'pt') {
+        message = " vence!";
+        tournamentText = "O torneio acabou! ";
+    }
+    else if (selectedLanguage == 'tr') {
+        message = " kazandI!";
+        tournamentText = "Turnuva bitti! ";
+    }
+    else {
+        message = " wins!";
+        tournamentText = "Tournament is over! ";
+    }
+
+    var winnerText = (score1 == MAX_SCORE) ? player1 + message : player2 + message;
     document.getElementById('winnerText').innerText = winnerText;
     document.getElementById('gameOverScreen').style.display = 'block';
     var winnerName = (score1 == MAX_SCORE) ? player1 : player2;
@@ -409,12 +436,13 @@ function showGameOverScreen(player1, player2) {
     if (isPaused == false) {
         matchCount++;
         if (matchCount === 3)
-            document.getElementById('winnerText').innerText = "Tournament is over! " + winnerName + " wins!";
+            document.getElementById('winnerText').innerText = tournamentText + winnerName + message;
     }
     isPaused = true;
 }
 
 function showGameOverTournament(winner) {
+    isGameStarted = false;
     gameInfoTournament.style.display = "none";
     var winnerText = winner + " wins the tournament!";
     if (selectedLanguage === "tr") {
@@ -475,28 +503,14 @@ function restartGame() {
     resetGame();
 }
 
-function restartTournament() {
-    document.getElementById('gameOverScreenTournament').style.display = 'none';
-    score1 = 0;
-    score2 = 0;
-    resetPaddles();
-    resetAbilities();
-    matches = [];
-    playerNames = [];
-    matchCount = 0;
-    document.getElementById('show-bracket').style.display = 'none';
-    canvas.style.display = "none";
-    document.getElementById('tournament-start-info').style.display = 'block';
-}
 
 // Çıkış yapma işlemleri
 function exitGame() {
-    window.location.href = '/dashboard';  // ?
+    swapApp('/pong-game-find')
 }
 
 document.getElementById('restartButton').addEventListener('click', restartGame);
-document.getElementById('exitButton').addEventListener('click', exitGame);
-document.getElementById('restartButtonTournament').addEventListener('click', restartTournament);
+document.getElementById('exitButtonTournament').addEventListener('click', exitGame);
 
 function replaceTurkishCharacters(str) {
     var turkishMap = {
@@ -520,6 +534,7 @@ startButton.addEventListener("click", function() {
     playerNames.push(player4Name);
     MAX_SCORE = document.getElementById("maxScore").value;
     gameMode = document.getElementById("gameMode").value;
+    
     showBracket();
 });
 
@@ -527,17 +542,4 @@ startTournament.addEventListener("click", function() {
     document.getElementById('show-bracket').style.display = 'none';
     showCanvas();
 });
-
-var modal = document.getElementById('exampleModalGame');
-
-// Modal açılma olayını dinle
-modal.addEventListener('show.bs.modal', function (event) {
-    // Oyunu duraklat
-    isPaused = true;
-});
-
-// Modal kapatılma olayını dinle
-modal.addEventListener('hide.bs.modal', function (event) {
-    // Oyunu devam ettir
-    isPaused = false;
-});
+}

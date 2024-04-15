@@ -10,6 +10,8 @@
 {% block stylesheet %}<link rel="stylesheet" href="{% static "css/chat.css" %}">{% endblock  %} 
 {% block app %}
 
+{% load custom_filters %}
+
   <div class="container-top">
     <div class="card">
       <section class="chat-section">
@@ -18,7 +20,7 @@
           <aside class="chat-sidebar">
             <ul class="chat-sidebar-menu">
               <li class="active">
-                <a href="#" data-title="{{context.chatDMText}}"><i class="bi bi-chat-square-fill"></i></a>
+                <a onclick="swapApp('/chat')" data-title="{{context.chatDMText}}"><i class="bi bi-chat-square-fill"></i></a>
               </li>
             </ul>
           </aside>
@@ -35,7 +37,7 @@
                   </li>
                   {% for user in users %}
                       <li>
-                        <a href="{% url 'start_chat' user %}" data-link>
+                        <a onclick="getChat(`{{user}}`)" data-link>
                           {% is_user_online user.username as user_is_online %}
                           {% is_user_playing user.username as user_is_playing %}
                           <img class="content-message-image" src="{{ user.avatar.url }}" alt="avatar" class="profile-image-circ" {% if user_is_playing %} style="border: 3px solid #ffa600; aspect-ratio: 1/1; object-fit: cover;" {% elif user_is_online %} style="border: 3px solid #4CAF4F; aspect-ratio: 1/1; object-fit: cover;" {% else %} style="border: 3px solid #ff0000; aspect-ratio: 1/1; object-fit: cover;" {% endif %}/>
@@ -52,32 +54,50 @@
                 <button type="button" class="conversation-back"><i class="bi bi-arrow-left-circle-fill"></i></button>
                 <div class="conversation-user">
                   {% if room.first_user == request.user %}
-                    <a href="{% url 'profile' room.second_user %}">
-                    <img class="content-message-image" src="{{ room.second_user.avatar.url }}" alt="" /></a>
+                    <a class="room-profile-click" onclick="swapApp('/profile/{{room.second_user}}')">
+                    <img class="content-message-image" src="{{ room.second_user.avatar.url }}" alt=""/></a>
                     <div id="userNameOnChat" class="conversation-user-name" >
                       {{ room.second_user }}
                     </div>
                   {% else %}
-                    <a href="{% url 'profile' room.first_user %}">{{ room.first_user }}</a>
-                    <img class="content-message-image" src="{{ room.first_user.avatar.url }}" alt="" />
+                    <a class="room-profile-click" onclick="swapApp('/profile/{{room.first_user}}')">
+                    <img class="content-message-image" src="{{ room.first_user.avatar.url }}" alt=""/></a>
                     <div id="userNameOnChat" class="conversation-user-name" >
                       {{ room.first_user }}
                     </div>
                   {% endif %}
                 </div>
                 <div class="conversation-buttons">
-                  <button type="button"><i class="bi bi-person-add"></i></button>
-                  <button type="button"><i class="bi bi-controller" id="inviteButton"></i></button>
-           
-                  <button type="button" id="block"><i class="bi bi-ban"></i></button>
+                  <button type="button" id="accept" style="display: none; color: #3CB371;"><i class="bi bi-check-circle-fill"></i></button>
+                  <button type="button" id="decline" style="display: none; color: #DC143C;"><i class="bi bi-x-circle-fill"></i></button>
+                  <button type="button" id="invite"><i class="bi bi-controller"></i></button>
+                  {% if not user_friends_status|get_item:room.second_user.username %}
+                    <button type="button" id="follow" style="display: block;"><i class="bi bi-heart-fill"></i></button>
+                    <button type="button" id="unfollow" style="display: none;"><i class="bi bi-heartbreak-fill"></i></button>
+                  {% else %}
+                    <button type="button" id="follow" style="display: none;"><i class="bi bi-heart-fill"></i></button>
+                    <button type="button" id="unfollow" style="display: block;"><i class="bi bi-heartbreak-fill"></i></button>
+                  {% endif %}
+                  {% if user_blocked_status|get_item:room.second_user.username or user_blocked_status|get_item:room.first_user.username %}
+                      <button type="button" id="unblock" style="display: block;"><i class="bi bi-patch-check-fill"></i></button>
+                      <button type="button" id="block" style="display: none;"><i class="bi bi-ban"></i></button>
+                  {% else %}
+                      <button type="button" id="block" style="display: block;"><i class="bi bi-ban"></i></button>
+                      <button type="button" id="unblock" style="display: none;"><i class="bi bi-patch-check-fill"></i></button>
+                  {% endif %}
+              
+                 <!--  <button type="button" id="block"><i class="bi bi-ban"></i></button>
+                  <button type="button" id="unblock" style="display: none;"><i class="bi bi-patch-check-fill"></i></button> -->
                 </div>
               </div>
-              <div class="conversation-main" id="conversation">
+              <div class="conversation-main" id="conversation"  {% if user_blocked_status|get_item:room.second_user.username or user_blocked_status|get_item:room.first_user.username %} style="display:none" {% endif %}>
                 <ul class="conversation-wrapper">
                   <div class="coversation-divider">
                     <span>{{context.chatTodayText}}</span>
                   </div>
+                  <div id="messages">
                   {% for message in messages %}
+                    
                     {% if request.user == message.user %} 
                     <li class="conversation-item me">
                     <div class="conversation-item-content">
@@ -108,15 +128,18 @@
                             </div>
                           </div>
                         </li>
+                        
                     {% endif %}
                   {% endfor %}
+                </div>
                 </ul>
               </div>
               <div class="conversation-form">
                 <button type="button" class="conversation-form-button" onclick="document.querySelector('#comment').value += '😀';"><i class="bi bi-emoji-laughing-fill"></i></button>
                 <div class="conversation-form-group">
                   <textarea class="conversation-form-input" rows="1" id="comment" placeholder="{{context.chatTypeHereText}}"></textarea>
-                  <button type="button" class="conversation-form-record" id="send"><i class="bi bi-send-fill"></i></button>
+                  
+                  <button type="button" class="conversation-form-record" id="send" onclick="sendButton()" {% if user_blocked_status|get_item:room.second_user.username %} disabled style="color: red !important;" {% endif %}><i class="bi bi-send-fill"></i></button>
                 </div>
               </div>
             </div>
@@ -127,8 +150,21 @@
         {{ request.user.username|json_script:"user" }}
         
 
-        <script src="{% static "js/chat.js" %}"></script>
       </section>
     </div>
+    <div class="toast-container position-fixed bottom-0 end-0 p-6" style="margin-right: 20px; margin-bottom: 20px">
+      <div class="toast text-bg-danger" id="liveToast" role="alert">
+          <div class="toast-body">
+              <div class="d-flex gap-4">
+                  <span class="i-class"><i class="bi bi-image"></i></span>
+                  <div class="d-flex flex-grow-1 align-items-center">
+                      <span class="fw-semibold"></span>
+                      <span class="toast-close" data-bs-dismiss="toast" style="margin-left: auto; cursor:pointer"><i class="bi bi-x-circle-fill"></i></span>
+                  </div>
+              </div>
+          </div>
+      </div>
+    </div>
   </div>
+  {% csrf_token %}
 {% endblock %}

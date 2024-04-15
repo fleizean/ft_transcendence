@@ -18,9 +18,31 @@
   background-color: white;
   position: relative;
 }
+
+#follow {
+  color: #e31b23 !important;
+}
+
+#unfollow {
+  color:#515151 !important;
+}
+
+#invite {
+  color:#0d8d45 !important;
+}
 /* end: Chat */
 
+#unblock {
+  color:#515151 !important;
+}
 
+#block {
+  color: #e31b23 !important;
+}
+
+.room-profile-click {
+  cursor: pointer !important;
+}
 
 /* start: Sidebar */
 .chat-sidebar {

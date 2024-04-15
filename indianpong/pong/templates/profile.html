@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 {% load static %}
 {% load status %}
 
@@ -45,9 +45,11 @@
                         {% if request.user.username != profile.username %}
                             {% csrf_token %}
                             {% if is_friend %}
-                                <button data-username="{{ profile.username }}" class="unfollow-btn" style="margin-top: -15px;"><i class="bi bi-heartbreak-fill"></i> {{context.profileFollowingButton}}</button>
+                                <button class="unfollow-btn" id="unfollowbtn" style="margin-top: -15px;" onclick="unfollowButton(`{{profile.username}}`)"><i class="bi bi-heartbreak-fill"></i> {{context.profileFollowingButton}}</button>
+                                <button class="btn btn-danger" id="followbtn" style="margin-top: -10px; display:none !important;" onclick="followButton(`{{profile.username}}`)"><i class="bi bi-heart-fill"></i> {{context.profileFollowButton}}</button>
                             {% else %}
-                                <button data-username="{{ profile.username }}" class="btn btn-danger" style="margin-top: -10px;"><i class="bi bi-heart-fill"></i> {{context.profileFollowButton}}</button>
+                                <button class="btn btn-danger" id="followbtn" style="margin-top: -10px;" onclick="followButton(`{{profile.username}}`)"><i class="bi bi-heart-fill"></i> {{context.profileFollowButton}}</button>
+                                <button class="unfollow-btn" id="unfollowbtn" style="margin-top: -15px; display: none !important;" onclick="unfollowButton(`{{profile.username}}`)"><i class="bi bi-heartbreak-fill"></i> {{context.profileFollowingButton}}</button>
                             {% endif %}
                         {% endif %}
                     </div>
@@ -63,7 +65,7 @@
                             {% if profile.social.linkedin %}
                                 <a href="https://www.linkedin.com/in/{{profile.social.linkedin}}" target="_blank" style="text-decoration: none;"><p class="mb-0">{{profile.social.linkedin}} - LinkedIn</p></a>
                             {% else %}
-                                <p class="mb-0">No LinkedIn</p>
+                                <p class="mb-0">{{context.profileLinkedinSocialText}}</p>
                             {% endif %}
                         </li>
                         <!-- GitHub -->
@@ -72,7 +74,7 @@
                             {% if profile.social.github %}
                                 <a href="https://github.com/{{profile.social.github}}" target="_blank" style="text-decoration: none;"><p class="mb-0">{{profile.social.github}} - Github</p></a>
                             {% else %}
-                                <p class="mb-0">No Github</p>
+                                <p class="mb-0">{{context.profileGithubSocialText}}</p>
                             {% endif %}
                         </li>
                         <!-- Twitter -->
@@ -81,7 +83,7 @@
                             {% if profile.social.twitter %}
                                 <a href="https://x.com/{{profile.social.twitter}}" target="_blank" style="text-decoration: none;"><p class="mb-0">{{profile.social.twitter}} - Twitter</p></a>
                             {% else %}
-                                <p class="mb-0">No Twitter</p>
+                                <p class="mb-0">{{context.profileTwitterSocialText}}</p>
                             {% endif %}
                         </li>
                         <!-- Instagram -->
@@ -90,7 +92,7 @@
                             {% if profile.social.intra42 %}
                                 <a href="https://profile.intra.42.fr/users/{{profile.social.intra42}}" target="_blank" style="text-decoration: none;"><p class="mb-0">{{profile.social.intra42}} - Intra42</p></a>
                             {% else %}
-                                <p class="mb-0">No Intra42</p>
+                                <p class="mb-0">{{context.profileIntra42SocialText}}</p>
                             {% endif %}
                         </li>
                     </ul>
@@ -103,7 +105,7 @@
             <div class="match-history-card" >
                 <div class="card-body">
                     <div class="select-history">
-                        <button type="button" class="changer-btn" onclick="matchHistoryChanger()">✂️</button>
+                        <button type="button" class="changer-btn" onclick="matchHistoryChanger('status')">✂️</button>
                     </div>
                     <div class="match-history-pong" id="match-history-pong">
                         <div class="pong-header">
@@ -139,7 +141,7 @@
                                             {% endif %}
                                         {% endif %}
                                         <td>
-                                            {% if game.winner.username == game.player1.username %}
+                                            {% if game.winner.username == profile.username %}
                                                 {{ game.winner_score }} - {{ game.loser_score }}
                                             {% else %}
                                                 {{ game.loser_score }} - {{ game.winner_score }}
@@ -155,7 +157,7 @@
                         <nav aria-label="Page navigation example" class="mt-4">
                             <ul class="pagination justify-content-center">
                                 <li class="page-item {% if not history_page_obj.has_previous %}disabled{% endif %}">
-                                    <a class="page-link" href="{% if history_page_obj.has_previous %}?page={{ history_page_obj.previous_page_number }}{% endif %}" aria-label="Previous">
+                                    <a class="page-link" onclick="swapApp('/profile/{{profile.username}}{% if history_page_obj.has_previous %}?page={{ history_page_obj.previous_page_number }}{% endif %}')" aria-label="Previous">
                                         <span aria-hidden="true">&laquo;</span>
                                     </a>
                                 </li>
@@ -163,7 +165,7 @@
                                     <span class="page-link page-link-history">{{ history_page_obj.number }}</span>
                                 </li>
                                 <li class="page-item {% if not history_page_obj.has_next %}disabled{% endif %}">
-                                    <a class="page-link" href="{% if history_page_obj.has_next %}?page={{ history_page_obj.next_page_number }}{% endif %}" aria-label="Next">
+                                    <a class="page-link" onclick="swapApp('/profile/{{profile.username}}{% if history_page_obj.has_next %}?page={{ history_page_obj.next_page_number }}{% endif %}')" aria-label="Next">
                                         <span aria-hidden="true">&raquo;</span>
                                     </a>
                                 </li>
@@ -187,7 +189,7 @@
                             <tbody>
                                 {% for game_rps in game_records_rps %}
                                     <tr>
-                                        {% if profile.username == game.player1.username %}
+                                        {% if profile.username == game_rps.player1.username %}
                                             <td class="mhistory-username">{{ game_rps.player2.username }}</td>
                                         {% else %}
                                             <td class="mhistory-username">{{ game_rps.player1.username }}</td>
@@ -206,10 +208,11 @@
                                             {% endif %}
                                         {% endif %}
                                         <td>
-                                            {% if game_rps.winner.username == game_rps.player1.username %}
+                                            {% if game_rps.winner.username == profile.username %}
                                                 {{ game_rps.winner_score }} - {{ game_rps.loser_score }}
+
                                             {% else %}
-                                                {{ game_rps.winner_score }} - {{ game_rps.loser_score }}
+                                                {{ game_rps.loser_score }} - {{ game_rps.winner_score }}
                                             {% endif %}
                                         </td>
                                         <td>
@@ -248,10 +251,10 @@
                     <div class="card mb-4 mb-md-0" style="background-color:white !important; margin-top:10px; height: 328px;">
                         <div class="card-body">
                             <div class="switcher-game">
-                                <button type="button" class="switch-btn" onclick="toggleGame()">✂️</button>
+                                <button type="button" class="switch-btn" onclick="toggleGame('status')">✂️</button>
                             </div>
                             <!-- Proje Durumu Başlığı -->
-                            <p class="mb-4"><span class="text-primary font-italic me-1">{{profile.username}} </span>/ Stats</p>
+                            <p class="mb-4"><span class="text-primary font-italic me-1">{{profile.username}} </span>/ {{context.profileStatsText}}</p>
                             <div class="stats-info-pong" id="stats-info-pong">
                                 <div class="stats">
                                     <p class="stats-p"><i class="bi bi-dice-1-fill"></i> {{context.profileGameStats1}}</p>
@@ -312,6 +315,6 @@
         </div>
     </div>
 </div>
-<script src="{% static "js/profile.js" %}"></script>
+
 
 {% endblock %}

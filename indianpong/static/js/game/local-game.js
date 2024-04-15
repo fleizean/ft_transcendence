@@ -1,10 +1,12 @@
-
+export function LocalGame() {
 const canvas = document.getElementById('pongCanvas');
 var gameStartInfos = document.getElementById("gameStartInfos");
 var startButton = document.getElementById("startButton");
 var ctx = canvas.getContext("2d");
 canvas.width = 800;
 canvas.height = 600;
+
+
 
 
 const translationswin = {
@@ -244,7 +246,7 @@ var main = function () {
         render();
     }
 
-    requestAnimationFrame(main);
+    localGameAnimationId = requestAnimationFrame(main);
 };
 
 // Cross-browser support for requestAnimationFrame
@@ -397,7 +399,7 @@ function restartGame() {
 
 // Çıkış yapma işlemleri
 function exitGame() {
-    window.location.href = '/dashboard';  // ?
+    swapApp('/pong-game-find')
 }
 
 document.getElementById('restartButton').addEventListener('click', restartGame);
@@ -410,3 +412,5 @@ startButton.addEventListener("click", function() {
     gameMode = document.getElementById("gameMode").value;
     showCanvas();
 });
+
+}

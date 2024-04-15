@@ -11,7 +11,7 @@
 
 {% block app %}
 
-    <div class="container-top" data-username="{{ username }}" data-ainame="{{ ainametag }}" data-paddlecolor="{{paddlecolor}}" data-playgroundcolor="{{playgroundcolor}}" data-giantman="{{giantman}}" data-likeacheater="{{likeacheater}}" data-fastandfurious="{{fastandfurious}}" data-rageoffire="{{rageoffire}}" data-frozenball="{{frozenball}}" data-givemethemusic={{givemethemusic}} data-musicpath="{% static "music/" %}">
+    <div class="container-top" data-username="{{ username }}" data-ainame="{{ ainametag }}" data-paddlecolor="{{paddlecolor}}" data-playgroundcolor="{{playgroundcolor}}" data-giantman="{{giantman}}" data-likeacheater="{{likeacheater}}" data-fastandfurious="{{fastandfurious}}" data-rageoffire="{{rageoffire}}" data-frozenball="{{frozenball}}" data-musicpath="{% static "music/" %}">
 		<div class="ai-game">
 			<div class="game-info-menu">
 				<div>
@@ -32,8 +32,7 @@
 			<canvas id="pongCanvas" width="800" height="600"></canvas>
 			<div id="countdown" class="countdown">
 				<h1>{{context.aiGameGetReadyText}}!</h1>
-				<p>{{context.aiGamePresSpaceText}}</p>
-				<h2 class="countdown-numbers">{{context.aiGameCountdownText}}</h2>
+				<button type="button" class="btn btn-success" id="startGame">{{context.aiGameStartButtonText}}</button>
 				<div id="countdownTimer" class="countdown-timer"></div>
 			</div>
 			<div id="gameOverScreen" class="game-over">
@@ -58,12 +57,6 @@
 
 					<h3>{{context.aiGameInfoSubHeaderText2}}</h3>
 					<p>{{context.aiGameInfoSubHeaderDescription2}}</p>
-
-					<h3>{{context.aiGameInfoSubHeaderText3}}</h3>
-					<p>{{context.aiGameInfoSubHeaderDescription3}}</p>
-
-					<h3>{{context.aiGameInfoSubHeaderText4}}</h3>
-					<p>{{context.aiGameInfoSubHeaderDescription4}}</p>
 
 					<h3>{{context.aiGameInfoSubHeaderText5}}</h3>
 					<div class="modal-controls">
@@ -107,21 +100,7 @@
 			</div>
 		</div>
     </div>
-    <script type=module src="{% static "js/game/play-ai.js" %}"></script>
 
-{% comment %} 	<script>
-	    var givemethemusic = {% if givemethemusic %} true {% else %} false {% endif %};
-	
-	    document.addEventListener("DOMContentLoaded", function() {
-	        if (givemethemusic) {
-	            var volumeControl = document.getElementById("volumeControl");
-	            volumeControl.style.display = "inline-block";
-	        }
-			else {
-	            var volumeControl = document.getElementById("volumeControl");
-	            volumeControl.style.display = "none";
-	        }
-	    });
-	</script> {% endcomment %}
+	<script type="module" src="{% static "js/game/play-ai.js" %}"></script>
     {% csrf_token %}
 {% endblock %}

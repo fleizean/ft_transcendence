@@ -15,7 +15,7 @@
 .match-history-pong {
   font-family: 'Open Sans', sans-serif;
   margin: 1em auto; /* Merkezlemek için margin kullanıyoruz */
-  margin-top: -0.5em;
+  margin-top: 0.5em;
   max-width: 1200px;
   text-align: center;
   width: 100%; /* Make the table take up 100% of the container */
@@ -72,6 +72,9 @@
 
 
 .select-history {
+  position: absolute;
+  top: 10px;
+  right: 5px;
   margin-top: 0.3em;
   text-align: center;
 }
@@ -101,7 +104,7 @@
   display: none;
   font-family: 'Open Sans', sans-serif;
   margin: 1em auto; /* Merkezlemek için margin kullanıyoruz */
-  margin-top: -0.5em;
+  margin-top: 0.5em;
   max-width: 1200px;
   text-align: center;
   width: 100%; /* Make the table take up 100% of the container */

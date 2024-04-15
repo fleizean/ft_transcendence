@@ -1,5 +1,25 @@
 // rps.js
 
+export function RemoteRps() {
+
+function showToast(content, status, iconClass) {
+    const liveToast = document.getElementById('liveToast');
+    var toastContent = document.querySelector('#liveToast .fw-semibold');
+    var toastIcon = document.querySelector('.toast-body .i-class i');
+
+    toastIcon.className = iconClass;
+    liveToast.classList.remove('text-bg-danger'); 
+    liveToast.className = 'toast'; 
+    liveToast.classList.add(status);
+
+    toastContent.textContent = content;
+    const toast = new bootstrap.Toast(liveToast);
+    toast.show();
+    setTimeout(function() {
+        toast.hide();
+    }, 8000);
+}
+
 const wsEndpoint = 'ws://' + window.location.host + '/ws/rps/';
 const websocket = new WebSocket(wsEndpoint);
 
@@ -9,6 +29,7 @@ const selectedGameModeLabel = document.getElementById('selectedGameMode');
 const gameArea = document.getElementById('container-top');
 const cheaterButton = document.getElementById('cheater-choice');
 const godthingsButton = document.getElementById('godthings-choice');
+var gameMode = document.getElementById('selectedGameMode');
 const matchmakingButton = document.getElementById('matchmakingButtons');
 
 const ICON_PATH = document.querySelector('.container-top').dataset.iconpath;
@@ -167,12 +188,12 @@ websocket.onmessage = function (e) {
         
         case 'result': 
             // Game result
-            result = data.result;
-            game_id = data.game_id;
-            player1_choice = data.player1_choice;
-            player2_choice = data.player2_choice;
-            player1_score = data.player1_score;
-            player2_score = data.player2_score;
+            var result = data.result;
+            var game_id = data.game_id;
+            var player1_choice = data.player1_choice;
+            var player2_choice = data.player2_choice;
+            var player1_score = data.player1_score;
+            var player2_score = data.player2_score;
             
             if (my.username === player1.username && player1_choice === "LIKEACHEATER")
                 cheaterAbilities = true;
@@ -193,6 +214,7 @@ websocket.onmessage = function (e) {
     }
 
 function addUserCount(count) {
+    console.log('User count', count);
     var userCountElement = document.getElementById('userCount');
     var currentCount = parseInt(userCountElement.innerText);
     
@@ -318,6 +340,7 @@ function showGameOverScreen() {
     document.getElementById('gameOverScreen').style.display = 'block';
 }
 
+document.getElementById('ponggamebtn').addEventListener('click', searchOpponent);
 
 checkbox.addEventListener('change', function() {
     // Checkbox'un durumuna göre etiketin innerHTML değerini değiştirme
@@ -360,5 +383,6 @@ gameModeSelect.addEventListener("mouseleave", function() {
 document.getElementById('exitButton').addEventListener('click', exitGame);
 
 function exitGame() {
-    window.location.href = '/rps-game-find';  // ?
+    swapApp('/rps-game-find')
+}
 }

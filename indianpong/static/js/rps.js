@@ -1,8 +1,11 @@
-
+export function Rps() {
 // Prevent animation on load
 setTimeout(() => {
     document.body.classList.remove("preload");
 }, 200);
+
+const cookie = document.cookie.split('; ').find(row => row.startsWith('selectedLanguage='));
+const selectedLanguage = cookie ? cookie.split('=')[1] : 'en'; 
 
 const translationswin = {
     'hi': 'आप जीत गए',
@@ -73,9 +76,7 @@ let score = 0;
 
 const ICON_PATH = document.querySelector('.container-top').dataset.iconpath;
 
-const MUSIC_PATH = document.querySelector('.container-top').dataset.musicpath;
 
-var GameSound = new Audio();
 // Game Logic
 choiceButtons.forEach((button) => {
     button.addEventListener("click", () => {
@@ -100,19 +101,11 @@ function choose(choice) {
         document.getElementById("godthings-choice").style.display = "none";
     }
     
-    findMusic(choice.name);
     displayResults([choice, aichoice]);
     displayWinner([choice, aichoice]);
 
 }
 
-function findMusic(string){
-
-    const music = `rps-${string}.mp3`;
-    console.log(music);
-    const SoundChoice = new Audio(MUSIC_PATH + music);
-    playMusic(SoundChoice);
-}
 
 function filterChoices(excludedChoices) {
     return CHOICES.filter(choice => !excludedChoices.includes(choice.name));
@@ -139,8 +132,6 @@ function aiChoose() {
         filteredChoices = filterChoices(["cheater", "godthings"]);
     }
     var chosenOption = chooseRandom(filteredChoices);
-    console.log(filteredChoices);
-    console.log(chosenOption.name);
     if (chosenOption.name === "cheater") {
         aicheaterused = true;
     } else if (chosenOption.name === "godthings") {
@@ -175,31 +166,25 @@ function displayResults(results) {
 function displayWinner(results) {
     setTimeout(() => {
         const winner = isWinner(results);
-        let tempmusicname = "";
         if (winner == "user") {
             resultText.innerText = selectedLanguage ? translationswin[selectedLanguage] : translationswin['en'] ;
             resultDivs[0].classList.toggle("winner");
             keepScore(1, results[0].name);
-            tempmusicname = "winonce";
         } else if (winner == "ai") {
             resultText.innerText = selectedLanguage ? translationslose[selectedLanguage] : translationslose['en'] ;
             resultDivs[1].classList.toggle("winner");
             keepScore(-1, results[1].name);
-            tempmusicname = "loseonce";
         } else {
             resultText.innerText = selectedLanguage === "hi" ? "खींचना" :
                 selectedLanguage === "pt" ? "empate" :
                 selectedLanguage === "tr" ? "berabere":
                 "draw";
-
-            tempmusicname = "drawonce";
         }
 
         if (MAX_SCORE_RPS == parseInt(scoreNumber1.innerText) || MAX_SCORE_RPS == parseInt(scoreNumber2.innerText)) {
             showGameOverScreenRPS();
         }
         else {
-            findMusic(tempmusicname);
             resultWinner.classList.toggle("hidden");
             resultsDiv.classList.toggle("show-winner");
         }
@@ -224,7 +209,6 @@ function showGameOverScreenRPS() {
         document.getElementById('gameOverScreen').style.backgroundColor = 'rgba(20, 5, 5, 0.8)';
     }
     
-    findMusic(Result);
     document.getElementById('gameOverScreen').style.display = 'block';
 }
 
@@ -243,7 +227,7 @@ function resetGameRPS() {
 }
 
 function exitGame() {
-    window.location.href = '/rps-game-find';  // ?
+    swapApp('/rps-game-find')
 }
 
 function isWinner(results) {
@@ -341,7 +325,7 @@ function sendWinnerToBackend(winner, loser, winnerscore, loserscore, start_time)
         finish_time: finish_time
     };
 
-    fetch('/update_winner', {
+    fetch('/update_winner/', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -363,17 +347,4 @@ function sendWinnerToBackend(winner, loser, winnerscore, loserscore, start_time)
     });
 }
 
-function playMusic(Sound) {
-    if(GameSound){
-        GameSound.pause();
-        GameSound.currentTime = 0;
-    }
-    GameSound = Sound;
-
-    setTimeout(function() {
-        if (GameSound) {
-            //GameSound.currentTime = 0.2;
-            GameSound.play();
-        }
-    }, 50);  
 }

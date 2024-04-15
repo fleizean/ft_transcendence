@@ -1,4 +1,27 @@
-// Extract game_id and game_type from the URL
+export function RemotePong() {
+
+const cookie = document.cookie.split('; ').find(row => row.startsWith('selectedLanguage='));
+const lang = cookie ? cookie.split('=')[1] : 'en';
+ 
+function showToast(content, status, iconClass) {
+    const liveToast = document.getElementById('liveToast');
+    var toastContent = document.querySelector('#liveToast .fw-semibold');
+    var toastIcon = document.querySelector('.toast-body .i-class i');
+
+    toastIcon.className = iconClass;
+    liveToast.classList.remove('text-bg-danger'); 
+    liveToast.className = 'toast'; 
+    liveToast.classList.add(status);
+
+    toastContent.textContent = content;
+    const toast = new bootstrap.Toast(liveToast);
+    toast.show();
+    setTimeout(function() {
+        toast.hide();
+    }, 8000);
+}    
+    
+    // Extract game_id and game_type from the URL
 const pathArray = window.location.pathname.split('/');
 const gameType = pathArray[2]; // Assuming game_type is the third segment of the URL
 const gameId = pathArray[3]; // Assuming game_id is the fourth segment of the URL
@@ -19,6 +42,7 @@ const selectedGameModeLabel = document.getElementById('selectedGameMode');
 let gameMode = "Vanilla";
 
 // Custom items
+const leftArea = document.getElementById('left-area-display');
 const paddleColor = document.querySelector('.left-card').dataset.paddlecolor;
 const playgroundColor = document.querySelector('.left-card').dataset.playgroundcolor;
 canvas.style.borderColor = playgroundColor;
@@ -27,6 +51,7 @@ const likeaCheater = document.querySelector('.left-card').dataset.likeacheater;
 const fastandFurious = document.querySelector('.left-card').dataset.fastandfurious;
 const rageofFire = document.querySelector('.left-card').dataset.rageoffire;
 const frozenBall = document.querySelector('.left-card').dataset.frozenball;
+const tournament = document.querySelector('.left-card').dataset.tournament;
 
 let likeaCheaterCount = 0;
 let fastandFuriousCount = 0;
@@ -156,9 +181,9 @@ function gameUtilsReset() {
     frozenBallCount = 0;
     isFrozenBallActive = false;
 
-    if (giantMan == "true" && gameMode === "Abilities")
+    if (giantMan == "true" && (gameMode === "Abilities" || tournament === "abilities"))
         sendAbility("giantMan");
-    if (rageofFire == "true" && gameMode === "Abilities")
+    if (rageofFire == "true" && (gameMode === "Abilities" || tournament === "abilities"))
         sendAbility("rageofFire");
 }
 
@@ -227,11 +252,11 @@ matchsocket.onmessage = function (e) {
             if (data.user !== my.username) {
                 addUsersToTable([data.user]);
             }
-            if (selectedLanguage === 'tr')
+            if (lang === 'tr')
                 showToast(data.user + ' katıldı!', 'text-bg-success', 'bi bi-check-circle-fill')
-            else if (selectedLanguage === 'hi')  
+            else if (lang === 'hi')  
                 showToast(data.user + ' शामिल हो गया!', 'text-bg-success', 'bi bi-check-circle-fill')
-            else if (selectedLanguage === 'pt')  
+            else if (lang === 'pt')  
                 showToast(data.user + ' entrou!', 'text-bg-success', 'bi bi-check-circle-fill')
             else
                 showToast(data.user + ' joined!', 'text-bg-success', 'bi bi-check-circle-fill')
@@ -242,11 +267,11 @@ matchsocket.onmessage = function (e) {
             console.log('User out lobby', data.user);
             // Remove user from online users list
             removeUserFromTable(data.user);
-            if (selectedLanguage === 'tr')
+            if (lang === 'tr')
                 showToast(data.user + ' ayrıldı!', 'text-bg-danger', 'bi bi-check-circle-fill')
-            else if (selectedLanguage === 'hi')
+            else if (lang === 'hi')
                 showToast(data.user + ' चला गया!', 'text-bg-danger', 'bi bi-check-circle-fill')
-            else if (selectedLanguage === 'pt')
+            else if (lang === 'pt')
                 showToast(data.user + ' saiu!', 'text-bg-danger', 'bi bi-check-circle-fill')
             else
                 showToast(data.user + ' left!', 'text-bg-danger', 'bi bi-check-circle-fill')
@@ -264,14 +289,17 @@ matchsocket.onmessage = function (e) {
             console.log('Game invite', data.inviter);
             console.log('data: ', data.invitee + " " + my.username)
             // Display the modal for accepting or declining the invitation
+
+            hideInviteButtons(data.inviter, data.invitee);
+            
             const acceptButton = document.getElementById(`acceptButton${data.inviter}`);
             const declineButton = document.getElementById(`declineButton${data.inviter}`);
             if (data.invitee === my.username)  {
-                if (selectedLanguage === 'tr')
+                if (lang === 'tr')
                     showToast(`${data.inviter} tarafından bir oyun daveti aldınız`, 'text-bg-success', 'bi bi-check-circle-fill');
-                else if (selectedLanguage === 'hi')
+                else if (lang === 'hi')
                     showToast(`${data.inviter} द्वारा आपको एक खेल आमंत्रण मिला है`, 'text-bg-success', 'bi bi-check-circle-fill');
-                else if (selectedLanguage === 'pt')
+                else if (lang === 'pt')
                     showToast(`Você recebeu um convite de jogo de ${data.inviter}`, 'text-bg-success', 'bi bi-check-circle-fill');
                 else
                     showToast(`You received a game invitation from ${data.inviter}`, 'text-bg-success', 'bi bi-check-circle-fill')
@@ -299,11 +327,12 @@ matchsocket.onmessage = function (e) {
             player2.username = data.player2;
             my.game_id = data.game_id;
             my.tournament_id = data.tournament_id;
-            if (selectedLanguage === 'tr')
+            leftArea.style.display = 'none';
+            if (lang === 'tr')
                 showToast(`Turnuva maçı başladı! ${player1.username} vs ${player2.username}`, 'text-bg-success', 'bi bi-check-circle-fill');
-            else if (selectedLanguage === 'hi')
+            else if (lang === 'hi')
                 showToast(`टूर्नामेंट मैच शुरू हो गया! ${player1.username} vs ${player2.username}`, 'text-bg-success', 'bi bi-check-circle-fill');
-            else if (selectedLanguage === 'pt')
+            else if (lang === 'pt')
                 showToast(`Jogo de torneio começou! ${player1.username} vs ${player2.username}`, 'text-bg-success', 'bi bi-check-circle-fill');
             else
                 showToast(`Tournament match started! ${player1.username} vs ${player2.username}`, 'text-bg-success', 'bi bi-check-circle-fill');
@@ -316,35 +345,56 @@ matchsocket.onmessage = function (e) {
             console.log(`Tournament Id: ${data.tournament_id}, Match Id: ${data.game_id} => ${data.player1} vs ${data.player2}`);
             break;
 
-        
+        case 'chat.game':
+            player1.username = data.player1;
+            player2.username = data.player2;
+            my.game_id = data.game_id;
+            if (lang === 'tr')
+                showToast(`Chat maçı başladı! ${player1.username} vs ${player2.username}`, 'text-bg-success', 'bi bi-check-circle-fill');
+            else if (lang === 'hi')
+                showToast(`टूर्नामेंट मैच शुरू हो गया! ${player1.username} vs ${player2.username}`, 'text-bg-success', 'bi bi-check-circle-fill');
+            else if (lang === 'pt')
+                showToast(`Jogo de torneio começou! ${player1.username} vs ${player2.username}`, 'text-bg-success', 'bi bi-check-circle-fill');
+            else
+                showToast(`Chat match started! ${player1.username} vs ${player2.username}`, 'text-bg-success', 'bi bi-check-circle-fill');
+
+            render();
+            showToast('Press Space to start the game', 'text-bg-primary', 'bi bi-exclamation-triangle-fill')
+
+            document.addEventListener("keydown", SpaceKeyDown);
+
+            console.log(`Match Id: ${data.game_id} => ${data.player1} vs ${data.player2}`);
+            break;
+
         case 'game.accept':
             player1.username = data.accepted;
             player2.username = data.accepter;
             my.game_id = data.game_id;
             if (data.accepter === my.username) {
-                if (selectedLanguage === 'tr')
+                if (lang === 'tr')
                     showToast(`Davetiniz ${data.accepted} tarafından kabul edildi`, 'text-bg-success', 'bi bi-check-circle-fill');
-                else if (selectedLanguage === 'hi')
+                else if (lang === 'hi')
                     showToast(`आपका निमंत्रण ${data.accepted} द्वारा स्वीकृत किया गया`, 'text-bg-success', 'bi bi-check-circle-fill');
-                else if (selectedLanguage === 'pt')
+                else if (lang === 'pt')
                     showToast(`Seu convite foi aceito por ${data.accepted}`, 'text-bg-success', 'bi bi-check-circle-fill');
                 else
                     showToast(`You accepted the game invitation from ${data.accepted}`, 'text-bg-success', 'bi bi-check-circle-fill');
                 my.opponent_username = data.accepted; // if gerekir mi?
             }
             else if (data.accepted === my.username) {
-                if (selectedLanguage === 'tr')
+                if (lang === 'tr')
                     showToast(`Davetiniz ${data.accepter} tarafından kabul edildi`, 'text-bg-success', 'bi bi-check-circle-fill');
-                else if (selectedLanguage === 'hi')
+                else if (lang === 'hi')
                     showToast(`आपका निमंत्रण ${data.accepter} द्वारा स्वीकृत किया गया`, 'text-bg-success', 'bi bi-check-circle-fill');
-                else if (selectedLanguage === 'pt')
+                else if (lang === 'pt')
                     showToast(`Seu convite foi aceito por ${data.accepter}`, 'text-bg-success', 'bi bi-check-circle-fill');
                 else
                     showToast(`Your invitation is accepted by ${data.accepter}`, 'text-bg-success', 'bi bi-check-circle-fill');
                 my.opponent_username = data.accepter; // if gerekir mi?
             }
             render();
-            showToast('Press Space to start the game', 'text-bg-primary', 'bi bi-exclamation-triangle-fill')
+            showToast('Press Space to start the game', 'text-bg-primary', 'bi bi-exclamation-triangle-fill');
+            
 
             document.addEventListener("keydown", SpaceKeyDown);
 
@@ -353,11 +403,11 @@ matchsocket.onmessage = function (e) {
 
         case 'game.decline':
             if (data.declined === my.username) {    
-                if (selectedLanguage === 'tr')
+                if (lang === 'tr')
                     showToast(`Davetiniz ${data.decliner} tarafından reddedildi`, 'text-bg-danger', 'bi bi-check-circle-fill'); 
-                else if (selectedLanguage === 'hi')
+                else if (lang === 'hi')
                     showToast(`आपका निमंत्रण ${data.decliner} द्वारा अस्वीकार किया गया`, 'text-bg-danger', 'bi bi-check-circle-fill');
-                else if (selectedLanguage === 'pt')
+                else if (lang === 'pt')
                     showToast(`Seu convite foi recusado por ${data.decliner}`, 'text-bg-danger', 'bi bi-check-circle-fill');
                 else            
                     showToast(`Your invitation is declined by ${data.decliner}`, 'text-bg-danger', 'bi bi-check-circle-fill');
@@ -369,12 +419,13 @@ matchsocket.onmessage = function (e) {
             // if they vote for Start, start the game otherwise update votes
             // Start the game
             checkbox.disabled = true;
+            leftArea.style.display = 'none';
             if (data.vote == 2) {
-                if (selectedLanguage === 'tr')
+                if (lang === 'tr')
                     showToast(`3 saniye içinde ${player1.username} ve ${player2.username} arasında oyun başlıyor`, 'text-bg-success', 'bi bi-check-circle-fill');
-                else if (selectedLanguage === 'hi')
+                else if (lang === 'hi')
                     showToast(`3 सेकंड में ${player1.username} और ${player2.username} के बीच खेल शुरू हो रहा है`, 'text-bg-success', 'bi bi-check-circle-fill');
-                else if (selectedLanguage === 'pt')
+                else if (lang === 'pt')
                     showToast(`Jogo começando em 3 segundos entre ${player1.username} e ${player2.username}`, 'text-bg-success', 'bi bi-check-circle-fill');
                 else
                     showToast(`Game starting in 3 sec between ${player1.username} and ${player2.username}`, 'text-bg-success', 'bi bi-check-circle-fill');
@@ -396,17 +447,17 @@ matchsocket.onmessage = function (e) {
                     } else if (event.key === "s" || event.key === "S"|| event.key === "ArrowDown") {
                         downPressed = true;
                     }
-                    if (event.key === '1' && likeaCheaterCount < 1 && likeaCheater == "true" && gameMode === "Abilities") {
+                    if (event.key === '1' && likeaCheaterCount < 1 && likeaCheater == "true" && (gameMode === "Abilities" || tournament === "abilities")) {
                         sendAbility("likeaCheater");
                         showToast('You used like a cheater!', 'text-bg-primary', 'bi bi-exclamation-triangle-fill');
                         likeaCheaterCount += 1;
                     }
-                    else if (event.key === '2' && fastandFuriousCount < 1 && fastandFurious == "true" && isFrozenBallActive == false && gameMode === "Abilities") {
+                    else if (event.key === '2' && fastandFuriousCount < 1 && fastandFurious == "true" && isFrozenBallActive == false && (gameMode === "Abilities" || tournament === "abilities")) {
                         sendAbility("fastandFurious");
                         showToast('You used fast and furious!', 'text-bg-primary', 'bi bi-exclamation-triangle-fill');
                         fastandFuriousCount += 1;
                     }
-                    else if (event.key === '3' && frozenBallCount < 1 && frozenBall == "true" && gameMode === "Abilities") {
+                    else if (event.key === '3' && frozenBallCount < 1 && frozenBall == "true" && (gameMode === "Abilities" || tournament === "abilities")) {
                         sendAbility("frozenBall");
                         showToast('You used frozen ball!', 'text-bg-primary', 'bi bi-exclamation-triangle-fill');
                         isFrozenBallActive = true;
@@ -443,11 +494,12 @@ matchsocket.onmessage = function (e) {
 
         case 'game.leave':
             //clearInterval(BallRequest);
+            leftArea.style.display = 'block';
             stopGame();
-            left_score = data.left_score;
-            opponent_score = data.opponent_score;
-            winner = data.winner;
-            loser = data.loser;
+            var left_score = data.left_score;
+            var opponent_score = data.opponent_score;
+            var winner = data.winner;
+            var loser = data.loser;
             document.getElementById('winnerText').innerText = winner;
             document.getElementById('loserText').innerText = loser;
             gameOverScreen.style.display = 'block';
@@ -460,21 +512,24 @@ matchsocket.onmessage = function (e) {
 
         case 'game.end':
             //clearInterval(BallRequest);
+            leftArea.style.display = 'block';
             stopGame();
             checkbox.disabled = false;
-            player1_score = data.player1_score;
-            player2_score = data.player2_score;
-            winner = data.winner;
-            loser = data.loser;
+            player1.score = data.player1_score;
+            player2.score = data.player2_score;
+           
+            var winner = data.winner;
+            var loser = data.loser;
+            console.log('Winner: ' + winner + ' Loser: ' + loser + ' Player1 score: ' + player1.score + ' Player2 score: ' + player2.score);
             document.getElementById('winnerText').innerText = winner;
             document.getElementById('loserText').innerText = loser;
             gameOverScreen.style.display = 'block';
             // Show some game ended message with scores etc
-            if (selectedLanguage === 'tr')
+            if (lang === 'tr')
                 showToast(`Oyun bitti. Kazanan ${data.winner}`, 'text-bg-success', 'bi bi-check-circle-fill');
-            else if (selectedLanguage === 'hi')
+            else if (lang === 'hi')
                 showToast(`खेल समाप्त हो गया। विजेता ${data.winner}`, 'text-bg-success', 'bi bi-check-circle-fill');
-            else if (selectedLanguage === 'pt')
+            else if (lang === 'pt')
                 showToast(`O jogo acabou. Vencedor é ${data.winner}`, 'text-bg-success', 'bi bi-check-circle-fill');
             else
                 showToast(`Game is ended. Winner is ${data.winner}`, 'text-bg-success', 'bi bi-check-circle-fill');
@@ -508,7 +563,7 @@ matchsocket.onmessage = function (e) {
 
         case 'game.ability':
             console.log(data.ability + ' is used!')
-            if (data.ability == 'giantMan' && gameMode === "Abilities") {
+            if (data.ability == 'giantMan' && (gameMode === "Abilities" || tournament === "abilities")) {
                 if (data.player == player1.username)
                     paddle1.height = 115
                 else if (data.player == player2.username)
@@ -531,16 +586,45 @@ function addUsersToTable(usersArray) {
         var usernameCell = document.createElement('td');
         usernameCell.textContent = username;
         var actionsCell = document.createElement('td');
-        actionsCell.innerHTML = `
-        <div class="btn-group" style="display:flex; justify-content:center;">
-            <button type="button" class="invite-button" onclick="invite('false', '${username}')"><i class="bi bi-plus-circle-fill"></i></button>
-            <button type"button" class="accept-button" id="acceptButton${username}"><i class="bi bi-patch-check-fill"></i></button>
-            <button type="button" class="decline-button" id="declineButton${username}"><i class="bi bi-x-circle-fill"></i></button>
-        </div>
-            `;
+
+        // Create buttons
+        var btnGroup = document.createElement('div');
+        btnGroup.className = "btn-group";
+        btnGroup.style.display = "flex";
+        btnGroup.style.justifyContent = "center";
+
+        var inviteButton = document.createElement('button');
+        inviteButton.type = "button";
+        inviteButton.className = "invite-button";
+        inviteButton.id = "inviteButton" + username;
+        inviteButton.innerHTML = '<i class="bi bi-plus-circle-fill"></i>';
+
+        var acceptButton = document.createElement('button');
+        acceptButton.type = "button";
+        acceptButton.className = "accept-button";
+        acceptButton.id = "acceptButton" + username;
+        acceptButton.innerHTML = '<i class="bi bi-patch-check-fill"></i>';
+
+        var declineButton = document.createElement('button');
+        declineButton.type = "button";
+        declineButton.className = "decline-button";
+        declineButton.id = "declineButton" + username;
+        declineButton.innerHTML = '<i class="bi bi-x-circle-fill"></i>';
+
+        // Add buttons to button group
+        btnGroup.appendChild(inviteButton);
+        btnGroup.appendChild(acceptButton);
+        btnGroup.appendChild(declineButton);
+
+        actionsCell.appendChild(btnGroup);
         row.appendChild(usernameCell);
         row.appendChild(actionsCell);
         tableBody.appendChild(row);
+
+        // Add event listener to invite button
+        inviteButton.addEventListener('click', function() {
+            invite('false', username);
+        });
     });
 }
 
@@ -560,11 +644,11 @@ function removeUserFromTable(username) {
 
 function invite(matchmaking = 'false', username) {
     // Get necessary data and call socket.sendJSON
-    if (selectedLanguage === 'tr')
+    if (lang === 'tr')
         showToast(`Oyuna ${username} davet ettiniz`, 'text-bg-success', 'bi bi-check-circle-fill')
-    else if (selectedLanguage === 'hi')
+    else if (lang === 'hi')
         showToast(`आपने ${username} को एक खेल के लिए आमंत्रित किया`, 'text-bg-success', 'bi bi-check-circle-fill')
-    else if (selectedLanguage === 'pt')
+    else if (lang === 'pt')
         showToast(`Você convidou ${username} para um jogo`, 'text-bg-success', 'bi bi-check-circle-fill')
     else
         showToast(`You invited ${username} to a game`, 'text-bg-success', 'bi bi-check-circle-fill')
@@ -581,13 +665,24 @@ matchmakingButton.onclick = function () {
 
 //----------------------------------------------
 
+function hideInviteButtons(username1, username2) {
+    // Get the invite buttons for the two users
+    const inviteButton1 = document.getElementById(`inviteButton${username1}`);
+    const inviteButton2 = document.getElementById(`inviteButton${username2}`);
+
+    // Hide the invite buttons
+    if (inviteButton1) inviteButton1.style.display = 'none';
+    if (inviteButton2) inviteButton2.style.display = 'none';
+}
+
 function exitGame() {
     console.log("id: " + my.game_id);
     matchsocket.sendJSON({
         action: 'exit',
         game_id: my.game_id,
     });
-    window.location.href = '/pong-game-find'; // ?
+    
+    swapApp('/pong-game-find')
 }
 
 function accept(inviter) {
@@ -677,21 +772,21 @@ checkbox.addEventListener('change', function() {
     // Checkbox'un durumuna göre etiketin innerHTML değerini değiştirme
     if (checkbox.checked) {
         gameMode = "Abilities";
-        if (selectedLanguage === 'tr')
+        if (lang === 'tr')
             selectedGameModeLabel.innerHTML = "Yetenekler";
-        else if (selectedLanguage === 'hi')
+        else if (lang === 'hi')
             selectedGameModeLabel.innerHTML = "क्षमताएँ";
-        else if (selectedLanguage === 'pt')
+        else if (lang === 'pt')
             selectedGameModeLabel.innerHTML = "Habilidades";
         else
             selectedGameModeLabel.innerHTML = "Abilities";
     } else {
         gameMode = "Vanilla";
-        if (selectedLanguage === 'tr')
+        if (lang === 'tr')
             selectedGameModeLabel.innerHTML = "Vanilya";
-        else if (selectedLanguage === 'hi')
+        else if (lang === 'hi')
             selectedGameModeLabel.innerHTML = "वैनिला";
-        else if (selectedLanguage === 'pt')
+        else if (lang === 'pt')
             selectedGameModeLabel.innerHTML = "Baunilha";
         else
             selectedGameModeLabel.innerHTML = "Vanilla";
@@ -707,3 +802,4 @@ gameModeSelect.addEventListener("mouseenter", function() {
 gameModeSelect.addEventListener("mouseleave", function() {
     document.querySelector(".game-mode-info").style.display = "none";
 });
+}

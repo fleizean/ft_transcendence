@@ -22,9 +22,8 @@ class ChatConsumer(AsyncWebsocketConsumer):
         from .models import UserProfile, Message, Game
         data = json.loads(text_data)
         action = data["action"]
-
         if action == "chat":
-            message =data["message"]
+            message = data["message"]
             user = await UserProfile.objects.aget(username=self.user.username)
             m = await Message.objects.acreate(content=message, user=user, room_id=self.room_name) #room_id is the room name
             # Send message to room group
@@ -96,7 +95,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
         elif action == "unblock":
             # remove user from block list
-            blocked = data["blocked"]
+            blocked = data["unblocked"]
             # add user to block list
             me = await UserProfile.objects.aget(username=self.user.username)
             blocked = await UserProfile.objects.aget(username=blocked)
@@ -121,4 +120,54 @@ class ChatConsumer(AsyncWebsocketConsumer):
             "message": message,
             "user": user,
             "created_date": created_date,
+        }))
+
+    async def invite_game(self, event):
+        inviter = event["inviter"]
+        # Send message to WebSocket
+        await self.send(text_data=json.dumps({
+            "type": "invite.game",
+            "inviter": inviter,
+        }))
+
+    async def accept_game(self, event):
+        message = event["message"]
+        user = event["user"]
+        created_date = event["created_date"]
+        # Send message to WebSocket
+        await self.send(text_data=json.dumps({
+            "type": "accept.game",
+            "message": message,
+            "user": user,
+            "created_date": created_date,
+        }))
+
+    async def decline_game(self, event):
+        decliner = event["decliner"]
+        # Send message to WebSocket
+        await self.send(text_data=json.dumps({
+            "type": "decline.game",
+            "decliner": decliner,
+        }))
+    
+    async def blocked(self, event):
+        # Handle the "blocked" message
+        blocker = event["blocker"]
+        blocked = event["blocked"]
+
+        await self.send(text_data=json.dumps({
+            "type": "blocked",
+            "blocker": blocker,
+            "blocked": blocked,
+        }))
+
+    async def unblocked(self, event):
+        # Handle the "unblocked" message
+        unblocker = event["unblocker"]
+        unblocked = event["unblocked"]
+
+        await self.send(text_data=json.dumps({
+            "type": "unblocked",
+            "unblocker": unblocker,
+            "unblocked": unblocked,
         }))

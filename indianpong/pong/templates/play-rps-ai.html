@@ -9,7 +9,7 @@
 {% block stylesheet %}<link rel="stylesheet" href="{% static 'css/rps.css' %}" />{% endblock %}
 
 {% block app %}
-  <div class="container-top" data-cheater="{{ cheater_rps }}" data-godthings="{{godthings_rps}}" data-username="{{request.user.username}}" data-musicpath="{% static "music/" %}" data-iconpath="{% static "assets/rps/" %}">
+  <div class="container-top" data-cheater="{{ cheater_rps }}" data-godthings="{{godthings_rps}}" data-username="{{request.user.username}}" data-iconpath="{% static "assets/rps/" %}">
     <div class="header-top">
       <div class="header">
         <div class="score" style="margin-right: 15px;">
@@ -76,6 +76,6 @@
     <button id="exitButton">{{context.rpsGameExitButtonText}}</button>
   </div>
 
-  <script src="{% static 'js/rps.js' %}"></script>
+  <script type="module" src="{% static 'js/rps.js' %}"></script>
   {% csrf_token %}
 {% endblock %}

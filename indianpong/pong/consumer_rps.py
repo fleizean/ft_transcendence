@@ -257,8 +257,3 @@ class RPSConsumer(AsyncWebsocketConsumer):
             await self.record_stats_elo_wallet(game_id, game.shaker1.score, game.max_score, game.shaker2.username, game.shaker1.username, duration)
         else:
             await self.record_stats_elo_wallet(game_id, game.max_score, game.shaker2.score, game.shaker1.username, game.shaker2.username, duration)
-
-
-        
-
-

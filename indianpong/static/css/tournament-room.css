@@ -17,6 +17,13 @@
     justify-content: center;
     align-items: center;
   }
+
+  .tournament-description {
+    text-align: center;
+    color: red;
+    font-weight: bold;
+    font-size: 12px;
+  }
   
   .leave-button {
       text-align: center;
@@ -179,6 +186,21 @@
     top: 0;
   }
 
+  .right-refresh {
+    position: absolute;
+    right:25px;
+    
+    font-size: 1.2em;
+  }
+
+  .refresh-button {
+    cursor: pointer;
+    color: white;
+  }
+
+  .refresh-button:hover {
+    color: greenyellow;
+  }
   
 
 /* Game Room Area */

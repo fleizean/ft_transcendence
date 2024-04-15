@@ -9,6 +9,7 @@ from django.http import HttpResponse, HttpResponseBadRequest
 from django.http import HttpResponseRedirect
 from django.http import Http404
 from django.utils import timezone
+from django.core import serializers
 from django.template import loader
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 import ssl
@@ -98,10 +99,10 @@ def signup(request):
             messages.success(request, "Please check your email to verify your account.")
             return HttpResponse("login")
         else:
-            return HttpResponse(render_to_string("signup.html", {"form": form, "context": context}))
+            return HttpResponse(render_to_string("signup.html", {"form": form, "context": context}, request=request))
     else:
         form = UserProfileForm(lang=request.COOKIES.get('selectedLanguage', 'en'))
-    return HttpResponse(render_to_string("signup.html", {"form": form, "context": context}))
+    return HttpResponse(render_to_string("signup.html", {"form": form, "context": context}, request=request))
 
 @never_cache
 def activate_account(request, token):
@@ -253,7 +254,7 @@ def login_view(request):
             return HttpResponse(msg[lang])
     else:
         form = AuthenticationUserForm()
-    return HttpResponse(render_to_string("login.html", {"form": form, "context": context}))
+    return HttpResponse(render_to_string("login.html", {"form": form, "context": context}, request=request))
 
 @never_cache
 @login_required()
@@ -268,6 +269,7 @@ def logout_view(request):
 def profile_view(request, username):
     profile = get_object_or_404(UserProfile, username=username)
     lang = request.COOKIES.get('selectedLanguage', 'en')
+    
     context = langs.get_langs(lang)
     game_records = Game.objects.filter(
         Q(player1=profile) | Q(player2=profile),
@@ -299,18 +301,8 @@ def profile_view(request, username):
     except EmptyPage:
         # Geçersiz bir sayfa numarası istenirse, son sayfayı al
         history_page_obj = paginator.page(paginator.num_pages)
-    return render(
-        request,
-        "profile.html",
-        {
-            "profile": profile,
-            "history_page_obj": history_page_obj,
-            "is_friend": is_friend,
-            "game_records_rps": game_records_rps,
-            "context": context,
-        },
-    )
-
+    
+    return HttpResponse(render_to_string("profile.html", {"profile": profile, "history_page_obj": history_page_obj, "is_friend": is_friend, "game_records_rps": game_records_rps, "context": context}, request=request))
 
 ## Rps Game ##
 @never_cache
@@ -318,7 +310,7 @@ def profile_view(request, username):
 def rps_game_find(request):
     lang = request.COOKIES.get('selectedLanguage', 'en')
     context = langs.get_langs(lang)
-    return render(request, "rps-game-find.html", {"context": context})
+    return HttpResponse(render_to_string("rps-game-find.html", {"context": context, "request": request}))
 
 
 ## Pong Game ##
@@ -327,16 +319,17 @@ def rps_game_find(request):
 def pong_game_find(request):
     lang = request.COOKIES.get('selectedLanguage', 'en')
     context = langs.get_langs(lang)
-    return render(request, "pong-game-find.html", {"context": context})
+    return HttpResponse(render_to_string("pong-game-find.html", {"context": context, "request": request}))
 
 ### Profile Settings ###
 @login_required()
 def profile_settings(request, username):
     if request.user.username != username:
-        raise Http404
+        return redirect(reverse('profile_settings', kwargs={'username': request.user.username}))
     lang = request.COOKIES.get('selectedLanguage', 'en')
     context = langs.get_langs(lang)
-
+    message = ""
+    error = ""
     changepassword = False
     now = timezone.now()  # Django'nun timezone modülünden zamanı al
     
@@ -349,6 +342,13 @@ def profile_settings(request, username):
             changepassword = True
     else:
         changepassword = False
+    avatar_form = ProfileAvatarForm(instance=request.user)
+    profile_form = UpdateUserProfileForm(instance=request.user, lang = request.COOKIES.get('selectedLanguage', 'en'))
+    password_form = PasswordChangeUserForm(request.user, lang = request.COOKIES.get('selectedLanguage', 'en'))
+    social_form = SocialForm(instance=request.user.social, lang = request.COOKIES.get('selectedLanguage', 'en'))
+    delete_account_form = DeleteAccountForm(user=request.user, lang = request.COOKIES.get('selectedLanguage', 'en'))
+    blocked_users = request.user.blocked_users.all()
+    
     if request.method == "POST":
         data = request.POST
         if "avatar_form" in data:
@@ -363,32 +363,32 @@ def profile_settings(request, username):
                     profile.avatar = avatar_form.cleaned_data["avatar"]
                     profile.save()
                     if (lang == 'tr'):
-                        return JsonResponse({"message": "Fotoğrafınız başarıyla güncellendi."})
+                        message = "Avatarınız başarıyla güncellendi."
                     elif (lang == 'hi'):
-                        return JsonResponse({"message": "अवतार सफलतापूर्वक अपडेट किया गया।"})
+                        message = "आपका अवतार सफलतापूर्वक अपडेट किया गया।"
                     elif (lang == 'pt'):
-                        return JsonResponse({"message": "Avatar atualizado com sucesso."})
+                        message = "Seu avatar foi atualizado com sucesso."
                     else:
-                        return JsonResponse({"message": "Avatar updated successfully."})
+                        message = "Avatar updated successfully."
                 else:
-                    return JsonResponse({"error": avatar_form.errors}, status=400)
+                    error = avatar_form.errors
             else:
-                return JsonResponse({"error": "No avatar file provided."}, status=400)
+                error = "No file selected."
         elif "profile_form" in data:
             profile_form = UpdateUserProfileForm(data, instance=request.user, lang = request.COOKIES.get('selectedLanguage', 'en'))
             if profile_form.is_valid():
                 request.user.username_change_date = datetime.now()
                 profile_form.save()
                 if (lang == 'tr'):
-                    return JsonResponse({"message": "Profiliniz başarıyla güncellendi."})
+                    message = "Profiliniz başarıyla güncellendi."
                 elif (lang == 'hi'):
-                    return JsonResponse({"message": "आपकी प्रोफ़ाइल सफलतापूर्वक अपडेट की गई।"})
+                    message = "आपका प्रोफ़ाइल सफलतापूर्वक अपडेट किया गया।"
                 elif (lang == 'pt'):
-                    return JsonResponse({"message": "Seu perfil foi atualizado com sucesso."})
+                    message = "Seu perfil foi atualizado com sucesso."
                 else:
-                    return JsonResponse({"message": "Profile updated successfully."})
+                    message = "Profile updated successfully."
             else:
-                return JsonResponse({"error": profile_form.errors}, status=400)
+                error = profile_form.errors
         elif "password_form" in data:
             password_form = PasswordChangeUserForm(request.user, data, lang = request.COOKIES.get('selectedLanguage', 'en'))
             if password_form.is_valid():
@@ -397,15 +397,15 @@ def profile_settings(request, username):
                 profile.save()
                 update_session_auth_hash(request, profile)  # Important!
                 if (lang == 'tr'):
-                    return JsonResponse({"message": "Şifreniz başarıyla güncellendi!"})
+                    message = "Şifreniz başarıyla güncellendi."
                 elif (lang == 'hi'):
-                    return JsonResponse({"message": "आपका पासवर्ड सफलतापूर्वक अपडेट किया गया!"})
+                    message = "आपका पासवर्ड सफलतापूर्वक अपडेट किया गया।"
                 elif (lang == 'pt'):
-                    return JsonResponse({"message": "Sua senha foi atualizada com sucesso!"})
+                    message = "Sua senha foi atualizada com sucesso."
                 else:
-                    return JsonResponse({"message": "Your password was successfully updated!"})
+                    message = "Password updated successfully."
             else:
-                return JsonResponse({"error": password_form.errors}, status=400)
+                error = password_form.errors
         elif "social_form" in data:
             social_form = SocialForm(request.POST, instance=request.user.social, lang = request.COOKIES.get('selectedLanguage', 'en'))
             if social_form.is_valid():
@@ -414,15 +414,15 @@ def profile_settings(request, username):
                 profile.social = social
                 profile.save()
                 if (lang == 'tr'):
-                    return JsonResponse({"message": "Sosyal medya bilgileriniz başarıyla güncellendi."})
+                    message = "Sosyal medya bilgileriniz başarıyla güncellendi."
                 elif (lang == 'hi'):
-                    return JsonResponse({"message": "आपकी सोशल मीडिया जानकारी सफलतापूर्वक अपडेट की गई।"})
+                    message = "आपकी सोशल मीडिया जानकारी सफलतापूर्वक अपडेट की गई।"
                 elif (lang == 'pt'):
-                    return JsonResponse({"message": "Suas informações de mídia social foram atualizadas com sucesso."})
+                    message = "Suas informações de redes sociais foram atualizadas com sucesso."
                 else:
-                    return JsonResponse({"message": "Socials updated successfully."})
+                    message = "Your social media information has been updated successfully."
             else:
-                return JsonResponse({"error": social_form.errors}, status=400)
+                error = social_form.errors
         elif "delete_account_form" in data:
             delete_account_form = DeleteAccountForm(data, user=request.user, lang = request.COOKIES.get('selectedLanguage', 'en'))
             if delete_account_form.is_valid():
@@ -430,41 +430,27 @@ def profile_settings(request, username):
                 if profile.avatar:
                     delete_from_media(profile.avatar.path)
                 profile.delete()
-                if (lang == 'tr'):
-                    return JsonResponse({"message": "Hesabınız başarıyla silindi."})
-                elif (lang == 'hi'):
-                    return JsonResponse({"message": "आपका खाता सफलतापूर्वक हटा दिया गया।"})
-                elif (lang == 'pt'):
-                    return JsonResponse({"message": "Sua conta foi excluída com sucesso."})
-                else:
-                    return JsonResponse({"message": "Account deleted successfully."})
+                return redirect("login")
             else:
-                return JsonResponse({"error": delete_account_form.errors}, status=400)
+                error = delete_account_form.errors
+        elif "unblock_form" in data:
+            blocked_username = data.get("blockedusername")
+            blocked_user = UserProfile.objects.get(username=blocked_username)
+            request.user.blocked_users.remove(blocked_user)
+            blocked_users = request.user.blocked_users.all()
+            if (lang == 'tr'):
+                message = "Kullanıcı engeli kaldırıldı."
+            elif (lang == 'hi'):
+                message = "उपयोगकर्ता ब्लॉक हटा दिया गया।"
+            elif (lang == 'pt'):
+                message = "Usuário desbloqueado."
+            else:
+                message = "User unblocked."
         else:
-            return JsonResponse({"error": "Invalid form type"}, status=400)
+            error = "Invalid form submission."
 
-    else:
-        avatar_form = ProfileAvatarForm(instance=request.user)
-        profile_form = UpdateUserProfileForm(instance=request.user, lang = request.COOKIES.get('selectedLanguage', 'en'))
-        password_form = PasswordChangeUserForm(request.user, lang = request.COOKIES.get('selectedLanguage', 'en'))
-        social_form = SocialForm(instance=request.user.social, lang = request.COOKIES.get('selectedLanguage', 'en'))
-        delete_account_form = DeleteAccountForm(user=request.user, lang = request.COOKIES.get('selectedLanguage', 'en'))
-
-        return render(
-            request,
-            "profile-settings.html",
-            {
-                "profile": request.user,
-                "avatar_form": avatar_form,
-                "profile_form": profile_form,
-                "password_form": password_form,
-                "social_form": social_form,
-                "delete_account_form": delete_account_form,
-                "context": context,
-                "changepassword": changepassword,
-            },
-        )
-
+    
+    return HttpResponse(render_to_string("profile-settings.html", {"profile": request.user, "avatar_form": avatar_form, "profile_form": profile_form, "password_form": password_form, "social_form": social_form, "delete_account_form": delete_account_form, "context": context, "changepassword": changepassword, "message": message, "error": error, "blocked_users": blocked_users}, request=request))
 
 @never_cache
 @login_required()
@@ -600,12 +586,11 @@ def rankings(request):
         users_page_obj = paginator.page(paginator.num_pages)
 
     # Add rank attribute to each user in the page
-
-    return render(request, "rankings.html", {"top_users": top_users, "users_page_obj": users_page_obj, "context": context})
+    return HttpResponse(render_to_string("rankings.html", {"top_users": top_users, "users_page_obj": users_page_obj, "context": context}, request=request))
 
 
 @login_required()
-def store(request, username):  # store_view
+def store(request, username): #store_view
     if request.user.username != username:
         return redirect(reverse("store", kwargs={"username": request.user.username}))
     lang = request.COOKIES.get('selectedLanguage', 'en')
@@ -648,11 +633,7 @@ def store(request, username):  # store_view
         if category_name and category_name != "All":
             store_items = store_items.filter(Q(category_name=category_name) | Q(category_name="All"))
 
-    return render(
-        request,
-        "store.html",
-        {"store_items": store_items, "profile": profile, "form": form, "context": context, "selected_language": lang,},
-    )
+    return HttpResponse(render_to_string("store.html", {"store_items": store_items, "profile": profile, "form": form, "context": context, "selected_language": lang}, request=request))
 
 @never_cache
 @login_required
@@ -698,13 +679,10 @@ def inventory(request, username):
                 Q(item__category_name=category_name) | Q(item__category_name="All"),
                 user=profile
             )
-    return render(
-        request,
-        "inventory.html",
-        {"profile": profile, "inventory_items": inventory_items, "context": context, "selected_language": lang},
-    )
+    return HttpResponse(render_to_string("inventory.html", {"profile": profile, "inventory_items": inventory_items, "form": form, "context": context, "selected_language": lang}, request=request))
 
 @login_required()
+@csrf_exempt
 def search(request):
     if request.method == "POST":
         search_query = request.POST.get("search_query", "")
@@ -713,7 +691,6 @@ def search(request):
         search_query = request.session.get("search_query", "")
     lang = request.COOKIES.get('selectedLanguage', 'en')
     context = langs.get_langs(lang)
-    
     if search_query:
         search_query_email = search_query.split("@")[0]
         results = UserProfile.objects.filter(
@@ -746,9 +723,8 @@ def search(request):
         except EmptyPage:
             # If page number is out of range, deliver the last page
             results = paginator.page(paginator.num_pages)
-        return render(request, "search.html", {"results": results, "context": context})
-    return render(request, "search.html", {"context": context})
-
+        return HttpResponse(render_to_string("search.html", {"results": results, "context": context}, request=request))
+    return HttpResponse(render_to_string("search.html", {"context": context}, request=request))
 
 
 @login_required()
@@ -767,8 +743,7 @@ def friends(request, profile):
     except EmptyPage:
         # Geçersiz bir sayfa numarası istenirse, son sayfayı al
         friends = friends.page(friends.num_pages)
-    return render(request, "friends.html", {"friends": friends, "profile": profile, "context": context})
-
+    return HttpResponse(render_to_string("friends.html", {"friends": friends, "profile": profile, "context": context}, request=request))
 
 @login_required()
 def follow_unfollow(request, username):
@@ -781,7 +756,8 @@ def follow_unfollow(request, username):
         request.user.friends.remove(profile)
     else:
         return JsonResponse({"status": "error", "message": "Invalid action"})
-    return JsonResponse({"status": "ok"})
+        
+    return JsonResponse({"status": "ok", "action": action})
 
 
 @login_required()
@@ -796,6 +772,7 @@ def play_ai(request, game_type, game_id):
     user_items = UserItem.objects.filter(user=request.user)
     
     # Just Customizations - PONG
+    username = request.user.username
     ainametag = get_equipped_item_value(user_items, "My Beautiful AI", "IndianAI")
     paddlecolor = get_equipped_item_value(user_items, "My Beautiful Paddle", "black")
     playgroundcolor = get_equipped_item_value(user_items, "My Playground", "lightgrey")
@@ -807,9 +784,8 @@ def play_ai(request, game_type, game_id):
     fastandfurious = get_equipped_item_value(user_items, "Fast and Furious", "None")
     rageoffire = get_equipped_item_value(user_items, "Rage of Fire", "None")
     frozenball = get_equipped_item_value(user_items, "Frozen Ball", "None")
-    givemethemusic = get_equipped_item_value(user_items, "DJ Give Me The Music", "None")
 
-    return render(request, "play-ai.html", {"ainametag": ainametag, "paddlecolor": paddlecolor, "playgroundcolor": playgroundcolor, "giantman": giantman, "likeacheater": likeacheater, "fastandfurious": fastandfurious, "rageoffire": rageoffire, "frozenball": frozenball, "givemethemusic": givemethemusic, "context": context})
+    return HttpResponse(render_to_string("play-ai.html", {"ainametag": ainametag, "paddlecolor": paddlecolor, "playgroundcolor": playgroundcolor, "giantman": giantman, likeacheater: likeacheater, "fastandfurious": fastandfurious, "rageoffire": rageoffire, "frozenball": frozenball, "context": context, "request": request, "username": username}))
 
 
 @never_cache
@@ -872,20 +848,24 @@ def local_tournament(request):
 @login_required()
 def remote_game(request, game_type, game_id):
     # Validation checks
-    if game_type not in ['peer-to-peer', 'tournament']:
+
+    tournament = ""
+    if game_type not in ['peer-to-peer', 'tournament', 'invite']:
         raise Http404("Invalid game type. It should be either 'peer-to-peer' or 'tournament'.")
 
     if game_type == 'peer-to-peer' and game_id != 'new':
         raise Http404("Invalid game id for peer-to-peer. It should be 'new'.")
 
-    if game_type == 'tournament':
+    if game_type == 'tournament' or game_type == 'invite':
         game = get_object_or_404(Game, id=game_id)
+        tournament = get_object_or_404(Tournament, id=game.tournament_id)
         if game.winner is not None:
             raise Http404("The game is already finished.")
 
     lang = request.COOKIES.get('selectedLanguage', 'en')
     context = langs.get_langs(lang)
     user_items = UserItem.objects.filter(user=request.user)
+    
     
     # Just Customizations - PONG
     paddlecolor = get_equipped_item_value(user_items, "My Beautiful Paddle", "black")
@@ -898,7 +878,7 @@ def remote_game(request, game_type, game_id):
     rageoffire = get_equipped_item_value(user_items, "Rage of Fire", "None")
     frozenball = get_equipped_item_value(user_items, "Frozen Ball", "None")
 
-    return render(request, "remote-game.html", {"paddlecolor": paddlecolor, "playgroundcolor": playgroundcolor, "giantman": giantman, "likeacheater": likeacheater, "fastandfurious": fastandfurious, "rageoffire": rageoffire, "frozenball": frozenball, "context": context})
+    return render(request, "remote-game.html", {"paddlecolor": paddlecolor, "playgroundcolor": playgroundcolor, "giantman": giantman, "likeacheater": likeacheater, "fastandfurious": fastandfurious, "rageoffire": rageoffire, "frozenball": frozenball, "context": context, "tournament": tournament})
 
 
 @never_cache
@@ -907,13 +887,14 @@ def chat(request):
     users = UserProfile.objects.all().exclude(username=request.user).exclude(username="IndianAI")
     lang = request.COOKIES.get('selectedLanguage', 'en')
     context = langs.get_langs(lang)
-    return render(request, "chat.html", {"users": users, "context": context})
+    return HttpResponse(render_to_string("chat.html", {"users": users, "context": context, "request": request}))
 
 
 @login_required()
 def aboutus(request):
-    return render(request, "aboutus.html")
-
+    lang = request.COOKIES.get('selectedLanguage', 'en')
+    context = langs.get_langs(lang)
+    return HttpResponse(render_to_string("aboutus.html", {"context": context}, request=request))
 
 ### New Chat ###
 @login_required()
@@ -921,19 +902,17 @@ def room(request, room_name):
     users = UserProfile.objects.all().exclude(username=request.user).exclude(username="IndianAI")
     room = Room.objects.get(id=room_name)
     lang = request.COOKIES.get('selectedLanguage', 'en')
+    blocked_users = request.user.blocked_users.all()
+    friends = request.user.friends.all()
     context = langs.get_langs(lang)
-    messages = Message.objects.filter(room=room) #? html için mark_safe kullnabilinir
-    return render(
-        request,
-        "room.html",
-        {
-            "room_name": room_name,
-            "room": room,
-            "users": users,
-            "messages": messages,
-            "context": context,
-        },
-    )
+    user_blocked_status = {}
+    user_friends_status = {}
+    for user in users:
+        user_blocked_status[user.username] = user in blocked_users
+        user_friends_status[user.username] = user in friends
+    messages = Message.objects.filter(room=room) #? html için mark_safe kullnabilini
+    return HttpResponse(render_to_string("room.html", {"room_name": room_name, "room": room, "users": users, "messages": messages, "context": context, "request": request, "user_blocked_status": user_blocked_status, "user_friends_status": user_friends_status}))
+
 
 
 @login_required()
@@ -946,7 +925,7 @@ def start_chat(request, username):
             room = Room.objects.get(second_user=request.user, first_user=second_user)
         except Room.DoesNotExist:
             room = Room.objects.create(first_user=request.user, second_user=second_user)
-    return redirect("room", room.id)
+    return JsonResponse({'room_id': room.id})
 
 ### Tournaments ###
 
@@ -965,24 +944,53 @@ def tournament_room(request, id):
     lang = request.COOKIES.get('selectedLanguage', 'en')
     context = langs.get_langs(lang)
     tournament = Tournament.objects.filter(id=id).first()
+    error = ""
+    sucess = ""
     if not tournament:
         return redirect('tournament_room_list')
-
     if 'start_tournament' in request.POST:
         # Check if there are at least 3 participants
         if tournament.participants.count() < 4:
-            messages.error(request, '4 participants are required to start the tournament.')
+            if (lang == 'tr'):
+                error = 'Turnuvada en az 4 katılımcı olmalıdır.'
+            elif (lang == 'hi'):
+                error = 'टूर्नामेंट में कम से कम 4 प्रतियोगी होने चाहिए।'
+            elif (lang == 'pt'):
+                error = 'O torneio deve ter pelo menos 4 participantes.'
+            else:
+                error = 'The tournament must have at least 4 participants.'
         else:
             tournament.create_first_round_matches()
             # Fetch the games that belong to the current tournament
-            messages.success(request, 'Tournament started successfully.')
+            if (lang == 'tr'):
+                sucess = 'Turnuva başarıyla başlatıldı.'
+            elif (lang == 'hi'):
+                sucess = 'टूर्नामेंट सफलतापूर्वक शुरू हुआ।'
+            elif (lang == 'pt'):
+                sucess = 'O torneio foi iniciado com sucesso.'
+            else:
+                sucess = 'The tournament has been started successfully.'
 
     elif 'join_tournament' in request.POST:
         if tournament.participants.count() >= 4:
-            messages.error(request, 'The tournament is full.')
+            if (lang == 'tr'):
+                error = 'Turnuva dolu.'
+            elif (lang == 'hi'):
+                error = 'टूर्नामेंट भरा हुआ है।'
+            elif (lang == 'pt'):
+                error = 'O torneio está cheio.'
+            else:
+                error = 'The tournament is full.'
         else:
             tournament.participants.add(request.user)
-            messages.success(request, 'You have joined the tournament.')
+            if (lang == 'tr'):
+                sucess = 'Turnuvaya katıldınız.'
+            elif (lang == 'hi'):
+                sucess = 'आपने टूर्नामेंट में शामिल हो गए हैं।'
+            elif (lang == 'pt'):
+                sucess = 'Você entrou no torneio.'
+            else:
+                sucess = 'You have joined the tournament.'
     
     elif 'leave_tournament' in request.POST:
         if not (tournament.status == 'started' or tournament.status == 'ended'):
@@ -993,8 +1001,14 @@ def tournament_room(request, id):
                     tournament.save()
                 else:
                     tournament.delete()
-                return redirect('tournament_room_list')
-            messages.success(request, 'You have left the tournament.')
+            if (lang == 'tr'):
+                sucess = 'Turnuvadan ayrıldınız.'
+            elif (lang == 'hi'):
+                sucess = 'आपने टूर्नामेंट छोड़ दिया है।'
+            elif (lang == 'pt'):
+                sucess = 'Você saiu do torneio.'
+            else:
+                sucess = 'You have left the tournament.'
         else:
             #Find the game that the user is in first_round_matches or final_round_matches which winner is not determined yet
             match = Game.objects.filter(
@@ -1023,7 +1037,8 @@ def tournament_room(request, id):
         last_game_id = games.last().id
     final_game = tournament.final_round_matches.first()
     final_game_id = final_game.id if final_game else None
-    return render(request, "tournament-room.html", {"tournament": tournament, 'user': request.user, 'is_participants': is_participants, 'empty_slots': empty_slots, "context": context, 'first_game_id': first_game_id, 'last_game_id': last_game_id, 'final_game_id': final_game_id})
+
+    return HttpResponse(render_to_string("tournament-room.html", {"tournament": tournament, 'user': request.user, 'is_participants': is_participants, 'empty_slots': empty_slots, "context": context, 'first_game_id': first_game_id, 'last_game_id': last_game_id, 'final_game_id': final_game_id, "error": error, "sucess": sucess}, request=request))
 
 @never_cache
 @login_required()
@@ -1041,7 +1056,7 @@ def tournament_room_list(request):
     except EmptyPage:
         # Geçersiz bir sayfa numarası istenirse, son sayfayı al
         tournament_page_obj = paginator.page(paginator.num_pages)
-    return render(request, "tournament-room-list.html", {"tournaments": tournament_page_obj, "context": context})
+    return HttpResponse(render_to_string("tournament-room-list.html", {"tournaments": tournament_page_obj, "context": context}, request=request))
 
 
 @never_cache
@@ -1056,12 +1071,12 @@ def tournament_create(request):
             messages.success(
                 request, f'Tournament "{tournament.name}" created successfully.'
             )
-            return redirect("tournament-room", tournament.id)
+            return HttpResponse("/tournament-room/" + str(tournament.id))
         #else:
             #print(form.errors)
     else:
         form = TournamentForm(request=request)
-    return render(request, "tournament-create.html", {"form": form, "context": context})
+    return HttpResponse(render_to_string("tournament-create.html", {"form": form, "context": context}, request=request))
 
 
 """ @never_cache
@@ -1202,7 +1217,6 @@ def update_winner_pong(data):
     # Game Stats #
     update_stats_pong(winner_profile, loser_profile, winnerscore, loserscore, game_duration, "not_remote")
 
-    
 
 def update_winner_rps(data):
     from .update import update_wallet_elo, update_stats_rps

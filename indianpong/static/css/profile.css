@@ -25,7 +25,8 @@
 
 .unfollow-btn {
     background-color: #212529; /* Buton arka plan rengi */
-    padding: 5px 10px;
+    width: 300px !important;
+    height: 38px !important;
     border: none;
     color: #fff; /* Buton metin rengi */
     border-radius: 5px;
@@ -87,6 +88,9 @@
 
 .switcher-game {
     text-align: center;
+    position: absolute;
+    top: 10px;
+    right: 5px;
 }
 
   .switcher-game .switch-btn {
@@ -116,6 +120,14 @@
       font-size: 1.17em !important;
 }
 
+.page-link {
+    cursor:pointer;
+}
+
+.page-link-search {
+  cursor:auto !important;
+  color: tomato;
+}
 
 .page-item.active .page-link-rankings,
 .page-link-rankings.active {

@@ -5,13 +5,18 @@
 {% block stylesheet %}<link rel="stylesheet" href="{% static "css/tournament-room.css" %}">{% endblock stylesheet %}
 
 {% block app %}
-<div class="container-top">
+<div class="container-top" data-sucess="{{sucess}}" data-error="{{error}}">
     <div class="card">
+        <a class="refresh-button" onclick="swapApp('/tournament-room/{{tournament.id}}')">
+        <div class="right-refresh">
+            <i class="bi bi-arrow-clockwise"></i>
+        </div></a>
         <div class="indian-logo">
             <img class="logo-indian" src="{% static "assets/logo-dark.png" %}">
         </div>
         <div class="pong-game-text">
             <h3 class="pong-game-text" style="text-align: center; color:white">{{context.tournamentroomRoomText}} #{{tournament.id}} - Ping Pong {{context.tournamentroomPageTittle}} {{tournament.name}}</h3>
+            <p class="tournament-description">{% if tournament.game_mode == "vanilla" %} <i class="bi bi-rocket-fill"></i> {{context.localGameChooseModeText1}} {% else %} <i class="bi bi-rocket-takeoff-fill"></i> {{context.localGameChooseModeText2}} {% endif %}</p>
         </div>
         <div class="game-room-buttons">
             {% if tournament.status == "open" %}
@@ -19,21 +24,21 @@
                     <form method="POST">
                         {% csrf_token %}
                         <input type="hidden" name="leave_tournament" value="true">
-                        <button class="leave-button" type="submit"><i class="bi bi-x-circle-fill"></i>{{context.tournamentroomLeaveButtonText}}</button>
+                        <button class="leave-button" onclick="leaveTournament(`{{tournament.id}}`)" type="button"><i class="bi bi-x-circle-fill"></i>{{context.tournamentroomLeaveButtonText}}</button>
                     </form>
                 {% endif %}
                 {% if not is_participants %}
                     <form method="POST">
                         {% csrf_token %}
                         <input type="hidden" name="join_tournament" value="true">
-                        <button class="leave-button" type="submit"><i class="bi bi-plus-circle-fill"></i>{{context.tournamentroomJoinButtonText}}</button>
+                        <button class="leave-button" onclick="joinTournament(`{{tournament.id}}`)" type="button"><i class="bi bi-plus-circle-fill"></i>{{context.tournamentroomJoinButtonText}}</button>
                     </form>
                 {% endif %}
                 {% if tournament.creator == user %}
                     <form method="POST">
                         {% csrf_token %}
                         <input type="hidden" name="start_tournament" value="true">
-                        <button class="leave-button" type="submit"><i class="bi bi-flag-fill"></i>{{context.tournamentroomStartButtonText}}</button>
+                        <button class="leave-button" onclick="startTournament(`{{tournament.id}}`)" type="button"><i class="bi bi-flag-fill"></i>{{context.tournamentroomStartButtonText}}</button>
                     </form>
                 {% endif %}
             {% endif %}
@@ -236,9 +241,6 @@
                                     {% endif %}
                                     
                                 </div>
-
-
-                               
                             </div>
                         </div>
                     </div>
@@ -246,31 +248,20 @@
             </div>
         </section>
     </div>
+    <div class="toast-container position-fixed bottom-0 end-0 p-6" style="margin-right: 20px; margin-bottom: 20px">
+        <div class="toast text-bg-danger" id="liveToast" role="alert">
+            <div class="toast-body">
+                <div class="d-flex gap-4">
+                    <span class="i-class"><i class="bi bi-bug-fill"></i></span>
+                    <div class="d-flex flex-grow-1 align-items-center">
+                        <span class="fw-semibold">NULL</span>
+                        <span class="toast-close" data-bs-dismiss="toast"><i class="bi bi-x-circle-fill"></i></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+      </div>
 </div>
 
-<script>
-    function displaySectionGame(sectionId) {
-    var sections = ["game-bracket-section", "game-room-section"];
-    var buttons = ["checkbracket", "gameroombracket"];
 
-    var button = document.getElementById(buttons[1]);
-    var button2 = document.getElementById(buttons[0]);
-    for (var i = 0; i < sections.length; i++) {
-        var section = document.getElementById(sections[i]);
-        if (sections[i] === sectionId) {
-            section.style.display = 'block';
-            if (sectionId === "game-bracket-section") {
-                button.style.display = 'inline';
-                button2.style.display = 'none';
-            }
-            else {
-                button.style.display = 'none';
-                button2.style.display = 'inline';
-            }
-        } else {
-            section.style.display = 'none';
-        }
-    }
-}
-</script>
 {% endblock %}

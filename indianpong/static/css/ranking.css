@@ -136,6 +136,7 @@
     border: 1px solid rgba(171, 170, 191, .4);
     border-radius: 12px;
     text-decoration: none;
+    cursor: pointer;
 }
 
 .data .data-container .data-body .data-item:not(:last-child) {
@@ -227,7 +228,8 @@
 .leaderboard-winner.leaderboard-winner--rank1 {
     order: 2;
     background-color: #181824;
-    border-color: transparent
+    border-color: transparent;
+    cursor:pointer;
 }
 
 .leaderboard-winner.leaderboard-winner--rank1you {
@@ -297,12 +299,13 @@
 }
 
 .leaderboard-winner.leaderboard-winner--rank2 {
-    order: 1
-    
+    order: 1;
+    cursor: pointer;
 }
 
 .leaderboard-winner.leaderboard-winner--rank3 {
-    order: 3
+    order: 3;
+    cursor: pointer;
 }
 
 .leaderboard-winner .leaderboard-winner-header {
@@ -440,6 +443,15 @@ ul li {
     .leaderboard-winner.leaderboard-winner--rank3 {
         order: 33;
     }
+}
+
+.page-link {
+    cursor:pointer;
+}
+
+.page-link-search {
+  cursor:auto !important;
+  color: tomato;
 }
 
 .page-item.active .page-link-rankings,

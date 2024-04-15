@@ -12,11 +12,10 @@
 <div class="container-top">
     <div class="card">
             <h3 class="pong-game-text" style="text-align: center; color: white;">{{context.tournamentRoomListHeaderText}}</h3>
-            
             <div class="room-wrapper">
               {% for tournament in tournaments %}
                   <div class="room rps-room">
-                      <a href="{% url 'tournament-room' id=tournament.id %}" alt="Mythrill">
+                      <a onclick="swapApp('/tournament-room/{{tournament.id}}')" ≈ alt="Mythrill">
                         <div class="game-room-card">
                           <div class="wrapper-rooms">
                             <img src="{% static "assets/backgrounds/bg-pingpong.png" %}" {% if tournament.status == "started" %} class="cover-image-started" {% elif tournament.status == "ended" %} class="cover-image-ended" {% else %} class="cover-image" {% endif %}/>
@@ -54,17 +53,17 @@
               <nav aria-label="Page navigation example" class="mt-4">
                 <ul class="pagination justify-content-center">
                     <li class="page-item {% if not tournaments.has_previous %}disabled{% endif %}">
-                        <a class="page-link" href="{% if tournaments.has_previous %}?page={{ tournaments.previous_page_number }}{% endif %}" aria-label="Previous">
+                        <a class="page-link" onclick="swapApp('/tournament-room-list{% if tournaments.has_previous %}?page={{ tournaments.previous_page_number }}{% endif %}')" aria-label="Previous">
                             <span aria-hidden="true">&laquo;</span>
                         </a>
                     </li>
                     {% for page_num in tournaments.paginator.page_range %}
                         <li class="page-item {% if page_num == tournaments.number %}active{% endif %}">
-                            <a class="page-link page-link-roomlist" href="?page={{ page_num }}">{{ page_num }}</a>
+                            <a class="page-link page-link-roomlist">{{ page_num }}</a>
                         </li>
                     {% endfor %}
                     <li class="page-item {% if not tournaments.has_next %}disabled{% endif %}">
-                        <a class="page-link" href="{% if tournaments.has_next %}?page={{ tournaments.next_page_number }}{% endif %}" aria-label="Next">
+                        <a class="page-link" onclick="swapApp('/tournament-room-list{% if tournaments.has_next %}?page={{ tournaments.next_page_number }}{% endif %}')" aria-label="Next">
                             <span aria-hidden="true">&raquo;</span>
                         </a>
                     </li>
@@ -72,6 +71,19 @@
               </nav>        
             </div>
             
+    </div>
+    <div class="toast-container position-fixed bottom-0 end-0 p-6" style="margin-right: 20px; margin-bottom: 20px">
+      <div class="toast text-bg-danger" id="liveToast" role="alert">
+          <div class="toast-body">
+              <div class="d-flex gap-4">
+                  <span class="i-class"><i class="bi bi-bug-fill"></i></span>
+                  <div class="d-flex flex-grow-1 align-items-center">
+                      <span class="fw-semibold">NULL</span>
+                      <span class="toast-close" data-bs-dismiss="toast"><i class="bi bi-x-circle-fill"></i></span>
+                  </div>
+              </div>
+          </div>
+      </div>
     </div>
 </div>
 {% endblock %}

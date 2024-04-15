@@ -9,7 +9,7 @@
 <div class="cursor">
   <div class="container">
     <div class="RegisterArea" id="RegisterArea">
-      <form class="form" enctype="multipart/form-data" method="post" id="registerForm">
+      <form class="form-register" enctype="multipart/form-data" method="post" id="registerForm">
         <a onclick="swapApp('/login')" data-link>
           <button class="backbtn" type="button">
             <svg
@@ -55,7 +55,7 @@
         {% endfor %}
 
         <input type="password" name="password1" class="input" placeholder="{{context.signupInputPasswordText}}" required id="id_password1">
-        <i class="bi bi-eye-slash-fill" id="togglePassword1" style="position: absolute;top: 396px;right: 35px;z-index: 100; display: none;"></i>
+        <i class="bi bi-eye-slash-fill" id="togglePassword1" style="position: absolute;top: 388px;right: 35px;z-index: 100; display: none;"></i>
         
         {% for error in form.password1.errors %}
             {% if error != "This field is required." %}
@@ -63,7 +63,7 @@
             {% endif %}
         {% endfor %}
         <input type="password" name="password2" class="input" placeholder="{{context.signupInputConfirmPasswordText}}" required id="id_password2">
-        <i class="bi bi-eye-slash-fill" id="togglePassword2" style="position: absolute;top: 456px;right: 35px;z-index: 100; display: none;"></i>
+        <i class="bi bi-eye-slash-fill" id="togglePassword2" style="position: absolute;top: 445px;right: 35px;z-index: 100; display: none;"></i>
         
         {% for error in form.password2.errors %}
           {% if error != "This field is required." %}
@@ -94,10 +94,16 @@
             <span style="font-weight: 500;">{{context.signupImageUploadText}}</span>
           </div>
           <input type="file" name="avatar" class="input" accept="image/*" id="id_avatar">
-{% comment %}           {{form.avatar.errors}} {% endcomment %}
         </label>
+        <div class="gdpr-checkbox">
+          <label class="checkbox-gpdr">
+            <input type="checkbox" id="gdprCheckbox" required>
+            <div class="checkmark"></div>
+            <span class="gdpr-text">{{context.signupGdprText1}} <a href="https://commission.europa.eu/law/law-topic/data-protection/data-protection-eu_en" target="_blank">{{context.signupGdprText2}}</a></span>
+          </label>        
+        </div>
         <div class="register-buttons">
-          <button type="button" class="button-confirm" onclick="makeRegister()">{{context.signupButtonSignup}} →</button>
+          <button type="button" class="button-confirm" onclick="makeRegister('isRegister')">{{context.signupButtonSignup}} →</button>
         </div>
       </form>
     </div>
@@ -117,13 +123,5 @@
   </div>
   
 </div>
-<script>
 
-</script>
-<script type="module" src="{% static "js/signup.js" %}"></script>
-<script>
-  window.onload = function() {
-    initializeSignup();
-  };
-</script>
 {% endblock %}

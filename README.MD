@@ -12,7 +12,7 @@
       <summary> <b> Minimal technical requirement ⌛</b></summary>
           <ul>
           <li>✅ The frontend should be developed using pure vanilla <b>Javascript.</b> </li>
-          <li>⌛ Your website must be a <b>single-page application.</b> The user should be able to use the
+          <li>✅ Your website must be a <b>single-page application.</b> The user should be able to use the
 <b>Back</b> and <b>Forward</b> buttons of the browser. </li>
           <li>✅ Your website must be compatible with the latest stable up-to-date version of
 Google Chrome . </li>
@@ -24,13 +24,13 @@ container provided by Docker. Example : docker-compose up --build </li>
 </details>
 
 <details>
-      <summary> <b> Game ⌛</b></summary>
+      <summary> <b> Game ✅</b></summary>
       The main purpose of this website is to play Pong versus other players.
           <ul>
           <li>✅ Therefore, users must have the ability to participate in a live Pong game against
 another player directly on the website. Both players will use the same keyboard.
 The <b>Remote players module</b> can enhance this functionality with remote players.</li>
-          <li>⌛ A player must be able to play against another player, but it should also be possible
+          <li>✅ A player must be able to play against another player, but it should also be possible
 to propose a <b>tournament.</b> This tournament will consist of multiple players who
 can take turns playing against each other. You have flexibility in how you implement
 the tournament, but it must clearly display who is playing against whom and the
@@ -39,7 +39,7 @@ order of the players. </li>
 must input their alias name. The aliases will be reset when a new tournament
 begins. However, this requirement can be modified using the <b>Standard User
 Management module.</b> </li>
-          <li>⌛ There must be a <b>matchmaking system:</b> the tournament system organize the
+          <li>✅ There must be a <b>matchmaking system:</b> the tournament system organize the
 matchmaking of the participants, and announce the next fight. </li>
           <li>✅ All players must adhere to the same rules, which includes having identical paddle
 speed. This requirement also applies when using AI; the AI must exhibit the same
@@ -104,11 +104,11 @@ of the project.</b>
   </details>
   
   <details>
-      <summary> <b> Remote players ⌛</b></summary>
+      <summary> <b> Remote players ✅</b></summary>
       It is possible to have two distant players. Each player is located on a   separated
   computer, accessing the same website and playing the same Pong game. <br>
-  💡 <i>Think about network issues, like unexpected disconnection or lag.
-  You have to offer the best user experience possible. </i>
+  ✅ <i>Think about network issues, like unexpected disconnection or lag.
+  You have to offer the best user experience possible. </i> (Not needed)
   </details>
   
   <details>
@@ -123,11 +123,11 @@ of the project.</b>
       <summary> <b> Live Chat. ⌛</b></summary>
       You have to create a chat for your users in this module:
           <ul>
-          <li>⌛ The user should be able   to send <b>direct messages</b> to other users. </li>
-          <li>⌛ The user should be able to block  other users. This way, they will see no more messages from the account   they blocked. </li>
-          <li>⌛ The user should be able to  invite other users to play a Pong game through the chat interface. </li>
+          <li>✅ The user should be able   to send <b>direct messages</b> to other users. </li>
+          <li>✅ The user should be able to block  other users. This way, they will see no more messages from the account   they blocked. </li>
+          <li>✅ The user should be able to  invite other users to play a Pong game through the chat interface. </li>
           <li>⌛ The tournament system should be   able to warn users expected for the next game. </li>
-          <li>⌛ The user should be able   to access other players profiles through the chat interface. </li>
+          <li>✅ The user should be able   to access other players profiles through the chat interface. </li>
           </ul>
   </details>
   
@@ -147,12 +147,12 @@ of the project.</b>
   </details>
   
   <details>
-      <summary> <b> Add Another Game with User History and Matchmaking. ❓</b></summary>
+      <summary> <b> Add Another Game with User History and Matchmaking. ✅</b></summary>
       In this major module, the objective is to introduce a new game, distinct  from Pong, and incorporate features such as user history tracking and  matchmaking. Key features and goals include:
           <ul>
           <li>✅ Develop a new, engaging game to   diversify the platform’s offerings and entertain users. </li>
           <li>✅ Implement user history tracking   to record and display individual user’s gameplay statistics. </li>
-          <li>❓ Create a matchmaking system to  allow users to find opponents and participate in fair and balanced   matches. </li>
+          <li>✅ Create a matchmaking system to  allow users to find opponents and participate in fair and balanced   matches. </li>
           <li>✅ Ensure that user game history   and matchmaking data are stored securely and remain up-to-date. </li>
           <li>✅ Optimize the performance and  responsiveness of the new game to provide an enjoyable user  experience. Regularly update and maintain the game to fix bugs, add  new features, and enhance gameplay. </li>
           </ul>
@@ -196,13 +196,13 @@ of the project.</b>
   </details>
   
   <details>
-      <summary> <b> Expanding Browser Compatibility. ❓</b></summary>
+      <summary> <b> Expanding Browser Compatibility. ✅</b></summary>
       In this minor module, the objective is to enhance the compatibility of the  web application by adding support for an additional web browser. Key   features and objectives include:
           <ul>
-          <li>❓ Extend browser support to   include an additional web browser, ensuring that users can access and   use the application seamlessly. </li>
-          <li>❓ Conduct thorough testing and  optimization to ensure that the web application functions correctly  and displays correctly in the newly supported browser. </li>
-          <li>❓ Address any compatibility issues  or rendering discrepancies that may arise in the added web browser. </li>
-          <li>❓ Ensure a consistent user  experience across all supported browsers, maintaining usability and  functionality. </li>
+          <li>✅ Extend browser support to   include an additional web browser, ensuring that users can access and   use the application seamlessly. </li>
+          <li>✅ Conduct thorough testing and  optimization to ensure that the web application functions correctly  and displays correctly in the newly supported browser. </li>
+          <li>✅ Address any compatibility issues  or rendering discrepancies that may arise in the added web browser. </li>
+          <li>✅ Ensure a consistent user  experience across all supported browsers, maintaining usability and  functionality. </li>
           </ul>
           This minor module aims to broaden the accessibility of the web  application by supporting an additional web browser, providing users   with more choices for their browsing experience.
   </details>
@@ -219,6 +219,18 @@ of the project.</b>
           <li>✅ Allow users to set their  preferred language as a default choice for subsequent visits to the  website. </li>
           </ul>
           This minor module aims to enhance the accessibility and inclusivity of  your website by offering content in multiple languages, making it more   user-friendly for a diverse international audience.
+  </details>
+
+<details>
+      <summary> <b> GDPR Compliance Options with User Anonymization, Local Data Management, and Account Deletion. ✅</b></summary>
+      In this minor module, the goal is to introduce GDPR compliance options that allow users to exercise their data privacy rights. Key features and objectives include:
+          <ul>
+          <li>✅ Implement GDPR-compliant features that enable users to request anonymization of their personal data, ensuring that their identity and sensitive information are protected. </li>
+          <li>✅ Provide tools for users to manage their local data, including the ability to view, edit, or delete their personal information stored within the system. </li>
+          <li>✅ Offer a streamlined process for users to request the permanent deletion of their accounts, including all associated data, ensuring compliance with data protection regulations.. </li>
+          <li>✅ Maintain clear and transparent communication with users regarding their data privacy rights, with easily accessible options to exercise these rights. </li>
+          </ul>
+          This minor module aims to enhance user privacy and data protection by offering GDPR compliance options that empower users to control their personal information and exercise their data privacy rights within the system.
   </details>
 
 

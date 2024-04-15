@@ -107,6 +107,8 @@ class RPS:
         return self.shaker1.score, self.shaker2.score
     
     def getDuration(self):
+        if self.end_time == 0:
+            self.end_time = time.time()
         return self.end_time - self.start_time
     
     def getWinnerLoserandScores(self):

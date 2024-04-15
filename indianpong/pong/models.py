@@ -339,6 +339,7 @@ class Tournament(models.Model):
                 player2=participants[i+1]
             )
             self.first_round_matches.add(game)
+            self.message_for_match(game)
         self.status = "started"
         self.save()
         
@@ -352,6 +353,20 @@ class Tournament(models.Model):
             player2=winners[1]
         )
         self.final_round_matches.add(final_game)
+        self.message_for_match(final_game)
+    
+    def message_for_match(self, game):
+        # Create room between players if does not exist
+        try:
+            room = Room.objects.get(first_user=game.player1, second_user=game.player2)
+        except Room.DoesNotExist:
+            try:
+                room = Room.objects.get(second_user=game.player1, first_user=game.player2)
+            except Room.DoesNotExist:
+                room = Room.objects.create(first_user=game.player1, second_user=game.player2)
+        # Create message for the room with game link
+        message = f"http://localhost:8000/remote-game/tournament/{game.id}"
+        Message.objects.create(user=game.player1, room=room, content=message)
     
 
 class OAuthToken(models.Model):

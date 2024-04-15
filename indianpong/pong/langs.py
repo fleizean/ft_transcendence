@@ -55,6 +55,8 @@ def get_lang_en():
         "signupInputPasswordText": "Password",
         "signupInputConfirmPasswordText": "Password (again)",
         "signupImageUploadText": "Upload Image",
+        "signupGdprText1": "I accept the",
+        "signupGdprText2": "GDPR Privacy Policy",
         "signupButtonSignup": "Let's shine!",
 
         #ForgotPassword
@@ -114,8 +116,7 @@ def get_lang_en():
             "aiGamePageTittle": "AI Game",
             "aiGameReactionDelayText": "Reaction Delay",
             "aiGameGetReadyText": "Get Ready",
-            "aiGamePresSpaceText": "Press 'Space' to start",
-            "aiGameCountdownText": "Starting in",
+            "aiGameStartButtonText": "Start",
 
             "aiGameGameOverText": "Game Over",
             "aiGameRestartButtonText": "Restart",
@@ -123,7 +124,7 @@ def get_lang_en():
 
             "aiGameInfoHeaderText": "About the Game",
             "aiGameInfoSubHeaderText": "How to Play the Game?",
-            "aiGameInfoSubHeaderDescription1": "In Pong game, players engage in a table tennis match against their opponents. The W-A-S-D keys (or up-down-left-right arrow keys) are used to control the ball.",
+            "aiGameInfoSubHeaderDescription1": "In Pong game, players engage in a table tennis match against their opponents. The W-S keys (or up-down arrow keys) are used to control the ball.",
             "aiGameInfoSubHeaderText2": "Win and Improve",
             "aiGameInfoSubHeaderDescription2": "You earn Pong Points with every game you win. With these points, you can purchase new items, rackets, and tables from the store to enhance your gaming experience.",
             "aiGameInfoSubHeaderText3": "Get Started Now",
@@ -289,6 +290,11 @@ def get_lang_en():
         "profileTitleText1": "42 Kocaeli Student",
         "profileTitleText2": "Software Developer",
 
+        "profileLinkedinSocialText": "No Linkedin",
+        "profileGithubSocialText": "No Github",
+        "profileTwitterSocialText": "No Twitter",
+        "profileIntra42SocialText": "No Intra42",
+
         "profileMatchHistoryText1": "Opponent",
         "profileMatchHistoryText2": "Result",
         "profileMatchHistoryText3": "Score",
@@ -298,6 +304,7 @@ def get_lang_en():
         "profileMatchHistoryLoseText": "Lose",
 
         "profileRankText1": "Rank",
+        "profileStatsText": "Stats",
 
         "profileGameStats1": "Games Played:",
         "profileGameStats2": "Wins:",
@@ -403,6 +410,8 @@ def get_lang_tr():
         "signupInputPasswordText": "Şifre",
         "signupInputConfirmPasswordText": "Şifreyi Onayla",
         "signupImageUploadText": "Resim Yükle",
+        "signupGdprText1": "Kabul ediyorum",
+        "signupGdprText2": "GDPR Gizlilik Politikası",
         "signupButtonSignup": "Kayıt Ol",
 
         #ForgotPassword
@@ -461,8 +470,7 @@ def get_lang_tr():
             "aiGamePageTittle": "Pong Yapay Zeka Oyunu",
             "aiGameReactionDelayText": "Tepki Gecikmesi",
             "aiGameGetReadyText": "Hazir Ol",
-            "aiGamePresSpaceText": "'Space' tuşuna basarak başla",
-            "aiGameCountdownText": "Başlıyor",
+            "aiGameStartButtonText": "Başlat",
 
             "aiGameGameOverText": "Oyun Bitti",
             "aiGameRestartButtonText": "Yeniden",
@@ -470,7 +478,7 @@ def get_lang_tr():
 
             "aiGameInfoHeaderText": "Oyun Hakkında",
             "aiGameInfoSubHeaderText": "Oyunu Nasıl Oynarım?",
-            "aiGameInfoSubHeaderDescription1": "Pong oyununda oyuncular rakiplerine karsı bir masa tenisi macı yaparlar. W-A-S-D tusları (veya yukarı-asagı-sol-sag ok tusları) topu kontrol etmek icin kullanılır.",
+            "aiGameInfoSubHeaderDescription1": "Pong oyununda oyuncular rakiplerine karşı bir masa tenisi maçı yaparlar. W-S tuşları (veya yukarı-aşağı ok tuşları) topu kontrol etmek için kullanılır.",
             "aiGameInfoSubHeaderText2": "Kazan ve Geliş",
             "aiGameInfoSubHeaderDescription2": "Her oyun kazandığında Pong Puan kazanırsın. Bu puanlarla mağazadan yeni eşyalar, raket ve masalar satın alarak oyun deneyimini geliştirebilirsin.",
             "aiGameInfoSubHeaderText3": "Hemen Başla",
@@ -626,6 +634,8 @@ def get_lang_tr():
         "searchMessageButtonText": "Mesaj Gönder",
         "searchFollowButtonText": "Takip Et",
         "searchFollowingButtonText": "Takipten Çık",
+
+        
         "searchNoResultFoundText": "Sonuç bulunamadı.",
         
         #Profile
@@ -638,6 +648,11 @@ def get_lang_tr():
         "profileTitleText1": "42 Kocaeli Öğrencisi",
         "profileTitleText2": "Yazılım Geliştirici",
 
+        "profileLinkedinSocialText": "LinkedIn Yok",
+        "profileGithubSocialText": "Github Yok",
+        "profileTwitterSocialText": "Twitter Yok",
+        "profileIntra42SocialText": "Intra42 Yok",
+
         "profileMatchHistoryText1": "Rakip",
         "profileMatchHistoryText2": "Sonuç",
         "profileMatchHistoryText3": "Puan",
@@ -647,6 +662,7 @@ def get_lang_tr():
         "profileMatchHistoryLoseText": "Kaybetti",
 
         "profileRankText1": "Sıra",
+        "profileStatsText": "İstatistikler",
 
         "profileGameStats1": "Oynanan Oyunlar:",
         "profileGameStats2": "Kazanmalar:",
@@ -753,6 +769,8 @@ def get_lang_pt():
         "signupInputPasswordText": "Senha",
         "signupInputConfirmPasswordText": "Senha (novamente)",
         "signupImageUploadText": "Imagem",
+        "signupGdprText1": "Concordo ",
+        "signupGdprText2": "GDPR Política de Privacidade",
         "signupButtonSignup": "Vamos!",
 
         #ForgotPassword
@@ -813,8 +831,7 @@ def get_lang_pt():
             "aiGamePageTittle": "Jogo de Pong com a IA",
             "aiGameReactionDelayText": "Atraso na Reacão",
             "aiGameGetReadyText": "Prepare-se",
-            "aiGamePresSpaceText": "Pressione 'Espaco' para iniciar",
-            "aiGameCountdownText": "Iniciando em",
+            "aiGameStartButtonText":"Começar",
 
             "aiGameGameOverText": "Fim de Jogo",
             "aiGameRestartButtonText": "Reiniciar",
@@ -822,7 +839,7 @@ def get_lang_pt():
 
             "aiGameInfoHeaderText": "Sobre o Jogo",
             "aiGameInfoSubHeaderText": "Como Jogar o Jogo?",
-            "aiGameInfoSubHeaderDescription1": "No jogo Pong, os jogadores participam de uma partida de tênis de mesa contra seus oponentes. As teclas W-A-S-D (ou as setas cima-baixo-esquerda-direita) são usadas para controlar a bola.",
+            "aiGameInfoSubHeaderDescription1": "No jogo Pong, os jogadores participam de uma partida de tênis de mesa contra seus oponentes. As teclas W-S (ou as setas cima-baixo) são usadas para controlar a bola.",
             "aiGameInfoSubHeaderText2": "Ganhe e Melhore",
             "aiGameInfoSubHeaderDescription2": "Você ganha Pong Points a cada jogo que vence. Com esses pontos, você pode comprar novos itens, raquetes e mesas da loja para aprimorar sua experiência de jogo.",
             "aiGameInfoSubHeaderText3": "Comece Agora",
@@ -987,6 +1004,11 @@ def get_lang_pt():
         "profileTitleText1": "Estudante da 42 Kocaeli",
         "profileTitleText2": "Desenvolvedor de Software",
 
+        "profileLinkedinSocialText": "Sem LinkedIn",
+        "profileGithubSocialText": "Sem Github",
+        "profileTwitterSocialText": "Sem Twitter",
+        "profileIntra42SocialText": "Sem Intra42",
+
         "profileMatchHistoryText1": "Oponente",
         "profileMatchHistoryText2": "Resultado",
         "profileMatchHistoryText3": "Pontos",
@@ -996,6 +1018,7 @@ def get_lang_pt():
         "profileMatchHistoryLoseText": "Perdeu",
 
         "profileRankText1": "Classificacão",
+        "profileStatsText": "Estatísticas",
 
         "profileGameStats1": "Jogos Jogados:",
         "profileGameStats2": "Vitórias:",
@@ -1100,6 +1123,8 @@ def get_lang_hi():
         "signupInputPasswordText": "पासवर्ड",
         "signupInputConfirmPasswordText": "पासवर्ड (फिर से)",
         "signupImageUploadText": "छवि अपलोड करें",
+        "signupGdprText1": "मैं सहमत हूं",
+        "signupGdprText2": "GDPR गोपनीयता नीति",
         "signupButtonSignup": "चमकाओ!",
 
         #ForgotPassword
@@ -1160,8 +1185,7 @@ def get_lang_hi():
             "aiGamePageTittle": "ए.आई. के साथ पॉन्ग खेल",
             "aiGameReactionDelayText": "प्रतिक्रिया में देरी",
             "aiGameGetReadyText": "तैयार हो जाओ",
-            "aiGamePresSpaceText": "शुरू करने के लिए 'स्पेस' दबाएं",
-            "aiGameCountdownText": "में शुरू हो रहा है",
+            "aiGameStartButtonText": "शुरू करें",
 
             "aiGameGameOverText": "खेल समाप्त हो गया",
             "aiGameRestartButtonText": "पुनः आरंभ",
@@ -1169,7 +1193,7 @@ def get_lang_hi():
 
             "aiGameInfoHeaderText": "खेल के बारे में",
             "aiGameInfoSubHeaderText": "खेल कैसे खेलें?",
-            "aiGameInfoSubHeaderDescription1": "पॉन्ग खेल में खिलाड़ी अपने प्रतिद्वंद्वी के खिलाफ एक टेनिस की मैच खेलते हैं। W-A-S-D (या ऊपर-नीचे-बाएं-दाएं तीर) तीरों को नियंत्रित करने के लिए उपयोग किया जाता है।",
+            "aiGameInfoSubHeaderDescription1": "पॉन्ग खेल में खिलाड़ी अपने प्रतिद्वंद्वी के खिलाफ एक टेनिस की मैच खेलते हैं। W-S (या ऊपर-नीचे तीर) तीरों को नियंत्रित करने के लिए उपयोग किया जाता है।",
             "aiGameInfoSubHeaderText2": "जीतें और सुधारें",
             "aiGameInfoSubHeaderDescription2": "आप हर जीते खेल के बाद पॉन्ग पॉइंट्स कमाते हैं। इन पॉइंट्स के साथ आप खेल का अनुभव बेहतर बनाने के लिए दुकान से नए आइटम, रैकेट और टेबल खरीद सकते हैं।",
             "aiGameInfoSubHeaderText3": "अभी शुरू करें",
@@ -1324,7 +1348,7 @@ def get_lang_hi():
         "searchInputText": "ईमेल या उपयोगकर्ता नाम या डिस्प्ले नाम खोजें...",
         "searchMessageButtonText": "संदेश",
         "searchFollowButtonText": "अनुसरण करना",
-        "searchFollowingButtonText": "करें",
+        "searchFollowingButtonText": "अनफ़ॉलो",
         "searchNoResultFoundText": "कोई परिणाम नहीं मिला।",
         
         #Profile
@@ -1333,9 +1357,14 @@ def get_lang_hi():
         "profileRankUserText1": " उपयोगकर्ता रैंक",
         "profileRankUserText2": " रैंक",
         "profileFollowButton": "अनुसरण करना",
-        "profileFollowingButton": "करें",
+        "profileFollowingButton": "अनफ़ॉलो",
         "profileTitleText1": "42 स्कूल समुदाय",
         "profileTitleText2": "पॉन्ग खिलाड़ी",
+
+        "profileLinkedinSocialText": "कोई लिंक्डइन नहीं",
+        "profileTwitterSocialText": "कोई ट्विटर नहीं",
+        "profileGithubSocialText": "कोई गिटहब नहीं",
+        "profileIntra42SocialText": "कोई इंट्रा नहीं",
 
         "profileMatchHistoryText1": "प्रतिद्वंद्वी",
         "profileMatchHistoryText2": "परिणाम",
@@ -1346,7 +1375,8 @@ def get_lang_hi():
         "profileMatchHistoryLoseText": "हारा",
 
         "profileRankText1": "रैंक",
-
+        "profileStatsText": "आंकड़े",
+        
         "profileGameStats1": "खेल खेले गए:",
         "profileGameStats2": "जीतें:",
         "profileGameStats3": "हारें:",

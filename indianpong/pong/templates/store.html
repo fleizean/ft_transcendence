@@ -1,33 +1,35 @@
 {% extends 'base.html' %}
 
-{% block title %}{{ username }} {{context.storePageTittle}}{% endblock title %}
-
 {% load static %}
+{% load user_info %}
+
+
+{% block title %}{{context.storePageTittle}}{% endblock title %}
 
 {% block stylesheet %}<link rel="stylesheet" href="{% static "css/store.css" %}">{% endblock stylesheet %}
 
 {% block app %}
-  <div class="container-top">
-    <div class="store-card">
-      
-       <div class="top-store">
+<div class="container-top">
+  <div class="store-card">
+    <div class="top-store">
+         {% user_info as user_info %}
         <div class="store-left">
-          <h3>{{username}} / {{context.storeText}}</h3>
+          <h3>{{user_info.username}} / {{context.storeText}}</h3>
         </div>
         <div class="store-mid">
           <div class="category-field">
-            <h5 class="category-text"><a href="?category_name=All">#{{context.storeTagText}}</a></h5>
+            <h5 class="category-text"><a class="category-text-item" onclick="swapApp('/store/{{user_info.username}}?category_name=All')">#{{context.storeTagText}}</a></h5>
           </div>
           <div class="category-field">
-            <h5 class="category-text"><a href="?category_name=Pong">#Pong</a></h5>
+            <h5 class="category-text"><a class="category-text-item" onclick="swapApp('/store/{{user_info.username}}?category_name=Pong')">#Pong</a></h5>
           </div>
           <div class="category-field">
-            <h5 class="category-text"><a href="?category_name=RPS">#RPS</a></h5>
+            <h5 class="category-text"><a class="category-text-item" onclick="swapApp('/store/{{user_info.username}}?category_name=RPS')">#RPS</a></h5>
           </div>
         </div>
         <div class="store-mid-right">
           <div class="store-inventory-field">
-            <h5 class="inventory-text"><a href="/inventory/{{username}}"><i class="bi bi-backpack2-fill"></i></a></h5>
+            <h5 class="inventory-text"><a class="inventory-bag" onclick="swapApp('/inventory/{{user_info.username}}')"><i class="bi bi-backpack2-fill"></i></a></h5>
           </div>
         </div>
         <div class="top-store-card">
@@ -53,7 +55,7 @@
                 <img src="{% static 'assets/stores/'|add:item.image_url %}" alt="" />
                 <h2 class="card__title">{% if selected_language == 'hi' and item.name_hi %} {{item.name_hi}} {% elif selected_language == 'pt' and item.name_pt %}{{item.name_pt}} {% elif selected_language == 'tr' and item.name_tr %}{{ item.name_tr }} {% else %} {{item.name}} {% endif %}</h2>
                 <h4 {% if item.category_name == "Pong" %} class="card__category pong" {% elif item.category_name == "RPS" %} class="card__category rps" {% else %} class="card__category all" {% endif %}>
-                  <a href="?category_name={{item.category_name}}">#{% if item.category_name == 'All' %}{{context.storeTagText }}{% else %}{{item.category_name}}{%endif%}</a>
+                  <a onclick="swapApp('/store/{{user_info.username}}?category_name={{item.category_name}}')">#{% if item.category_name == 'All' %}{{context.storeTagText }}{% else %}{{item.category_name}}{%endif%}</a>
                 </h4>
                 <span class="card__description">{% if selected_language == 'hi' and item.description_hi %} {{item.description_hi}} {% elif selected_language == 'pt' and item.description_pt %}{{item.description_pt}} {% elif selected_language == 'tr' and item.description_tr %}{{ item.description_tr }} {% else %} {{item.description}} {% endif %}</span>
                 <div class="card__shop">
@@ -64,7 +66,7 @@
                     <input type="hidden" name="action" value="buy">
                     <input type="hidden" name="whatis" value="none">
                     {% if item.price <= profile.indian_wallet %}
-                      <button type="submit" class="card__shop__action" onclick="event.preventDefault(); submitStoreItemForm('{{ item.name }}', '{{item.id}}', '{{item.price}}')">
+                      <button type="submit" class="card__shop__action" onclick="event.preventDefault(); submitStoreItemForm('{{user_info.username}}', '{{ item.name }}', '{{item.id}}', '{{item.price}}')">
                         <i class="bi bi-bag-heart-fill" style="color:white; font-size: 1.1em;"></i>
                       </button>
                     {% else %}
@@ -95,66 +97,8 @@
       </div>
     </div>
 </div>
-<script>
 
-function showToast(content, status, iconClass) {
-    const liveToast = document.getElementById('liveToast');
-    var toastContent = document.querySelector('#liveToast .fw-semibold');
-    var toastIcon = document.querySelector('.toast-body .i-class i');
+  
 
-    toastIcon.className = iconClass;
-    liveToast.classList.remove('text-bg-danger'); 
-    liveToast.className = 'toast'; 
-    liveToast.classList.add(status);
-
-    toastContent.textContent = content;
-
-    const toast = new bootstrap.Toast(liveToast);
-    toast.show();
-
-}
-
-
-function submitStoreItemForm(itemName, formId, price) {
-    const form = document.getElementById('store_item_form' + formId);
-    const formData = new FormData(form);
-
-    showToast(`${itemName} öğesini başarıyla satın aldın!`, `text-bg-success`, `bi bi-shop`);
-    
-    fetch("/store/{{username}}/", {
-      method: form.method,
-      body: formData,
-      headers: {
-        'X-CSRFToken': form.querySelector('[name=csrfmiddlewaretoken]').value
-      }
-    })
-    .then(response => response.text())
-    .then(text => {
-      // hide the item after it is bought
-      const productCard = document.getElementById('product-card-' + formId);
-      productCard.style.display = 'none';
-      //update the wallet amount with price
-      const walletAmount = document.querySelector('.wallet-amount');
-      walletAmount.textContent = (parseInt(walletAmount.textContent) - price) + 'N₩';
-    })
-    .catch((error) => {
-      console.error('Error:', error);
-    });
-}
-
-document.addEventListener('DOMContentLoaded', (event) => {
-    const storeInfos = document.getElementsByClassName('store-info'); // .store-info'ya erişim
-    const smallWalletNames = document.getElementsByClassName('small-wallet-name');
-
-    for (let i = 0; i < smallWalletNames.length; i++) {
-        smallWalletNames[i].addEventListener('mouseover', () => {
-            storeInfos[i].style.visibility = 'visible';
-        });
-
-        smallWalletNames[i].addEventListener('mouseout', () => {
-            storeInfos[i].style.visibility = 'hidden';
-        });
-    }});
-    
 </script>
 {% endblock app %}

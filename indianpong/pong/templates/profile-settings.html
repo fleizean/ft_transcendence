@@ -1,11 +1,12 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block title %}{{ username }} {{context.profileSettingsPageTittle}}{% endblock %}
+{% load user_info %}
+{% block title %}{{context.profileSettingsPageTittle}}{% endblock %}
 
 {% block stylesheet %}<link rel="stylesheet" href="{% static "css/profilesettings.css" %}">{% endblock %}
 
 {% block app %}
-<div class="container-top">
+<div class="container-top" data-message="{{message}}" data-error="{{error}}">
     <div class="profile-settings-card">
         <div class="row">
             <!-- Left Sidebar -->
@@ -18,23 +19,23 @@
                     <div class="collapse navbar-collapse" id="profileNavLinks">
                         <ul class="navbar-nav flex-column">
                             <li class="nav-item">
-                                <a class="nav-link" href="#editProfile"
+                                <a class="nav-link" 
                                     onclick="displaySection('editProfile')"><i class="bi bi-pencil-fill"></i> {{context.profileSettingsNavbar1}}</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#changePassword"
+                                <a class="nav-link" 
                                     onclick="displaySection('changePassword')"><i class="bi bi-lock-fill"></i> {{context.profileSettingsNavbar2}}</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#addSocial" onclick="displaySection('addSocial')"><i
+                                <a class="nav-link" onclick="displaySection('addSocial')"><i
                                         class="bi bi-bookmark-fill"></i> {{context.profileSettingsNavbar3}}</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#blockedUsers"
+                                <a class="nav-link" 
                                     onclick="displaySection('blockedUsers')"><i class="bi bi-ban"></i> {{context.profileSettingsNavbar4}}</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#closeAccount"
+                                <a class="nav-link" 
                                     onclick="displaySection('closeAccount')"><i class="bi bi-door-closed-fill"></i>
                                     {{context.profileSettingsNavbar5}}</a>
                             </li>
@@ -49,10 +50,12 @@
 
                 <!-- Edit Profile Form -->
                 <section id="editProfile">
-                        <form id="avatar_form" name="avatar_form" enctype="multipart/form-data">
+                    {% user_info as user_info %}
+                        <form id="avatar_form" name="avatar_form" enctype="multipart/form-data" onchange="changeAvatar(`{{user_info.username}}`)">
                             <div class="profile-pic-container">
                                 <label for="id_avatar" class="profile-pic-label">
-                                    <img src="{{ avatar }}" alt="Profile Picture"
+                                    
+                                    <img src="{{ user_info.avatar }}" alt="Profile Picture"
                                     class="profile-pic">
                                     <div class="change-image-overlay">
                                         <span class="bi bi-image-fill"></span>
@@ -66,8 +69,8 @@
                             <!-- Username textbox -->
                             <div class="mb-3">
                                 <label class="small mb-1" >{{context.editProfileUsernameText}}</label>
-                                <input class="form-control" id="id_username_profile" name="username" required type="text" value="{{ username }}"
-                                    placeholder="{{ username }}" {% if changepassword %} readonly style="background-color: #f2f2f2;" {%endif %}>
+                                <input class="form-control" id="id_username_profile" name="username" required type="text" value="{{ user_info.username }}"
+                                    placeholder="{{ user_info.username }}" {% if changepassword %} readonly style="background-color: #f2f2f2;" {%endif %}>
                                     {% if changepassword %} <p style="color:red; font-style: italic;">{{context.editProfileUsernameTimeText}}</p> {% endif %}
                             </div>
 
@@ -86,7 +89,7 @@
                                         placeholder="{{ profile.displayname }}" value="{{ profile.displayname }}">
                             </div>
                             <!-- Submit button -->
-                            <button type="button" id="profile_submit" class="btn btn-success">{{context.editProfileSaveButtonText}}</button>
+                            <button type="button" id="profile_submit" onclick="editProfile(`{{user_info.username}}`)" class="btn btn-success">{{context.editProfileSaveButtonText}}</button>
                         </form>
                 </section>
 
@@ -118,7 +121,7 @@
                         {% if profile.is_42student %} <label class="small mb-1" style="color:red; font-style: italic;">                                
                         {{context.changePassword42Text}}
                         </label> <br> {% endif %}
-                        <button type="button" id="password_submit" class="btn btn-outline-success"><i class="bi bi-lock-fill"></i> {{context.changePasswordSaveButtonText}}</button>
+                        <button type="button" id="password_submit"  onclick="editPassword(`{{user_info.username}}`)" class="btn btn-outline-success"><i class="bi bi-lock-fill"></i> {{context.changePasswordSaveButtonText}}</button>
                     </form>
                 </section>
 
@@ -166,7 +169,7 @@
 
                         <!-- Diğer sosyal medya platformları için benzer şekilde devam edebilirsiniz -->
 
-                        <button type="button" id="social_submit" class="btn btn-primary"><i class="bi bi-save-fill"></i> {{context.addSocialsSaveButtonText}}</button>
+                        <button type="button" id="social_submit" onclick="editSocial(`{{user_info.username}}`)" class="btn btn-primary"><i class="bi bi-save-fill"></i> {{context.addSocialsSaveButtonText}}</button>
                     </form>
                 </section>
 
@@ -174,7 +177,8 @@
                     <form id="delete_account_form" name="delete_account_form">
                         <h4>{{context.closeAccountHeaderText}}</h4>
                         <p>{{context.closeAccountSubHeaderText}}</p>
-                        <input type="email" name="email" class="form-control" placeholder="{{context.closeAccountInputText}}" maxlength="320" required="" id="id_email">                        <button type="button" id="delete_account_submit" class="btn btn-danger">
+                        <input type="email" name="email" class="form-control" placeholder="{{context.closeAccountInputText}}" maxlength="320" required="" id="id_email">                        
+                        <button type="button" id="delete_account_submit" onclick="deleteAccount(`{{user_info.username}}`)" class="btn btn-danger">
                             <i class="bi bi-trash-fill"></i> {{context.closeAccountButton}}
                         </button>
                     </form>
@@ -185,42 +189,24 @@
                         <h4>{{context.blockedUsersHeaderText}}</h4>
                         <p class="blocked-users-info">{{context.blockedUsersSubHeaderText}}</p>
                         <div class="accounts-list">
-                            {% for blocked in blocked_page_obj %}
+                            {% for blocked in blocked_users %}
                                 <div class="account">
                                     <!-- form post edileceği yer -->
                                     <div class="profile-info">
-                                        <a href="/profile" data-link><img src="{{ blocked.avatar }}"
+                                        <a onclick="swapApp('/profile/{{blocked.username}}')"><img src="{{ blocked.avatar.url }}"
                                                 alt="Profile Image"></a>
                                         <div class="user-details">
-                                            <a href="/profile" data-link>
+                                            <a onclick="swapApp('/profile/{{blocked.username}}')">
                                                 <h5>{{ blocked.displayname }}</h5>
                                             </a>
                                             <p>{{ blocked.username }}</p>
                                         </div>
-                                        <button type="button" class="btn-block" data-username="{{ blocked.username }}"> {{context.blockedStatusText}}</button> <!--kişi blockladığı kişiyi çıkarmak için isim karşılığına button -->
+                                        <button type="button" class="btn-block" onclick="unblockButon(`{{user_info.username}}`,`{{blocked.username}}`)"> {{context.blockedStatusText}}</button> <!--kişi blockladığı kişiyi çıkarmak için isim karşılığına button -->
                                     </div>
                                 </div>
                             {% endfor %}
                             
-                            <nav aria-label="Page navigation example " class="mt-4">
-                                <ul class="pagination justify-content-center">
-                                  <li class="page-item {% if not blocked_page_obj.has_previous %}disabled{% endif %}">
-                                    <a class="page-link" href="{% if blocked_page_obj.has_previous %}?page={{ blocked_page_obj.previous_page_number }}{% endif %}" aria-label="Previous">
-                                      <span aria-hidden="true">&laquo;</span>
-                                    </a>
-                                  </li>
-                                  {% for page_num in blocked_page_obj.paginator.page_range %}
-                                    <li class="page-item {% if page_num == blocked_page_obj.number %}active{% endif %}">
-                                      <a class="page-link" href="?page={{ page_num }}">{{ page_num }}</a>
-                                    </li>
-                                  {% endfor %}
-                                  <li class="page-item {% if not blocked_page_obj.has_next %}disabled{% endif %}">
-                                    <a class="page-link" href="{% if blocked_page_obj.has_next %}?page={{ blocked_page_obj.next_page_number }}{% endif %}" aria-label="Next">
-                                      <span aria-hidden="true">&raquo;</span>
-                                    </a>
-                                  </li>
-                                </ul>
-                              </nav>     
+                              
                         </div>
                     </form>
                 </section>
@@ -241,256 +227,5 @@
     </div>
     </div>
 </div>
-<script>
-function displaySection(sectionId) {
-    var sections = ["editProfile", "addSocial", "closeAccount","blockedUsers", "changePassword"];
 
-    for (var i = 0; i < sections.length; i++) {
-        var section = document.getElementById(sections[i]);
-        if (sections[i] === sectionId) {
-            section.style.display = 'block';
-        } else {
-            section.style.display = 'none';
-        }
-    }
-}
-
-
-window.onload = function() {
-        // Get the hash from the URL
-        var hash = window.location.hash;        
-        // If there's a hash
-        if(hash) {
-            // Remove the '#' from the start of the hash
-            var sectionId = hash.substring(1);
-        
-            // Call the displaySection function with the sectionId
-            displaySection(sectionId);
-        }
-    }
-    window.onhashchange = function() {
-    var currentFragment = window.location.hash.substring(1);
-    displaySection(currentFragment);
-};
-
-
-function showToast(content, status, iconClass) {
-    const liveToast = document.getElementById('liveToast');
-    var toastContent = document.querySelector('#liveToast .fw-semibold');
-    var toastIcon = document.querySelector('.toast-body .i-class i');
-
-    toastIcon.className = iconClass;
-    liveToast.classList.remove('text-bg-danger'); 
-    liveToast.className = 'toast'; 
-    liveToast.classList.add(status);
-
-    toastContent.textContent = content;
-    const toast = new bootstrap.Toast(liveToast);
-    toast.show();
-    setTimeout(function() {
-        toast.hide();
-    }, 8000);
-}
-
-document.getElementById('profile_submit').addEventListener('click', function() {
-    var formData = new FormData(); // FormData nesnesi oluştur
-
-    // Form verilerini al
-    formData.append('username', document.getElementById('id_username_profile').value);
-    formData.append('email', document.getElementById('id_email_profile').value);
-    formData.append('displayname', document.getElementById('id_displayname_profile').value);
-    formData.append('profile_form', 'profile_form');
-
-    // CSRF token'ı eklemek
-
-    fetch('{% url "profile_settings" username=request.user.username %}', {
-        method: 'POST',
-        body: formData,
-        headers: {
-            'X-CSRFToken': '{{ csrf_token }}'
-        },
-    })
-    .then(response => response.json())
-    .then(data => {
-        if(data.message)
-            showToast(data.message, 'text-bg-success', 'bi bi-check-circle-fill');
-        else
-            showToast(data.error, 'text-bg-danger', 'bi bi-x-circle-fill');
-    })
-    .catch(error => {
-        console.error('Error:', error);
-    });
-});
-
-document.getElementById('password_submit').addEventListener('click', function() {
-    var formData = new FormData(); // FormData nesnesi oluştur
-    formData.append('old_password', document.getElementById('id_old_password').value);
-    formData.append('new_password1', document.getElementById('id_new_password1').value);
-    formData.append('new_password2', document.getElementById('id_new_password2').value);
-    formData.append('password_form', 'password_form');
-    fetch('{% url "profile_settings" username=request.user.username %}', {
-        method: 'POST',
-        body: formData,
-        headers: {
-            'X-CSRFToken': '{{ csrf_token }}'
-        }
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.message) {
-                showToast(data.message, 'text-bg-success', 'bi bi-check-circle-fill');
-            } else if (data.error) {
-                // Hata mesajlarını göster
-                for (let platform in data.error) {
-                    showToast(data.error[platform][0], 'text-bg-danger', 'bi bi-x-circle-fill');
-                }
-            } else {
-                if (selectedLanguage === 'tr') {
-                    showToast('Bir hata oluştu.', 'text-bg-danger', 'bi bi-x-circle-fill');
-                } else if (selectedLanguage === 'hi') {
-                    showToast('कोई त्रुटि हुई।', 'text-bg-danger', 'bi bi-x-circle-fill');
-                } else if (selectedLanguage === 'pt')
-                    showToast('Ocorreu um erro.', 'text-bg-danger', 'bi bi-x-circle-fill');
-                else {
-                    showToast('An error occurred.', 'text-bg-danger', 'bi bi-x-circle-fill');
-                }
-            }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-    });
-});
-
-document.getElementById('social_submit').addEventListener('click', function() {
-    var formData = new FormData(); // FormData nesnesi oluştur
-    formData.append('linkedin', document.getElementById('id_linkedin').value);
-    formData.append('twitter', document.getElementById('id_twitter').value);
-    formData.append('intra42', document.getElementById('id_intra42').value);
-    formData.append('github', document.getElementById('id_github').value);
-    formData.append('social_form', 'social_form');
-
-    fetch('{% url "profile_settings" username=request.user.username %}', {
-        method: 'POST',
-        body: formData,
-        headers: {
-            'X-CSRFToken': '{{ csrf_token }}'
-        }
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.message) {
-            showToast(data.message, 'text-bg-success', 'bi bi-check-circle-fill');
-        } else if (data.error) {
-            // Hata mesajlarını göster
-            for (let platform in data.error) {
-                showToast(data.error[platform][0], 'text-bg-danger', 'bi bi-x-circle-fill');
-            }
-        } else {
-            showToast('An error occurred.', 'text-bg-danger', 'bi bi-x-circle-fill');
-        }
-}   )
-
-    .catch(error => {
-        console.error('Error:', error);
-    });
-
-});
-
-document.getElementById('delete_account_submit').addEventListener('click', function() {
-    var formData = new FormData(); // FormData nesnesi oluştur
-    formData.append('email', document.getElementById('id_email').value);
-    formData.append('delete_account_form', 'delete_account_form');
-
-    fetch('{% url "profile_settings" username=request.user.username %}', {
-        method: 'POST',
-        body: formData,
-        headers: {
-            'X-CSRFToken': '{{ csrf_token }}'
-        }
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.message) {
-            showToast(data.message, 'text-bg-success', 'bi bi-check-circle-fill');
-        } else if (data.error) {
-            // Hata mesajlarını göster
-            for (let platform in data.error) {
-                showToast(data.error[platform][0], 'text-bg-danger', 'bi bi-x-circle-fill');
-            }
-        } else {
-            if (selectedLanguage === 'tr') {
-                showToast('Bir hata oluştu.', 'text-bg-danger', 'bi bi-x-circle-fill');
-            } else if (selectedLanguage === 'hi') {
-                showToast('कोई त्रुटि हुई।', 'text-bg-danger', 'bi bi-x-circle-fill');
-            } else if (selectedLanguage === 'pt')
-                showToast('Ocorreu um erro.', 'text-bg-danger', 'bi bi-x-circle-fill');
-            else {
-                showToast('An error occurred.', 'text-bg-danger', 'bi bi-x-circle-fill');
-            }
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-    });
-});
-
-document.querySelectorAll('button.btn-block').forEach(item => {
-    item.addEventListener('click', event => {
-        var blocked_username = event.target.dataset.username;
-        // Handle blocking logic here
-        console.log('Blocked user:', blocked_username);
-    });
-});
-
-const fileInput = document.getElementById('id_avatar');
-fileInput.addEventListener('change', function(event) {
-    var file = this.files[0];
-    if (file.size > 2 * 1024 * 1024) { // 1MB
-        showToast("Photo must be under 2MB!", "text-bg-danger", "bi bi-image");
-    }
-    else {
-        var formData = new FormData(); // FormData nesnesini oluştur
-
-        formData.append('avatar', file);
-
-        // avatar_form verisini ekle
-        formData.append('avatar_form', 'avatar_form');
-
-        // CSRF token'ı eklemek
-        fetch('{% url "profile_settings" username=request.user.username %}', {
-            method: 'POST',
-            body: formData,
-            headers: {
-                'X-CSRFToken': '{{ csrf_token }}'
-            },
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.message) {
-                showToast(data.message, 'text-bg-success', 'bi bi-check-circle-fill');
-            } else if (data.error) {
-                // Hata mesajlarını göster
-                for (let platform in data.error) {
-                    showToast(data.error[platform][0], 'text-bg-danger', 'bi bi-x-circle-fill');
-                }
-            } else {
-                if (selectedLanguage === 'tr') {
-                    showToast('Bir hata oluştu.', 'text-bg-danger', 'bi bi-x-circle-fill');
-                } else if (selectedLanguage === 'hi') {
-                    showToast('कोई त्रुटि हुई।', 'text-bg-danger', 'bi bi-x-circle-fill');
-                } else if (selectedLanguage === 'pt')
-                    showToast('Ocorreu um erro.', 'text-bg-danger', 'bi bi-x-circle-fill');
-                else {
-                    showToast('An error occurred.', 'text-bg-danger', 'bi bi-x-circle-fill');
-                }
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        });
-    }
-});
-
-
-</script>
 {% endblock %}

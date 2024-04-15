@@ -135,9 +135,14 @@
   margin-top: 7px;
 }
 
-.category-text a {
+.category-text-item {
   color: rgb(20, 222, 20);
+  cursor:pointer;
   text-decoration:none;
+}
+
+.inventory-bag {
+  cursor:pointer;
 }
 
 .store-right {

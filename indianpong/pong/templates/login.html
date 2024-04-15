@@ -31,7 +31,7 @@
           <span class="titlebottom">{{context.loginHeaderText2}}</span>
         </div>
         <div class="login-with">
-          <a onclick="swapApp('/auth')" data-link class="no-underline"><div class="button-log"><b>42</b></div></a>
+          <a href="/auth" data-link class="no-underline"><div class="button-log"><b>42</b></div></a>
         </div>
         {% csrf_token %}
         <p>
@@ -44,7 +44,7 @@
         <div class="forgot-pass">
           <a onclick="swapApp('/password_reset')" class="forgot-password-link">{{context.loginForgotPasswordText}}</a>
         </div>
-        <a><button type="button" class="button-confirm" id="submitButton" onclick="makeLogin()">{{context.loginButtonLogin}} →</button></a>
+        <a><button type="button" class="button-confirm" id="submitButton" onclick="makeLogin('inLogin')">{{context.loginButtonLogin}} →</button></a>
         <a onclick="swapApp('/signup')" data-link><button type="button" class="registerbtn">{{context.loginButtonJoin}} ✓</button></a>
       </form>
     </div>
@@ -65,12 +65,6 @@
 </div>
 <script>
 
-</script>
-<script type="module" src="{% static "js/login.js" %}"></script>
-<script>
-  window.onload = function() {
-    initializeLogin();
-  };
 </script>
 
 {% endblock %}

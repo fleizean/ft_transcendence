@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+               {% extends 'base.html' %}
 {% load static %}
 
 {% block title %}
@@ -12,7 +12,8 @@
 
 {% block app %}
 
-  <div class="left-card" data-paddlecolor="{{paddlecolor}}" data-playgroundcolor="{{playgroundcolor}}" data-giantman="{{giantman}}" data-likeacheater="{{likeacheater}}" data-fastandfurious="{{fastandfurious}}" data-rageoffire="{{rageoffire}}" data-frozenball="{{frozenball}}">
+  <div class="left-card" style="overflow-y: auto;" data-paddlecolor="{{paddlecolor}}" data-playgroundcolor="{{playgroundcolor}}" data-giantman="{{giantman}}" data-likeacheater="{{likeacheater}}" data-fastandfurious="{{fastandfurious}}" data-rageoffire="{{rageoffire}}" data-frozenball="{{frozenball}}" data-tournament="{{tournament.game_mode}}">
+    <div id="left-area-display">
     <table class="custom-table">
       <thead>
           <tr>
@@ -25,25 +26,6 @@
           
       </tbody>
     </table>
-    <nav aria-label="Page navigation example" class="mt-4">
-        <ul class="pagination justify-content-center">
-            <li class="page-item {% if not results.has_previous %}disabled{% endif %}">
-                <a class="page-link" href="{% if results.has_previous %}?page={{ results.previous_page_number }}{% endif %}" aria-label="Previous">
-                    <span aria-hidden="true">&laquo;</span>
-                </a>
-            </li>
-            {% for page_num in results.paginator.page_range %}
-                <li class="page-item {% if page_num == results.number %}active{% endif %}">
-                    <a class="page-link page-link-search" href="?page={{ page_num }}">{{ page_num }}</a>
-                </li>
-            {% endfor %}
-            <li class="page-item {% if not results.has_next %}disabled{% endif %}">
-                <a class="page-link" href="{% if results.has_next %}?page={{ results.next_page_number }}{% endif %}" aria-label="Next">
-                    <span aria-hidden="true">&raquo;</span>
-                </a>
-            </li>
-        </ul>
-      </nav> 
         
         <div class="form-check form-switch" style="justify-content: center !important; text-align: center !important; display: flex !important;">
             <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
@@ -62,7 +44,7 @@
       <button type="button" id="pauseButton" class="btn btn-outline-primary"><i class="bi bi-pause-fill"></i> PAUSE</button>
       <button type="button" id="resumeButton" class="btn btn-outline-primary"><i class="bi bi-play-fill"></i> RESUME</button> {% endcomment %}
     </div>
-           
+</div>
 </div>
 <canvas id="pongCanvas" class="pongCanvas"></canvas>
 
@@ -86,27 +68,10 @@
       </div>
     </div>
 <script>
-  
-function showToast(content, status, iconClass) {
-    const liveToast = document.getElementById('liveToast');
-    var toastContent = document.querySelector('#liveToast .fw-semibold');
-    var toastIcon = document.querySelector('.toast-body .i-class i');
-
-    toastIcon.className = iconClass;
-    liveToast.classList.remove('text-bg-danger'); 
-    liveToast.className = 'toast'; 
-    liveToast.classList.add(status);
-
-    toastContent.textContent = content;
-    const toast = new bootstrap.Toast(liveToast);
-    toast.show();
-    setTimeout(function() {
-        toast.hide();
-    }, 8000);
-}
+ 
 
 //showToast('Welcome to IndianPong!', 'text-bg-danger', 'bi bi-check-circle-fill')
 </script>
-<script src="{% static "js/game/sockPong.js" %}"></script>
+<script type="module" src="{% static "js/game/sockPong.js" %}"></script>
 {% csrf_token %}
 {% endblock %}

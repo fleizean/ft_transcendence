@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+ç{% extends 'base.html' %}
 {% load static %}
 
 {% block title %}{{context.pongGamePageTittle}}{% endblock title %}
@@ -6,6 +6,7 @@
 {% block stylesheet %}<link rel="stylesheet" href="{% static "css/game-find.css" %}">{% endblock stylesheet %}
 
 {% block app %}
+
 <div class="container-top">
     <div class="card">
         <h3 class="pong-game-text">{{context.pongGameHeaderText}}</h3>
@@ -14,19 +15,19 @@
         </div>
         <div class="pong-buttons">
             <div class="ai-btn">
-                <a href="/play-ai/peer-to-ai/new"><div class="ponggamebtn-ai">{{context.pongGameAIButtonText}} <i class="bi bi-robot"></i></div></a>
+                <a onclick="swapApp('/play-ai/peer-to-ai/new')"><div class="ponggamebtn-ai">{{context.pongGameAIButtonText}} <i class="bi bi-robot"></i></div></a>
             </div>
             <div class="ai-btn">
-                <a href="/local-game"><div class="ponggamebtn-local">{{context.pongGameLocalButtonText}} <i class="bi bi-wifi-off"></i></div></a>
+                <a onclick="swapApp('/local-game')"><div class="ponggamebtn-local">{{context.pongGameLocalButtonText}} <i class="bi bi-wifi-off"></i></div></a>
             </div>
             <div class="ai-btn">
-                <a href="/remote-game/peer-to-peer/new"><div class="ponggamebtn-remote">{{context.pongGameRemoteButtonText}} <i class="bi bi-wifi"></i></div></a>
+                <a onclick="swapApp('/remote-game/peer-to-peer/new')"><div class="ponggamebtn-remote">{{context.pongGameRemoteButtonText}} <i class="bi bi-wifi"></i></div></a>
             </div>
             <div class="ai-btn">
-                <a href="/tournament"><div class="ponggamebtn">{{context.pongGameTournamentButtonText}} <i class="bi bi-trophy-fill"></i></div></a>
+                <a onclick="swapApp('/tournament')"><div class="ponggamebtn">{{context.pongGameTournamentButtonText}} <i class="bi bi-trophy-fill"></i></div></a>
             </div>
             <div class="ai-btn">
-                <a href="/local-tournament"><div class="ponggamebtn-local-tournament">{{context.pongGameLocalTournamentButtonText}} <i class="bi bi-trophy-fill"></i></div></a>
+                <a onclick="swapApp('/local-tournament')"><div class="ponggamebtn-local-tournament">{{context.pongGameLocalTournamentButtonText}} <i class="bi bi-trophy-fill"></i></div></a>
             </div>
         </div>
     </div>
