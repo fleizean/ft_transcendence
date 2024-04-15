@@ -159,7 +159,7 @@ const langMessages = {
               conversation.scrollTop = conversation.scrollHeight;
             }, 0);
           break;
-        case 'invite':
+        case 'invite.game':
           if (user === data.inviter) {
             showToast(`${langMessages[lang]['inviteyou']}`, 'text-bg-info', 'bi bi-bug-fill');
           } else {
@@ -168,7 +168,7 @@ const langMessages = {
             declineButton.style.display = 'block';
           }
           break;
-        case 'accept':
+        case 'accept.game':
           if (user === data.accepted) {
             showToast(`${langMessages[lang]['acceptyou']}`, 'text-bg-success', 'bi bi-bug-fill');
           } else {
@@ -179,7 +179,7 @@ const langMessages = {
           swapApp(`/remote-game/invite/${data.game_id}`);
           break;
 
-        case 'decline':
+        case 'decline.game':
           if (user === data.declined) {
             showToast(`${langMessages[lang]['declineyou']}`, 'text-bg-success', 'bi bi-bug-fill');
           } else {
@@ -246,9 +246,9 @@ const langMessages = {
   }
 
   inviteButton.onclick = function (e) {
-    console.log("invite button clicked");
+    //console.log("invite button clicked");
     chatsocket.send(JSON.stringify({
-      "action": "invite",
+      "action": "invite.game",
       "inviter": user,
       "invited": userNameOnChat,
   }))

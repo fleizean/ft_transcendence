@@ -13,6 +13,7 @@ from django.core.mail import EmailMultiAlternatives
 from .utils import create_random_svg, get_upload_to
 from indianpong.settings import EMAIL_HOST_USER, STATICFILES_DIRS
 from django.utils import timezone
+from django.conf import settings
 import uuid
 from datetime import timedelta
 from .game import MAX_SCORE
@@ -365,7 +366,7 @@ class Tournament(models.Model):
             except Room.DoesNotExist:
                 room = Room.objects.create(first_user=game.player1, second_user=game.player2)
         # Create message for the room with game link
-        message = f"http://localhost:8000/remote-game/tournament/{game.id}"
+        message = f"{settings.BASE_URL}/remote-game/tournament/{game.id}"
         Message.objects.create(user=game.player1, room=room, content=message)
     
 
