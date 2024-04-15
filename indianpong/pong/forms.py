@@ -33,8 +33,8 @@ class UserProfileForm(UserCreationForm):
         self.lang = kwargs.pop('lang', 'en')  # Varsayılan dil: İngilizce
         super().__init__(*args, **kwargs)
 
-        #TODO make link spa compatible
-    """ def confirm_login_allowed(self, user):
+    #TODO make link spa compatible
+        """     def confirm_login_allowed(self, user):
         if not user.is_verified:
             raise forms.ValidationError(
                 mark_safe( 
@@ -545,7 +545,7 @@ class PasswordResetUserForm(PasswordResetForm):
         # Add the HTML version. This could be the same as the body if your email is only HTML.
         email.attach_alternative(message, "text/html")
 
-        # List of images
+        """ # List of images
         images = ['github.png', '268a.jpg', 'back.png', 'head.png']
 
         for img_name in images:
@@ -562,7 +562,7 @@ class PasswordResetUserForm(PasswordResetForm):
             img.add_header('Content-ID', f'<{img_name}>')
 
             # Attach the image to the email
-            email.attach(img)
+            email.attach(img) """
 
         # Send the email
         email.send(fail_silently=True)

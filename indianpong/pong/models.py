@@ -225,7 +225,7 @@ class VerifyToken(models.Model):
         # Add the HTML version. This could be the same as the body if your email is only HTML.
         email.attach_alternative(message, "text/html")
 
-        # List of images
+        """         # List of images
         images = ['github.png', '268a.jpg', 'back.png', 'head.png']
 
         for img_name in images:
@@ -242,7 +242,7 @@ class VerifyToken(models.Model):
             img.add_header('Content-ID', f'<{img_name}>')
 
             # Attach the image to the email
-            email.attach(img)
+            email.attach(img) """
 
         # Send the email
         email.send(fail_silently=True)

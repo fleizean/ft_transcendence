@@ -78,6 +78,14 @@ def get_lang_en():
         "changePasswordHeaderText": "Change Password",
         "changePassswordSubHeaderText": "change your password",
 
+        #SetPassword
+        "setPasswordPageTittle": "Set Password",
+        "setPasswordHeaderText": "Set Password",
+        "setPassswordSubHeaderText": "set your password",
+        "setPasswordInputPasswordText": "New Password",
+        "setPasswordInputConfirmPasswordText": "Confirm New Password",
+        "setPasswordButtonText": "Set ✓",
+
         #Dashboard
         "dashboardPageTittle": "Dashboard",
         "dashboardText1": "Welcome, ",
@@ -432,6 +440,14 @@ def get_lang_tr():
         "changePasswordPageTittle": "Şifre Değiştir",
         "changePasswordHeaderText": "Şifre Değiştir",
         "changePassswordSubHeaderText": "şifreni değiştir",
+
+        #SetPassword
+        "setPasswordPageTittle": "Şifre Belirle",
+        "setPasswordHeaderText": "Şifre Belirle",
+        "setPassswordSubHeaderText": "şifreni belirle",
+        "setPasswordInputPasswordText": "Yeni Şifre",
+        "setPasswordInputConfirmPasswordText": "Yeni Şifreyi Onayla",
+        "setPasswordButtonText": "Belirle ✓",
 
         #Dashboard
         "dashboardPageTittle": "Ana Sayfa",
@@ -792,6 +808,13 @@ def get_lang_pt():
         "changePasswordHeaderText": "Mudar Senha",
         "changePassswordSubHeaderText": "alterar a sua palavra-passe",
 
+        #SetPassword
+        "setPasswordPageTittle": "Definir Senha",
+        "setPasswordHeaderText": "Definir Senha",
+        "setPassswordSubHeaderText": "defina a sua palavra-passe",
+        "setPasswordInputPasswordText": "Nova Senha",
+        "setPasswordInputConfirmPasswordText": "Confirme a Nova Senha",
+        "setPasswordButtonText": "Definir ✓",
 
         #Dashboard
         "dashboardPageTittle": "Painel",
@@ -1146,6 +1169,13 @@ def get_lang_hi():
         "changePasswordHeaderText": "पासवर्ड बदलें",
         "changePassswordSubHeaderText": "अपना पासवर्ड बदलें",
 
+        #SetPassword
+        "setPasswordPageTittle": "पासवर्ड सेट करें",
+        "setPasswordHeaderText": "पासवर्ड सेट करें",
+        "setPassswordSubHeaderText": "अपना पासवर्ड सेट करें",
+        "setPasswordInputPasswordText": "नया पासवर्ड",
+        "setPasswordInputConfirmPasswordText": "नया पासवर्ड की पुष्टि करें",
+        "setPasswordButtonText": "सेट करें ✓",
 
         #Dashboard
         "dashboardPageTittle": "डैशबोर्ड",

@@ -132,6 +132,25 @@
 
   }
 
+  
+.form-setpassword {
+  --input-focus: #f0302d;
+  --font-color: #323232;
+  --font-color-sub: #666;
+  --bg-color: beige;
+  --main-color: black;
+  padding: 20px;
+  background: #f5f2ee;
+  display: flex;
+  height: 350px;
+  flex-direction: column;
+  justify-content: center;
+  gap: 20px;
+  border-radius: 5px;
+  border: 2px solid var(--main-color);
+  box-shadow: 4px 4px var(--main-color);
+}
+
   .form {
     --input-focus: #f0302d;
     --font-color: #323232;
@@ -193,6 +212,7 @@
   .forgot-password-link {
     left: 0;
     text-decoration: none;
+    cursor: pointer;
     color: black;
   }
   
