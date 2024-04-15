@@ -197,7 +197,7 @@ function pageHandler(path) {
       showToast();
     }
 
-    if (path != '/' && path != '/login' && path != '/signup')
+    if (path != '/' && path != '/login' && path != '/signup' && !path.includes('set_password') && path != '/password_reset')
       initializeBurger();
 }
 

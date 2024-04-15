@@ -243,9 +243,9 @@ def login_view(request):
         form = AuthenticationUserForm(request, request.POST)
         if form.is_valid():
             user = form.get_user()
-            """  if not user.is_verified: #TODO confirm_login_allowed make this unnecessary?
-                messages.error(request, "Account not verified")
-                return redirect('login') """
+            if not user.is_verified: #TODO confirm_login_allowed make this unnecessary?
+                msg = {'tr': "Lütfen e-posta adresinizi doğrulayın.", 'hi': "कृपया अपना ईमेल पता सत्यापित करें।", 'pt': "Por favor, verifique seu endereço de e-mail.", 'en': "Please verify your email address."}
+                return HttpResponse(msg[lang])
             login(request, user)
             return HttpResponse("dashboard")
         else:
@@ -495,6 +495,8 @@ def password_reset_done(request):
 
 @never_cache
 def set_password(request, uidb64, token):
+    lang = request.COOKIES.get('selectedLanguage', 'en')
+    context = langs.get_langs(lang)
     try:
         uid = urlsafe_base64_decode(uidb64).decode()
         user = get_user_model().objects.get(pk=uid)
@@ -511,11 +513,11 @@ def set_password(request, uidb64, token):
                 return redirect("login")
         else:
             form = SetPasswordUserForm(user)
-        return render(request, "set_password.html", {"form": form})
+        return render(request, "set_password.html", {"form": form, "context": context})
     else:
         # invalid token
         messages.error(request, "The reset password link is invalid.")
-        return redirect("password_reset")
+        return redirect("password_reset", {"context": context})
 
 
 """ @never_cache
