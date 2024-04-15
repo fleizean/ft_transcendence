@@ -51,20 +51,17 @@ class ChatConsumer(AsyncWebsocketConsumer):
             # if accept it create game object and send link in form: /remote-game/invite/game_id to both
             # send message to room group that user accepted the game make it in client side
             accepted = data["accepted"]
-            group_name = f"{accepted}_{accepter}"
             accepted = await UserProfile.objects.aget(username=accepted)
             accepter = await UserProfile.objects.aget(username=self.user.username)           
+            group_name = f"{accepted}-{accepter}"
             # create game object
             game = await Game.objects.acreate(group_name=group_name, player1=accepted, player2=accepter)
-            message = f"/remote-game/invite/{game.id}" #? Maybe do these in client side
-            m = await Message.objects.acreate(content=message, user=accepted, room_id=self.room_name)  #?
             await self.channel_layer.group_send(
                 self.room_group_name, 
                 {
                     "type": "accept.game", 
-                    "message": message,
+                    "game_id": game.id,
                     "user": accepted.username,
-                    "created_date": m.get_short_date(), #? blocking?
                 }
             )
 
@@ -131,15 +128,13 @@ class ChatConsumer(AsyncWebsocketConsumer):
         }))
 
     async def accept_game(self, event):
-        message = event["message"]
+        game_id = event["game_id"]
         user = event["user"]
-        created_date = event["created_date"]
         # Send message to WebSocket
         await self.send(text_data=json.dumps({
             "type": "accept.game",
-            "message": message,
+            "game_id": game_id,
             "user": user,
-            "created_date": created_date,
         }))
 
     async def decline_game(self, event):

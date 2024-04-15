@@ -192,7 +192,6 @@ class PongConsumer(AsyncWebsocketConsumer):
                         await self.end_handler(game_id, game)
                         game.no_more = True
 
-
         elif action == "paddle": #? Needs validation
             # Make a move in a game
             game_id = data["game_id"]
@@ -429,7 +428,7 @@ class PongConsumer(AsyncWebsocketConsumer):
         player1 = event['player1']
         player2 = event['player2']
         await self.send(text_data=json.dumps({
-            'type': 'tournament.match',
+            'type': 'chat.game',
             'game_id': game_id,
             'player1': player1,
             'player2': player2,
@@ -586,25 +585,27 @@ class PongConsumer(AsyncWebsocketConsumer):
         tournament_id = game.tournament_id
         return game_id, player1, player2, group_name, tournament_id
 
+
     @database_sync_to_async
     def record_stats_elo_wallet(self, game_id, winner_score, loser_score, winner, loser, game_duration):
         from .models import Game, UserProfile
         from .update import update_wallet_elo, update_stats_pong, update_tournament
 
         game = Game.objects.get(id=game_id)
-        game.winner_score = winner_score
-        game.loser_score = loser_score
-        game.winner =UserProfile.objects.get(username=winner)
-        game.loser = UserProfile.objects.get(username=loser)
-        game.game_duration = datetime.timedelta(seconds=game_duration)
-        game.save()
+        if game.winner == None:
+            game.winner_score = winner_score
+            game.loser_score = loser_score
+            game.winner =UserProfile.objects.get(username=winner)
+            game.loser = UserProfile.objects.get(username=loser)
+            game.game_duration = datetime.timedelta(seconds=game_duration)
+            game.save()
 
-        update_wallet_elo(game.winner, game.loser)
-        update_stats_pong(game.winner, game.loser, winner_score, loser_score, game_duration, "remote")
+            update_wallet_elo(game.winner, game.loser)
+            update_stats_pong(game.winner, game.loser, winner_score, loser_score, game_duration, "remote")
 
-        # İf the game is a tournament game
-        if game.tournament_id:   #? Check
-            update_tournament(game)
+            # İf the game is a tournament game
+            if game.tournament_id:   #? Check
+                update_tournament(game)
 
 
     async def record_for_disconnected(self, game_id, game):

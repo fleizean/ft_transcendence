@@ -8,9 +8,8 @@ from django.contrib import messages
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.http import HttpResponseRedirect
 from django.http import Http404
+from django.conf import settings
 from django.utils import timezone
-from django.core import serializers
-from django.template import loader
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 import ssl
 
@@ -126,7 +125,7 @@ def auth(request):
     auth_url = "https://api.intra.42.fr/oauth/authorize"
     fields = {
         "client_id": "u-s4t2ud-4b7a045a7cc7dd977eeafae807bd4947670f273cb30e1dd674f6bfa490ba6c45",  # environ.get("FT_CLIENT_ID"),
-        "redirect_uri": "http://localhost:8000/auth_callback",  # This should be parameterized
+        "redirect_uri": f"{settings.BASE_URL}/auth_callback",  # This should be parameterized
         "scope": "public",
         # "state": state_req,  # This will generate a 50-character long random string
         "response_type": "code",
@@ -151,9 +150,9 @@ def auth_callback(request):
         data = {
             "grant_type": "authorization_code",
             "client_id": "u-s4t2ud-4b7a045a7cc7dd977eeafae807bd4947670f273cb30e1dd674f6bfa490ba6c45",  # environ.get("FT_CLIENT_ID"),
-            "client_secret": "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",  # environ.get("FT_CLIENT_SECRET"),
+            "client_secret": "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",  # environ.get("FT_CLIENT_SECRET"),
             "code": code,
-            "redirect_uri": "http://localhost:8000/auth_callback",
+            "redirect_uri": f"{settings.BASE_URL}/auth_callback",
         }
         encoded_data = urllib.parse.urlencode(data).encode("utf-8")
         req = urllib.request.Request(
@@ -273,7 +272,9 @@ def profile_view(request, username):
     context = langs.get_langs(lang)
     game_records = Game.objects.filter(
         Q(player1=profile) | Q(player2=profile),
-        game_kind='pong'
+        game_kind='pong',
+    ).exclude(
+        game_duration=None
     ).order_by("-created_at")
     game_records_rps = Game.objects.filter(
         Q(player1=profile) | Q(player2=profile),
@@ -856,9 +857,13 @@ def remote_game(request, game_type, game_id):
     if game_type == 'peer-to-peer' and game_id != 'new':
         raise Http404("Invalid game id for peer-to-peer. It should be 'new'.")
 
-    if game_type == 'tournament' or game_type == 'invite':
+    if game_type == 'tournament':
         game = get_object_or_404(Game, id=game_id)
         tournament = get_object_or_404(Tournament, id=game.tournament_id)
+        if game.winner is not None:
+            raise Http404("The game is already finished.")
+    elif game_type == 'invite':
+        game = get_object_or_404(Game, id=game_id)
         if game.winner is not None:
             raise Http404("The game is already finished.")
 

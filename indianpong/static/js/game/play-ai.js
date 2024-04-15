@@ -8,7 +8,7 @@ var start_time;
 var score1 = 0;
 var score2 = 0;
 
-const MAX_SCORE = 10;
+const MAX_SCORE = 3;
 
 // Player Abilities
 var likeaCheaterCount = 0;
@@ -521,14 +521,14 @@ document.addEventListener("keyup", function(event) {
 
 
 // Ai Player
-let reactionDelaySlider = document.getElementById('reactionDelay');
+/* let reactionDelaySlider = document.getElementById('reactionDelay');
 let delayValueSpan = document.getElementById('delayValue');
 reactionDelaySlider.oninput = function() {
     reactionDelay = this.value / ball.speed;
     delayValueSpan.innerText = Math.round(reactionDelay); // Display the current value of the slider
     let value = (this.value-this.min)/(this.max-this.min)*100
-}
-let reactionDelay = Math.round(reactionDelaySlider.value / ball.speed);
+} */
+let reactionDelay = 1000/(ball.speed*2)//Math.round(reactionDelaySlider.value / ball.speed);
 let lastBallPosition = { x: ball.x, y: ball.y };
 let ballDirection = { x: 0, y: 0 };
 let predictedY = paddle2.y;
