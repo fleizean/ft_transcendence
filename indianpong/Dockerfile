@@ -6,17 +6,17 @@ ENV PIP_ROOT_USER_ACTION=ignore
 
 COPY requirements.txt .
 
-RUN python -m venv venv
-RUN . venv/bin/activate
 RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
-#run pip install --root-user-action=ignore
+
 COPY . .
 COPY ./renewdb.sh .
+COPY ./localhost.crt .
+COPY ./localhost.key .
 RUN chmod +x /ft_transcendence/renewdb.sh
 ###
-EXPOSE 8000
+EXPOSE 8001
 
-ENTRYPOINT ["sh", "/ft_transcendence/renewdb.sh"]
+CMD ["sh", "/ft_transcendence/renewdb.sh"]
 
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+#CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
