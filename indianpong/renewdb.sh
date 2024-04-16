@@ -18,4 +18,5 @@ python3 manage.py migrate
 python3 manage.py initdata
 python3 manage.py populate 10
 python3 manage.py collectstatic --no-input
+daphne -u /tmp/daphne.sock -b 0.0.0.0 -p 8001 -e ssl:8443:privateKey=localhost.key:certKey=localhost.crt indianpong.asgi:application
 exec "$@"
