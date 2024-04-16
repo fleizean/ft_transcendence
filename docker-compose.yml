@@ -6,26 +6,42 @@ services:
     build:
       context: ./indianpong
     container_name: indianpong
+    volumes:
+      - ./staticfiles:/ft_transcendence/staticfiles
     restart: always
     ports:
       - 8000:8000
-#   depends_on:
-#     - db
-#   env_file:
-#     - .env
-#   networks:
-#      - indianpongnet
+    depends_on:
+      - db
+    env_file:
+      - .env
+    networks:
+      - indianpongnet
+  db:
+    container_name: db
+    image: db
+    build:
+      context: ./
+      dockerfile: docker.dockerfile
+    restart: always
+    networks:
+      - indianpongnet
+  
+  nginx:
+    build:
+      context: ./
+      dockerfile: nginx.dockerfile
+    container_name: nginx
+    ports:
+      - 443:443
+    depends_on:
+      - indianpong
+    networks:
+      - indianpongnet
+    volumes:
+      - ./staticfiles:/ft_transcendence/staticfiles
+    
+networks:
+  indianpongnet:
+    driver: bridge
 
-#  db:
-#    container_name: db
-#    image: db
-#    build:
-#      context: ./
-#      dockerfile: docker.dockerfile
-#    restart: always
-#    networks:
-#      - indianpongnet
-#    
-#networks:
-#  indianpongnet:
-#    driver: bridge
