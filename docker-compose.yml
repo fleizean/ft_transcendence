@@ -8,6 +8,7 @@ services:
     container_name: indianpong
     volumes:
       - ./staticfiles:/ft_transcendence/staticfiles
+      - ./media:/ft_transcendence/media
     restart: always
     ports:
       - 8000:8000
@@ -40,6 +41,7 @@ services:
       - indianpongnet
     volumes:
       - ./staticfiles:/ft_transcendence/staticfiles
+      - ./media:/ft_transcendence/media
     
 networks:
   indianpongnet:
