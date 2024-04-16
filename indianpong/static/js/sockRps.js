@@ -23,6 +23,8 @@ function showToast(content, status, iconClass) {
 const wsEndpoint = 'wss://' + window.location.host + '/ws/rps/';
 const websocket = new WebSocket(wsEndpoint);
 
+const cookie = document.cookie.split('; ').find(row => row.startsWith('selectedLanguage='));
+const selectedLanguage = cookie ? cookie.split('=')[1] : 'en'; 
 
 const checkbox = document.getElementById('flexSwitchCheckDefault');
 const selectedGameModeLabel = document.getElementById('selectedGameMode');
