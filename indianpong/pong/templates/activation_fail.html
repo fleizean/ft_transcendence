@@ -1,10 +1,23 @@
 {% extends "base.html" %}
 
-{% block title %}Activation Failed{% endblock %}
+{% block title %}{{context.activationFailedPageTittle}}{% endblock %}
 
 {% block app %}
 <div class="HeaderArea" id="HeaderArea">
-    <div class="big-text">Activation Failed</div>
-    <div class="small-text">Your activation is failed!</div>
+    <div class="big-text">{{context.activationFailedHeaderText}}</div>
+    <div class="small-text">{{context.activationFailedSubHeaderText}}</div>
+    <div class="gohome-button-container">
+        <a onclick="swapApp('/login')"><button class="gohome-button" type="button">
+          <strong><i class="bi bi-box-arrow-in-right"></i> {{context.activationFailedButtonText}}</strong>
+          <div id="container-stars">
+            <div id="stars"></div>
+          </div>
+
+          <div id="glow">
+            <div class="circle"></div>
+            <div class="circle"></div>
+          </div>
+        </button></a>
+    </div>
 </div>
 {% endblock app %}

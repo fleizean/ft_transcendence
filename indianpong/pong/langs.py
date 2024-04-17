@@ -86,6 +86,12 @@ def get_lang_en():
         "setPasswordInputConfirmPasswordText": "Confirm New Password",
         "setPasswordButtonText": "Set ✓",
 
+        #ActivationFailed
+        "activationFailedPageTittle": "Activation Failed",
+        "activationFailedHeaderText": "Activation Failed",
+        "activationFailedSubHeaderText": "Your activation is failed!",
+        "activationFailedButtonText": "GO HOME",
+
         #Dashboard
         "dashboardPageTittle": "Dashboard",
         "dashboardText1": "Welcome, ",
@@ -448,6 +454,12 @@ def get_lang_tr():
         "setPasswordInputPasswordText": "Yeni Şifre",
         "setPasswordInputConfirmPasswordText": "Yeni Şifreyi Onayla",
         "setPasswordButtonText": "Belirle ✓",
+
+        #ActivationFailed
+        "activationFailedPageTittle": "Aktivasyon Başarısız",
+        "activationFailedHeaderText": "Aktivasyon Basarisiz",
+        "activationFailedSubHeaderText": "Aktivasyonunuz başarısız oldu!",
+        "activationFailedButtonText": "ANA SAYFA'YA DÖN",
 
         #Dashboard
         "dashboardPageTittle": "Ana Sayfa",
@@ -816,6 +828,12 @@ def get_lang_pt():
         "setPasswordInputConfirmPasswordText": "Confirme a Nova Senha",
         "setPasswordButtonText": "Definir ✓",
 
+        #ActivationFailed
+        "activationFailedPageTittle": "Ativação Falhou",
+        "activationFailedHeaderText": "Ativacao Falhou",
+        "activationFailedSubHeaderText": "Sua ativação falhou!",
+        "activationFailedButtonText": "VOLTAR AO LOGIN",
+
         #Dashboard
         "dashboardPageTittle": "Painel",
         "dashboardText1": "Bem-vindo, ",
@@ -1176,6 +1194,12 @@ def get_lang_hi():
         "setPasswordInputPasswordText": "नया पासवर्ड",
         "setPasswordInputConfirmPasswordText": "नया पासवर्ड की पुष्टि करें",
         "setPasswordButtonText": "सेट करें ✓",
+
+        #ActivationFailed
+        "activationFailedPageTittle": "सक्रियण विफल",
+        "activationFailedHeaderText": "सक्रियण विफल",
+        "activationFailedSubHeaderText": "आपका सक्रियण विफल हुआ!",
+        "activationFailedButtonText": "वापस लॉगिन",
 
         #Dashboard
         "dashboardPageTittle": "डैशबोर्ड",
