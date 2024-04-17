@@ -18,7 +18,7 @@ services:
       dockerfile: Dockerfile
     volumes:
       - staticfiles:/ft_transcendence/staticfiles
-      - media:/ft_transcendence/media
+      - media:/ft_transcendence/indianpong/media
       - ssl_data:/ssl_data
     env_file:
       - .env
@@ -33,7 +33,7 @@ services:
       dockerfile: Dockerfile.nginx
     volumes:
       - staticfiles:/ft_transcendence/staticfiles
-      - media:/ft_transcendence/media
+      - media:/ft_transcendence/indianpong/media
       - ssl_data:/ssl_data
     ports:
       - 8000:8000

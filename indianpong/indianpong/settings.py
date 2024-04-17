@@ -29,12 +29,15 @@ DEBUG = environ.get("DEBUG", default=False)
 
 BASE_URL = environ.get("BASE_URL", default="http://localhost:8000")
 
-ALLOWED_HOSTS = ['indianpong.com','indianpong.onrender.com', 'http://127.0.0.1:8000', 'localhost', '127.0.0.1', 'https://127.0.0.1:8443']#environ.get("ALLOWED_HOSTS", default="").split(" ")
+ALLOWED_HOSTS = ['indianpong.com','indianpong.onrender.com', 'http://127.0.0.1:8000', 'localhost', '127.0.0.1', 'https://127.0.0.1:8443', 'https://localhost:8443']#environ.get("ALLOWED_HOSTS", default="").split(" ")
 
 CSRF_TRUSTED_ORIGINS = [
     'https://indianpong.onrender.com',
     'http://indianpong.onrender.com',
     'https://127.0.0.1:8443',
+    'https://localhost:8443',
+    'http://localhost:8000',
+    'http://127.0.0.1:8000',
 ]
 
 # Eğer Django versiyonunuz 3.1 veya üzeriyse aşağıdaki ayarı da ekleyin
