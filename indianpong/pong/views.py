@@ -141,11 +141,11 @@ def auth_callback(request):
     if request.method == "GET":
         # Create a context that doesn't verify SSL certificates
         # Create a SSL context
-        # ssl_context = ssl.create_default_context()
+        ssl_context = ssl.create_default_context()
 
         # Load your certificate
-        # ssl_context.load_cert_chain(certfile='path/to/certfile', keyfile='path/to/keyfile')
-        ssl_context = ssl._create_unverified_context()  # TODO temporary solution
+        ssl_context.load_cert_chain(certfile='../ssl_data/cert.pem', keyfile='../ssl_data/key.pem')
+        #ssl_context = ssl._create_unverified_context()  # TODO temporary solution
         code = request.GET.get("code")
         data = {
             "grant_type": "authorization_code",
