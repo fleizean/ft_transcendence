@@ -9,14 +9,14 @@ ENV PIP_ROOT_USER_ACTION=ignore \
 
 WORKDIR /ft_transcendence
 
-COPY . /ft_transcendence/
+COPY indianpong /ft_transcendence/
 
-RUN pip install --upgrade pip && pip install -r indianpong/requirements.txt
+RUN pip install --upgrade pip && pip install -r requirements.txt
 
-RUN chmod +x indianpong/start.sh
+RUN chmod +x start.sh
 
 EXPOSE 8001
 
-CMD [ "bash", "indianpong/start.sh" ]
+CMD [ "bash", "start.sh" ]
 
 

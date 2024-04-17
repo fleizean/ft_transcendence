@@ -27,7 +27,7 @@ SECRET_KEY = environ.get("SECRET_KEY", default="w^bxst+y6yv=d*5+7h)2s3)5vfz!b2ja
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = environ.get("DEBUG", default=False)
 
-BASE_URL = environ.get("BASE_URL", default="http://localhost:8000")
+BASE_URL = environ.get("BASE_URL", default='https://localhost:8443')
 
 ALLOWED_HOSTS = ['indianpong.com','indianpong.onrender.com', 'http://127.0.0.1:8000', 'localhost', '127.0.0.1', 'https://127.0.0.1:8443', 'https://localhost:8443']#environ.get("ALLOWED_HOSTS", default="").split(" ")
 
