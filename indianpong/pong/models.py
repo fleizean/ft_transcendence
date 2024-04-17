@@ -210,7 +210,7 @@ class VerifyToken(models.Model):
         mail_subject = 'Activate your account.'
         message = render_to_string('activate_account_email.html', {
             'user': user,
-            'domain': request.META['HTTP_HOST'],
+            'domain': settings.BASE_URL,
             'token': token.token,
         })
 

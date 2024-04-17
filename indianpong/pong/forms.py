@@ -1,6 +1,7 @@
 from datetime import timedelta
 from email.mime.image import MIMEImage
 import os
+from django.conf import settings
 from django.core.mail import EmailMultiAlternatives
 from django.core.mail import send_mail
 from django import forms
@@ -529,7 +530,7 @@ class PasswordResetUserForm(PasswordResetForm):
         mail_subject = 'Reset your password'
         message = render_to_string('password_reset_email.html', {
             'user': user,
-            'domain': domain_override or request.META['HTTP_HOST'],
+            'domain': settings.BASE_URL,
             'uid': urlsafe_base64_encode(force_bytes(user.pk)),
             'token': token,
         })

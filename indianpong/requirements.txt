@@ -4,4 +4,3 @@ channels==4.0.0
 daphne==4.0.0
 psycopg
 psycopg-binary
-#psycopg2==2.9.9

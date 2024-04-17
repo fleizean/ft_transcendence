@@ -52,7 +52,8 @@ class Command(BaseCommand):
                 displayname=displayname, 
                 password=password, 
                 game_stats_pong=game_stat,
-                social=social
+                social=social,
+                is_verified=True
             )
             user_profiles.append(user_profile)
 
