@@ -3,5 +3,5 @@ FROM postgres:13
 # PostgreSQL'in varsayılan bağlantı noktası
 EXPOSE 5432
 
-RUN pg_createcluster 13 main --start
-RUN service postgresql start
+#RUN pg_createcluster 13 main --start
+#RUN service postgresql start
