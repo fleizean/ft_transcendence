@@ -111,8 +111,7 @@ class UserProfile(AbstractUser):
             if rank_range[0] <= self.elo_point <= rank_range[1]:
                 return rank_name
         return "Reinald"
-
-
+    
 class UserItem(models.Model):
     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     item = models.ForeignKey(StoreItem, on_delete=models.CASCADE)

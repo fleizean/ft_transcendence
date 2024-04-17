@@ -105,10 +105,12 @@ def signup(request):
 
 @never_cache
 def activate_account(request, token):
+    lang = request.COOKIES.get('selectedLanguage', 'en')
+    context = langs.get_langs(lang)
     try:
         token = VerifyToken.objects.get(token=token)
     except VerifyToken.DoesNotExist:
-        return render(request, "activation_fail.html")
+        return render(request, "activation_fail.html", {"context": context})
     token.user.is_verified = True
     token.user.save()
     token.delete()

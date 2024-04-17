@@ -111,6 +111,15 @@ body {
   margin-bottom: 5px;
 }
 
+
+.big-text-activation {
+  animation: backInDown 1s ease;
+  font-size: 6em;
+  color: aliceblue;
+  font-family: "VT323", monospace;
+  margin-bottom: 5px;
+}
+
 .big-text-email {
   animation: backInDown 1s ease;
   font-size: 6em;
