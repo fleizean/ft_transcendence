@@ -29,11 +29,12 @@ DEBUG = environ.get("DEBUG", default=False)
 
 BASE_URL = environ.get("BASE_URL", default="http://localhost:8000")
 
-ALLOWED_HOSTS = ['indianpong.com','indianpong.onrender.com', 'http://127.0.0.1:8000', 'localhost', '127.0.0.1']#environ.get("ALLOWED_HOSTS", default="").split(" ")
+ALLOWED_HOSTS = ['indianpong.com','indianpong.onrender.com', 'http://127.0.0.1:8000', 'localhost', '127.0.0.1', 'https://127.0.0.1:8443']#environ.get("ALLOWED_HOSTS", default="").split(" ")
 
 CSRF_TRUSTED_ORIGINS = [
     'https://indianpong.onrender.com',
     'http://indianpong.onrender.com',
+    'https://127.0.0.1:8443',
 ]
 
 # Eğer Django versiyonunuz 3.1 veya üzeriyse aşağıdaki ayarı da ekleyin
@@ -116,12 +117,12 @@ ASGI_APPLICATION = 'indianpong.asgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': os.getenv('DB_ENGINE', default='django.db.backends.postgresql'),
-        'NAME': os.getenv('DB_NAME', default='pong'), 
-        'USER': os.getenv('DB_USER', default='indianpong'),
-        'PASSWORD': os.getenv('DB_PASSWORD', default='indianpong123'),
-        'HOST': 'db',  # Değişiklik burada
-        'PORT': os.getenv('DB_PORT', default='5432'),
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.getenv('POSTGRES_DB', default='pong'), 
+        'USER': os.getenv('POSTGRES_USER', default='indianpong'),
+        'PASSWORD': os.getenv('POSTGRES_PASSWORD', default='indianpong123'),
+        'HOST': 'db',
+        'PORT': '5432',
     }
 }
 
