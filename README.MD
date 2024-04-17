@@ -9,16 +9,16 @@
 ## Mandatory part
 
 <details>
-      <summary> <b> Minimal technical requirement ⌛</b></summary>
+      <summary> <b> Minimal technical requirement ✅</b></summary>
           <ul>
           <li>✅ The frontend should be developed using pure vanilla <b>Javascript.</b> </li>
           <li>✅ Your website must be a <b>single-page application.</b> The user should be able to use the
 <b>Back</b> and <b>Forward</b> buttons of the browser. </li>
           <li>✅ Your website must be compatible with the latest stable up-to-date version of
 Google Chrome . </li>
-          <li>⌛ The user should encounter no unhandled errors and no warnings when browsing the
+          <li>✅ The user should encounter no unhandled errors and no warnings when browsing the
 website. </li>
-          <li>⌛ Everything must be launched with a single command line to run an autonomous
+          <li>✅ Everything must be launched with a single command line to run an autonomous
 container provided by Docker. Example : docker-compose up --build </li>
           </ul>
 </details>
@@ -52,11 +52,11 @@ aesthetics can vary, it must still capture the essence of the <b>original Pong</
 </details>
 
 <details>
-      <summary> <b> Security concerns ⌛</b></summary>
+      <summary> <b> Security concerns ✅</b></summary>
           <ul>
           <li>✅ Any password stored in your database, if applicable, must be <b>hashed.</b> </li>
           <li>✅ Your website must be protected against <b>SQL injections/XSS.</b> </li>
-          <li>⌛ If you have a backend or any other features, it is mandatory to enable an HTTPS
+          <li>✅ If you have a backend or any other features, it is mandatory to enable an HTTPS
 connection for all aspects (Utilize wss instead of ws...). </li>
           <li>✅ You must implement some form of validation for forms and any user input, either
 within the base page if no backend is used or on the server side if a backend is
@@ -120,13 +120,13 @@ of the project.</b>
   </details>
   
   <details>
-      <summary> <b> Live Chat. ⌛</b></summary>
+      <summary> <b> Live Chat. ✅</b></summary>
       You have to create a chat for your users in this module:
           <ul>
           <li>✅ The user should be able   to send <b>direct messages</b> to other users. </li>
           <li>✅ The user should be able to block  other users. This way, they will see no more messages from the account   they blocked. </li>
           <li>✅ The user should be able to  invite other users to play a Pong game through the chat interface. </li>
-          <li>⌛ The tournament system should be   able to warn users expected for the next game. </li>
+          <li>✅ The tournament system should be   able to warn users expected for the next game. </li>
           <li>✅ The user should be able   to access other players profiles through the chat interface. </li>
           </ul>
   </details>
@@ -185,15 +185,6 @@ of the project.</b>
           This module aims to give users the flexibility to tailor their gaming   experience across all available games by providing a variety of   customization options while also offering a default version for those   who prefer a straightforward gameplay experience.
   </details>
   
-  <details>
-      <summary> <b> Support on all devices. ❌</b></summary>
-      In this module, the main focus is to ensure that your website works   seamlessly on all types of devices. Key features and objectives include:
-          <ul>
-          <li>✅ Make sure the website is  responsive, adapting to different screen sizes and orientations,   ensuring a consistent user experience on desktops, laptops, tablets,  and smartphones. </li>
-          <li>❌ Ensure that users can easily  navigate and interact with the website using different input methods,  such as touchscreens, keyboards, and mice, depending on the device   they are using. </li>
-          </ul>
-          This module aims to provide a consistent and user-friendly experience   on all devices, maximizing accessibility and user satisfaction.
-  </details>
   
   <details>
       <summary> <b> Expanding Browser Compatibility. ✅</b></summary>
