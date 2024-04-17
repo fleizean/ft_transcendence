@@ -25,16 +25,24 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = environ.get("SECRET_KEY", default="w^bxst+y6yv=d*5+7h)2s3)5vfz!b2jayit+#1epn(gr1-fotw")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = environ.get("DEBUG", default=True)
+DEBUG = environ.get("DEBUG", default=False)
 
-BASE_URL = environ.get("BASE_URL", default="http://localhost:8000")
+BASE_URL = environ.get("BASE_URL", default='https://localhost:8443')
 
-ALLOWED_HOSTS = ['indianpong.com','indianpong.onrender.com', 'http://127.0.0.1:8000', 'localhost', '127.0.0.1']#environ.get("ALLOWED_HOSTS", default="").split(" ")
+ALLOWED_HOSTS = ['indianpong.com','indianpong.onrender.com', 'http://127.0.0.1:8000', 'localhost', '127.0.0.1', 'https://127.0.0.1:8443', 'https://localhost:8443']#environ.get("ALLOWED_HOSTS", default="").split(" ")
 
 CSRF_TRUSTED_ORIGINS = [
     'https://indianpong.onrender.com',
     'http://indianpong.onrender.com',
+    'https://127.0.0.1:8443',
+    'https://localhost:8443',
+    'http://localhost:8000',
+    'http://127.0.0.1:8000',
 ]
+
+# Eğer Django versiyonunuz 3.1 veya üzeriyse aşağıdaki ayarı da ekleyin
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+SECURE_SSL_REDIRECT = True
 
 # Application definition
 
@@ -101,8 +109,8 @@ ASGI_APPLICATION = 'indianpong.asgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
-""" 
-DATABASES = {
+
+""" DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
@@ -112,12 +120,12 @@ DATABASES = {
 
 DATABASES = {
     'default': {
-        'ENGINE': os.getenv('DB_ENGINE', default='django.db.backends.postgresql'),
-        'NAME': os.getenv('DB_NAME', default='pong'), 
-        'USER': os.getenv('DB_USER', default='indianpong'),
-        'PASSWORD': os.getenv('DB_PASSWORD', default='indianpong123'),
-        'HOST': 'db',  # Değişiklik burada
-        'PORT': os.getenv('DB_PORT', default='5432'),
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.getenv('POSTGRES_DB', default='pong'), 
+        'USER': os.getenv('POSTGRES_USER', default='indianpong'),
+        'PASSWORD': os.getenv('POSTGRES_PASSWORD', default='indianpong123'),
+        'HOST': 'db',
+        'PORT': '5432',
     }
 }
 
@@ -171,7 +179,8 @@ STATICFILES_DIRS = [
     BASE_DIR / 'static',
 ]
 
-STATIC_ROOT = path.join(BASE_DIR, 'staticfiles')
+""" STATIC_ROOT = path.join(BASE_DIR, 'staticfiles') """
+STATIC_ROOT = '/ft_transcendence/staticfiles'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field

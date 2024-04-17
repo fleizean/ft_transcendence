@@ -16,6 +16,7 @@ class Command(BaseCommand):
 			super_user.avatar.save(f"{file.name}.jpg", file, save=False)
 			file.close()
 			super_user.indian_wallet = 1000
+			super_user.is_verified = True
 			super_user.save()
 			self.stdout.write(self.style.SUCCESS('Superuser created successfully.'))
 		# Create IndianAI if not exists

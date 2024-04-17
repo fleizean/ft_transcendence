@@ -1,0 +1,45 @@
+# docker-compose.yaml
+version: '3.9'
+
+services:
+  db:
+    image: postgres:13
+    restart: always
+    ports:
+      - "5432:5432"
+    env_file:
+      - .env
+
+  web:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - staticfiles:/ft_transcendence/staticfiles
+      - media:/ft_transcendence/media
+      - ssl_data:/ssl_data
+    env_file:
+      - .env
+    ports:
+      - 8001:8001
+    depends_on:
+      - db
+
+  nginx:
+    build:
+      context: .
+      dockerfile: Dockerfile.nginx
+    volumes:
+      - staticfiles:/ft_transcendence/staticfiles
+      - media:/ft_transcendence/media
+      - ssl_data:/ssl_data
+    ports:
+      - 8000:8000
+      - 8443:8443
+    depends_on:
+      - web
+
+volumes:
+  staticfiles:
+  media:
+  ssl_data:
