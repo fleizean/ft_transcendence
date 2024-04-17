@@ -3,9 +3,7 @@ version: '3.9'
 
 services:
   db:
-    build:
-      context: ./
-      dockerfile: Dockerfile.db
+    image: postgres:13
     restart: always
     ports:
       - "5432:5432"
