@@ -94,124 +94,126 @@ websocket.onerror = function (e) {
 
 websocket.onmessage = function (e) {
     const data = JSON.parse(e.data);
-    switch (data.type) {
-        case 'insearch':
-            // Self send message
-            console.log('In search', data.user);
-            if (my.username === '') {
-                my.username = data.user;
+    if (window.location.pathname.includes('/play-rps')) {
+        switch (data.type) {
+            case 'insearch':
+                // Self send message
+                console.log('In search', data.user);
+                if (my.username === '') {
+                    my.username = data.user;
+                }
+                // Take online users usernames and display them
+                addUserCount(data.user_count);
+                console.log('Online users', data.user_count);
+                break;
+            
+            case 'user.insearch':
+                // Send others i joined the lobby
+                console.log('User in search', data.user);
+                // Add user to online users list
+                if (data.user !== my.username) {
+                    addUserCount(1);
+                }
+
+                if (selectedLanguage === 'tr')
+                    showToast(data.user + ' katıldı!', 'text-bg-success', 'bi bi-check-circle-fill')
+                else if (selectedLanguage === 'hi')  
+                    showToast(data.user + ' शामिल हो गया!', 'text-bg-success', 'bi bi-check-circle-fill')
+                else if (selectedLanguage === 'pt')  
+                    showToast(data.user + ' entrou!', 'text-bg-success', 'bi bi-check-circle-fill')
+                else
+                    showToast(data.user + ' joined!', 'text-bg-success', 'bi bi-check-circle-fill')
+                break;
+            case 'user.outsearch':
+                // Send others user left the lobby
+                console.log('User out search', data.user);
+                // Remove user from online users list
+                addUserCount(-1);
+                if (selectedLanguage === 'tr')
+                    showToast(data.user + ' ayrıldı!', 'text-bg-danger', 'bi bi-check-circle-fill')
+                else if (selectedLanguage === 'hi')
+                    showToast(data.user + ' चला गया!', 'text-bg-danger', 'bi bi-check-circle-fill')
+                else if (selectedLanguage === 'pt')
+                    showToast(data.user + ' saiu!', 'text-bg-danger', 'bi bi-check-circle-fill')
+                else
+                    showToast(data.user + ' left!', 'text-bg-danger', 'bi bi-check-circle-fill')
+                break;
+            case 'game.disconnected':
+                // stop the game
+                gameOverScreen.style.display = 'block'; //? check
+                if (selectedLanguage === 'tr')
+                    showToast(`${data.disconnected} bağlantısı kesildi. Otomatik olarak kazanan sizsiniz`, 'text-bg-danger', 'bi bi-check-circle-fill')
+                else if (selectedLanguage === 'hi')
+                    showToast(`${data.disconnected} डिस्कनेक्ट हो गया आप ऑटोमेटिक विनर हैं`, 'text-bg-danger', 'bi bi-check-circle-fill')
+                else if (selectedLanguage === 'pt')
+                    showToast(`${data.disconnected} desconectado Você é o vencedor automaticamente`, 'text-bg-danger', 'bi bi-check-circle-fill')
+                else    
+                    showToast(`${data.disconnected} disconnected You are automatically winner`, 'text-bg-danger', 'bi bi-check-circle-fill')
+                break;
+            case 'start':
+                // Start the game
+                my.game_id = data.game_id;
+                player1.username = data.player1;
+                player2.username = data.player2;
+
+
+                gameArea.style.visibility = "visible";
+                matchmakingButton.style.display = "none";
+                if (abilityStatus) {
+                    cheaterButton.style.display = 'block';
+                    godthingsButton.style.display = 'block';
+                }
+
+                document.getElementById("player1Name").innerText = player1.username;
+                document.getElementById("player2Name").innerText = player2.username;
+
+                if (selectedLanguage === 'tr')
+                    showToast('Oyun başladı', 'text-bg-success', 'bi bi-check-circle-fill')
+                else if (selectedLanguage === 'hi')
+                    showToast('खेल शुरू हुआ', 'text-bg-success', 'bi bi-check-circle-fill')
+                else if (selectedLanguage === 'pt')
+                    showToast('Jogo começou', 'text-bg-success', 'bi bi-check-circle-fill')
+                else
+                    showToast('Game started', 'text-bg-success', 'bi bi-check-circle-fill')
+                break;
+            
+            case 'matchmaking.notfound':
+                // Matchmaking found
+                if (selectedLanguage === 'tr')
+                    showToast('Rakip bulunamadı', 'text-bg-danger', 'bi bi-check-circle-fill')
+                else if (selectedLanguage === 'hi')
+                    showToast('विरोधी नहीं मिला', 'text-bg-danger', 'bi bi-check-circle-fill')
+                else if (selectedLanguage === 'pt')
+                    showToast('Oponente não encontrado', 'text-bg-danger', 'bi bi-check-circle-fill')
+                else
+                    showToast('No opponent found', 'text-bg-danger', 'bi bi-check-circle-fill')
+                break;
+            
+            case 'result': 
+                // Game result
+                var result = data.result;
+                var game_id = data.game_id;
+                var player1_choice = data.player1_choice;
+                var player2_choice = data.player2_choice;
+                var player1_score = data.player1_score;
+                var player2_score = data.player2_score;
+
+                if (my.username === player1.username && player1_choice === "LIKEACHEATER")
+                    cheaterAbilities = true;
+                else if (my.username === player2.username && player2_choice === "LIKEACHEATER")
+                    cheaterAbilities = true;
+                if (my.username === player1.username && player1_choice === "GODOFTHINGS")
+                    godthingsAbilities = true;
+                else if (my.username === player2.username && player2_choice === "GODOFTHINGS")
+                    godthingsAbilities = true;
+
+                scoreUpdate(player1_score, player2_score);
+
+                displayResults([player1_choice, player2_choice]);
+                displayWinner(result);
+                break;
+
             }
-            // Take online users usernames and display them
-            addUserCount(data.user_count);
-            console.log('Online users', data.user_count);
-            break;
-        
-        case 'user.insearch':
-            // Send others i joined the lobby
-            console.log('User in search', data.user);
-            // Add user to online users list
-            if (data.user !== my.username) {
-                addUserCount(1);
-            }
-
-            if (selectedLanguage === 'tr')
-                showToast(data.user + ' katıldı!', 'text-bg-success', 'bi bi-check-circle-fill')
-            else if (selectedLanguage === 'hi')  
-                showToast(data.user + ' शामिल हो गया!', 'text-bg-success', 'bi bi-check-circle-fill')
-            else if (selectedLanguage === 'pt')  
-                showToast(data.user + ' entrou!', 'text-bg-success', 'bi bi-check-circle-fill')
-            else
-                showToast(data.user + ' joined!', 'text-bg-success', 'bi bi-check-circle-fill')
-            break;
-        case 'user.outsearch':
-            // Send others user left the lobby
-            console.log('User out search', data.user);
-            // Remove user from online users list
-            addUserCount(-1);
-            if (selectedLanguage === 'tr')
-                showToast(data.user + ' ayrıldı!', 'text-bg-danger', 'bi bi-check-circle-fill')
-            else if (selectedLanguage === 'hi')
-                showToast(data.user + ' चला गया!', 'text-bg-danger', 'bi bi-check-circle-fill')
-            else if (selectedLanguage === 'pt')
-                showToast(data.user + ' saiu!', 'text-bg-danger', 'bi bi-check-circle-fill')
-            else
-                showToast(data.user + ' left!', 'text-bg-danger', 'bi bi-check-circle-fill')
-            break;
-        case 'game.disconnected':
-            // stop the game
-            gameOverScreen.style.display = 'block'; //? check
-            if (selectedLanguage === 'tr')
-                showToast(`${data.disconnected} bağlantısı kesildi. Otomatik olarak kazanan sizsiniz`, 'text-bg-danger', 'bi bi-check-circle-fill')
-            else if (selectedLanguage === 'hi')
-                showToast(`${data.disconnected} डिस्कनेक्ट हो गया आप ऑटोमेटिक विनर हैं`, 'text-bg-danger', 'bi bi-check-circle-fill')
-            else if (selectedLanguage === 'pt')
-                showToast(`${data.disconnected} desconectado Você é o vencedor automaticamente`, 'text-bg-danger', 'bi bi-check-circle-fill')
-            else    
-                showToast(`${data.disconnected} disconnected You are automatically winner`, 'text-bg-danger', 'bi bi-check-circle-fill')
-            break;
-        case 'start':
-            // Start the game
-            my.game_id = data.game_id;
-            player1.username = data.player1;
-            player2.username = data.player2;
-
-            
-            gameArea.style.visibility = "visible";
-            matchmakingButton.style.display = "none";
-            if (abilityStatus) {
-                cheaterButton.style.display = 'block';
-                godthingsButton.style.display = 'block';
-            }
-
-            document.getElementById("player1Name").innerText = player1.username;
-            document.getElementById("player2Name").innerText = player2.username;
-            
-            if (selectedLanguage === 'tr')
-                showToast('Oyun başladı', 'text-bg-success', 'bi bi-check-circle-fill')
-            else if (selectedLanguage === 'hi')
-                showToast('खेल शुरू हुआ', 'text-bg-success', 'bi bi-check-circle-fill')
-            else if (selectedLanguage === 'pt')
-                showToast('Jogo começou', 'text-bg-success', 'bi bi-check-circle-fill')
-            else
-                showToast('Game started', 'text-bg-success', 'bi bi-check-circle-fill')
-            break;
-        
-        case 'matchmaking.notfound':
-            // Matchmaking found
-            if (selectedLanguage === 'tr')
-                showToast('Rakip bulunamadı', 'text-bg-danger', 'bi bi-check-circle-fill')
-            else if (selectedLanguage === 'hi')
-                showToast('विरोधी नहीं मिला', 'text-bg-danger', 'bi bi-check-circle-fill')
-            else if (selectedLanguage === 'pt')
-                showToast('Oponente não encontrado', 'text-bg-danger', 'bi bi-check-circle-fill')
-            else
-                showToast('No opponent found', 'text-bg-danger', 'bi bi-check-circle-fill')
-            break;
-        
-        case 'result': 
-            // Game result
-            var result = data.result;
-            var game_id = data.game_id;
-            var player1_choice = data.player1_choice;
-            var player2_choice = data.player2_choice;
-            var player1_score = data.player1_score;
-            var player2_score = data.player2_score;
-            
-            if (my.username === player1.username && player1_choice === "LIKEACHEATER")
-                cheaterAbilities = true;
-            else if (my.username === player2.username && player2_choice === "LIKEACHEATER")
-                cheaterAbilities = true;
-            if (my.username === player1.username && player1_choice === "GODOFTHINGS")
-                godthingsAbilities = true;
-            else if (my.username === player2.username && player2_choice === "GODOFTHINGS")
-                godthingsAbilities = true;
-            
-            scoreUpdate(player1_score, player2_score);
-
-            displayResults([player1_choice, player2_choice]);
-            displayWinner(result);
-            break;
-
         }
     }
 
