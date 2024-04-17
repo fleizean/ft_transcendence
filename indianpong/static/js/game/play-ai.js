@@ -4,6 +4,8 @@ var usernameX = 10;
 var usernameY = 20;
 var start_time;
 
+const cookie = document.cookie.split('; ').find(row => row.startsWith('selectedLanguage='));
+const selectedLanguage = cookie ? cookie.split('=')[1] : 'en'; 
 
 var score1 = 0;
 var score2 = 0;
