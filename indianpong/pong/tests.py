@@ -1,7 +1,7 @@
 from django.test import TestCase
 
 # Create your tests here.
-# FILEPATH: /home/gusto/ft_transcendence_newpdf/indianpong/indianpong/tests.py
+# FILEPATH: /home/gusto/ft_transcendence/indianpong/indianpong/tests.py
 import pytest
 from channels.testing import WebsocketCommunicator
 from django.test import TestCase

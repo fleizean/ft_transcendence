@@ -7,16 +7,14 @@ ENV PIP_ROOT_USER_ACTION=ignore \
     #PIP_NO_CACHE_DIR=off 
 
 
-WORKDIR /ft_transcendence
+COPY indianpong /indianpong
 
-COPY indianpong /ft_transcendence/
+RUN pip install --upgrade pip && pip install -r /indianpong/requirements.txt
 
-RUN pip install --upgrade pip && pip install -r requirements.txt
-
-RUN chmod +x start.sh
+RUN chmod +x /indianpong/start.sh
 
 EXPOSE 8001
 
-CMD [ "bash", "start.sh" ]
+CMD [ "bash", "/indianpong/start.sh" ]
 
 

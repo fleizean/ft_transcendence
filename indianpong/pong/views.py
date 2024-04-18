@@ -146,7 +146,7 @@ def auth_callback(request):
         ssl_context = ssl.create_default_context()
 
         # Load your certificate
-        ssl_context.load_cert_chain(certfile='../ssl_data/cert.pem', keyfile='../ssl_data/key.pem')
+        ssl_context.load_cert_chain(certfile='../etc/nginx/ssl/cert.pem', keyfile='../etc/nginx/ssl/key.pem')
         #ssl_context = ssl._create_unverified_context()  # TODO temporary solution
         code = request.GET.get("code")
         data = {
