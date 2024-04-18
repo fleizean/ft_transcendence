@@ -92,15 +92,12 @@ const langMessages = {
   const chatsocket = new WebSocket("wss://" + window.location.host + "/ws/chat/" + roomName + "/")
 
   chatsocket.onopen = function (e) {
-      console.log("socket opened")
   }
 
   chatsocket.onclose = function (e) {
-      console.error("socket closed unexpectedly")
   }
 
   chatsocket.onerror = function (e) {
-      console.error("socket error")
   }
 
   function messageMe(data){

@@ -146,6 +146,7 @@ class RPSConsumer(AsyncWebsocketConsumer):
                         'player1_score': player1_score,
                         'player2_score': player2_score,
                     })
+                    await self.exit_handler(game_id, game)
 
 
     ### Handlers ###
@@ -243,6 +244,9 @@ class RPSConsumer(AsyncWebsocketConsumer):
         game.game_kind = "rps"
         game.winner_score = winner_score
         game.loser_score = loser_score
+        print('winner_score:' + str(winner_score))
+
+        print('loser_score:' + str(loser_score))
         game.winner =UserProfile.objects.get(username=winner)
         game.loser = UserProfile.objects.get(username=loser)
         game.game_duration = datetime.timedelta(seconds=game_duration)

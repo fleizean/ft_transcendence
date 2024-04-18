@@ -35,16 +35,16 @@ function showToast(content, status, iconClass) {
       document.getElementById('itemNameInput').value = itemName;
       var propertyContent = document.getElementById('propertyContent');
           if (itemName === "My Playground" || itemName === "My Beautiful Paddle") {
-          itemWhatIs = itemWhatIs || '#000000';
-          propertyContent.innerHTML = `
+            itemWhatIs = (itemWhatIs !== "none") ? itemWhatIs : '#000000';
+            propertyContent.innerHTML = `
               <label for="color">Choose Color:</label>
-              <input type="color" id="color" name="whatis" value="${itemWhatIs}">
+              <input type="color" style="margin-left:7px;" id="color" name="whatis" value="${itemWhatIs}">
           `;
       } else {
           itemWhatIs = itemWhatIs || 'IndianAI';
           propertyContent.innerHTML = `
               <label for="propertyName">AI Name:</label>
-              <input type="text" id="propertyName" name="whatis" value="${itemWhatIs}">
+              <input type="text" style="margin-left:7px;" id="propertyName" name="whatis" value="${itemWhatIs}">
           `;
       }
   

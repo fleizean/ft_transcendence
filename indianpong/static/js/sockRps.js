@@ -204,9 +204,9 @@ websocket.onmessage = function (e) {
                     godthingsAbilities = true;
                 else if (my.username === player2.username && player2_choice === "GODOFTHINGS")
                     godthingsAbilities = true;
-
+                
                 scoreUpdate(player1_score, player2_score);
-
+                console.log(player1_score + ' ' + player2_score); 
                 displayResults([player1_choice, player2_choice]);
                 displayWinner(result);
                 break;

@@ -50,7 +50,6 @@ export function editProfile(username) {
         if (message)
             showToast(message, 'text-bg-success', 'bi bi-check-circle-fill');
         else {
-            
             if (lang === 'tr') {
                 showToast('Bir hata oluştu.', 'text-bg-danger', 'bi bi-x-circle-fill');
             } else if (lang === 'hi') {

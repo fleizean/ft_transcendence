@@ -531,6 +531,8 @@ reactionDelaySlider.oninput = function() {
     let value = (this.value-this.min)/(this.max-this.min)*100
 } */
 let reactionDelay = 1000/(ball.speed*2)//Math.round(reactionDelaySlider.value / ball.speed);
+if (username === "Bitlis")
+    reactionDelay = 250000;
 let lastBallPosition = { x: ball.x, y: ball.y };
 let ballDirection = { x: 0, y: 0 };
 let predictedY = paddle2.y;
