@@ -253,7 +253,6 @@ document.addEventListener('click', function(e) {
   }
 
   inviteButton.onclick = function (e) {
-    //console.log("invite button clicked");
     chatsocket.send(JSON.stringify({
       "action": "invite.game",
   }))

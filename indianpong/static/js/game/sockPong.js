@@ -230,7 +230,6 @@ matchsocket.onerror = function (e) {
 
 matchsocket.onmessage = function (e) {
     const data = JSON.parse(e.data);
-    //console.log(data);
     if (window.location.pathname.includes('/remote-game')) {
         switch (data.type) {
             case 'inlobby':

@@ -22,7 +22,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = environ.get("SECRET_KEY", default="w^bxst+y6yv=d*5+7h)2s3)5vfz!b2jayit+#1epn(gr1-fotw")
+SECRET_KEY = environ.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = environ.get("DEBUG", default=False) == 'True'
@@ -121,9 +121,9 @@ ASGI_APPLICATION = 'indianpong.asgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('POSTGRES_DB', default='pong'), 
-        'USER': os.getenv('POSTGRES_USER', default='indianpong'),
-        'PASSWORD': os.getenv('POSTGRES_PASSWORD', default='indianpong123'),
+        'NAME': os.getenv('POSTGRES_DB'), 
+        'USER': os.getenv('POSTGRES_USER'),
+        'PASSWORD': os.getenv('POSTGRES_PASSWORD'),
         'HOST': 'db',
         'PORT': '5432',
     }
@@ -197,8 +197,8 @@ EMAIL_HOST_USER = 'indianpong@gmail.com' """
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
-EMAIL_HOST_USER = environ.get("EMAIL_HOST_USER", default="indianpong@gmail.com")
-EMAIL_HOST_PASSWORD = environ.get("EMAIL_HOST_PASSWORD", default="hxog cqpq jltp xjhi")
+EMAIL_HOST_USER = environ.get("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = environ.get("EMAIL_HOST_PASSWORD")
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
