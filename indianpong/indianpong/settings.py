@@ -179,8 +179,8 @@ STATICFILES_DIRS = [
     BASE_DIR / 'static',
 ]
 
-""" STATIC_ROOT = path.join(BASE_DIR, 'staticfiles') """
-STATIC_ROOT = '/ft_transcendence/staticfiles'
+STATIC_ROOT = BASE_DIR / "staticfiles"
+#STATIC_ROOT = '/ft_transcendence/staticfiles'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
