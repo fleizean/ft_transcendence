@@ -126,7 +126,7 @@ def auth(request):
         return redirect("dashboard")
     auth_url = "https://api.intra.42.fr/oauth/authorize"
     fields = {
-        "client_id": "u-s4t2ud-4b7a045a7cc7dd977eeafae807bd4947670f273cb30e1dd674f6bfa490ba6c45",  # environ.get("FT_CLIENT_ID"),
+        "client_id": environ.get("FT_CLIENT_ID"),
         "redirect_uri": f"{settings.BASE_URL}/auth_callback",  # This should be parameterized
         "scope": "public",
         # "state": state_req,  # This will generate a 50-character long random string
@@ -151,8 +151,8 @@ def auth_callback(request):
         code = request.GET.get("code")
         data = {
             "grant_type": "authorization_code",
-            "client_id": "u-s4t2ud-4b7a045a7cc7dd977eeafae807bd4947670f273cb30e1dd674f6bfa490ba6c45",  # environ.get("FT_CLIENT_ID"),
-            "client_secret": "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",  # environ.get("FT_CLIENT_SECRET"),
+            "client_id": environ.get("FT_CLIENT_ID"),
+            "client_secret": environ.get("FT_CLIENT_SECRET"),
             "code": code,
             "redirect_uri": f"{settings.BASE_URL}/auth_callback",
         }

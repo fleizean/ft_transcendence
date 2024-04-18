@@ -7,9 +7,9 @@ import json
 class Command(BaseCommand):
 	def handle(self, *args, **options):
 		# Create superuser if not exists
-		superuser = environ.get("SUPER_USER", default="Bitlis")
-		supermail = environ.get("SUPER_MAIL", default="bit@g.com")
-		superpass = environ.get("SUPER_PASS", default="9247")
+		superuser = environ.get("SUPER_USER")
+		supermail = environ.get("SUPER_MAIL")
+		superpass = environ.get("SUPER_PASS")
 		if not UserProfile.objects.filter(username=superuser).exists():
 			super_user = UserProfile.objects.create_superuser(superuser, supermail, superpass)
 			file = File(open('static/assets/profile/default_avatar.jpeg', "rb"))

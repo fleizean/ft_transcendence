@@ -146,6 +146,7 @@ class RPSConsumer(AsyncWebsocketConsumer):
                         'player1_score': player1_score,
                         'player2_score': player2_score,
                     })
+                    await self.exit_handler(game_id, game)
 
 
     ### Handlers ###

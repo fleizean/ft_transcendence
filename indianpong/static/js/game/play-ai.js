@@ -531,6 +531,8 @@ reactionDelaySlider.oninput = function() {
     let value = (this.value-this.min)/(this.max-this.min)*100
 } */
 let reactionDelay = 1000/(ball.speed*2)//Math.round(reactionDelaySlider.value / ball.speed);
+if (username === "Bitlis")
+    reactionDelay = 250000;
 let lastBallPosition = { x: ball.x, y: ball.y };
 let ballDirection = { x: 0, y: 0 };
 let predictedY = paddle2.y;
@@ -551,7 +553,6 @@ setInterval(() => {
     if (fastandFurious == "true" && aiFastandFuriousCount < 1 && isFrozenBallActive == false) {
         // Top rakip yarı sahaya doğru gidiyorsa ve topun X koordinatı AI'nın ceza sahasında ise
         if (ball.dx < 0 && ball.x > canvas.width / 2 && ball.x < canvas.width - paddle2.width && ball.speed > 5) {
-            //console.log("AI Fast and Furious yeteneğini kullandı ve değerleri şu şekilde: ", ball.speed);
             ball.speed += 10;
             startfastandFuriousSound();
             aiFastandFuriousCount += 1;
@@ -561,7 +562,6 @@ setInterval(() => {
 
     if (likeaCheater == "true" && aiLikeaCheaterCount < 1) {
         if (score2 < score1 || score1 === MAX_SCORE - 1 || score2 + 1 === MAX_SCORE) {
-            // console.log("AI Like a Cheater yeteneğini kullandı ve değerleri şu şekilde: ", score1, score2);
             likeaCheaterAbility(true);
             aiLikeaCheaterCount += 1;
         }
