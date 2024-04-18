@@ -28,7 +28,8 @@ const gameId = pathArray[3]; // Assuming game_id is the fourth segment of the UR
 
 
 // Connect to the WebSocket server using the extracted game_id and game_type
-const matchsocket = new WebSocket(`wss://${window.location.host}/ws/remote-game/${gameType}/${gameId}/`); //? Maybe we need to pass game type and game id here
+pongSocketActivity = true;
+matchsocket = new WebSocket(`wss://${window.location.host}/ws/remote-game/${gameType}/${gameId}/`); //? Maybe we need to pass game type and game id here
 
 
 const canvas = document.getElementById('pongCanvas');
@@ -215,17 +216,14 @@ function scoreUpdate(player1_score, player2_score) {
 
 matchsocket.onopen = function (e) {
     // Show some greeting message
-    console.log('WebSocket connection established');
 }
 
 matchsocket.onclose = function (e) {
     //clearInterval(BallRequest);
     stopGame();
-    console.error('WebSocket connection closed');
 }
 
 matchsocket.onerror = function (e) {
-    console.error('Error: ' + e.data);
     //clearInterval(BallRequest);
     stopGame();
 }

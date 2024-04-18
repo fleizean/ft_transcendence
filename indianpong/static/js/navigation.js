@@ -115,6 +115,10 @@ window.onpopstate = function(event) {
 function pageHandler(path) {
     const pathParts = path.split('/');
     getCookie();
+    if (rpsSocketActivity)
+      websocket.close();
+    if (pongSocketActivity)
+      matchsocket.close();
     if (animationId)
       cancelAnimationFrame(animationId);
     if (localTournamentAnimationId)

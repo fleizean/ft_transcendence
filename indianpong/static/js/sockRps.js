@@ -20,8 +20,9 @@ function showToast(content, status, iconClass) {
     }, 8000);
 }
 
+rpsSocketActivity = true;
 const wsEndpoint = 'wss://' + window.location.host + '/ws/rps/';
-const websocket = new WebSocket(wsEndpoint);
+websocket = new WebSocket(wsEndpoint);
 
 const cookie = document.cookie.split('; ').find(row => row.startsWith('selectedLanguage='));
 const selectedLanguage = cookie ? cookie.split('=')[1] : 'en'; 
@@ -79,16 +80,13 @@ function scoreUpdate(player1_score, player2_score) {
 
 websocket.onopen = function (e) {
     // Show some greeting message
-    console.log('WebSocket connection established');
 }
 
 websocket.onclose = function (e) {
     // stop the game
-    console.error('WebSocket connection closed');
 }
 
 websocket.onerror = function (e) {
-    console.error('Error: ' + e.data.error);
     // stop the game
 }
 

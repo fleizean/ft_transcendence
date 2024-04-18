@@ -112,8 +112,12 @@
                 var animationId;
                 var localTournamentAnimationId;
                 var localGameAnimationId;
+                var websocket;
+                var matchsocket;
+                var rpsSocketActivity = false;
+                var pongSocketActivity = false;
 
-                function setLanguage(language) {
+                 function setLanguage(language) {
                   document.cookie = "selectedLanguage=" + language;
                   
                   swapApp(window.location.pathname);
