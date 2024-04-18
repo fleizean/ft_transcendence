@@ -856,20 +856,20 @@ def remote_game(request, game_type, game_id):
 
     tournament = ""
     if game_type not in ['peer-to-peer', 'tournament', 'invite']:
-        return redirect(reverse("profile", kwargs={"username": request.user.username}))
+        raise Http404("Invalid game type. It should be either 'peer-to-peer' or 'tournament'.")
 
     if game_type == 'peer-to-peer' and game_id != 'new':
-        return redirect(reverse("profile", kwargs={"username": request.user.username}))
+        raise Http404("Invalid game id for peer-to-peer. It should be 'new'.")
 
     if game_type == 'tournament':
         game = get_object_or_404(Game, id=game_id)
         tournament = get_object_or_404(Tournament, id=game.tournament_id)
         if game.winner is not None:
-            return redirect(reverse("profile", kwargs={"username": request.user.username}))
+            raise Http404("The game is already finished.")
     elif game_type == 'invite':
         game = get_object_or_404(Game, id=game_id)
         if game.winner is not None:
-            return redirect(reverse("profile", kwargs={"username": request.user.username}))
+            raise Http404("The game is already finished.")
 
     lang = request.COOKIES.get('selectedLanguage', 'en')
     context = langs.get_langs(lang)
