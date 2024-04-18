@@ -1,6 +1,6 @@
 #!/bin/bash
 
-python3 manage.py makemigrations
+python3 manage.py makemigrations pong
 python3 manage.py migrate
 python3 manage.py initdata
 python3 manage.py populate 10
