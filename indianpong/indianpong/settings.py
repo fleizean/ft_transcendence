@@ -11,8 +11,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
-from os import environ, path
-import os
+from os import environ, getenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -29,7 +28,7 @@ DEBUG = environ.get("DEBUG", default=False) == 'True'
 
 BASE_URL = environ.get("BASE_URL", default='https://localhost:8443')
 
-ALLOWED_HOSTS = ['indianpong.com','indianpong.onrender.com', 'http://127.0.0.1:8000', 'localhost', '127.0.0.1', 'https://127.0.0.1:8443', 'https://localhost:8443']#environ.get("ALLOWED_HOSTS", default="").split(" ")
+ALLOWED_HOSTS = ['indianpong.onrender.com', 'localhost', '127.0.0.1']#environ.get("ALLOWED_HOSTS", default="").split(" ")
 
 CSRF_TRUSTED_ORIGINS = [
     'https://indianpong.onrender.com',
@@ -121,9 +120,9 @@ ASGI_APPLICATION = 'indianpong.asgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('POSTGRES_DB'), 
-        'USER': os.getenv('POSTGRES_USER'),
-        'PASSWORD': os.getenv('POSTGRES_PASSWORD'),
+        'NAME': getenv('POSTGRES_DB'), 
+        'USER': getenv('POSTGRES_USER'),
+        'PASSWORD': getenv('POSTGRES_PASSWORD'),
         'HOST': 'db',
         'PORT': '5432',
     }
@@ -180,7 +179,7 @@ STATICFILES_DIRS = [
 ]
 
 STATIC_ROOT = BASE_DIR / "staticfiles"
-#STATIC_ROOT = '/ft_transcendence/staticfiles'
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field

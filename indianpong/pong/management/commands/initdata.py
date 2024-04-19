@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand
-from pong.models import UserProfile, StoreItem, Social
+from pong.models import UserProfile, StoreItem
 from django.core.files import File
 from os import environ
 import json

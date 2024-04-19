@@ -1,18 +1,17 @@
-from datetime import timedelta
-from email.mime.image import MIMEImage
-import os
-from django.conf import settings
+#from datetime import timedelta
+#from email.mime.image import MIMEImage
+#from django.core.mail import send_mail
+#from django import forms
+#from django.urls import reverse
+#from django.utils.safestring import mark_safe
+#from django.utils import timezone
 from django.core.mail import EmailMultiAlternatives
-from django.core.mail import send_mail
 from django import forms
-from django.urls import reverse
-from django.utils.safestring import mark_safe
-from django.utils import timezone
 from django.contrib.auth.tokens import default_token_generator
 from django.template.loader import render_to_string
 from django.utils.http import urlsafe_base64_encode
 from django.utils.encoding import force_bytes
-from indianpong.settings import EMAIL_HOST_USER, STATICFILES_DIRS
+from indianpong.settings import EMAIL_HOST_USER, BASE_URL
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, UserChangeForm, PasswordChangeForm, PasswordResetForm, SetPasswordForm 
 from .models import Social, VerifyToken, UserProfile, Tournament
 from django.contrib.auth import authenticate
@@ -530,7 +529,7 @@ class PasswordResetUserForm(PasswordResetForm):
         mail_subject = 'Reset your password'
         message = render_to_string('password_reset_email.html', {
             'user': user,
-            'domain': settings.BASE_URL,
+            'domain': BASE_URL,
             'uid': urlsafe_base64_encode(force_bytes(user.pk)),
             'token': token,
         })
@@ -569,20 +568,6 @@ class PasswordResetUserForm(PasswordResetForm):
         email.send(fail_silently=True)
         #send_mail(mail_subject, message, EMAIL_HOST_USER, [user.email], fail_silently=True, html_message=message)
 
-
-""" class TokenValidationForm(forms.Form):
-    token = forms.CharField(label='Token', widget=forms.TextInput(attrs={'class': 'input'}) )
-
-    class Meta:
-        model = Token
-        fields = ['token']
-
-    def clean_token(self):
-        token = self.cleaned_data.get('token')
-        token_obj = Token.objects.filter(token=token).first()
-        if not token_obj or timezone.now() - token_obj.created_at > timedelta(minutes=2):
-            raise forms.ValidationError('Invalid or expired token.')
-        return token """
 
 #After reset password
 class SetPasswordUserForm(SetPasswordForm):
@@ -625,7 +610,6 @@ class TournamentForm(forms.ModelForm):
         return tournament
     
 
-
 """
 class BlockUserForm(forms.ModelForm):
     blocked_user = forms.ModelChoiceField(queryset=UserProfile.objects.all(), widget=forms.Select(attrs={'class': 'input'}))
@@ -633,17 +617,6 @@ class BlockUserForm(forms.ModelForm):
     class Meta:
         model = BlockedUser
         fields = ['blocked_user']
-
-class TwoFactorAuthSetupForm(forms.ModelForm):
-    class Meta:
-        model = TwoFactorAuth
-        fields = ['is_enabled']
-
-class JWTTokenForm(forms.ModelForm):
-    class Meta:
-        model = JWTToken
-        fields = ['token']
-
 """
 
 

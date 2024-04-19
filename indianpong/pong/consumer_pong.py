@@ -1,11 +1,8 @@
-import asyncio
 import json
 from channels.generic.websocket import AsyncWebsocketConsumer
 from channels.db import database_sync_to_async
-from asgiref.sync import sync_to_async, async_to_sync
 from pong.utils import AsyncLockedDict
 from django.core.cache import cache
-from .utils import add_to_cache, remove_from_cache
 #from .models import Game, Tournament, UserProfile
 from pong.game import *
 import datetime
