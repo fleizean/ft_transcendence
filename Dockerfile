@@ -16,7 +16,7 @@ COPY indianpong /indianpong
 
 RUN chmod +x /indianpong/start.sh
 
-EXPOSE 8001
+EXPOSE 8443
 
 CMD [ "sh", "/indianpong/start.sh" ]
 

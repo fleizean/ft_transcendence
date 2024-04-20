@@ -136,11 +136,11 @@ def auth_callback(request):
     if request.method == "GET":
         # Create a context that doesn't verify SSL certificates
         # Create a SSL context
-        ssl_context = ssl.create_default_context()
+        #ssl_context = ssl.create_default_context()
 
         # Load your certificate
-        ssl_context.load_cert_chain(certfile='../etc/nginx/ssl/cert.pem', keyfile='../etc/nginx/ssl/key.pem')
-        #ssl_context = ssl._create_unverified_context()  # TODO temporary solution
+        #ssl_context.load_cert_chain(certfile='../etc/nginx/ssl/cert.pem', keyfile='../etc/nginx/ssl/key.pem')
+        ssl_context = ssl._create_unverified_context()  # TODO temporary solution
         code = request.GET.get("code")
         data = {
             "grant_type": "authorization_code",
@@ -155,7 +155,7 @@ def auth_callback(request):
         )
         response = urllib.request.urlopen(
             req, context=ssl_context
-        )  # TODO temporary solution
+        )
 
     # Process the response, store the access token, and authenticate the user
     if response.status == 200:
@@ -173,7 +173,7 @@ def auth_callback(request):
         req = urllib.request.Request("https://api.intra.42.fr/v2/me", headers=headers)
         user_info_response = urllib.request.urlopen(
             req, context=ssl_context
-        )  # TODO temporary solution
+        )
 
         if user_info_response.status == 200:
             user_data = json.loads(user_info_response.read().decode("utf-8"))
@@ -238,9 +238,9 @@ def login_view(request):
         form = AuthenticationUserForm(request, request.POST)
         if form.is_valid():
             user = form.get_user()
-            if not user.is_verified: #TODO confirm_login_allowed make this unnecessary?
+            """if not user.is_verified: #TODO confirm_login_allowed make this unnecessary?
                 msg = {'tr': "Lütfen e-posta adresinizi doğrulayın.", 'hi': "कृपया अपना ईमेल पता सत्यापित करें।", 'pt': "Por favor, verifique seu endereço de e-mail.", 'en': "Please verify your email address."}
-                return HttpResponse(msg[lang])
+                return HttpResponse(msg[lang])"""
             login(request, user)
             return HttpResponse("dashboard")
         else:
