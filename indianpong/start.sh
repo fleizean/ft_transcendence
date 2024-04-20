@@ -21,5 +21,5 @@ python3 manage.py migrate
 python3 manage.py initdata
 #python3 manage.py populate 10
 #python3 manage.py collectstatic --no-input
-python3 manage.py runserver 8443
+#python3 manage.py runserver 8443
 exec "$@"

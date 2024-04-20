@@ -9,4 +9,4 @@ services:
     env_file:
       - .env
     ports:
-      - 8443:8443
+      - 8000:8000

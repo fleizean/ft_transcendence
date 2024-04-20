@@ -16,8 +16,10 @@ COPY indianpong /indianpong
 
 RUN chmod +x /indianpong/start.sh
 
-EXPOSE 8443
+EXPOSE 8000
 
-CMD [ "sh", "/indianpong/start.sh" ]
+ENTRYPOINT ["sh", "/indianpong/start.sh"]
+
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
 
 
