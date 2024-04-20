@@ -982,6 +982,8 @@ def tournament_room(request, id):
 
             if match:
                 match.forfeit(request.user)
+                tournament.played_games_count += 1
+                tournament.save()
                 if (lang == 'tr'):
                     sucess = 'Turnuvadan çekildiniz.'
                 elif (lang == 'hi'):
