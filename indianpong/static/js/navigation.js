@@ -32,7 +32,9 @@ function updateApp(path) {
     .then(response => response.text())
     .then(html => {
       document.body.innerHTML = html;
-      pageHandler(path);
+      if (!html.includes('<div class="big-text">404 ERROR</div>')) {
+          pageHandler(path);
+      }
       hideLoadingScreen();
     })
     .catch(error => console.error(error));
