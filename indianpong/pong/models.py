@@ -1,19 +1,16 @@
-from email.mime.image import MIMEImage
-import os
-import random
+#from email.mime.image import MIMEImage
+#from django.core.mail import send_mail
+#from django.dispatch import receiver
+import random, os
 from django.db import models
 from django.contrib.auth.models import AbstractUser
-from django.contrib.auth.signals import user_logged_in, user_logged_out
 from django.core.validators import MinValueValidator, MaxValueValidator
-from django.dispatch import receiver
 from django.utils.html import mark_safe
-from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from django.core.mail import EmailMultiAlternatives
 from .utils import create_random_svg, get_upload_to
-from indianpong.settings import EMAIL_HOST_USER, STATICFILES_DIRS
+from indianpong.settings import EMAIL_HOST_USER, BASE_URL
 from django.utils import timezone
-from django.conf import settings
 import uuid
 from datetime import timedelta
 from .game import MAX_SCORE
@@ -210,7 +207,7 @@ class VerifyToken(models.Model):
         mail_subject = 'Activate your account.'
         message = render_to_string('activate_account_email.html', {
             'user': user,
-            'domain': settings.BASE_URL,
+            'domain': BASE_URL,
             'token': token.token,
         })
 
@@ -365,7 +362,7 @@ class Tournament(models.Model):
             except Room.DoesNotExist:
                 room = Room.objects.create(first_user=game.player1, second_user=game.player2)
         # Create message for the room with game link
-        message = f"{settings.BASE_URL}/remote-game/tournament/{game.id}"
+        message = f"{BASE_URL}/remote-game/tournament/{game.id}"
         Message.objects.create(user=game.player1, room=room, content=message)
     
 
@@ -395,32 +392,3 @@ class Message(models.Model):
 
     def get_short_date(self):
         return str(self.created_date.strftime("%H:%M"))
-
-"""
-class GameInvitation(models.Model):
-    inviting_user = models.ForeignKey(UserProfile, related_name='invitations_sent', on_delete=models.CASCADE)
-    invited_user = models.ForeignKey(UserProfile, related_name='invitations_received', on_delete=models.CASCADE)
-    message = models.TextField()
-    created_at = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return f"{self.inviting_user.username} invited {self.invited_user.username} to play Pong"
-    
-class GameWarning(models.Model):
-    user = models.ForeignKey(UserProfile, related_name='warnings_sent', on_delete=models.CASCADE)
-    opponent = models.ForeignKey(UserProfile, related_name='warnings_received', on_delete=models.CASCADE)
-    created_at = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return f"{self.user.username} sent a game warning to {self.opponent.username}"
-
-class TwoFactorAuth(models.Model):
-    user = models.OneToOneField(UserProfile, on_delete=models.CASCADE)
-    secret_key = models.CharField(max_length=16)  # Store the secret key securely
-    is_enabled = models.BooleanField(default=False)
-
-class JWTToken(models.Model):
-    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
-    token = models.CharField(max_length=255)
-    expires_at = models.DateTimeField()
-"""

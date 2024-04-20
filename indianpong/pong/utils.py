@@ -1,10 +1,6 @@
-from django.shortcuts import render, redirect
-from django.contrib.auth import login
-import asyncio
-import os
+import asyncio, os, hashlib
 from django.utils.crypto import get_random_string
 from django.core.files.base import ContentFile
-import base64, hashlib
 from django.core.cache import cache
 
 def delete_from_media(path):
@@ -40,14 +36,6 @@ def get_equipped_item_value(user_items, item_name, default_item):
         item = user_items.filter(item__name=item_name, is_equipped=True).first()
         return "true" if item else "false"
 
-def pass2fa(request, user_obj):
-	if user_obj.has_2fa:
-		hashed_secret = hashlib.sha512((user_obj.username + os.environ.get("OTP_SECRET")).encode("utf-8")).digest()
-		encoded_secret = base64.b32encode(hashed_secret)
-		return render(request, "pass2fa.html", {"user": user_obj.username,"key": encoded_secret})
-	else:
-		login(request, user_obj)
-		return redirect("index")
      
 # This is a race-safe dictionary that can be used to store online status of users
 # It is used to check if a user is online before inviting them to a game
@@ -86,7 +74,7 @@ class AsyncLockedDict:
             setattr(self.dict[key], field_name, value)
 
 
-def add_to_cache(key, container, value):
+""" def add_to_cache(key, container, value):
     container_ = cache.get(key, container)
     container_.add(value)
     cache.set(key, container_)
@@ -96,3 +84,12 @@ def remove_from_cache(key, container, value):
     if container_:
         container_.remove(value)
         cache.set(key, container_)
+
+def pass2fa(request, user_obj):
+	if user_obj.has_2fa:
+		hashed_secret = hashlib.sha512((user_obj.username + os.environ.get("OTP_SECRET")).encode("utf-8")).digest()
+		encoded_secret = base64.b32encode(hashed_secret)
+		return render(request, "pass2fa.html", {"user": user_obj.username,"key": encoded_secret})
+	else:
+		login(request, user_obj)
+		return redirect("index") """

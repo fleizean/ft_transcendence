@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 cd indianpong
 python3 manage.py makemigrations pong

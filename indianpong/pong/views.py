@@ -1,17 +1,31 @@
-import os
 from django.forms import model_to_dict
 from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.cache import never_cache
 from django.contrib.auth import login, logout
 from django.contrib import messages
-from django.http import HttpResponse, HttpResponseBadRequest
-from django.http import HttpResponseRedirect
-from django.http import Http404
-from django.conf import settings
+from django.http import HttpResponse, Http404
+from indianpong.settings import BASE_URL
 from django.utils import timezone
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-import ssl
+from .utils import delete_from_media, get_equipped_item_value
+from os import environ
+from datetime import datetime, timedelta
+from django.utils.http import urlsafe_base64_decode
+import urllib.parse
+import urllib.request
+from urllib.parse import urlencode
+import json, ssl
+from django.core.files import File
+from django.template.loader import render_to_string
+from django.contrib.auth.tokens import default_token_generator
+from django.contrib.auth import get_user_model
+from django.http import JsonResponse
+from django.db.models import Q
+from django.contrib.auth import update_session_auth_hash
+from django.urls import reverse
+from django.views.decorators.csrf import csrf_exempt
+from . import langs
 
 from .forms import (
     DeleteAccountForm,
@@ -23,7 +37,6 @@ from .forms import (
     StoreItemActionForm,
     UserProfileForm,
     UpdateUserProfileForm,
-
     AuthenticationUserForm,
     TournamentForm,
 )
@@ -38,29 +51,8 @@ from .models import (
     Room,
     Message,
 )
-from .utils import delete_from_media, get_equipped_item_value, pass2fa
-from os import environ
-from datetime import datetime, timedelta
-from django.utils.http import urlsafe_base64_decode
-import urllib.parse
-import urllib.request
-from urllib.parse import urlencode
-import json
-from django.core.files import File
-from django.core.mail import send_mail
-from django.template.loader import render_to_string
-from django.contrib.auth.tokens import default_token_generator
-from django.contrib.auth import get_user_model
-from django.http import JsonResponse
-from django.db.models import Q
-from django.contrib.auth import update_session_auth_hash
-from django.urls import reverse
-from django.views.decorators.csrf import csrf_exempt
-import random
-from . import langs
 
 ### Homepage and Error Page ###
-
 
 @never_cache
 def index(request):
@@ -95,7 +87,7 @@ def signup(request):
                 user=user, token=default_token_generator.make_token(user)
             )
             obj.send_verification_email(request, user)
-            messages.success(request, "Please check your email to verify your account.")
+            #messages.success(request, "Please check your email to verify your account.")
             return HttpResponse("login")
         else:
             return HttpResponse(render_to_string("signup.html", {"form": form, "context": context}, request=request))
@@ -114,7 +106,7 @@ def activate_account(request, token):
     token.user.is_verified = True
     token.user.save()
     token.delete()
-    messages.success(request, "Your account has been verified.")
+    #messages.success(request, "Your account has been verified.")
     login(request, token.user)
     return redirect("profile", request.user.username)
 
@@ -127,7 +119,7 @@ def auth(request):
     auth_url = "https://api.intra.42.fr/oauth/authorize"
     fields = {
         "client_id": environ.get("FT_CLIENT_ID"),
-        "redirect_uri": f"{settings.BASE_URL}/auth_callback",  # This should be parameterized
+        "redirect_uri": f"{BASE_URL}/auth_callback",  # This should be parameterized
         "scope": "public",
         # "state": state_req,  # This will generate a 50-character long random string
         "response_type": "code",
@@ -154,7 +146,7 @@ def auth_callback(request):
             "client_id": environ.get("FT_CLIENT_ID"),
             "client_secret": environ.get("FT_CLIENT_SECRET"),
             "code": code,
-            "redirect_uri": f"{settings.BASE_URL}/auth_callback",
+            "redirect_uri": f"{BASE_URL}/auth_callback",
         }
         encoded_data = urllib.parse.urlencode(data).encode("utf-8")
         req = urllib.request.Request(
@@ -463,7 +455,7 @@ def password_change(request):
         if form.is_valid():
             form.save()
             # Perform additional actions if needed
-            messages.success(request, "Password changed successfully.")
+            #messages.success(request, "Password changed successfully.")
             return redirect("profile", request.user.username)
     else:
         form = PasswordChangeUserForm(request.user)
@@ -480,7 +472,7 @@ def password_reset(request):
             # uid, token = form.save()
             form.save(request=request)
             # Perform additional actions if needed
-            messages.success(request, "Password reset email sent successfully.")
+            #messages.success(request, "Password reset email sent successfully.")
             return redirect("password_reset_done")
             # return redirect('set_password', uidb64=uid, token=token)
     else:
@@ -511,43 +503,15 @@ def set_password(request, uidb64, token):
             form = SetPasswordUserForm(user, request.POST)
             if form.is_valid():
                 form.save()
-                messages.success(request, "Your password has been reset.")
+                #messages.success(request, "Your password has been reset.")
                 return redirect("login")
         else:
             form = SetPasswordUserForm(user)
         return render(request, "set_password.html", {"form": form, "context": context})
     else:
         # invalid token
-        messages.error(request, "The reset password link is invalid.")
+        #messages.error(request, "The reset password link is invalid.")
         return redirect("password_reset", {"context": context})
-
-
-""" @never_cache
-@login_required()
-def password_reset_done(request, uidb64, token):
-    if request.method == 'POST':
-        form = TokenValidationForm(request.POST)
-        if form.is_valid():
-            user_id = force_text(urlsafe_base64_decode(uidb64))
-            #user = UserProfile.objects.get(pk=user_id)
-            return redirect('set_password', uidb64, token)
-    else:
-        form = TokenValidationForm()
-    return render(request, 'password_reset_done.html', {'form': form})
-
-@never_cache
-@login_required()
-def set_password(request, uidb64, token):
-    if request.method == 'POST':
-        form = SetPasswordUserForm(request.user, request.POST)
-        if form.is_valid():
-            form.save()
-            # Perform additional actions if needed
-            messages.success(request, 'Password set successfully.')
-            return redirect('profile', request.user.username)
-    else:
-        form = SetPasswordUserForm()
-    return render(request, 'set_password.html', {'form': form}) """
 
 ### Navbar ###
 
@@ -626,10 +590,7 @@ def store(request, username): #store_view
                         profile.store_items.add(user_item.item)
                         profile.save()
                     else:
-                        messages.error(
-                            request,
-                            "You don't have enough Indian Wallet to buy this item.",
-                        )
+                        messages.error(request, "You don't have enough Indian Wallet to buy this item.")
 
     else:
         # category areas
@@ -763,11 +724,6 @@ def follow_unfollow(request, username):
         return JsonResponse({"status": "error", "message": "Invalid action"})
         
     return JsonResponse({"status": "ok", "action": action})
-
-
-@login_required()
-def game(request):
-    return render(request, "game.html")
 
 
 @login_required()
@@ -1026,10 +982,24 @@ def tournament_room(request, id):
 
             if match:
                 match.forfeit(request.user)
-                messages.success(request, 'You have forfeited the tournament.')
+                if (lang == 'tr'):
+                    sucess = 'Turnuvadan çekildiniz.'
+                elif (lang == 'hi'):
+                    sucess = 'आपने टूर्नामेंट से हार मान ली है।'
+                elif (lang == 'pt'):
+                    sucess = 'Você desistiu do torneio.'
+                else:
+                    sucess = 'You have forfeited the tournament.'
             else:
-                messages.error(request, 'There is no such a game')
-    
+                if (lang == 'tr'):
+                    error = 'Öyle bir oyun yok.'
+                elif (lang == 'hi'):
+                    error = 'ऐसा कोई खेल नहीं है।'
+                elif (lang == 'pt'):
+                    error = 'Não há tal jogo.'
+                else:
+                    error = 'There is no such a game'
+
     tournament = Tournament.objects.filter(id=id).first()
     if tournament:
         empty_slots = range(max(0, 4-tournament.participants.count()))
@@ -1088,66 +1058,15 @@ def tournament_create(request):
     return HttpResponse(render_to_string("tournament-create.html", {"form": form, "context": context}, request=request))
 
 
-""" @never_cache
-@login_required()
-def create_tournament_match(request):
-    if request.method == "POST":
-        form = TournamentMatchForm(request.POST)
-        if form.is_valid():
-            match = form.save()
-            messages.success(
-                request,
-                f"Match between {match.player1} and {match.player2} created successfully.",
-            )
-            return redirect("tournament_match_list")
-    else:
-        form = TournamentMatchForm()
-    return render(request, "create_tournament_match.html", {"form": form}) """
-
-
-### Two-Factor Authentication ###
-
-"""
-@never_cache
-@login_required()
-def setup_two_factor_auth(request):
-    if request.method == "POST":
-        form = TwoFactorAuthSetupForm(request.POST, instance=request.user.twofactorauth)
-        if form.is_valid():
-            form.save()
-
-            messages.success(request, "Two-Factor Authentication successfully set up.")
-            return redirect("profile", request.user.username)
-    else:
-        form = TwoFactorAuthSetupForm(instance=request.user.twofactorauth)
-    return render(request, "setup_two_factor_auth.html", {"form": form})
-
-
-@never_cache
-@login_required()
-def generate_jwt_token(request):
-    if request.method == "POST":
-        form = JWTTokenForm(request.POST, instance=request.user.jwttoken)
-        if form.is_valid():
-            form.save()
-            messages.success(request, "JWT Token generated successfully.")
-            return redirect("profile", request.user.username)
-    else:
-        form = JWTTokenForm(instance=request.user.jwttoken)
-    return render(request, "generate_jwt_token.html", {"form": form})
-"""
-
 # Game logics #
 
 @csrf_exempt
 def get_useritems(request):
     lang = request.COOKIES.get('selectedLanguage', 'en')
-    context = langs.get_langs(lang)
     if request.method == "POST":
         data = json.loads(request.body)
         username = data.get("username")
         
-
         user_profile = get_object_or_404(UserProfile, username=username)
         user_items = UserItem.objects.filter(user=user_profile)
 
@@ -1170,14 +1089,13 @@ def get_useritems(request):
             "frozenball": frozenball,
         }
         return JsonResponse(response_data)
-    message = "Only POST method is allowed."
-    if (lang == 'tr'):
-        message = "Sadece POST istekleri geçerlidir."
-    elif (lang == 'pt'):
-        message = "Somente o método POST é permitido"
-    elif (lang == 'hi'):
-        message = "केवल POST विधि की अनुमति है"
-    return JsonResponse({"error": message}, status=405)
+    messages = {
+        'tr': "Sadece POST istekleri geçerlidir.",
+        'pt': "Somente o método POST é permitido",
+        'hi': "केवल POST विधि की अनुमति है",
+        'en': "Only POST method is allowed."
+    }
+    return JsonResponse({"error": messages[lang]}, status=405)
 
 
 @csrf_exempt
@@ -1211,7 +1129,7 @@ def update_winner_pong(data):
     start_time = datetime.strptime(start_time, "%Y-%m-%dT%H:%M:%S.%fZ")
     finish_time = datetime.strptime(finish_time, "%Y-%m-%dT%H:%M:%S.%fZ")
     game_duration = finish_time - start_time
-    game_record = Game.objects.create(
+    Game.objects.create(
         game_kind = "pong",
         group_name=winner_profile.username + "_" + loser_profile.username,
         player1=winner_profile,
@@ -1244,7 +1162,7 @@ def update_winner_rps(data):
     start_time = datetime.strptime(start_time, "%Y-%m-%dT%H:%M:%S.%fZ")
     finish_time = datetime.strptime(finish_time, "%Y-%m-%dT%H:%M:%S.%fZ")
     game_duration = finish_time - start_time
-    game_record = Game.objects.create(
+    Game.objects.create(
         game_kind = "rps",
         group_name=winner_profile.username + "_" + loser_profile.username,
         player1=winner_profile,
