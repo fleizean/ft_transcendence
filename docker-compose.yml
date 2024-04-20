@@ -1,9 +1,7 @@
-# docker-compose.yaml
 version: '3.9'
 
 services:
   web:
-    #image: aktas/indianpong:latest
     build: 
       context: .
       dockerfile: Dockerfile
