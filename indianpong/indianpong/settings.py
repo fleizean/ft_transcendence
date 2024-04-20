@@ -109,15 +109,15 @@ ASGI_APPLICATION = 'indianpong.asgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-""" DATABASES = {
+DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
-} """
+}
 
 
-DATABASES = {
+""" DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': getenv('POSTGRES_DB'), 
@@ -126,7 +126,7 @@ DATABASES = {
         'HOST': 'db',
         'PORT': '5432',
     }
-}
+} """
 
 # For production, you should use a more robust caching backend like Memcached or Redis.
 CACHES = {
@@ -189,18 +189,18 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
 
-""" EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
 EMAIL_FILE_PATH = BASE_DIR / 'sent_emails'
-EMAIL_HOST_USER = 'indianpong@gmail.com' """
+EMAIL_HOST_USER = 'indianpong@gmail.com'
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+""" EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_HOST_USER = environ.get("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = environ.get("EMAIL_HOST_PASSWORD")
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 EMAIL_USE_TLS = True
-EMAIL_USE_SSL = False
+EMAIL_USE_SSL = False """
 
 """ import certifi
 environ['SSL_CERT_FILE'] = certifi.where() """
