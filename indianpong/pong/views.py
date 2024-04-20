@@ -938,7 +938,7 @@ def tournament_room(request, id):
                 sucess = 'The tournament has been started successfully.'
 
     elif 'join_tournament' in request.POST:
-        if tournament.participants.count() >= 4:
+        if tournament.participants.count() == 4:
             if (lang == 'tr'):
                 error = 'Turnuva dolu.'
             elif (lang == 'hi'):
