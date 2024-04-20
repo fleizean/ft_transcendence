@@ -28,13 +28,12 @@ DEBUG = environ.get("DEBUG", default='True') == 'True'
 
 BASE_URL = environ.get("BASE_URL", default='https://localhost:8443')
 
-ALLOWED_HOSTS = ['indianpong.onrender.com', 'localhost', '127.0.0.1', 'indianpongu.onrender.com']#environ.get("ALLOWED_HOSTS", default="").split(" ")
+ALLOWED_HOSTS = ['indianpong.onrender.com', 'localhost', '127.0.0.1', 'ft-transcendence-tv4y.onrender.com']#environ.get("ALLOWED_HOSTS", default="").split(" ")
 
 CSRF_TRUSTED_ORIGINS = [
     'https://indianpong.onrender.com',
+    'https://ft-transcendence-tv4y.onrender.com',
     'http://indianpong.onrender.com',
-    'https://indianpongu.onrender.com',
-    'http://indianpongu.onrender.com',
     'https://127.0.0.1:8443',
     'https://localhost:8443',
     'http://localhost:8000',
