@@ -5,6 +5,7 @@ from django.views.decorators.cache import never_cache
 from django.contrib.auth import login, logout
 from django.contrib import messages
 from django.http import HttpResponse, Http404
+from .update import update_tournament
 from indianpong.settings import BASE_URL
 from django.utils import timezone
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -937,7 +938,7 @@ def tournament_room(request, id):
                 sucess = 'The tournament has been started successfully.'
 
     elif 'join_tournament' in request.POST:
-        if tournament.participants.count() >= 4:
+        if tournament.participants.count() == 4:
             if (lang == 'tr'):
                 error = 'Turnuva dolu.'
             elif (lang == 'hi'):
@@ -982,8 +983,7 @@ def tournament_room(request, id):
 
             if match:
                 match.forfeit(request.user)
-                tournament.played_games_count += 1
-                tournament.save()
+                update_tournament(match)
                 if (lang == 'tr'):
                     sucess = 'Turnuvadan çekildiniz.'
                 elif (lang == 'hi'):
