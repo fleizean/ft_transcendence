@@ -33,14 +33,18 @@ class Command(BaseCommand):
 			user.is_indianai = True
 			user.elo_point = 1000
 			user.save()
-			self.stdout.write(self.style.SUCCESS('IndianAI created successfully.'))  
+			self.stdout.write(self.style.SUCCESS('IndianAI created successfully.'))
+		
 		# Load store data    
-		with open('static/assets/stores/store_data.json') as f:
-			data = json.load(f)
+		if not StoreItem.objects.filter(name="My Beautiful AI").exists():
+			with open('static/assets/stores/store_data.json') as f:
+				data = json.load(f)
 
-		for item_data in data:
-			StoreItem.objects.create(**item_data)
+			for item_data in data:
+				StoreItem.objects.create(**item_data)
 
-		self.stdout.write(self.style.SUCCESS('Store data loaded successfully.'))
+			self.stdout.write(self.style.SUCCESS('Store data loaded successfully.'))
+			
+		self.stdout.write(self.style.SUCCESS('Data initialization completed successfully.'))
 
 
