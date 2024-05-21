@@ -228,20 +228,20 @@ of the project.</b>
 <hr>
 <br>
 <br>
-<h1> Screen Shoots </h1>
-<center>
+<h1 align="center"> Screen Shoots </h1>
+<div align="center">
     <img src="https://i.hizliresim.com/d694u7j.png" alt="42"/>
     <img src="https://i.hizliresim.com/gnfb8rx.png" alt="42"/>
     <img src="https://i.hizliresim.com/kewrbvz.png" alt="42"/>
     <img src="https://i.hizliresim.com/ikihl5f.png" alt="42"/>
-</center>
+</div>
 <hr>
 <br>
 <br>
 <center>
-<h1> Our Team - indian full stack developers 🇮🇳</h1>
+<h1 align="center"> Our Team - indian full stack developers 🇮🇳</h1>
 
-<table class="ourteam">
+<table align="center" class="ourteam">
   <tr>
     <td align="center"><a href="https://github.com/temasictfic/" style="text-decoration:none; color: #00ff15;"><img src="https://i.hizliresim.com/mu0ink4.jpg" width="100px;" alt=""/><br /><sub><b>sciftci (Samet)</b></sub></a><br />
     <br><a href="https://profile.intra.42.fr/users/sciftci" title="Intra 42"><img src="https://img.shields.io/badge/Kocaeli-FFFFFF?style=plastic&logo=42&logoColor=000000" alt="Intra 42"/></a></td>
