@@ -228,6 +228,14 @@ of the project.</b>
 <hr>
 <br>
 <br>
+<h1> Screen Shoots</h1>
+[url=https://hizliresim.com/d694u7j][img]https://i.hizliresim.com/d694u7j.png[/img][/url]
+[url=https://hizliresim.com/gnfb8rx][img]https://i.hizliresim.com/gnfb8rx.png[/img][/url]
+[url=https://hizliresim.com/kewrbvz][img]https://i.hizliresim.com/kewrbvz.png[/img][/url]
+[url=https://hizliresim.com/ikihl5f][img]https://i.hizliresim.com/ikihl5f.png[/img][/url]
+<hr>
+<br>
+<br>
 <center>
 <h1> Our Team - indian full stack developers 🇮🇳</h1>
 
