@@ -230,10 +230,10 @@ of the project.</b>
 <br>
 <h1> Screen Shoots </h1>
 <center>
-[![Resim 1](https://i.hizliresim.com/d694u7j.png)](https://hizliresim.com/d694u7j)
-[![Resim 2](https://i.hizliresim.com/gnfb8rx.png)](https://hizliresim.com/gnfb8rx)
-[![Resim 3](https://i.hizliresim.com/kewrbvz.png)](https://hizliresim.com/kewrbvz)
-[![Resim 4](https://i.hizliresim.com/ikihl5f.png)](https://hizliresim.com/ikihl5f)
+    <img src="https://i.hizliresim.com/d694u7j.png" alt="42"/>
+    <img src="https://i.hizliresim.com/gnfb8rx.png" alt="42"/>
+    <img src="https://i.hizliresim.com/kewrbvz.png" alt="42"/>
+    <img src="https://i.hizliresim.com/ikihl5f.png" alt="42"/>
 </center>
 <hr>
 <br>
