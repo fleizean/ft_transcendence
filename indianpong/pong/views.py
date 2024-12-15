@@ -153,7 +153,7 @@ def auth_callback(request):
         print(f"Request data: {data}")
 
         try:
-            response = requests.post("https://api.intra.42.fr/oauth/token", data=data, verify=False, cert=('../etc/nginx/ssl/cert.pem', '../etc/nginx/ssl/key.pem'))
+            response = requests.post("https://api.intra.42.fr/oauth/token", data=data, verify=True, cert=('../etc/nginx/ssl/cert.pem', '../etc/nginx/ssl/key.pem'))
             response.raise_for_status()
         except requests.exceptions.HTTPError as e:
             print(f"HTTPError: {e.response.status_code} - {e.response.reason}")
@@ -169,7 +169,7 @@ def auth_callback(request):
 
         headers = {"Authorization": f"Bearer {access_token}"}
         try:
-            user_info_response = requests.get("https://api.intra.42.fr/v2/me", headers=headers, verify=False, cert=('../etc/nginx/ssl/cert.pem', '../etc/nginx/ssl/key.pem'))
+            user_info_response = requests.get("https://api.intra.42.fr/v2/me", headers=headers, verify=True, cert=('../etc/nginx/ssl/cert.pem', '../etc/nginx/ssl/key.pem'))
             user_info_response.raise_for_status()
         except requests.exceptions.HTTPError as e:
             print(f"HTTPError: {e.response.status_code} - {e.response.reason}")

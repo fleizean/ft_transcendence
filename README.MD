@@ -1,7 +1,7 @@
 # ft_transcendence_newpdf*
 
-Version: 3.0.1
-Latest Date: 15.12.2024
+<p align="center"><b>Version: 3.0.1</b><br>
+Latest Date: 15.12.2024</p>
 
 <p align="center">
     <img src="https://i.hizliresim.com/ctrhatw.png"/>
