@@ -3,3 +3,5 @@ Pillow==11.0.0
 channels==4.0.0
 daphne==4.0.0
 psycopg2-binary
+requests
+certifi

@@ -27,7 +27,7 @@ from django.contrib.auth import update_session_auth_hash
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 from . import langs
-
+import requests
 from .forms import (
     DeleteAccountForm,
     PasswordChangeUserForm,
@@ -52,6 +52,7 @@ from .models import (
     Room,
     Message,
 )
+import requests
 
 ### Homepage and Error Page ###
 
@@ -130,18 +131,16 @@ def auth(request):
     return redirect(url)
 
 
+
 @never_cache
 def auth_callback(request):
-    # Handle the callback from 42 and exchange the code for an access token
     if request.method == "GET":
-        # Create a context that doesn't verify SSL certificates
-        # Create a SSL context
+        code = request.GET.get("code")
         ssl_context = ssl.create_default_context()
 
         # Load your certificate
         ssl_context.load_cert_chain(certfile='../etc/nginx/ssl/cert.pem', keyfile='../etc/nginx/ssl/key.pem')
         #ssl_context = ssl._create_unverified_context()  # TODO temporary solution
-        code = request.GET.get("code")
         data = {
             "grant_type": "authorization_code",
             "client_id": environ.get("FT_CLIENT_ID"),
@@ -149,36 +148,38 @@ def auth_callback(request):
             "code": code,
             "redirect_uri": f"{BASE_URL}/auth_callback",
         }
-        encoded_data = urllib.parse.urlencode(data).encode("utf-8")
-        req = urllib.request.Request(
-            "https://api.intra.42.fr/oauth/token", data=encoded_data
-        )
-        response = urllib.request.urlopen(
-            req, context=ssl_context
-        )  # TODO temporary solution
 
-    # Process the response, store the access token, and authenticate the user
-    if response.status == 200:
-        token_data = json.loads(response.read().decode("utf-8"))
-        """with open('token_data.json', 'w') as file:
-            json.dump(token_data, file)"""
+        # Print the request data
+        print(f"Request data: {data}")
+
+        try:
+            response = requests.post("https://api.intra.42.fr/oauth/token", data=data, verify=False, cert=('../etc/nginx/ssl/cert.pem', '../etc/nginx/ssl/key.pem'))
+            response.raise_for_status()
+        except requests.exceptions.HTTPError as e:
+            print(f"HTTPError: {e.response.status_code} - {e.response.reason}")
+            return redirect("login")
+
+    if response.status_code == 200:
+        token_data = response.json()
         access_token = token_data.get("access_token")
         refresh_token = token_data.get("refresh_token")
         expires_in = token_data.get("expires_in")
         created_at = token_data.get("created_at")
         secret_valid_until = token_data.get("secret_valid_until")
 
-        # Fetch user information from 42 API
         headers = {"Authorization": f"Bearer {access_token}"}
-        req = urllib.request.Request("https://api.intra.42.fr/v2/me", headers=headers)
-        user_info_response = urllib.request.urlopen(
-            req, context=ssl_context
-        )  # TODO temporary solution
+        try:
+            user_info_response = requests.get("https://api.intra.42.fr/v2/me", headers=headers, verify=False, cert=('../etc/nginx/ssl/cert.pem', '../etc/nginx/ssl/key.pem'))
+            user_info_response.raise_for_status()
+        except requests.exceptions.HTTPError as e:
+            print(f"HTTPError: {e.response.status_code} - {e.response.reason}")
+            print(e.response.text)
+            if e.response.status_code == 403:
+                print(f"WWW-Authenticate: {e.response.headers.get('WWW-Authenticate')}")
+            return redirect("login")
 
-        if user_info_response.status == 200:
-            user_data = json.loads(user_info_response.read().decode("utf-8"))
-            """with open('user_data.json', 'w') as file:
-                json.dump(user_data, file) """
+        if user_info_response.status_code == 200:
+            user_data = user_info_response.json()
 
             if UserProfile.objects.filter(email=user_data["email"]).exists():
                 user = UserProfile.objects.get(email=user_data["email"])
@@ -191,7 +192,6 @@ def auth_callback(request):
                         username=user_data["login"] + "42"
                     )
                 else:
-                    # Update user profile
                     user.set_unusable_password()
                     user.displayname = user_data.get("displayname", "")
                     user.email = user_data.get("email", "")
@@ -201,13 +201,12 @@ def auth_callback(request):
                         user_data.get("image", {}).get("versions", {}).get("medium", "")
                     )
                     if image_url:
-                        image_name, response = urllib.request.urlretrieve(image_url)
-                        file = File(open(image_name, "rb"))
+                        image_name = requests.get(image_url, stream=True)
+                        file = File(image_name.raw)
                         user.avatar.save(f"{file.name}.jpg", file, save=False)
                         file.close()
                     user.save()
 
-                    # Store the access token in the OAuthToken model
                     oauth_token = OAuthToken.objects.create(
                         user=user,
                         access_token=access_token,
@@ -218,12 +217,10 @@ def auth_callback(request):
                     )
                     oauth_token.save()
 
-            # Log in the user
             login(request, user)
             return redirect("dashboard")
 
-    return redirect("login")  # Handle authentication failure
-
+    return redirect("login")
 
 ### Login and Logout ###
 
